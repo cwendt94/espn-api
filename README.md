@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/cwendt94/ff-espn-api.svg?branch=master)](https://travis-ci.org/cwendt94/ff-espn-api)
+[![Build Status](https://travis-ci.org/cwendt94/ff-espn-api.svg?branch=master)](https://travis-ci.org/cwendt94/ff-espn-api) [![codecov](https://codecov.io/gh/cwendt94/ff-espn-api/branch/master/graphs/badge.svg)](https://codecov.io/gh/cwendt94/ff-espn-api)
 
 # ff-espn-api
 
