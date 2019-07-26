@@ -6,3 +6,4 @@ env
 *.egg-info
 build
 dist
+.coverage

@@ -3,5 +3,7 @@ python:
   - "3.6"
 install:
   - python3 setup.py install
+  - pip install --user codecov
 script:
   - python3 setup.py test
+  - codecov

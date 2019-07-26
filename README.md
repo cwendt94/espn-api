@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/cwendt94/ff-espn-api.svg?branch=master)](https://travis-ci.org/cwendt94/ff-espn-api)
+
 # ff-espn-api
 
 This package uses ESPN's Fantasy Football API to extract data from any public or private league. I am currently using this package for my leagues personal website and I plan to keep updating and adding features.
@@ -10,6 +12,8 @@ This package was inspired and based off of [rbarton65/espnff](https://github.com
 With Git:
 ```
 git clone https://github.com/cwendt94/ff-espn-api
+cd ff-espn-api
+python3 setup.py install
 ```
 With pip:
 ```
@@ -101,5 +105,5 @@ Team(Team 1)
 
 ### Run Tests
 ```
-python3 setup.py test
+python3 setup.py nosetests
 ```
