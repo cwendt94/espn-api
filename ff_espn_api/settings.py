@@ -1,0 +1,18 @@
+class Settings(object):
+    '''Creates Settings object'''
+    def __init__(self, data):
+        self.reg_season_count = data['scheduleSettings']['matchupPeriodCount']
+        self.veto_votes_required = data['tradeSettings']['vetoVotesRequired']
+        self.team_count = data['size']
+        self.playoff_team_count = data['scheduleSettings']['playoffTeamCount']
+        self.keeper_count = data['draftSettings']['keeperCount']
+        try:
+            self.trade_deadline = data['tradeSettings']['deadlineDate']
+        except:
+            self.trade_deadline = 'Unknown'
+        self.name = data['name']
+        self.tie_rule = data['scoringSettings']['matchupTieRule']
+        self.playoff_seed_tie_rule = data['scoringSettings']['playoffMatchupTieRule']
+
+    def __repr__(self):
+        return 'Settings(%s)' % (self.name)

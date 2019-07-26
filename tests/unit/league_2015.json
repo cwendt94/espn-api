@@ -1,0 +1,133 @@
+[
+    {
+        "gameId": 1,
+        "id": 368876,
+        "members": [
+            {
+                "displayName": "cdub",
+                "id": "{ffa-45A0-4E5C-A807-safasfa}",
+                "isLeagueManager": false
+            },
+            {
+                "displayName": "dgwegw",
+                "id": "{sfasf-80A3-456D-A448-safasf}",
+                "isLeagueManager": false
+            },
+            {
+                "displayName": "tb",
+                "id": "{gwegw-22B1-4658-BA74-wgeweg}",
+                "isLeagueManager": false
+            },
+            {
+                "displayName": "mr",
+                "id": "{dfhdf-D569-4D2C-9E7D-gdhfdh}",
+                "isLeagueManager": false
+            },
+            {
+                "displayName": "kibsi",
+                "id": "{sdgsdgs-5804-4A24-99F2-gegwg}",
+                "isLeagueManager": false
+            },
+            {
+                "displayName": "addd",
+                "id": "{dsgsg-D435-420C-9F41-gsgsg}",
+                "isLeagueManager": false
+            },
+            {
+                "displayName": "bmm",
+                "id": "{dsgsdg-53A5-4CF2-A937-dgdsgsdg}",
+                "isLeagueManager": false
+            },
+            {
+                "displayName": "dewww",
+                "id": "{sfsafa-6C8D-462C-8E53-dgsdg}",
+                "isLeagueManager": false
+            }
+        ],
+        "scoringPeriodId": 16,
+        "seasonId": 2015,
+        "segmentId": 0,
+        "settings": {
+            "name": "FXBG Crew"
+        },
+        "status": {
+            "currentMatchupPeriod": 0,
+            "isActive": true,
+            "latestScoringPeriod": 18
+        },
+        "teams": [
+            {
+                "abbrev": "BvM",
+                "id": 1,
+                "location": "Goin' HAM",
+                "nickname": "Newton",
+                "owners": [
+                    "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}"
+                ]
+            },
+            {
+                "abbrev": "Sup",
+                "id": 2,
+                "location": "Show Me",
+                "nickname": "Your TD's",
+                "owners": [
+                    "{A99FDB20-D435-420C-9F41-F38D79E28D56}"
+                ]
+            },
+            {
+                "abbrev": "LP",
+                "id": 3,
+                "location": "Last",
+                "nickname": "Place",
+                "owners": [
+                    "{1A3A74B8-22B1-4658-BA74-B822B13658E3}"
+                ]
+            },
+            {
+                "abbrev": "8008",
+                "id": 4,
+                "location": "Super",
+                "nickname": "Mariotas",
+                "owners": [
+                    "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}"
+                ]
+            },
+            {
+                "abbrev": "CDUB",
+                "id": 5,
+                "location": "Saved By ",
+                "nickname": "The Bell ",
+                "owners": [
+                    "{03680774-45A0-4E5C-A807-7445A0AE5CCC}"
+                ]
+            },
+            {
+                "abbrev": "GOT",
+                "id": 6,
+                "location": "Game of",
+                "nickname": "End Zones",
+                "owners": [
+                    "{6359F25D-5804-4A24-99F2-5D58042A2404}"
+                ]
+            },
+            {
+                "abbrev": "SEAN",
+                "id": 7,
+                "location": "Go",
+                "nickname": "Deep Jack ",
+                "owners": [
+                    "{08828A8F-80A3-456D-A448-F1DC5E3AC1B7}"
+                ]
+            },
+            {
+                "abbrev": "HOMO",
+                "id": 8,
+                "location": "Christian Top",
+                "nickname": "Berry Bottom",
+                "owners": [
+                    "{3DDE7D6A-D569-4D2C-9E7D-6AD5693D2CCA}"
+                ]
+            }
+        ]
+    }
+]
