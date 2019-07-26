@@ -5,5 +5,5 @@ install:
   - python3 setup.py install
   - pip install codecov
 script:
-  - python3 setup.py test
+  - python3 setup.py nosetests
   - codecov
