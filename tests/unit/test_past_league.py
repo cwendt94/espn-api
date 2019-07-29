@@ -33,3 +33,25 @@ class LeaguePastTest(TestCase):
 
         self.assertEqual(league.nfl_week, 18)
         self.assertEqual(len(league.teams), 8)
+
+    @requests_mock.Mocker()        
+    def test_get_scoreboard(self, m):
+        m.get(self.espn_endpoint, status_code=200, json=self.league_data)
+        m.get(self.espn_endpoint + '&view=mTeam', status_code=200, json=self.team_data)
+        m.get(self.espn_endpoint + '&view=mSettings', status_code=200, json=self.settings_data)
+        m.get(self.espn_endpoint + '&view=mMatchup', status_code=200, json=self.matchup_data)
+        m.get(self.espn_endpoint + '&view=mRoster', status_code=200, json=self.roster_data)
+
+        league = League(self.league_id, self.season)
+        
+        with open('tests/unit/league_matchupScore_2015.json') as f:
+            data = json.loads(f.read())
+        m.get(self.espn_endpoint + '&view=mMatchupScore', status_code=200, json=data)
+
+        scoreboard = league.scoreboard(1)
+        self.assertEqual(repr(scoreboard[1]), 'Matchup(Team(Go Deep Jack ), Team(Last Place))')
+        self.assertEqual(scoreboard[0].home_score, 133)
+
+        scoreboard = league.scoreboard()
+        self.assertEqual(repr(scoreboard[-1]), 'Matchup(Team(Go Deep Jack ), Team(Last Place))')
+        self.assertEqual(scoreboard[-1].away_score, 123)

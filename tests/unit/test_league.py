@@ -20,6 +20,18 @@ class LeagueTest(TestCase):
             self.roster_data = json.loads(data.read())
 
     @requests_mock.Mocker()        
+    def test_error_status(self, m):
+        m.get(self.espn_endpoint, status_code=501, json=self.league_data)
+        with self.assertRaises(Exception):
+            League(self.league_id, self.season)
+    
+    @requests_mock.Mocker()        
+    def test_uknown_error_status(self, m):
+        m.get(self.espn_endpoint, status_code=300, json=self.league_data)
+        with self.assertRaises(Exception):
+            League(self.league_id, self.season)
+
+    @requests_mock.Mocker()        
     def test_create_object(self, m):
         m.get(self.espn_endpoint, status_code=200, json=self.league_data)
         m.get(self.espn_endpoint + '?view=mTeam', status_code=200, json=self.team_data)
@@ -28,6 +40,8 @@ class LeagueTest(TestCase):
         m.get(self.espn_endpoint + '?view=mRoster', status_code=200, json=self.roster_data)
 
         league = League(self.league_id, self.season)
+        self.assertEqual(repr(league), 'League(123, 2018)')
+        self.assertEqual(repr(league.settings), 'Settings(FXBG League)')
         self.assertEqual(league.current_week, 16)
         self.assertEqual(len(league.teams), 10)
     
@@ -147,3 +161,41 @@ class LeagueTest(TestCase):
 
         team = league.get_team_data(18)
         self.assertEqual(team, None)
+    
+    @requests_mock.Mocker()        
+    def test_get_scoreboard(self, m):
+        m.get(self.espn_endpoint, status_code=200, json=self.league_data)
+        m.get(self.espn_endpoint + '?view=mTeam', status_code=200, json=self.team_data)
+        m.get(self.espn_endpoint + '?view=mSettings', status_code=200, json=self.settings_data)
+        m.get(self.espn_endpoint + '?view=mMatchup', status_code=200, json=self.matchup_data)
+        m.get(self.espn_endpoint + '?view=mRoster', status_code=200, json=self.roster_data)
+
+        league = League(self.league_id, self.season)
+        
+        with open('tests/unit/league_matchupScore_2018.json') as f:
+            data = json.loads(f.read())
+        m.get(self.espn_endpoint + '?view=mMatchupScore', status_code=200, json=data)
+
+        scoreboard = league.scoreboard(1)
+        self.assertEqual(repr(scoreboard[1]), 'Matchup(Team(Watch What  You Saquon), Team(Feel the  Brees))')
+        self.assertEqual(scoreboard[0].home_score, 125.5)
+
+        scoreboard = league.scoreboard()
+        self.assertEqual(repr(scoreboard[-1]), 'Matchup(Team(Jacking Goff  On Sundays), Team(Feel the  Brees))')
+        self.assertEqual(scoreboard[-1].away_score, 108.64)
+    
+    @requests_mock.Mocker()
+    def test_player(self, m):
+        m.get(self.espn_endpoint, status_code=200, json=self.league_data)
+        m.get(self.espn_endpoint + '?view=mTeam', status_code=200, json=self.team_data)
+        m.get(self.espn_endpoint + '?view=mSettings', status_code=200, json=self.settings_data)
+        m.get(self.espn_endpoint + '?view=mMatchup', status_code=200, json=self.matchup_data)
+        m.get(self.espn_endpoint + '?view=mRoster', status_code=200, json=self.roster_data)
+
+        league = League(self.league_id, self.season)
+
+        team = league.teams[2]
+        self.assertEqual(repr(team.roster[0]), 'Player(Drew Brees)')
+        self.assertEqual(team.get_player_name(2521161), 'Zach Zenner')
+        self.assertEqual(team.get_player_name(0), '')
+

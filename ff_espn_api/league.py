@@ -56,8 +56,10 @@ class League(object):
         checkRequestStatus(self.status)
 
         data = r.json() if self.year > 2017 else r.json()[0]
-
-        self.current_week = data['status']['currentMatchupPeriod']
+        if self.year < 2018:
+            self.current_week = data['scoringPeriodId']
+        else:
+            self.current_week = data['status']['currentMatchupPeriod']
         self.nfl_week = data['status']['latestScoringPeriod']
         
 
@@ -201,4 +203,26 @@ class League(object):
     # TODO Current Week Scoreboard
     def scoreboard(self, week=None):
         '''Returns list of matchups for a given week'''
-        pass
+        if not week:
+            week = self.current_week
+
+        params = {
+            'view': 'mMatchupScore',
+        }
+        r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
+        self.status = r.status_code
+        checkRequestStatus(self.status)
+
+        data = r.json() if self.year > 2017 else r.json()[0]
+
+        schedule = data['schedule']
+        matchups = [Matchup(matchup) for matchup in schedule if matchup['matchupPeriodId'] == week]
+
+        for team in self.teams:
+            for matchup in matchups:
+                if matchup.home_team == team.team_id:
+                    matchup.home_team = team
+                elif matchup.away_team == team.team_id:
+                    matchup.away_team = team
+        
+        return matchups

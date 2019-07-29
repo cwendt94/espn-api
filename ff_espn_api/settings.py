@@ -6,10 +6,7 @@ class Settings(object):
         self.team_count = data['size']
         self.playoff_team_count = data['scheduleSettings']['playoffTeamCount']
         self.keeper_count = data['draftSettings']['keeperCount']
-        try:
-            self.trade_deadline = data['tradeSettings']['deadlineDate']
-        except:
-            self.trade_deadline = 'Unknown'
+        self.trade_deadline = data['tradeSettings']['deadlineDate']
         self.name = data['name']
         self.tie_rule = data['scoringSettings']['matchupTieRule']
         self.playoff_seed_tie_rule = data['scoringSettings']['playoffMatchupTieRule']

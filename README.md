@@ -54,7 +54,7 @@ league = League(league_id, year, espn_s2, swid)
 [Team(Team 1), Team(Team 2), Team(FANTASY GOD), Team(THE KING), Team(Team 5), Team(Team Viking Queen), Team(Team 7), Team(Team 8), Team(Team Mizrachi), Team(Team 10)]
 >>> team = league.teams[0]
 >>> team.roster
-[PLayer(Travis Kelce), PLayer(Zach Ertz), PLayer(Josh Gordon), PLayer(Kenyan Drake), PLayer(Tarik Cohen), PLayer(Wil Lutz), PLayer(Dion Lewis), PLayer(Matthew Stafford), PLayer(Ezekiel Elliott), PLayer(Brandin Cooks), PLayer(Kerryon Johnson), PLayer(Mitchell Trubisky), PLayer(Bengals D/ST), PLayer(Courtland Sutton), PLayer(Spencer Ware), PLayer(Austin Ekeler)]
+[Player(Travis Kelce), Player(Zach Ertz), Player(Josh Gordon), Player(Kenyan Drake), Player(Tarik Cohen), Player(Wil Lutz), Player(Dion Lewis), Player(Matthew Stafford), Player(Ezekiel Elliott), PLayer(Brandin Cooks), Player(Kerryon Johnson), Player(Mitchell Trubisky), Player(Bengals D/ST), Player(Courtland Sutton), Player(Spencer Ware), Player(Austin Ekeler)]
 >>> team.wins
 10
 >>> team.losses
@@ -79,13 +79,34 @@ league = League(league_id, year, espn_s2, swid)
 >>> settings.veto_votes_required
 4
 ```
+### Get scoreboard of current/specific week
+```python
+>>> from ff_espn_api import League
+>>> league_id = 1234
+>>> year = 2018
+>>> league = League(league_id, year)
+>>> league.scoreboard()
+[Matchup(Team(Team 8), Team(THE KING)), Matchup(Team(Team 7), Team(Team 1)), Matchup(Team(Team 2), Team(Team Viking Queen)), Matchup(Team(Team Mizrachi), Team(FANTASY GOD)), Matchup(Team(Team 10), Team(Team 5))]
+>>> week = 3
+>>> matchups = league.scoreboard(week)
+>>> matchups[0].home_score
+89.2
+>>> matchups[0].away_score
+88.62
+>>> matchups
+[Matchup(Team(Team 1), Team(Team 10)), Matchup(Team(FANTASY GOD), Team(THE KING)), Matchup(Team(Team 7), Team(Team Viking Queen)), Matchup(Team(Team 5), Team(Team 2)), Matchup(Team(Team Mizrachi), Team(Team 8))]
+>>> matchups[0].home_team
+Team(Team 1)
+>>> matchups[0].away_team
+Team(Team 10)
+```
 
 ### Helper functions
 ```python
-from ff_espn_api import League
-league_id = 1234
-year = 2018
-league = League(league_id, year)
+>>> from ff_espn_api import League
+>>> league_id = 1234
+>>> year = 2018
+>>> league = League(league_id, year)
 >>> league.load_roster_week(3)
 >>> league.standings()
 [Team(Team 8), Team(THE KING), Team(Team 7), Team(Team 1), Team(Team Viking Queen), Team(Team 2), Team(FANTASY GOD), Team(Team Mizrachi), Team(Team 10), Team(Team 5)]
