@@ -8,6 +8,7 @@ from .team import Team
 from .trade import Trade
 from .settings import Settings
 from .matchup import Matchup
+from .pick import Pick
 
 
 def checkRequestStatus(status: int) -> None:
@@ -33,6 +34,8 @@ class League(object):
         else:
             self.ENDPOINT = "https://fantasy.espn.com/apis/v3/games/FFL/seasons/" + str(year) + "/segments/0/leagues/" + str(league_id)
         self.teams = []
+        self.draft = []
+        self.player_map = {}
         self.espn_s2 = espn_s2
         self.swid = swid
         self.cookies = None
@@ -64,7 +67,9 @@ class League(object):
         
 
         self._fetch_settings()
+        self._fetch_players()
         self._fetch_teams()
+        self._fetch_draft()
 
     def _fetch_teams(self):
         '''Fetch teams in league'''
@@ -139,6 +144,51 @@ class League(object):
         data = r.json() if self.year > 2017 else r.json()[0]
         self.settings = Settings(data['settings'])
     
+    def _fetch_players(self):
+        params = {
+            'scoringPeriodId': 0,
+            'view': 'players_wl',
+        }
+
+        endpoint = 'https://fantasy.espn.com/apis/v3/games/ffl/seasons/' + str(self.year) + '/players'
+        r = requests.get(endpoint, params=params, cookies=self.cookies)
+        self.status = r.status_code
+
+        checkRequestStatus(self.status)
+
+        data = r.json()
+        # Map all player id's to player name
+        for player in data:
+            self.player_map[player['id']] = player['fullName']
+
+
+    def _fetch_draft(self):
+        '''Creates list of Pick objects from the leagues draft'''
+        params = {
+            'view': 'mDraftDetail',
+        }
+
+        r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
+        self.status = r.status_code
+
+        checkRequestStatus(self.status)
+
+        data = r.json() if self.year > 2017 else r.json()[0]
+        
+        # League has not drafted yet
+        if not data['draftDetail']['drafted']:
+            return
+        
+        picks = data['draftDetail']['picks']
+        for pick in picks:
+            team = self.get_team_data(pick['teamId'])
+            playerId = pick['playerId']
+            playerName = self.player_map[playerId]
+            round_num = pick['roundId']
+            round_pick = pick['roundPickNumber']
+
+            self.draft.append(Pick(team, playerId, playerName, round_num, round_pick))
+
     def load_roster_week(self, week: int) -> None:
         '''Sets Teams Roster for a Certain Week'''
         params = {
@@ -200,7 +250,6 @@ class League(object):
     def league_trades(self):
         pass
 
-    # TODO Current Week Scoreboard
     def scoreboard(self, week=None):
         '''Returns list of matchups for a given week'''
         if not week:
