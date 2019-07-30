@@ -163,6 +163,7 @@ class League(object):
 
 
     def _fetch_draft(self):
+        '''Creates list of Pick objects from the leagues draft'''
         params = {
             'view': 'mDraftDetail',
         }
@@ -185,7 +186,7 @@ class League(object):
             playerName = self.player_map[playerId]
             round_num = pick['roundId']
             round_pick = pick['roundPickNumber']
-            
+
             self.draft.append(Pick(team, playerId, playerName, round_num, round_pick))
 
     def load_roster_week(self, week: int) -> None:

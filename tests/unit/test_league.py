@@ -8,16 +8,30 @@ class LeagueTest(TestCase):
         self.league_id = 123
         self.season = 2018
         self.espn_endpoint = "https://fantasy.espn.com/apis/v3/games/FFL/seasons/" + str(self.season) + "/segments/0/leagues/" + str(self.league_id)
-        with open('tests/unit/league_2018.json') as data:
+        self.players_endpoint = 'https://fantasy.espn.com/apis/v3/games/ffl/seasons/' + str(self.season) + '/players?scoringPeriodId=0&view=players_wl'
+        with open('tests/unit/data/league_2018.json') as data:
             self.league_data = json.loads(data.read())
-        with open('tests/unit/league_team_2018.json') as data:
+        with open('tests/unit/data/league_team_2018.json') as data:
             self.team_data = json.loads(data.read())
-        with open('tests/unit/league_settings_2018.json') as data:
+        with open('tests/unit/data/league_settings_2018.json') as data:
             self.settings_data = json.loads(data.read())
-        with open('tests/unit/league_matchup_2018.json') as data:
+        with open('tests/unit/data/league_matchup_2018.json') as data:
             self.matchup_data = json.loads(data.read())
-        with open('tests/unit/league_roster_2018.json') as data:
+        with open('tests/unit/data/league_roster_2018.json') as data:
             self.roster_data = json.loads(data.read())
+        with open('tests/unit/data/league_draft_2018.json') as data:
+            self.draft_data = json.loads(data.read())
+        with open('tests/unit/data/league_players_2018.json') as data:
+            self.players_data = json.loads(data.read())
+    
+    def mock_setUp(self, m):
+        m.get(self.espn_endpoint, status_code=200, json=self.league_data)
+        m.get(self.espn_endpoint + '?view=mTeam', status_code=200, json=self.team_data)
+        m.get(self.espn_endpoint + '?view=mSettings', status_code=200, json=self.settings_data)
+        m.get(self.espn_endpoint + '?view=mMatchup', status_code=200, json=self.matchup_data)
+        m.get(self.espn_endpoint + '?view=mRoster', status_code=200, json=self.roster_data)
+        m.get(self.espn_endpoint + '?view=mDraftDetail', status_code=200, json=self.draft_data)
+        m.get(self.players_endpoint, status_code=200, json=self.players_data)
 
     @requests_mock.Mocker()        
     def test_error_status(self, m):
@@ -33,11 +47,7 @@ class LeagueTest(TestCase):
 
     @requests_mock.Mocker()        
     def test_create_object(self, m):
-        m.get(self.espn_endpoint, status_code=200, json=self.league_data)
-        m.get(self.espn_endpoint + '?view=mTeam', status_code=200, json=self.team_data)
-        m.get(self.espn_endpoint + '?view=mSettings', status_code=200, json=self.settings_data)
-        m.get(self.espn_endpoint + '?view=mMatchup', status_code=200, json=self.matchup_data)
-        m.get(self.espn_endpoint + '?view=mRoster', status_code=200, json=self.roster_data)
+        self.mock_setUp(m)
 
         league = League(self.league_id, self.season)
         self.assertEqual(repr(league), 'League(123, 2018)')
@@ -47,15 +57,11 @@ class LeagueTest(TestCase):
     
     @requests_mock.Mocker()        
     def test_load_roster_week(self, m):
-        m.get(self.espn_endpoint, status_code=200, json=self.league_data)
-        m.get(self.espn_endpoint + '?view=mTeam', status_code=200, json=self.team_data)
-        m.get(self.espn_endpoint + '?view=mSettings', status_code=200, json=self.settings_data)
-        m.get(self.espn_endpoint + '?view=mMatchup', status_code=200, json=self.matchup_data)
-        m.get(self.espn_endpoint + '?view=mRoster', status_code=200, json=self.roster_data)
+        self.mock_setUp(m)
 
         league = League(self.league_id, self.season)
         
-        with open('tests/unit/league_roster_week1.json') as f:
+        with open('tests/unit/data/league_roster_week1.json') as f:
             data = json.loads(f.read())
         m.get(self.espn_endpoint + '?view=mRoster&scoringPeriodId=1', status_code=200, json=data)
         league.load_roster_week(1)
@@ -70,11 +76,7 @@ class LeagueTest(TestCase):
     
     @requests_mock.Mocker()        
     def test_league_standings(self, m):
-        m.get(self.espn_endpoint, status_code=200, json=self.league_data)
-        m.get(self.espn_endpoint + '?view=mTeam', status_code=200, json=self.team_data)
-        m.get(self.espn_endpoint + '?view=mSettings', status_code=200, json=self.settings_data)
-        m.get(self.espn_endpoint + '?view=mMatchup', status_code=200, json=self.matchup_data)
-        m.get(self.espn_endpoint + '?view=mRoster', status_code=200, json=self.roster_data)
+        self.mock_setUp(m)
 
         league = League(self.league_id, self.season)
 
@@ -83,11 +85,7 @@ class LeagueTest(TestCase):
 
     @requests_mock.Mocker()        
     def test_top_scorer(self, m):
-        m.get(self.espn_endpoint, status_code=200, json=self.league_data)
-        m.get(self.espn_endpoint + '?view=mTeam', status_code=200, json=self.team_data)
-        m.get(self.espn_endpoint + '?view=mSettings', status_code=200, json=self.settings_data)
-        m.get(self.espn_endpoint + '?view=mMatchup', status_code=200, json=self.matchup_data)
-        m.get(self.espn_endpoint + '?view=mRoster', status_code=200, json=self.roster_data)
+        self.mock_setUp(m)
 
         league = League(self.league_id, self.season)
 
@@ -96,11 +94,7 @@ class LeagueTest(TestCase):
     
     @requests_mock.Mocker()        
     def test_least_scorer(self, m):
-        m.get(self.espn_endpoint, status_code=200, json=self.league_data)
-        m.get(self.espn_endpoint + '?view=mTeam', status_code=200, json=self.team_data)
-        m.get(self.espn_endpoint + '?view=mSettings', status_code=200, json=self.settings_data)
-        m.get(self.espn_endpoint + '?view=mMatchup', status_code=200, json=self.matchup_data)
-        m.get(self.espn_endpoint + '?view=mRoster', status_code=200, json=self.roster_data)
+        self.mock_setUp(m)
 
         league = League(self.league_id, self.season)
 
@@ -109,11 +103,7 @@ class LeagueTest(TestCase):
 
     @requests_mock.Mocker()        
     def test_most_pa(self, m):
-        m.get(self.espn_endpoint, status_code=200, json=self.league_data)
-        m.get(self.espn_endpoint + '?view=mTeam', status_code=200, json=self.team_data)
-        m.get(self.espn_endpoint + '?view=mSettings', status_code=200, json=self.settings_data)
-        m.get(self.espn_endpoint + '?view=mMatchup', status_code=200, json=self.matchup_data)
-        m.get(self.espn_endpoint + '?view=mRoster', status_code=200, json=self.roster_data)
+        self.mock_setUp(m)
 
         league = League(self.league_id, self.season)
 
@@ -122,11 +112,7 @@ class LeagueTest(TestCase):
 
     @requests_mock.Mocker()        
     def test_top_scored(self, m):
-        m.get(self.espn_endpoint, status_code=200, json=self.league_data)
-        m.get(self.espn_endpoint + '?view=mTeam', status_code=200, json=self.team_data)
-        m.get(self.espn_endpoint + '?view=mSettings', status_code=200, json=self.settings_data)
-        m.get(self.espn_endpoint + '?view=mMatchup', status_code=200, json=self.matchup_data)
-        m.get(self.espn_endpoint + '?view=mRoster', status_code=200, json=self.roster_data)
+        self.mock_setUp(m)
 
         league = League(self.league_id, self.season)
 
@@ -135,11 +121,7 @@ class LeagueTest(TestCase):
 
     @requests_mock.Mocker()
     def test_least_scored(self, m):
-        m.get(self.espn_endpoint, status_code=200, json=self.league_data)
-        m.get(self.espn_endpoint + '?view=mTeam', status_code=200, json=self.team_data)
-        m.get(self.espn_endpoint + '?view=mSettings', status_code=200, json=self.settings_data)
-        m.get(self.espn_endpoint + '?view=mMatchup', status_code=200, json=self.matchup_data)
-        m.get(self.espn_endpoint + '?view=mRoster', status_code=200, json=self.roster_data)
+        self.mock_setUp(m)
 
         league = League(self.league_id, self.season)
 
@@ -148,11 +130,7 @@ class LeagueTest(TestCase):
     
     @requests_mock.Mocker()
     def test_get_team(self, m):
-        m.get(self.espn_endpoint, status_code=200, json=self.league_data)
-        m.get(self.espn_endpoint + '?view=mTeam', status_code=200, json=self.team_data)
-        m.get(self.espn_endpoint + '?view=mSettings', status_code=200, json=self.settings_data)
-        m.get(self.espn_endpoint + '?view=mMatchup', status_code=200, json=self.matchup_data)
-        m.get(self.espn_endpoint + '?view=mRoster', status_code=200, json=self.roster_data)
+        self.mock_setUp(m)
 
         league = League(self.league_id, self.season)
 
@@ -164,15 +142,11 @@ class LeagueTest(TestCase):
     
     @requests_mock.Mocker()        
     def test_get_scoreboard(self, m):
-        m.get(self.espn_endpoint, status_code=200, json=self.league_data)
-        m.get(self.espn_endpoint + '?view=mTeam', status_code=200, json=self.team_data)
-        m.get(self.espn_endpoint + '?view=mSettings', status_code=200, json=self.settings_data)
-        m.get(self.espn_endpoint + '?view=mMatchup', status_code=200, json=self.matchup_data)
-        m.get(self.espn_endpoint + '?view=mRoster', status_code=200, json=self.roster_data)
+        self.mock_setUp(m)
 
         league = League(self.league_id, self.season)
         
-        with open('tests/unit/league_matchupScore_2018.json') as f:
+        with open('tests/unit/data/league_matchupScore_2018.json') as f:
             data = json.loads(f.read())
         m.get(self.espn_endpoint + '?view=mMatchupScore', status_code=200, json=data)
 
@@ -186,11 +160,7 @@ class LeagueTest(TestCase):
     
     @requests_mock.Mocker()
     def test_player(self, m):
-        m.get(self.espn_endpoint, status_code=200, json=self.league_data)
-        m.get(self.espn_endpoint + '?view=mTeam', status_code=200, json=self.team_data)
-        m.get(self.espn_endpoint + '?view=mSettings', status_code=200, json=self.settings_data)
-        m.get(self.espn_endpoint + '?view=mMatchup', status_code=200, json=self.matchup_data)
-        m.get(self.espn_endpoint + '?view=mRoster', status_code=200, json=self.roster_data)
+        self.mock_setUp(m)
 
         league = League(self.league_id, self.season)
 
@@ -198,4 +168,16 @@ class LeagueTest(TestCase):
         self.assertEqual(repr(team.roster[0]), 'Player(Drew Brees)')
         self.assertEqual(team.get_player_name(2521161), 'Zach Zenner')
         self.assertEqual(team.get_player_name(0), '')
+    
+    @requests_mock.Mocker()
+    def test_draft(self, m):
+        self.mock_setUp(m)
+
+        league = League(self.league_id, self.season)
+
+        first_pick = league.draft[0]
+        third_pick = league.draft[2]
+        self.assertEqual(repr(first_pick), 'Pick(Le\'Veon Bell, Team(Rollin\' With Mahomies))')
+        self.assertEqual(third_pick.round_num, 1)
+        self.assertEqual(third_pick.round_pick, 3)
 

@@ -1,0 +1,2944 @@
+{
+    "draftDetail": {
+        "completeDate": 1535199833937,
+        "drafted": true,
+        "inProgress": false,
+        "picks": [
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 1,
+                "keeper": false,
+                "lineupSlotId": 2,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 1,
+                "owningTeamIds": [
+                    2
+                ],
+                "playerId": 15825,
+                "reservedForKeeper": false,
+                "roundId": 1,
+                "roundPickNumber": 1,
+                "teamId": 2,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 2,
+                "keeper": false,
+                "lineupSlotId": 2,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 2,
+                "owningTeamIds": [
+                    8
+                ],
+                "playerId": 2977644,
+                "reservedForKeeper": false,
+                "roundId": 1,
+                "roundPickNumber": 2,
+                "teamId": 8,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 3,
+                "keeper": false,
+                "lineupSlotId": 4,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 3,
+                "owningTeamIds": [
+                    1
+                ],
+                "playerId": 13934,
+                "reservedForKeeper": false,
+                "roundId": 1,
+                "roundPickNumber": 3,
+                "teamId": 1,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 4,
+                "keeper": false,
+                "lineupSlotId": 2,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 4,
+                "owningTeamIds": [
+                    9
+                ],
+                "playerId": 3115364,
+                "reservedForKeeper": false,
+                "roundId": 1,
+                "roundPickNumber": 4,
+                "teamId": 9,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 5,
+                "keeper": false,
+                "lineupSlotId": 2,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 5,
+                "owningTeamIds": [
+                    4
+                ],
+                "playerId": 3051392,
+                "reservedForKeeper": false,
+                "roundId": 1,
+                "roundPickNumber": 5,
+                "teamId": 4,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 6,
+                "keeper": false,
+                "lineupSlotId": 2,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 6,
+                "owningTeamIds": [
+                    3
+                ],
+                "playerId": 3054850,
+                "reservedForKeeper": false,
+                "roundId": 1,
+                "roundPickNumber": 6,
+                "teamId": 3,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 7,
+                "keeper": false,
+                "lineupSlotId": 2,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 7,
+                "owningTeamIds": [
+                    10
+                ],
+                "playerId": 2508176,
+                "reservedForKeeper": false,
+                "roundId": 1,
+                "roundPickNumber": 7,
+                "teamId": 10,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 8,
+                "keeper": false,
+                "lineupSlotId": 2,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 8,
+                "owningTeamIds": [
+                    5
+                ],
+                "playerId": 3929630,
+                "reservedForKeeper": false,
+                "roundId": 1,
+                "roundPickNumber": 8,
+                "teamId": 5,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 9,
+                "keeper": false,
+                "lineupSlotId": 4,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 9,
+                "owningTeamIds": [
+                    7
+                ],
+                "playerId": 15795,
+                "reservedForKeeper": false,
+                "roundId": 1,
+                "roundPickNumber": 9,
+                "teamId": 7,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 10,
+                "keeper": false,
+                "lineupSlotId": 2,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 10,
+                "owningTeamIds": [
+                    11
+                ],
+                "playerId": 2576434,
+                "reservedForKeeper": false,
+                "roundId": 1,
+                "roundPickNumber": 10,
+                "teamId": 11,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 11,
+                "keeper": false,
+                "lineupSlotId": 4,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 11,
+                "owningTeamIds": [
+                    11
+                ],
+                "playerId": 13982,
+                "reservedForKeeper": false,
+                "roundId": 2,
+                "roundPickNumber": 1,
+                "teamId": 11,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 12,
+                "keeper": false,
+                "lineupSlotId": 2,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 12,
+                "owningTeamIds": [
+                    7
+                ],
+                "playerId": 16944,
+                "reservedForKeeper": false,
+                "roundId": 2,
+                "roundPickNumber": 2,
+                "teamId": 7,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 13,
+                "keeper": false,
+                "lineupSlotId": 2,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 13,
+                "owningTeamIds": [
+                    5
+                ],
+                "playerId": 3059915,
+                "reservedForKeeper": false,
+                "roundId": 2,
+                "roundPickNumber": 3,
+                "teamId": 5,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 14,
+                "keeper": false,
+                "lineupSlotId": 2,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 14,
+                "owningTeamIds": [
+                    10
+                ],
+                "playerId": 3116593,
+                "reservedForKeeper": false,
+                "roundId": 2,
+                "roundPickNumber": 4,
+                "teamId": 10,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 15,
+                "keeper": false,
+                "lineupSlotId": 4,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 15,
+                "owningTeamIds": [
+                    3
+                ],
+                "playerId": 16733,
+                "reservedForKeeper": false,
+                "roundId": 2,
+                "roundPickNumber": 5,
+                "teamId": 3,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 16,
+                "keeper": false,
+                "lineupSlotId": 4,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 16,
+                "owningTeamIds": [
+                    4
+                ],
+                "playerId": 3116406,
+                "reservedForKeeper": false,
+                "roundId": 2,
+                "roundPickNumber": 6,
+                "teamId": 4,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 17,
+                "keeper": false,
+                "lineupSlotId": 4,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 17,
+                "owningTeamIds": [
+                    9
+                ],
+                "playerId": 16800,
+                "reservedForKeeper": false,
+                "roundId": 2,
+                "roundPickNumber": 7,
+                "teamId": 9,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 18,
+                "keeper": false,
+                "lineupSlotId": 4,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 18,
+                "owningTeamIds": [
+                    1
+                ],
+                "playerId": 15818,
+                "reservedForKeeper": false,
+                "roundId": 2,
+                "roundPickNumber": 8,
+                "teamId": 1,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 19,
+                "keeper": false,
+                "lineupSlotId": 4,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 19,
+                "owningTeamIds": [
+                    8
+                ],
+                "playerId": 13983,
+                "reservedForKeeper": false,
+                "roundId": 2,
+                "roundPickNumber": 9,
+                "teamId": 8,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 20,
+                "keeper": false,
+                "lineupSlotId": 4,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 20,
+                "owningTeamIds": [
+                    2
+                ],
+                "playerId": 2976316,
+                "reservedForKeeper": false,
+                "roundId": 2,
+                "roundPickNumber": 10,
+                "teamId": 2,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 21,
+                "keeper": false,
+                "lineupSlotId": 2,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 21,
+                "owningTeamIds": [
+                    2
+                ],
+                "playerId": 3117251,
+                "reservedForKeeper": false,
+                "roundId": 3,
+                "roundPickNumber": 1,
+                "teamId": 2,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 22,
+                "keeper": false,
+                "lineupSlotId": 2,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 22,
+                "owningTeamIds": [
+                    8
+                ],
+                "playerId": 3060022,
+                "reservedForKeeper": false,
+                "roundId": 3,
+                "roundPickNumber": 2,
+                "teamId": 8,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 23,
+                "keeper": false,
+                "lineupSlotId": 2,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 23,
+                "owningTeamIds": [
+                    1
+                ],
+                "playerId": 16782,
+                "reservedForKeeper": false,
+                "roundId": 3,
+                "roundPickNumber": 3,
+                "teamId": 1,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 24,
+                "keeper": false,
+                "lineupSlotId": 4,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 24,
+                "owningTeamIds": [
+                    9
+                ],
+                "playerId": 16790,
+                "reservedForKeeper": false,
+                "roundId": 3,
+                "roundPickNumber": 4,
+                "teamId": 9,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 25,
+                "keeper": false,
+                "lineupSlotId": 4,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 25,
+                "owningTeamIds": [
+                    4
+                ],
+                "playerId": 16460,
+                "reservedForKeeper": false,
+                "roundId": 3,
+                "roundPickNumber": 5,
+                "teamId": 4,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 26,
+                "keeper": false,
+                "lineupSlotId": 4,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 26,
+                "owningTeamIds": [
+                    3
+                ],
+                "playerId": 5528,
+                "reservedForKeeper": false,
+                "roundId": 3,
+                "roundPickNumber": 6,
+                "teamId": 3,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 27,
+                "keeper": false,
+                "lineupSlotId": 4,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 27,
+                "owningTeamIds": [
+                    10
+                ],
+                "playerId": 2976212,
+                "reservedForKeeper": false,
+                "roundId": 3,
+                "roundPickNumber": 7,
+                "teamId": 10,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 28,
+                "keeper": false,
+                "lineupSlotId": 4,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 28,
+                "owningTeamIds": [
+                    5
+                ],
+                "playerId": 16737,
+                "reservedForKeeper": false,
+                "roundId": 3,
+                "roundPickNumber": 8,
+                "teamId": 5,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 29,
+                "keeper": false,
+                "lineupSlotId": 2,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 29,
+                "owningTeamIds": [
+                    7
+                ],
+                "playerId": 2979843,
+                "reservedForKeeper": false,
+                "roundId": 3,
+                "roundPickNumber": 9,
+                "teamId": 7,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 30,
+                "keeper": false,
+                "lineupSlotId": 2,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 30,
+                "owningTeamIds": [
+                    11
+                ],
+                "playerId": 3116385,
+                "reservedForKeeper": false,
+                "roundId": 3,
+                "roundPickNumber": 10,
+                "teamId": 11,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 31,
+                "keeper": false,
+                "lineupSlotId": 6,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 31,
+                "owningTeamIds": [
+                    11
+                ],
+                "playerId": 15835,
+                "reservedForKeeper": false,
+                "roundId": 4,
+                "roundPickNumber": 1,
+                "teamId": 11,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 32,
+                "keeper": false,
+                "lineupSlotId": 6,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 32,
+                "owningTeamIds": [
+                    7
+                ],
+                "playerId": 15847,
+                "reservedForKeeper": false,
+                "roundId": 4,
+                "roundPickNumber": 2,
+                "teamId": 7,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 33,
+                "keeper": false,
+                "lineupSlotId": 23,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 33,
+                "owningTeamIds": [
+                    5
+                ],
+                "playerId": 12514,
+                "reservedForKeeper": false,
+                "roundId": 4,
+                "roundPickNumber": 3,
+                "teamId": 5,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 34,
+                "keeper": false,
+                "lineupSlotId": 4,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 34,
+                "owningTeamIds": [
+                    10
+                ],
+                "playerId": 13216,
+                "reservedForKeeper": false,
+                "roundId": 4,
+                "roundPickNumber": 4,
+                "teamId": 10,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 35,
+                "keeper": false,
+                "lineupSlotId": 0,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 35,
+                "owningTeamIds": [
+                    3
+                ],
+                "playerId": 3122840,
+                "reservedForKeeper": false,
+                "roundId": 4,
+                "roundPickNumber": 5,
+                "teamId": 3,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 36,
+                "keeper": false,
+                "lineupSlotId": 2,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 36,
+                "owningTeamIds": [
+                    4
+                ],
+                "playerId": 2573300,
+                "reservedForKeeper": false,
+                "roundId": 4,
+                "roundPickNumber": 6,
+                "teamId": 4,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 37,
+                "keeper": false,
+                "lineupSlotId": 23,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 37,
+                "owningTeamIds": [
+                    9
+                ],
+                "playerId": 14912,
+                "reservedForKeeper": false,
+                "roundId": 4,
+                "roundPickNumber": 7,
+                "teamId": 9,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 38,
+                "keeper": false,
+                "lineupSlotId": 23,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 38,
+                "owningTeamIds": [
+                    1
+                ],
+                "playerId": 2976499,
+                "reservedForKeeper": false,
+                "roundId": 4,
+                "roundPickNumber": 8,
+                "teamId": 1,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 39,
+                "keeper": false,
+                "lineupSlotId": 6,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 39,
+                "owningTeamIds": [
+                    8
+                ],
+                "playerId": 13229,
+                "reservedForKeeper": false,
+                "roundId": 4,
+                "roundPickNumber": 9,
+                "teamId": 8,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 40,
+                "keeper": false,
+                "lineupSlotId": 0,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 40,
+                "owningTeamIds": [
+                    2
+                ],
+                "playerId": 8439,
+                "reservedForKeeper": false,
+                "roundId": 4,
+                "roundPickNumber": 10,
+                "teamId": 2,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 41,
+                "keeper": false,
+                "lineupSlotId": 4,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 41,
+                "owningTeamIds": [
+                    2
+                ],
+                "playerId": 14402,
+                "reservedForKeeper": false,
+                "roundId": 5,
+                "roundPickNumber": 1,
+                "teamId": 2,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 42,
+                "keeper": false,
+                "lineupSlotId": 4,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 42,
+                "owningTeamIds": [
+                    8
+                ],
+                "playerId": 15705,
+                "reservedForKeeper": false,
+                "roundId": 5,
+                "roundPickNumber": 2,
+                "teamId": 8,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 43,
+                "keeper": false,
+                "lineupSlotId": 2,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 43,
+                "owningTeamIds": [
+                    1
+                ],
+                "playerId": 3046409,
+                "reservedForKeeper": false,
+                "roundId": 5,
+                "roundPickNumber": 3,
+                "teamId": 1,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 44,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 44,
+                "owningTeamIds": [
+                    9
+                ],
+                "playerId": 3120348,
+                "reservedForKeeper": false,
+                "roundId": 5,
+                "roundPickNumber": 4,
+                "teamId": 9,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 45,
+                "keeper": false,
+                "lineupSlotId": 23,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 45,
+                "owningTeamIds": [
+                    4
+                ],
+                "playerId": 14886,
+                "reservedForKeeper": false,
+                "roundId": 5,
+                "roundPickNumber": 5,
+                "teamId": 4,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 46,
+                "keeper": false,
+                "lineupSlotId": 23,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 46,
+                "owningTeamIds": [
+                    3
+                ],
+                "playerId": 16731,
+                "reservedForKeeper": false,
+                "roundId": 5,
+                "roundPickNumber": 6,
+                "teamId": 3,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 47,
+                "keeper": false,
+                "lineupSlotId": 23,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 47,
+                "owningTeamIds": [
+                    10
+                ],
+                "playerId": 15072,
+                "reservedForKeeper": false,
+                "roundId": 5,
+                "roundPickNumber": 7,
+                "teamId": 10,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 48,
+                "keeper": false,
+                "lineupSlotId": 4,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 48,
+                "owningTeamIds": [
+                    5
+                ],
+                "playerId": 14221,
+                "reservedForKeeper": false,
+                "roundId": 5,
+                "roundPickNumber": 8,
+                "teamId": 5,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 49,
+                "keeper": false,
+                "lineupSlotId": 4,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 49,
+                "owningTeamIds": [
+                    7
+                ],
+                "playerId": 13217,
+                "reservedForKeeper": false,
+                "roundId": 5,
+                "roundPickNumber": 9,
+                "teamId": 7,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 50,
+                "keeper": false,
+                "lineupSlotId": 23,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 50,
+                "owningTeamIds": [
+                    11
+                ],
+                "playerId": 3043078,
+                "reservedForKeeper": false,
+                "roundId": 5,
+                "roundPickNumber": 10,
+                "teamId": 11,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 51,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 51,
+                "owningTeamIds": [
+                    11
+                ],
+                "playerId": 13981,
+                "reservedForKeeper": false,
+                "roundId": 6,
+                "roundPickNumber": 1,
+                "teamId": 11,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 52,
+                "keeper": false,
+                "lineupSlotId": 0,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 52,
+                "owningTeamIds": [
+                    7
+                ],
+                "playerId": 2330,
+                "reservedForKeeper": false,
+                "roundId": 6,
+                "roundPickNumber": 2,
+                "teamId": 7,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 53,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 53,
+                "owningTeamIds": [
+                    5
+                ],
+                "playerId": 14924,
+                "reservedForKeeper": false,
+                "roundId": 6,
+                "roundPickNumber": 3,
+                "teamId": 5,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 54,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 54,
+                "owningTeamIds": [
+                    10
+                ],
+                "playerId": 14198,
+                "reservedForKeeper": false,
+                "roundId": 6,
+                "roundPickNumber": 4,
+                "teamId": 10,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 55,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 55,
+                "owningTeamIds": [
+                    3
+                ],
+                "playerId": 2580,
+                "reservedForKeeper": false,
+                "roundId": 6,
+                "roundPickNumber": 5,
+                "teamId": 3,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 56,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 56,
+                "owningTeamIds": [
+                    4
+                ],
+                "playerId": 10456,
+                "reservedForKeeper": false,
+                "roundId": 6,
+                "roundPickNumber": 6,
+                "teamId": 4,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 57,
+                "keeper": false,
+                "lineupSlotId": 2,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 57,
+                "owningTeamIds": [
+                    9
+                ],
+                "playerId": 16777,
+                "reservedForKeeper": false,
+                "roundId": 6,
+                "roundPickNumber": 7,
+                "teamId": 9,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 58,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 58,
+                "owningTeamIds": [
+                    1
+                ],
+                "playerId": 15971,
+                "reservedForKeeper": false,
+                "roundId": 6,
+                "roundPickNumber": 8,
+                "teamId": 1,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 59,
+                "keeper": false,
+                "lineupSlotId": 23,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 59,
+                "owningTeamIds": [
+                    8
+                ],
+                "playerId": 2977609,
+                "reservedForKeeper": false,
+                "roundId": 6,
+                "roundPickNumber": 9,
+                "teamId": 8,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 60,
+                "keeper": false,
+                "lineupSlotId": 23,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 60,
+                "owningTeamIds": [
+                    2
+                ],
+                "playerId": 16799,
+                "reservedForKeeper": false,
+                "roundId": 6,
+                "roundPickNumber": 10,
+                "teamId": 2,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 61,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 61,
+                "owningTeamIds": [
+                    2
+                ],
+                "playerId": 2979477,
+                "reservedForKeeper": false,
+                "roundId": 7,
+                "roundPickNumber": 1,
+                "teamId": 2,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 62,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 62,
+                "owningTeamIds": [
+                    8
+                ],
+                "playerId": 3916925,
+                "reservedForKeeper": false,
+                "roundId": 7,
+                "roundPickNumber": 2,
+                "teamId": 8,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 63,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 63,
+                "owningTeamIds": [
+                    1
+                ],
+                "playerId": 13295,
+                "reservedForKeeper": false,
+                "roundId": 7,
+                "roundPickNumber": 3,
+                "teamId": 1,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 64,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 64,
+                "owningTeamIds": [
+                    9
+                ],
+                "playerId": 15880,
+                "reservedForKeeper": false,
+                "roundId": 7,
+                "roundPickNumber": 4,
+                "teamId": 9,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 65,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 65,
+                "owningTeamIds": [
+                    4
+                ],
+                "playerId": 12563,
+                "reservedForKeeper": false,
+                "roundId": 7,
+                "roundPickNumber": 5,
+                "teamId": 4,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 66,
+                "keeper": false,
+                "lineupSlotId": 2,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 66,
+                "owningTeamIds": [
+                    3
+                ],
+                "playerId": 2969962,
+                "reservedForKeeper": false,
+                "roundId": 7,
+                "roundPickNumber": 6,
+                "teamId": 3,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 67,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 67,
+                "owningTeamIds": [
+                    10
+                ],
+                "playerId": 14053,
+                "reservedForKeeper": false,
+                "roundId": 7,
+                "roundPickNumber": 7,
+                "teamId": 10,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 68,
+                "keeper": false,
+                "lineupSlotId": 6,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 68,
+                "owningTeamIds": [
+                    5
+                ],
+                "playerId": 10475,
+                "reservedForKeeper": false,
+                "roundId": 7,
+                "roundPickNumber": 8,
+                "teamId": 5,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 69,
+                "keeper": false,
+                "lineupSlotId": 23,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 69,
+                "owningTeamIds": [
+                    7
+                ],
+                "playerId": 2576716,
+                "reservedForKeeper": false,
+                "roundId": 7,
+                "roundPickNumber": 9,
+                "teamId": 7,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 70,
+                "keeper": false,
+                "lineupSlotId": 4,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 70,
+                "owningTeamIds": [
+                    11
+                ],
+                "playerId": 15839,
+                "reservedForKeeper": false,
+                "roundId": 7,
+                "roundPickNumber": 10,
+                "teamId": 11,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 71,
+                "keeper": false,
+                "lineupSlotId": 0,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 71,
+                "owningTeamIds": [
+                    11
+                ],
+                "playerId": 2573079,
+                "reservedForKeeper": false,
+                "roundId": 8,
+                "roundPickNumber": 1,
+                "teamId": 11,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 72,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 72,
+                "owningTeamIds": [
+                    7
+                ],
+                "playerId": 17133,
+                "reservedForKeeper": false,
+                "roundId": 8,
+                "roundPickNumber": 2,
+                "teamId": 7,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 73,
+                "keeper": false,
+                "lineupSlotId": 0,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 73,
+                "owningTeamIds": [
+                    5
+                ],
+                "playerId": 14881,
+                "reservedForKeeper": false,
+                "roundId": 8,
+                "roundPickNumber": 3,
+                "teamId": 5,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 74,
+                "keeper": false,
+                "lineupSlotId": 0,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 74,
+                "owningTeamIds": [
+                    10
+                ],
+                "playerId": 13994,
+                "reservedForKeeper": false,
+                "roundId": 8,
+                "roundPickNumber": 4,
+                "teamId": 10,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 75,
+                "keeper": false,
+                "lineupSlotId": 6,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 75,
+                "owningTeamIds": [
+                    3
+                ],
+                "playerId": 16974,
+                "reservedForKeeper": false,
+                "roundId": 8,
+                "roundPickNumber": 5,
+                "teamId": 3,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 76,
+                "keeper": false,
+                "lineupSlotId": 6,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 76,
+                "owningTeamIds": [
+                    4
+                ],
+                "playerId": 14054,
+                "reservedForKeeper": false,
+                "roundId": 8,
+                "roundPickNumber": 6,
+                "teamId": 4,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 77,
+                "keeper": false,
+                "lineupSlotId": 0,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 77,
+                "owningTeamIds": [
+                    9
+                ],
+                "playerId": 5536,
+                "reservedForKeeper": false,
+                "roundId": 8,
+                "roundPickNumber": 7,
+                "teamId": 9,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 78,
+                "keeper": false,
+                "lineupSlotId": 6,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 78,
+                "owningTeamIds": [
+                    1
+                ],
+                "playerId": 13232,
+                "reservedForKeeper": false,
+                "roundId": 8,
+                "roundPickNumber": 8,
+                "teamId": 1,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 79,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 79,
+                "owningTeamIds": [
+                    8
+                ],
+                "playerId": 3042778,
+                "reservedForKeeper": false,
+                "roundId": 8,
+                "roundPickNumber": 9,
+                "teamId": 8,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 80,
+                "keeper": false,
+                "lineupSlotId": 6,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 80,
+                "owningTeamIds": [
+                    2
+                ],
+                "playerId": 3051876,
+                "reservedForKeeper": false,
+                "roundId": 8,
+                "roundPickNumber": 10,
+                "teamId": 2,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 81,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 81,
+                "owningTeamIds": [
+                    2
+                ],
+                "playerId": 11439,
+                "reservedForKeeper": false,
+                "roundId": 9,
+                "roundPickNumber": 1,
+                "teamId": 2,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 82,
+                "keeper": false,
+                "lineupSlotId": 0,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 82,
+                "owningTeamIds": [
+                    8
+                ],
+                "playerId": 14880,
+                "reservedForKeeper": false,
+                "roundId": 9,
+                "roundPickNumber": 2,
+                "teamId": 8,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 83,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 83,
+                "owningTeamIds": [
+                    1
+                ],
+                "playerId": 14129,
+                "reservedForKeeper": false,
+                "roundId": 9,
+                "roundPickNumber": 3,
+                "teamId": 1,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 84,
+                "keeper": false,
+                "lineupSlotId": 6,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 84,
+                "owningTeamIds": [
+                    9
+                ],
+                "playerId": 9761,
+                "reservedForKeeper": false,
+                "roundId": 9,
+                "roundPickNumber": 4,
+                "teamId": 9,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 85,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 85,
+                "owningTeamIds": [
+                    4
+                ],
+                "playerId": 2977187,
+                "reservedForKeeper": false,
+                "roundId": 9,
+                "roundPickNumber": 5,
+                "teamId": 4,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 86,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 86,
+                "owningTeamIds": [
+                    3
+                ],
+                "playerId": 15860,
+                "reservedForKeeper": false,
+                "roundId": 9,
+                "roundPickNumber": 6,
+                "teamId": 3,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 87,
+                "keeper": false,
+                "lineupSlotId": 6,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 87,
+                "owningTeamIds": [
+                    10
+                ],
+                "playerId": 16504,
+                "reservedForKeeper": false,
+                "roundId": 9,
+                "roundPickNumber": 7,
+                "teamId": 10,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 88,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 88,
+                "owningTeamIds": [
+                    5
+                ],
+                "playerId": 15966,
+                "reservedForKeeper": false,
+                "roundId": 9,
+                "roundPickNumber": 8,
+                "teamId": 5,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 89,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 89,
+                "owningTeamIds": [
+                    7
+                ],
+                "playerId": 11270,
+                "reservedForKeeper": false,
+                "roundId": 9,
+                "roundPickNumber": 9,
+                "teamId": 7,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 90,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 90,
+                "owningTeamIds": [
+                    11
+                ],
+                "playerId": 2574808,
+                "reservedForKeeper": false,
+                "roundId": 9,
+                "roundPickNumber": 10,
+                "teamId": 11,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 91,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 91,
+                "owningTeamIds": [
+                    11
+                ],
+                "playerId": 10452,
+                "reservedForKeeper": false,
+                "roundId": 10,
+                "roundPickNumber": 1,
+                "teamId": 11,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 92,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 92,
+                "owningTeamIds": [
+                    7
+                ],
+                "playerId": 16913,
+                "reservedForKeeper": false,
+                "roundId": 10,
+                "roundPickNumber": 2,
+                "teamId": 7,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 93,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 93,
+                "owningTeamIds": [
+                    5
+                ],
+                "playerId": 3052876,
+                "reservedForKeeper": false,
+                "roundId": 10,
+                "roundPickNumber": 3,
+                "teamId": 5,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 94,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 94,
+                "owningTeamIds": [
+                    10
+                ],
+                "playerId": 3046779,
+                "reservedForKeeper": false,
+                "roundId": 10,
+                "roundPickNumber": 4,
+                "teamId": 10,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 95,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 95,
+                "owningTeamIds": [
+                    3
+                ],
+                "playerId": 2980453,
+                "reservedForKeeper": false,
+                "roundId": 10,
+                "roundPickNumber": 5,
+                "teamId": 3,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 96,
+                "keeper": false,
+                "lineupSlotId": 0,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 96,
+                "owningTeamIds": [
+                    4
+                ],
+                "playerId": 16760,
+                "reservedForKeeper": false,
+                "roundId": 10,
+                "roundPickNumber": 6,
+                "teamId": 4,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 97,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 97,
+                "owningTeamIds": [
+                    9
+                ],
+                "playerId": 3128721,
+                "reservedForKeeper": false,
+                "roundId": 10,
+                "roundPickNumber": 7,
+                "teamId": 9,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 98,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 98,
+                "owningTeamIds": [
+                    1
+                ],
+                "playerId": 16725,
+                "reservedForKeeper": false,
+                "roundId": 10,
+                "roundPickNumber": 8,
+                "teamId": 1,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 99,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 99,
+                "owningTeamIds": [
+                    8
+                ],
+                "playerId": 3919596,
+                "reservedForKeeper": false,
+                "roundId": 10,
+                "roundPickNumber": 9,
+                "teamId": 8,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 100,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 100,
+                "owningTeamIds": [
+                    2
+                ],
+                "playerId": 3066158,
+                "reservedForKeeper": false,
+                "roundId": 10,
+                "roundPickNumber": 10,
+                "teamId": 2,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 101,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 101,
+                "owningTeamIds": [
+                    2
+                ],
+                "playerId": 2976592,
+                "reservedForKeeper": false,
+                "roundId": 11,
+                "roundPickNumber": 1,
+                "teamId": 2,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 102,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 102,
+                "owningTeamIds": [
+                    8
+                ],
+                "playerId": 2577134,
+                "reservedForKeeper": false,
+                "roundId": 11,
+                "roundPickNumber": 2,
+                "teamId": 8,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 103,
+                "keeper": false,
+                "lineupSlotId": 0,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 103,
+                "owningTeamIds": [
+                    1
+                ],
+                "playerId": 12483,
+                "reservedForKeeper": false,
+                "roundId": 11,
+                "roundPickNumber": 3,
+                "teamId": 1,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 104,
+                "keeper": false,
+                "lineupSlotId": 16,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 104,
+                "owningTeamIds": [
+                    9
+                ],
+                "playerId": -16030,
+                "reservedForKeeper": false,
+                "roundId": 11,
+                "roundPickNumber": 4,
+                "teamId": 9,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 105,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 105,
+                "owningTeamIds": [
+                    4
+                ],
+                "playerId": 2587819,
+                "reservedForKeeper": false,
+                "roundId": 11,
+                "roundPickNumber": 5,
+                "teamId": 4,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 106,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 106,
+                "owningTeamIds": [
+                    3
+                ],
+                "playerId": 15826,
+                "reservedForKeeper": false,
+                "roundId": 11,
+                "roundPickNumber": 6,
+                "teamId": 3,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 107,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 107,
+                "owningTeamIds": [
+                    10
+                ],
+                "playerId": 3912550,
+                "reservedForKeeper": false,
+                "roundId": 11,
+                "roundPickNumber": 7,
+                "teamId": 10,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 108,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 108,
+                "owningTeamIds": [
+                    5
+                ],
+                "playerId": 12649,
+                "reservedForKeeper": false,
+                "roundId": 11,
+                "roundPickNumber": 8,
+                "teamId": 5,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 109,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 109,
+                "owningTeamIds": [
+                    7
+                ],
+                "playerId": 3139925,
+                "reservedForKeeper": false,
+                "roundId": 11,
+                "roundPickNumber": 9,
+                "teamId": 7,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 110,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 110,
+                "owningTeamIds": [
+                    11
+                ],
+                "playerId": 17177,
+                "reservedForKeeper": false,
+                "roundId": 11,
+                "roundPickNumber": 10,
+                "teamId": 11,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 111,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 111,
+                "owningTeamIds": [
+                    11
+                ],
+                "playerId": 15920,
+                "reservedForKeeper": false,
+                "roundId": 12,
+                "roundPickNumber": 1,
+                "teamId": 11,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 112,
+                "keeper": false,
+                "lineupSlotId": 16,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 112,
+                "owningTeamIds": [
+                    7
+                ],
+                "playerId": -16021,
+                "reservedForKeeper": false,
+                "roundId": 12,
+                "roundPickNumber": 2,
+                "teamId": 7,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 113,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 113,
+                "owningTeamIds": [
+                    5
+                ],
+                "playerId": 14874,
+                "reservedForKeeper": false,
+                "roundId": 12,
+                "roundPickNumber": 3,
+                "teamId": 5,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 114,
+                "keeper": false,
+                "lineupSlotId": 16,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 114,
+                "owningTeamIds": [
+                    10
+                ],
+                "playerId": -16014,
+                "reservedForKeeper": false,
+                "roundId": 12,
+                "roundPickNumber": 4,
+                "teamId": 10,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 115,
+                "keeper": false,
+                "lineupSlotId": 16,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 115,
+                "owningTeamIds": [
+                    3
+                ],
+                "playerId": -16016,
+                "reservedForKeeper": false,
+                "roundId": 12,
+                "roundPickNumber": 5,
+                "teamId": 3,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 116,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 116,
+                "owningTeamIds": [
+                    4
+                ],
+                "playerId": 16040,
+                "reservedForKeeper": false,
+                "roundId": 12,
+                "roundPickNumber": 6,
+                "teamId": 4,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 117,
+                "keeper": false,
+                "lineupSlotId": 17,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 117,
+                "owningTeamIds": [
+                    9
+                ],
+                "playerId": 9704,
+                "reservedForKeeper": false,
+                "roundId": 12,
+                "roundPickNumber": 7,
+                "teamId": 9,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 118,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 118,
+                "owningTeamIds": [
+                    1
+                ],
+                "playerId": 3045138,
+                "reservedForKeeper": false,
+                "roundId": 12,
+                "roundPickNumber": 8,
+                "teamId": 1,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 119,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 119,
+                "owningTeamIds": [
+                    8
+                ],
+                "playerId": 3123076,
+                "reservedForKeeper": false,
+                "roundId": 12,
+                "roundPickNumber": 9,
+                "teamId": 8,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 120,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 120,
+                "owningTeamIds": [
+                    2
+                ],
+                "playerId": 3139605,
+                "reservedForKeeper": false,
+                "roundId": 12,
+                "roundPickNumber": 10,
+                "teamId": 2,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 121,
+                "keeper": false,
+                "lineupSlotId": 16,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 121,
+                "owningTeamIds": [
+                    2
+                ],
+                "playerId": -16007,
+                "reservedForKeeper": false,
+                "roundId": 13,
+                "roundPickNumber": 1,
+                "teamId": 2,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 122,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 122,
+                "owningTeamIds": [
+                    8
+                ],
+                "playerId": 14163,
+                "reservedForKeeper": false,
+                "roundId": 13,
+                "roundPickNumber": 2,
+                "teamId": 8,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 123,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 123,
+                "owningTeamIds": [
+                    1
+                ],
+                "playerId": 3051902,
+                "reservedForKeeper": false,
+                "roundId": 13,
+                "roundPickNumber": 3,
+                "teamId": 1,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 124,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 124,
+                "owningTeamIds": [
+                    9
+                ],
+                "playerId": 11237,
+                "reservedForKeeper": false,
+                "roundId": 13,
+                "roundPickNumber": 4,
+                "teamId": 9,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 125,
+                "keeper": false,
+                "lineupSlotId": 16,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 125,
+                "owningTeamIds": [
+                    4
+                ],
+                "playerId": -16022,
+                "reservedForKeeper": false,
+                "roundId": 13,
+                "roundPickNumber": 5,
+                "teamId": 4,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 126,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 126,
+                "owningTeamIds": [
+                    3
+                ],
+                "playerId": 2512197,
+                "reservedForKeeper": false,
+                "roundId": 13,
+                "roundPickNumber": 6,
+                "teamId": 3,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 127,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 127,
+                "owningTeamIds": [
+                    10
+                ],
+                "playerId": 3116164,
+                "reservedForKeeper": false,
+                "roundId": 13,
+                "roundPickNumber": 7,
+                "teamId": 10,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 128,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 128,
+                "owningTeamIds": [
+                    5
+                ],
+                "playerId": 15788,
+                "reservedForKeeper": false,
+                "roundId": 13,
+                "roundPickNumber": 8,
+                "teamId": 5,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 129,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 129,
+                "owningTeamIds": [
+                    7
+                ],
+                "playerId": 2971618,
+                "reservedForKeeper": false,
+                "roundId": 13,
+                "roundPickNumber": 9,
+                "teamId": 7,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 130,
+                "keeper": false,
+                "lineupSlotId": 16,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 130,
+                "owningTeamIds": [
+                    11
+                ],
+                "playerId": -16034,
+                "reservedForKeeper": false,
+                "roundId": 13,
+                "roundPickNumber": 10,
+                "teamId": 11,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 131,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 131,
+                "owningTeamIds": [
+                    11
+                ],
+                "playerId": 16757,
+                "reservedForKeeper": false,
+                "roundId": 14,
+                "roundPickNumber": 1,
+                "teamId": 11,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 132,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 132,
+                "owningTeamIds": [
+                    7
+                ],
+                "playerId": 16781,
+                "reservedForKeeper": false,
+                "roundId": 14,
+                "roundPickNumber": 2,
+                "teamId": 7,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 133,
+                "keeper": false,
+                "lineupSlotId": 16,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 133,
+                "owningTeamIds": [
+                    5
+                ],
+                "playerId": -16033,
+                "reservedForKeeper": false,
+                "roundId": 14,
+                "roundPickNumber": 3,
+                "teamId": 5,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 134,
+                "keeper": false,
+                "lineupSlotId": 17,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 134,
+                "owningTeamIds": [
+                    10
+                ],
+                "playerId": 14993,
+                "reservedForKeeper": false,
+                "roundId": 14,
+                "roundPickNumber": 4,
+                "teamId": 10,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 135,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 135,
+                "owningTeamIds": [
+                    3
+                ],
+                "playerId": 13213,
+                "reservedForKeeper": false,
+                "roundId": 14,
+                "roundPickNumber": 5,
+                "teamId": 3,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 136,
+                "keeper": false,
+                "lineupSlotId": 17,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 136,
+                "owningTeamIds": [
+                    4
+                ],
+                "playerId": 4333,
+                "reservedForKeeper": false,
+                "roundId": 14,
+                "roundPickNumber": 6,
+                "teamId": 4,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 137,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 137,
+                "owningTeamIds": [
+                    9
+                ],
+                "playerId": 15994,
+                "reservedForKeeper": false,
+                "roundId": 14,
+                "roundPickNumber": 7,
+                "teamId": 9,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 138,
+                "keeper": false,
+                "lineupSlotId": 16,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 138,
+                "owningTeamIds": [
+                    1
+                ],
+                "playerId": -16024,
+                "reservedForKeeper": false,
+                "roundId": 14,
+                "roundPickNumber": 8,
+                "teamId": 1,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 139,
+                "keeper": false,
+                "lineupSlotId": 16,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 139,
+                "owningTeamIds": [
+                    8
+                ],
+                "playerId": -16017,
+                "reservedForKeeper": false,
+                "roundId": 14,
+                "roundPickNumber": 9,
+                "teamId": 8,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 140,
+                "keeper": false,
+                "lineupSlotId": 17,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 140,
+                "owningTeamIds": [
+                    2
+                ],
+                "playerId": 15683,
+                "reservedForKeeper": false,
+                "roundId": 14,
+                "roundPickNumber": 10,
+                "teamId": 2,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 141,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 141,
+                "owningTeamIds": [
+                    2
+                ],
+                "playerId": 3122672,
+                "reservedForKeeper": false,
+                "roundId": 15,
+                "roundPickNumber": 1,
+                "teamId": 2,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 142,
+                "keeper": false,
+                "lineupSlotId": 17,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 142,
+                "owningTeamIds": [
+                    8
+                ],
+                "playerId": 2985659,
+                "reservedForKeeper": false,
+                "roundId": 15,
+                "roundPickNumber": 2,
+                "teamId": 8,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 143,
+                "keeper": false,
+                "lineupSlotId": 17,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 143,
+                "owningTeamIds": [
+                    1
+                ],
+                "playerId": 17372,
+                "reservedForKeeper": false,
+                "roundId": 15,
+                "roundPickNumber": 3,
+                "teamId": 1,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 144,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 144,
+                "owningTeamIds": [
+                    9
+                ],
+                "playerId": 14145,
+                "reservedForKeeper": false,
+                "roundId": 15,
+                "roundPickNumber": 4,
+                "teamId": 9,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 145,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 145,
+                "owningTeamIds": [
+                    4
+                ],
+                "playerId": 15807,
+                "reservedForKeeper": false,
+                "roundId": 15,
+                "roundPickNumber": 5,
+                "teamId": 4,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 146,
+                "keeper": false,
+                "lineupSlotId": 17,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 146,
+                "owningTeamIds": [
+                    3
+                ],
+                "playerId": 3055899,
+                "reservedForKeeper": false,
+                "roundId": 15,
+                "roundPickNumber": 6,
+                "teamId": 3,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 147,
+                "keeper": false,
+                "lineupSlotId": 20,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 147,
+                "owningTeamIds": [
+                    10
+                ],
+                "playerId": 11283,
+                "reservedForKeeper": false,
+                "roundId": 15,
+                "roundPickNumber": 7,
+                "teamId": 10,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 148,
+                "keeper": false,
+                "lineupSlotId": 17,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 148,
+                "owningTeamIds": [
+                    5
+                ],
+                "playerId": 9354,
+                "reservedForKeeper": false,
+                "roundId": 15,
+                "roundPickNumber": 8,
+                "teamId": 5,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 149,
+                "keeper": false,
+                "lineupSlotId": 17,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 149,
+                "owningTeamIds": [
+                    7
+                ],
+                "playerId": 3050478,
+                "reservedForKeeper": false,
+                "roundId": 15,
+                "roundPickNumber": 9,
+                "teamId": 7,
+                "tradeLocked": false
+            },
+            {
+                "autoDraftTypeId": 0,
+                "bidAmount": 0,
+                "id": 150,
+                "keeper": false,
+                "lineupSlotId": 17,
+                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "nominatingTeamId": 0,
+                "overallPickNumber": 150,
+                "owningTeamIds": [
+                    11
+                ],
+                "playerId": 1097,
+                "reservedForKeeper": false,
+                "roundId": 15,
+                "roundPickNumber": 10,
+                "teamId": 11,
+                "tradeLocked": false
+            }
+        ]
+    },
+    "gameId": 1,
+    "id": 368876,
+    "scoringPeriodId": 18,
+    "seasonId": 2018,
+    "segmentId": 0,
+    "settings": {
+        "draftSettings": {
+            "auctionBudget": 200,
+            "isTradingEnabled": false,
+            "keeperCount": 0,
+            "keeperCountFuture": 0,
+            "keeperOrderType": "TRADITIONAL",
+            "leagueSubType": "NONE",
+            "orderType": "MANUAL",
+            "pickOrder": [
+                2,
+                8,
+                1,
+                9,
+                4,
+                3,
+                10,
+                5,
+                7,
+                11
+            ],
+            "timePerSelection": 90,
+            "type": "OFFLINE"
+        }
+    },
+    "status": {
+        "activatedDate": 1526023857070,
+        "createdAsLeagueType": 0,
+        "currentLeagueType": 0,
+        "currentMatchupPeriod": 16,
+        "finalScoringPeriod": 16,
+        "firstScoringPeriod": 1,
+        "isActive": true,
+        "isExpired": false,
+        "isFull": true,
+        "isPlayoffMatchupEdited": false,
+        "isToBeDeleted": false,
+        "isViewable": false,
+        "isWaiverOrderEdited": false,
+        "latestScoringPeriod": 18,
+        "previousSeasons": [
+            2015,
+            2016,
+            2017
+        ],
+        "standingsUpdateDate": 1546567827627,
+        "teamsJoined": 10,
+        "transactionScoringPeriod": 18,
+        "waiverLastExecutionDate": 1549330323490,
+        "waiverProcessStatus": {
+            "2018-09-26T08:00:00.000+0000": 11,
+            "2018-10-31T08:00:00.000+0000": 7,
+            "2018-10-06T08:00:00.000+0000": 1,
+            "2018-12-05T08:00:00.000+0000": 10,
+            "2018-12-15T08:00:00.000+0000": 1,
+            "2018-11-07T08:00:00.000+0000": 10,
+            "2018-11-22T08:00:00.000+0000": 2,
+            "2018-12-02T08:00:00.000+0000": 1,
+            "2018-12-12T08:00:00.000+0000": 7,
+            "2018-10-03T08:00:00.000+0000": 10,
+            "2018-10-18T08:00:00.000+0000": 3,
+            "2018-08-29T08:00:00.000+0000": 1,
+            "2018-11-09T08:00:00.000+0000": 1,
+            "2018-09-15T08:00:00.000+0000": 1,
+            "2018-09-20T08:00:00.000+0000": 1,
+            "2018-10-10T08:00:00.000+0000": 8,
+            "2018-11-14T08:00:00.000+0000": 8,
+            "2018-12-19T08:00:00.000+0000": 8,
+            "2018-12-06T08:00:00.000+0000": 2,
+            "2018-09-27T08:00:00.000+0000": 1,
+            "2018-09-12T08:00:00.000+0000": 5,
+            "2018-10-17T08:00:00.000+0000": 14,
+            "2018-11-01T08:00:00.000+0000": 1,
+            "2018-11-21T08:00:00.000+0000": 9,
+            "2018-10-24T08:00:00.000+0000": 7,
+            "2018-09-19T08:00:00.000+0000": 10,
+            "2018-11-08T08:00:00.000+0000": 1,
+            "2018-11-28T08:00:00.000+0000": 7
+        }
+    }
+}
