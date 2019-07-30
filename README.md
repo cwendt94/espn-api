@@ -64,6 +64,25 @@ league = League(league_id, year, espn_s2, swid)
 >>> team.team_name
 'Team 1'
 ```
+### View league draft
+```python
+>>> from ff_espn_api import League
+>>> league_id = 1234
+>>> year = 2018
+>>> league = League(league_id, year)
+>>> league.draft
+[Pick(LeVeon Bell, Team(FANTASY GOD)), Pick(Todd Gurley II, Team(Team Mizrachi)), Pick(David Johnson, Team(Team 8)), Pick(Antonio Brown, Team(THE KING)), Pick(Ezekiel Elliott, Team(Team 7)), Pick(DeAndre Hopkins, Team(Team 2)), Pick(Julio Jones, Team(Team Viking Queen)), Pick(Alvin Kamara, Team(Team 10)), Pick(Odell Beckham Jr., Team(Team 5)), Pick(Kareem Hunt, Team(Team 1)), Pick(Michael Thomas, Team(Team 1))...]
+>>> first_pick = league.draft[0]
+>>> first_pick.playerName
+"Le'Veon Bell"
+>>> first_pick.round_num
+1
+>>> first_pick.round_pick
+1
+>>> first_pick.team
+Team(FANTASY GOD)
+>>>
+```
 
 ### View league settings
 ```python
