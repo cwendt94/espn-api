@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/cwendt94/ff-espn-api.svg?branch=master)](https://travis-ci.org/cwendt94/ff-espn-api) [![codecov](https://codecov.io/gh/cwendt94/ff-espn-api/branch/master/graphs/badge.svg)](https://codecov.io/gh/cwendt94/ff-espn-api)
+[![Build Status](https://travis-ci.org/cwendt94/ff-espn-api.svg?branch=master)](https://travis-ci.org/cwendt94/ff-espn-api) [![codecov](https://codecov.io/gh/cwendt94/ff-espn-api/branch/master/graphs/badge.svg)](https://codecov.io/gh/cwendt94/ff-espn-api) [![Join the chat at https://gitter.im/ff-espn-api/community](https://badges.gitter.im/ff-espn-api/community.svg)](https://gitter.im/ff-espn-api/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # ff-espn-api
 
