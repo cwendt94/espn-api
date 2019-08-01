@@ -9,6 +9,7 @@ class Player(object):
         else:
             self.posRank = 0
         self.position = ''
+        self.acquisitionType = data['acquisitionType']
 
         # Get players main position
         for pos in player['eligibleSlots']:

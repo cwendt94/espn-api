@@ -186,8 +186,10 @@ class League(object):
             playerName = self.player_map[playerId]
             round_num = pick['roundId']
             round_pick = pick['roundPickNumber']
+            bid_amount = pick['bidAmount']
+            keeper_status = pick['keeper']
 
-            self.draft.append(Pick(team, playerId, playerName, round_num, round_pick))
+            self.draft.append(Pick(team, playerId, playerName, round_num, round_pick, bid_amount, keeper_status))
 
     def load_roster_week(self, week: int) -> None:
         '''Sets Teams Roster for a Certain Week'''
