@@ -33,39 +33,12 @@ class Team(object):
         return 'Team(%s)' % (self.team_name, )
     
     def _fetch_roster(self, data):
-        self.roster.clear()
-        position_map = {
-                      0: 'QB',
-                      1: 'TQB',
-                      2: 'RB',
-                      3: 'RB/WR',
-                      4: 'WR',
-                      5: 'WR/TE',
-                      6: 'TE',
-                      7: 'OP',
-                      8: 'DT',
-                      9: 'DE',
-                      10: 'LB',
-                      11: 'DL',
-                      12: 'CB',
-                      13: 'S',
-                      14: 'DB',
-                      15: 'DP',
-                      16: 'D/ST',
-                      17: 'K',
-                      18: 'P',
-                      19: 'HC',
-                      20: 'BE',
-                      21: 'IR',
-                      22: '',
-                      23: 'RB/WR/TE'
-                      }
         '''Fetch teams roster'''
+        self.roster.clear()
         roster = data['entries']
 
         for player in roster:
-            #if 'playerPoolEntry' in player:
-            self.roster.append(Player(player, position_map))
+            self.roster.append(Player(player))
 
     def _fetch_schedule(self, data):
         '''Fetch schedule and scores for team'''

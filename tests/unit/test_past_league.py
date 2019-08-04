@@ -72,3 +72,12 @@ class LeaguePastTest(TestCase):
         self.assertEqual(repr(first_pick), 'Pick(Eddie Lacy, Team(Show Me Your TD\'s))')
         self.assertEqual(third_pick.round_num, 1)
         self.assertEqual(third_pick.round_pick, 3)
+    
+    @requests_mock.Mocker()
+    def test_box_score_fails(self, m):
+        self.mock_setUp(m)
+
+        league = League(self.league_id, self.season)
+
+        with self.assertRaises(Exception):
+            league.box_scores(1)
