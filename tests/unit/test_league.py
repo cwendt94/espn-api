@@ -180,4 +180,19 @@ class LeagueTest(TestCase):
         self.assertEqual(repr(first_pick), 'Pick(Le\'Veon Bell, Team(Rollin\' With Mahomies))')
         self.assertEqual(third_pick.round_num, 1)
         self.assertEqual(third_pick.round_pick, 3)
+        self.assertEqual(third_pick.auction_repr(), 'T M, 13934, Antonio Brown, 0, False')
+
+    @requests_mock.Mocker()        
+    def test_box_score(self, m):
+        self.mock_setUp(m)
+
+        league = League(self.league_id, self.season)
+        
+        with open('tests/unit/data/league_boxscore_2018.json') as f:
+            data = json.loads(f.read())
+        m.get(self.espn_endpoint + '?view=mMatchup&view=mMatchupScore&scoringPeriodId=13', status_code=200, json=data)
+        box_scores = league.box_scores(13)
+
+        self.assertEqual(repr(box_scores[0].home_team), 'Team(Rollin\' With Mahomies)')
+        self.assertEqual(repr(box_scores[0].home_lineup[1]), 'Player(Christian McCaffrey, points:31, projected:23)')
 

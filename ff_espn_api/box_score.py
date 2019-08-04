@@ -6,7 +6,7 @@ class BoxScore(object):
         self.home_team = data['home']['teamId']
         self.home_score = data['home']['totalPoints']
         self.away_team = data['away']['teamId']
-        self.away_team = data['away']['totalPoints']
+        self.away_score = data['away']['totalPoints']
 
         home_roster = data['home']['rosterForCurrentScoringPeriod']['entries']
         self.home_lineup = [BoxPlayer(player) for player in home_roster]
