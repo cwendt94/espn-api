@@ -139,6 +139,8 @@ Team(Team Viking Queen)
 15.1
 >>> box_scores[0].home_lineup[2].projected_points
 9.97
+>>> box_scores[0].home_lineup[2].slot_position
+'TE'
 >>> box_scores[0].home_lineup[2].position
 'TE'
 >>> box_scores[0].home_lineup[2].name

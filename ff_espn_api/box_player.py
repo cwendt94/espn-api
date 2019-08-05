@@ -5,7 +5,7 @@ class BoxPlayer(Player):
     '''player with extra data from a matchup'''
     def __init__(self, data):
         super(BoxPlayer, self).__init__(data)
-        self.position = POSITION_MAP[data['lineupSlotId']]
+        self.slot_position = POSITION_MAP[data['lineupSlotId']]
         self.points = 0
         self.projected_points = 0
 
