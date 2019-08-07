@@ -629,7 +629,6 @@
         "size": 10,
         "tradeSettings": {
             "allowOutOfUniverse": false,
-            "deadlineDate": 1543395600000,
             "max": -1,
             "revisionHours": 24,
             "vetoVotesRequired": 5
