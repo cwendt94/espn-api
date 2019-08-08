@@ -180,4 +180,20 @@ class LeagueTest(TestCase):
         self.assertEqual(repr(first_pick), 'Pick(Le\'Veon Bell, Team(Rollin\' With Mahomies))')
         self.assertEqual(third_pick.round_num, 1)
         self.assertEqual(third_pick.round_pick, 3)
+    
+    @requests_mock.Mocker()
+    def test_power_rankings(self, m):
+        self.mock_setUp(m)
+
+        league = League(self.league_id, self.season)
+
+        invalid_week = league.power_rankings(0)
+        current_week = league.power_rankings(league.current_week)
+        self.assertEqual(invalid_week, current_week)
+
+        valid_week = league.power_rankings(13)
+        self.assertEqual(valid_week[0][0], '71.70')
+        self.assertEqual(repr(valid_week[0][1]), 'Team(Misunderstood  Mistfits )')
+        
+
 
