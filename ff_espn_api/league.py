@@ -9,6 +9,7 @@ from .trade import Trade
 from .settings import Settings
 from .matchup import Matchup
 from .pick import Pick
+from .utils import power_points, two_step_dominance
 
 
 def checkRequestStatus(status: int) -> None:
@@ -277,3 +278,24 @@ class League(object):
                     matchup.away_team = team
         
         return matchups
+    
+    def power_rankings(self, week):
+        '''Return power rankings for any week'''
+
+        if week <= 0 or week > self.current_week:
+            week = self.current_week
+        # calculate win for every week
+        win_matrix = []
+        teams_sorted = sorted(self.teams, key=lambda x: x.team_id,
+                              reverse=False)
+
+        for team in teams_sorted:
+            wins = [0]*32
+            for mov, opponent in zip(team.mov[:week], team.schedule[:week]):
+                opp = int(opponent.team_id)-1
+                if mov > 0:
+                    wins[opp] += 1
+            win_matrix.append(wins)
+        dominance_matrix = two_step_dominance(win_matrix)
+        power_rank = power_points(dominance_matrix, teams_sorted, week)
+        return power_rank
