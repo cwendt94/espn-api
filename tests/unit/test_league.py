@@ -195,4 +195,20 @@ class LeagueTest(TestCase):
 
         self.assertEqual(repr(box_scores[0].home_team), 'Team(Rollin\' With Mahomies)')
         self.assertEqual(repr(box_scores[0].home_lineup[1]), 'Player(Christian McCaffrey, points:31, projected:23)')
+    
+    @requests_mock.Mocker()
+    def test_power_rankings(self, m):
+        self.mock_setUp(m)
+
+        league = League(self.league_id, self.season)
+
+        invalid_week = league.power_rankings(0)
+        current_week = league.power_rankings(league.current_week)
+        self.assertEqual(invalid_week, current_week)
+
+        valid_week = league.power_rankings(13)
+        self.assertEqual(valid_week[0][0], '71.70')
+        self.assertEqual(repr(valid_week[0][1]), 'Team(Misunderstood  Mistfits )')
+        
+
 

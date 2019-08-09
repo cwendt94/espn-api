@@ -119,6 +119,13 @@ Team(Team 1)
 >>> matchups[0].away_team
 Team(Team 10)
 ```
+### Get power rankings
+```python
+>>> from ff_espn_api import League
+>>> league = League(1234, 2018)
+>>> league.power_rankings(week=13)
+[('70.85', Team(Team 7)), ('65.20', Team(Team 1)), ('62.45', Team(Team 8)), ('57.70', Team(THE KING)), ('45.10', Team(Team Mizrachi)), ('42.80', Team(Team 10)), ('40.65', Team(Team Viking Queen)), ('37.30', Team(Team 2)), ('27.85', Team(Team 5)), ('20.40', Team(FANTASY GOD))]
+```
 
 ### Get box score of current/specific weel
 ```python

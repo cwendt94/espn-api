@@ -6,7 +6,9 @@ class Settings(object):
         self.team_count = data['size']
         self.playoff_team_count = data['scheduleSettings']['playoffTeamCount']
         self.keeper_count = data['draftSettings']['keeperCount']
-        self.trade_deadline = data['tradeSettings']['deadlineDate']
+        self.trade_deadline = 0
+        if 'deadlineDate' in data['tradeSettings']:
+            self.trade_deadline = data['tradeSettings']['deadlineDate']
         self.name = data['name']
         self.tie_rule = data['scoringSettings']['matchupTieRule']
         self.playoff_seed_tie_rule = data['scoringSettings']['playoffMatchupTieRule']
