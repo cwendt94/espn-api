@@ -127,6 +127,33 @@ Team(Team 10)
 [('70.85', Team(Team 7)), ('65.20', Team(Team 1)), ('62.45', Team(Team 8)), ('57.70', Team(THE KING)), ('45.10', Team(Team Mizrachi)), ('42.80', Team(Team 10)), ('40.65', Team(Team Viking Queen)), ('37.30', Team(Team 2)), ('27.85', Team(Team 5)), ('20.40', Team(FANTASY GOD))]
 ```
 
+### Get box score of current/specific weel
+```python
+>>> from ff_espn_api import League
+>>> league = League(1234, 2018)
+>>> box_scores = league.box_scores(12)
+>>> box_scores[0].home_team
+Team(Team 1)
+>>> box_scores[0].away_team
+Team(Team Viking Queen)
+>>> box_scores[0].home_score
+69.24
+>>> box_scores[0].away_score
+87.62
+>>> box_scores[0].home_lineup
+[Player(Kareem Hunt, points:0, projected:0), Player(Travis Kelce, points:0, projected:0), Player(Zach Ertz, points:15, projected:9), Player(Josh Gordon, points:7, projected:8), Player(Kenyan Drake, points:21, projected:8), Player(Devin Funchess, points:0, projected:0), Player(Tarik Cohen, points:11, projected:8), Player(Wil Lutz, points:10, projected:7), Player(Dion Lewis, points:4, projected:9), Player(Matthew Stafford, points:5, projected:15), Player(Ezekiel Elliott, points:20, projected:17), Player(Brandin Cooks, points:0, projected:0), Player(Kerryon Johnson, points:0, projected:0), Player(Mitchell Trubisky, points:0, projected:0), Player(Bengals D/ST, points:6, projected:-3), Player(Courtland Sutton, points:7, projected:1)]
+>>> box_scores[0].home_lineup[2].points
+15.1
+>>> box_scores[0].home_lineup[2].projected_points
+9.97
+>>> box_scores[0].home_lineup[2].slot_position
+'TE'
+>>> box_scores[0].home_lineup[2].position
+'TE'
+>>> box_scores[0].home_lineup[2].name
+'Zach Ertz'
+```
+
 ### Helper functions
 ```python
 >>> from ff_espn_api import League

@@ -9,6 +9,7 @@ from .trade import Trade
 from .settings import Settings
 from .matchup import Matchup
 from .pick import Pick
+from .box_score import BoxScore
 from .utils import power_points, two_step_dominance
 
 
@@ -253,7 +254,7 @@ class League(object):
     def league_trades(self):
         pass
 
-    def scoreboard(self, week=None):
+    def scoreboard(self, week: int = None) -> List[Matchup]:
         '''Returns list of matchups for a given week'''
         if not week:
             week = self.current_week
@@ -279,6 +280,35 @@ class League(object):
         
         return matchups
     
+    def box_scores(self, week: int = None) -> List[BoxScore]:
+        '''Returns list of box score for a given week'''
+        if self.year < 2018:
+            raise Exception('Cant use box score before 2018')
+        if not week:
+            week = self.current_week
+
+        params = {
+            'view': 'mMatchupScore',
+            'scoringPeriodId': week,
+        }
+
+        r = requests.get(self.ENDPOINT + '?view=mMatchup', params=params, cookies=self.cookies)
+        self.status = r.status_code
+        checkRequestStatus(self.status)
+
+        data = r.json()
+
+        schedule = data['schedule']
+        box_data = [BoxScore(matchup) for matchup in schedule if str(week) in matchup['home']['pointsByScoringPeriod']]
+
+        for team in self.teams:
+            for matchup in box_data:
+                if matchup.home_team == team.team_id:
+                    matchup.home_team = team
+                elif matchup.away_team == team.team_id:
+                    matchup.away_team = team
+        return box_data
+        
     def power_rankings(self, week):
         '''Return power rankings for any week'''
 

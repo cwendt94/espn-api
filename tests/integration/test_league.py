@@ -21,3 +21,11 @@ class LeagueTest(TestCase):
     def test_unknown_league(self):
         with self.assertRaises(Exception):
             League(2, 2018)
+    
+    def test_box_scores(self):
+        league = League(1234, 2018)
+        
+        box_scores = league.box_scores(5)
+
+        self.assertEqual(repr(box_scores[1].away_team), 'Team(Team 5)')
+        self.assertEqual(repr(box_scores[1].away_lineup[1]), 'Player(Keenan Allen, points:9, projected:10)')
