@@ -10,10 +10,12 @@ class BoxPlayer(Player):
         self.projected_points = 0
 
         player_stats = data['playerPoolEntry']['player']['stats']
-        if player_stats:
-            self.points = round(player_stats[0]['appliedTotal'], 2)
-        if len(player_stats) > 1:
-            self.projected_points = round(player_stats[1]['appliedTotal'], 2)
+        for stats in player_stats:
+            if stats['statSourceId'] == 0:
+                self.points = round(stats['appliedTotal'], 1)
+            elif stats['statSourceId'] == 1:
+                self.projected_points = round(stats['appliedTotal'], 1)
+            
     
     def __repr__(self):
         return 'Player(%s, points:%d, projected:%d)' % (self.name, self.points, self.projected_points)
