@@ -12,9 +12,9 @@ class BoxPlayer(Player):
         player_stats = data['playerPoolEntry']['player']['stats']
         for stats in player_stats:
             if stats['statSourceId'] == 0:
-                self.points = round(stats['appliedTotal'], 1)
+                self.points = round(stats['appliedTotal'], 2)
             elif stats['statSourceId'] == 1:
-                self.projected_points = round(stats['appliedTotal'], 1)
+                self.projected_points = round(stats['appliedTotal'], 2)
             
     
     def __repr__(self):

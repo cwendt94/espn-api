@@ -111,8 +111,11 @@ class League(object):
         
         for team in teams:
             for member in members:
-                # get member info
-                if member['id'] == team['owners'][0]:
+                # For league that is not full the team will not have a owner field
+                if 'owners' not in team:
+                    member = None
+                    break
+                elif member['id'] == team['owners'][0]:
                     break
             roster = team_roster[team['id']]
             self.teams.append(Team(team, roster, member, schedule))

@@ -11,8 +11,10 @@ class Team(object):
         self.losses = data['record']['overall']['losses']
         self.points_for = data['record']['overall']['pointsFor']
         self.points_against = round(data['record']['overall']['pointsAgainst'], 2)
-        self.owner = "%s %s" % (member['firstName'],
-                                member['lastName'])
+        self.owner = 'None'
+        if member:
+            self.owner = "%s %s" % (member['firstName'],
+                                    member['lastName'])
         self.streak_length = data['record']['overall']['streakLength']
         self.streak_type = data['record']['overall']['streakType']
         self.standing = data['rankFinal']
