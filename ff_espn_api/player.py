@@ -11,13 +11,13 @@ class Player(object):
         else:
             self.posRank = 0
         self.position = ''
+        self.eligibleSlots = [POSITION_MAP[pos] for pos in player['eligibleSlots']]
         self.acquisitionType = data['acquisitionType']
 
         # Get players main position
         for pos in player['eligibleSlots']:
-            if '/' not in POSITION_MAP[pos] or '/' in self.name:
+            if (pos != 25 and '/' not in POSITION_MAP[pos]) or '/' in self.name:
                 self.position = POSITION_MAP[pos]
-                break
     def __repr__(self):
         return 'Player(%s)' % (self.name, )
         
