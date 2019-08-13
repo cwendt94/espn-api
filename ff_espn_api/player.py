@@ -18,6 +18,7 @@ class Player(object):
         for pos in player['eligibleSlots']:
             if (pos != 25 and '/' not in POSITION_MAP[pos]) or '/' in self.name:
                 self.position = POSITION_MAP[pos]
+                break
     def __repr__(self):
         return 'Player(%s)' % (self.name, )
         

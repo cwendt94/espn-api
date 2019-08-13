@@ -64,6 +64,29 @@ league = League(league_id, year, espn_s2, swid)
 >>> team.team_name
 'Team 1'
 ```
+
+### Player Information
+```python
+>>> from ff_espn_api import League
+>>> league = League(1234, 2018)
+>>> team = league.teams[0]
+>>> player = team.roster[0]
+>>> player
+Player(Travis Kelce)
+>>> player.name
+'Travis Kelce'
+>>> player.playerId
+15847
+>>> player.posRank
+10
+>>> player.position
+'TE'
+>>> player.eligibleSlots
+['WR/TE', 'TE', 'OP', 'BE', 'IR', 'RB/WR/TE']
+>>> player.acquisitionType
+'DRAFT'
+```
+
 ### View league draft
 ```python
 >>> from ff_espn_api import League
