@@ -84,9 +84,20 @@ Player(Travis Kelce)
 ```
 
 ### View Free Agents
+You can add filters like:
+size: 10
+position: 'QB' or 'RB' or 'WR' or 'TE' or 'FLEX' or 'D/ST' or 'K'
 ```python
-league.free_agents(week=15)
-[Player(Ravens D/ST), Player(Redskins D/ST), Player(Buccaneers D/ST), Player(49ers D/ST), Player(Steelers D/ST), Player(Eagles D/ST), Player(Jets D/ST), Player(Giants D/ST), Player(Patriots D/ST), Player(Raiders D/ST), Player(Chiefs D/ST), Player(Colts D/ST), Player(Titans D/ST), Player(Packers D/ST), Player(Lions D/ST), Player(Broncos D/ST), Player(Cowboys D/ST), Player(Browns D/ST), Player(Bills D/ST), Player(Phil Dawson), Player(Sebastian Janikowski), Player(Josh McCown),....]
+>>> league.free_agents(size=5)
+[Player(James White), Player(Phillip Lindsay), Player(Jaylen Samuels), Player(LeSean McCoy), Player(David Njoku)]
+>>> league.free_agents(size=5,position='QB')
+[Player(Jameis Winston), Player(Baker Mayfield), Player(Dak Prescott), Player(Josh Allen), Player(Nick Foles)]
+>>> league.free_agents(size=5,position='WR')
+[Player(Chris Godwin), Player(Mike Williams), Player(Devin Funchess), Player(Emmanuel Sanders), Player(Josh Reynolds)]
+>>> league.free_agents()
+[Player(James White), Player(Phillip Lindsay), Player(Jaylen Samuels), Player(LeSean McCoy), Player(David Njoku), Player(Ravens D/ST), Player(Gus Edwards), Player(Kareem Hunt), Player(Jameis Winston), Player(Matt
+Breida), Player(Chris Godwin), Player(Baker Mayfield), Player(Dak Prescott), Player(Josh Adams), Player(Titans D/ST), Player(Mike Williams), Player(Patriots D/ST), Player(Devin Funchess), Player(Royce Freeman), Player(Emmanuel Sanders), Player(Doug Martin), Player(Josh Reynolds), Player(Cooper Kupp), Player(Josh Allen), Player(T.J. Yeldon), Player(Cameron Brate), Player(Broncos D/ST), Player(DeSean Jackson), Player(DaeSean Hamilton), Player(Duke Johnson Jr.), Player(Derrius Guice), Player(Jeff Wilson Jr.), Player(Dante Pettis), Player(Ian Thomas), Player(Eagles D/ST), Player(Rashaad Penny), Player(Matt Prater), Player(Bills D/ST),
+Player(Dede Westbrook), Player(O.J. Howard), Player(Nick Foles), Player(Curtis Samuel), Player(Robert Foster), Player(Chiefs D/ST), Player(Hunter Henry), Player(Justin Jackson), Player(Anthony Miller), Player(Jalen Richard), Player(Kalen Ballage), Player(Marquez Valdes-Scantling)]
 ```
 
 ### View league draft
