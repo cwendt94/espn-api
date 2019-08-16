@@ -209,6 +209,19 @@ class LeagueTest(TestCase):
         valid_week = league.power_rankings(13)
         self.assertEqual(valid_week[0][0], '71.70')
         self.assertEqual(repr(valid_week[0][1]), 'Team(Misunderstood  Mistfits )')
+    
+    @requests_mock.Mocker()        
+    def test_free_agents(self, m):
+        self.mock_setUp(m)
+
+        league = League(self.league_id, self.season)
+        
+        with open('tests/unit/data/league_free_agents_2018.json') as f:
+            data = json.loads(f.read())
+        m.get(self.espn_endpoint + '?view=kona_player_info&scoringPeriodId=16', status_code=200, json=data)
+        free_agents = league.free_agents()
+
+        self.assertEqual(repr(free_agents[0]), 'Player(Panthers D/ST)')
         
 
 
