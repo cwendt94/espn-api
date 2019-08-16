@@ -81,3 +81,12 @@ class LeaguePastTest(TestCase):
 
         with self.assertRaises(Exception):
             league.box_scores(1)
+    
+    @requests_mock.Mocker()
+    def test_free_agents_fails(self, m):
+        self.mock_setUp(m)
+
+        league = League(self.league_id, self.season)
+
+        with self.assertRaises(Exception):
+            league.free_agents()
