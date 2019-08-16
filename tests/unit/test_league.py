@@ -221,7 +221,7 @@ class LeagueTest(TestCase):
         m.get(self.espn_endpoint + '?view=kona_player_info&scoringPeriodId=16', status_code=200, json=data)
         free_agents = league.free_agents()
 
-        self.assertEqual(repr(free_agents[0]), 'Player(Panthers D/ST)')
+        self.assertEqual(repr(free_agents[0]), 'Player(Josh Gordon)')
         
 
 

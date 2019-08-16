@@ -23,8 +23,15 @@ POSITION_MAP = {
     21: 'IR',
     22: '',
     23: 'RB/WR/TE',
-    24: "ER",
-    25: "Rookie",
+    24: 'ER',
+    25: 'Rookie',
+    'QB': 0,
+    'RB': 2,
+    'WR': 4,
+    'TE': 6,
+    'D/ST': 16,
+    'K': 17,
+    'FLEX': 23
 }
 
 PRO_TEAM_MAP = {
