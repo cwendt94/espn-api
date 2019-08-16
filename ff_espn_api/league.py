@@ -10,6 +10,7 @@ from .settings import Settings
 from .matchup import Matchup
 from .pick import Pick
 from .box_score import BoxScore
+from .player import Player
 from .utils import power_points, two_step_dominance
 
 
@@ -332,3 +333,25 @@ class League(object):
         dominance_matrix = two_step_dominance(win_matrix)
         power_rank = power_points(dominance_matrix, teams_sorted, week)
         return power_rank
+
+    def free_agents(self, week=None) -> List[Player]:
+        '''Returns a List of Free Agents for a Given Week'''
+
+        if self.year < 2018:
+            raise Exception('Cant use free agents before 2018')
+        if not week:
+            week = self.current_week
+        
+        params = {
+            'view': 'kona_player_info',
+            'scoringPeriodId': week,
+        }
+
+        r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
+        self.status = r.status_code
+        checkRequestStatus(self.status)
+
+        players = r.json()['players']
+
+        return [Player(player) for player in players if player['onTeamId'] == 0]
+            
