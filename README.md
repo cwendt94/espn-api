@@ -46,10 +46,6 @@ league = League(league_id, year, espn_s2, swid)
 
 ### View teams information
 ```python
->>> from ff_espn_api import League
->>> league_id = 1234
->>> year = 2018
->>> league = League(league_id, year)
 >>> league.teams
 [Team(Team 1), Team(Team 2), Team(FANTASY GOD), Team(THE KING), Team(Team 5), Team(Team Viking Queen), Team(Team 7), Team(Team 8), Team(Team Mizrachi), Team(Team 10)]
 >>> team = league.teams[0]
@@ -67,8 +63,6 @@ league = League(league_id, year, espn_s2, swid)
 
 ### Player Information
 ```python
->>> from ff_espn_api import League
->>> league = League(1234, 2018)
 >>> team = league.teams[0]
 >>> player = team.roster[0]
 >>> player
@@ -81,18 +75,22 @@ Player(Travis Kelce)
 10
 >>> player.position
 'TE'
+>>> player.proTeam
+'KC'
 >>> player.eligibleSlots
 ['WR/TE', 'TE', 'OP', 'BE', 'IR', 'RB/WR/TE']
 >>> player.acquisitionType
 'DRAFT'
 ```
 
+### View Free Agents
+```python
+league.free_agents(week=15)
+[Player(Ravens D/ST), Player(Redskins D/ST), Player(Buccaneers D/ST), Player(49ers D/ST), Player(Steelers D/ST), Player(Eagles D/ST), Player(Jets D/ST), Player(Giants D/ST), Player(Patriots D/ST), Player(Raiders D/ST), Player(Chiefs D/ST), Player(Colts D/ST), Player(Titans D/ST), Player(Packers D/ST), Player(Lions D/ST), Player(Broncos D/ST), Player(Cowboys D/ST), Player(Browns D/ST), Player(Bills D/ST), Player(Phil Dawson), Player(Sebastian Janikowski), Player(Josh McCown),....]
+```
+
 ### View league draft
 ```python
->>> from ff_espn_api import League
->>> league_id = 1234
->>> year = 2018
->>> league = League(league_id, year)
 >>> league.draft
 [Pick(LeVeon Bell, Team(FANTASY GOD)), Pick(Todd Gurley II, Team(Team Mizrachi)), Pick(David Johnson, Team(Team 8)), Pick(Antonio Brown, Team(THE KING)), Pick(Ezekiel Elliott, Team(Team 7)), Pick(DeAndre Hopkins, Team(Team 2)), Pick(Julio Jones, Team(Team Viking Queen)), Pick(Alvin Kamara, Team(Team 10)), Pick(Odell Beckham Jr., Team(Team 5)), Pick(Kareem Hunt, Team(Team 1)), Pick(Michael Thomas, Team(Team 1))...]
 >>> first_pick = league.draft[0]
@@ -109,10 +107,6 @@ Team(FANTASY GOD)
 
 ### View league settings
 ```python
->>> from ff_espn_api import League
->>> league_id = 1234
->>> year = 2018
->>> league = League(league_id, year)
 >>> settings = league.settings
 >>> settings.reg_season_count
 13
@@ -123,10 +117,6 @@ Team(FANTASY GOD)
 ```
 ### Get scoreboard of current/specific week
 ```python
->>> from ff_espn_api import League
->>> league_id = 1234
->>> year = 2018
->>> league = League(league_id, year)
 >>> league.scoreboard()
 [Matchup(Team(Team 8), Team(THE KING)), Matchup(Team(Team 7), Team(Team 1)), Matchup(Team(Team 2), Team(Team Viking Queen)), Matchup(Team(Team Mizrachi), Team(FANTASY GOD)), Matchup(Team(Team 10), Team(Team 5))]
 >>> week = 3
@@ -144,16 +134,12 @@ Team(Team 10)
 ```
 ### Get power rankings
 ```python
->>> from ff_espn_api import League
->>> league = League(1234, 2018)
 >>> league.power_rankings(week=13)
 [('70.85', Team(Team 7)), ('65.20', Team(Team 1)), ('62.45', Team(Team 8)), ('57.70', Team(THE KING)), ('45.10', Team(Team Mizrachi)), ('42.80', Team(Team 10)), ('40.65', Team(Team Viking Queen)), ('37.30', Team(Team 2)), ('27.85', Team(Team 5)), ('20.40', Team(FANTASY GOD))]
 ```
 
 ### Get box score of current/specific weel
 ```python
->>> from ff_espn_api import League
->>> league = League(1234, 2018)
 >>> box_scores = league.box_scores(12)
 >>> box_scores[0].home_team
 Team(Team 1)
