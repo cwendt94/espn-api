@@ -1,6 +1,7 @@
 import requests
 import datetime
 import time
+import json
 from typing import List, Tuple
 
 
@@ -12,6 +13,7 @@ from .pick import Pick
 from .box_score import BoxScore
 from .player import Player
 from .utils import power_points, two_step_dominance
+from .constant import POSITION_MAP
 
 
 def checkRequestStatus(status: int) -> None:
@@ -334,7 +336,7 @@ class League(object):
         power_rank = power_points(dominance_matrix, teams_sorted, week)
         return power_rank
 
-    def free_agents(self, week=None) -> List[Player]:
+    def free_agents(self, week: int=None, size: int=50, position: str=None) -> List[Player]:
         '''Returns a List of Free Agents for a Given Week'''
 
         if self.year < 2018:
@@ -342,16 +344,22 @@ class League(object):
         if not week:
             week = self.current_week
         
+        slot_filter = []
+        if position and position in POSITION_MAP:
+            slot_filter = [POSITION_MAP[position]]
+        
         params = {
             'view': 'kona_player_info',
             'scoringPeriodId': week,
         }
+        filters = {"players":{"filterStatus":{"value":["FREEAGENT","WAIVERS"]},"filterSlotIds":{"value":slot_filter},"limit":size,"sortPercOwned":{"sortPriority":1,"sortAsc":False},"sortDraftRanks":{"sortPriority":100,"sortAsc":True,"value":"STANDARD"}}}
+        headers = {'x-fantasy-filter': json.dumps(filters)}
 
-        r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
+        r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies, headers=headers)
         self.status = r.status_code
         checkRequestStatus(self.status)
 
         players = r.json()['players']
 
-        return [Player(player) for player in players if player['onTeamId'] == 0]
+        return [Player(player) for player in players]
             

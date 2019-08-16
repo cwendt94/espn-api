@@ -29,3 +29,13 @@ class LeagueTest(TestCase):
 
         self.assertEqual(repr(box_scores[1].away_team), 'Team(Team 5)')
         self.assertEqual(repr(box_scores[1].away_lineup[1]), 'Player(Keenan Allen, points:9, projected:10)')
+
+    def test_free_agents(self):
+        league = League(1234, 2018)
+        
+        free_agents = league.free_agents(size=15)
+        self.assertEqual(len(free_agents), 15)
+
+        free_agents = league.free_agents(size=10, position='QB')
+        self.assertEqual(repr(free_agents[0]), 'Player(Jameis Winston)')
+        self.assertEqual(len(free_agents), 10)
