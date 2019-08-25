@@ -191,7 +191,8 @@ class League(object):
         for pick in picks:
             team = self.get_team_data(pick['teamId'])
             playerId = pick['playerId']
-            playerName = self.player_map[playerId]
+            if playerId != -1:
+                playerName = self.player_map[playerId]
             round_num = pick['roundId']
             round_pick = pick['roundPickNumber']
             bid_amount = pick['bidAmount']
