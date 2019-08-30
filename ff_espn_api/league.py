@@ -115,7 +115,7 @@ class League(object):
         for team in teams:
             for member in members:
                 # For league that is not full the team will not have a owner field
-                if 'owners' not in team:
+                if 'owners' not in team or not team['owners']:
                     member = None
                     break
                 elif member['id'] == team['owners'][0]:
