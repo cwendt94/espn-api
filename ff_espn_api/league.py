@@ -298,15 +298,18 @@ class League(object):
             'view': 'mMatchupScore',
             'scoringPeriodId': week,
         }
+        
+        filters = {"schedule":{"filterMatchupPeriodIds":{"value":[week]}}}
+        headers = {'x-fantasy-filter': json.dumps(filters)}
 
-        r = requests.get(self.ENDPOINT + '?view=mMatchup', params=params, cookies=self.cookies)
+        r = requests.get(self.ENDPOINT + '?view=mMatchup', params=params, cookies=self.cookies, headers=headers)
         self.status = r.status_code
         checkRequestStatus(self.status)
 
         data = r.json()
 
         schedule = data['schedule']
-        box_data = [BoxScore(matchup) for matchup in schedule if str(week) in matchup['home']['pointsByScoringPeriod']]
+        box_data = [BoxScore(matchup) for matchup in schedule]
 
         for team in self.teams:
             for matchup in box_data:
