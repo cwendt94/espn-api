@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/cwendt94/ff-espn-api.svg?branch=master)](https://travis-ci.org/cwendt94/ff-espn-api) [![codecov](https://codecov.io/gh/cwendt94/ff-espn-api/branch/master/graphs/badge.svg)](https://codecov.io/gh/cwendt94/ff-espn-api) [![Join the chat at https://gitter.im/ff-espn-api/community](https://badges.gitter.im/ff-espn-api/community.svg)](https://gitter.im/ff-espn-api/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/cwendt94/ff-espn-api.svg?branch=master)](https://travis-ci.org/cwendt94/ff-espn-api) [![codecov](https://codecov.io/gh/cwendt94/ff-espn-api/branch/master/graphs/badge.svg)](https://codecov.io/gh/cwendt94/ff-espn-api) [![Join the chat at https://gitter.im/ff-espn-api/community](https://badges.gitter.im/ff-espn-api/community.svg)](https://gitter.im/ff-espn-api/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![PyPI version](https://badge.fury.io/py/ff-espn-api.svg)](https://badge.fury.io/py/ff-espn-api)
 
 # ff-espn-api
 
@@ -126,7 +126,7 @@ Team(FANTASY GOD)
 >>> settings.veto_votes_required
 4
 ```
-### Get scoreboard of current/specific week
+### *Get scoreboard of current/specific week (Should only use for seasons before 2018. Use box_scores instead. Box scores has live points and player data)
 ```python
 >>> league.scoreboard()
 [Matchup(Team(Team 8), Team(THE KING)), Matchup(Team(Team 7), Team(Team 1)), Matchup(Team(Team 2), Team(Team Viking Queen)), Matchup(Team(Team Mizrachi), Team(FANTASY GOD)), Matchup(Team(Team 10), Team(Team 5))]
