@@ -8,3 +8,6 @@ build
 dist
 .coverage
 .idea/**/*
+/.vs/ff-espn-api/v16
+/.vs
+/BCFL.py

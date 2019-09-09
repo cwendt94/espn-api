@@ -276,7 +276,7 @@ class League(object):
         data = r.json() if self.year > 2017 else r.json()[0]
 
         schedule = data['schedule']
-        matchups = [Matchup(matchup) for matchup in schedule if matchup['matchupPeriodId'] == week]
+        matchups = [Matchup(matchup) for matchup in schedule if matchup['matchupPeriodId'] == week] 
 
         for team in self.teams:
             for matchup in matchups:
@@ -306,7 +306,7 @@ class League(object):
         data = r.json()
 
         schedule = data['schedule']
-        box_data = [BoxScore(matchup) for matchup in schedule if str(week) in matchup['home']['pointsByScoringPeriod']]
+        box_data = [BoxScore(matchup) for matchup in schedule if week == matchup['matchupPeriodId']]
 
         for team in self.teams:
             for matchup in box_data:

@@ -195,6 +195,7 @@ class LeagueTest(TestCase):
 
         self.assertEqual(repr(box_scores[0].home_team), 'Team(Rollin\' With Mahomies)')
         self.assertEqual(repr(box_scores[0].home_lineup[1]), 'Player(Christian McCaffrey, points:31, projected:23)')
+        self.assertEqual(repr(box_scores[0].home_lineup[1].injuryStatus),"'ACTIVE'")
     
     @requests_mock.Mocker()
     def test_power_rankings(self, m):

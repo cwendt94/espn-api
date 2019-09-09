@@ -15,7 +15,11 @@ class BoxPlayer(Player):
                 self.points = round(stats['appliedTotal'], 2)
             elif stats['statSourceId'] == 1:
                 self.projected_points = round(stats['appliedTotal'], 2)
-            
+        
+        try:
+            self.injuryStatus = data['playerPoolEntry']['player']['injuryStatus']
+        except:
+            self.injuryStatus = 'NA'   
     
     def __repr__(self):
         return 'Player(%s, points:%d, projected:%d)' % (self.name, self.points, self.projected_points)
