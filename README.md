@@ -149,7 +149,7 @@ Team(Team 10)
 [('70.85', Team(Team 7)), ('65.20', Team(Team 1)), ('62.45', Team(Team 8)), ('57.70', Team(THE KING)), ('45.10', Team(Team Mizrachi)), ('42.80', Team(Team 10)), ('40.65', Team(Team Viking Queen)), ('37.30', Team(Team 2)), ('27.85', Team(Team 5)), ('20.40', Team(FANTASY GOD))]
 ```
 
-### Get box score of current/specific weel
+### Get box score of current/specific week
 ```python
 >>> box_scores = league.box_scores(12)
 >>> box_scores[0].home_team
