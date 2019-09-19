@@ -320,10 +320,10 @@ class League(object):
                     matchup.away_team = team
         return box_data
         
-    def power_rankings(self, week):
+    def power_rankings(self, week: int=None):
         '''Return power rankings for any week'''
 
-        if week <= 0 or week > self.current_week:
+        if not week or week <= 0 or week > self.current_week:
             week = self.current_week
         # calculate win for every week
         win_matrix = []
