@@ -256,7 +256,7 @@ class League(object):
             team._fetch_roster(roster)
 
     def standings(self) -> List[Team]:
-        standings = sorted(self.teams, key=lambda x: x.final_standing, reverse=False)
+        standings = sorted(self.teams, key=lambda x: x.final_standing if x.final_standing != 0 else x.standing, reverse=False)
         return standings
 
     def top_scorer(self) -> Team:

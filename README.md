@@ -4,6 +4,8 @@
 
 This package uses ESPN's Fantasy Football API to extract data from any public or private league. I am currently using this package for my leagues personal website and I plan to keep updating and adding features.
 
+**Notice: I am starting to move some documentation to the project [Wiki Page](https://github.com/cwendt94/ff-espn-api/wiki). The wiki page will have better documentation of Object variables and functions!**
+
 Please feel free to make suggestions, bug reports, and pull request for features or fixes!
 
 This package was inspired and based off of [rbarton65/espnff](https://github.com/rbarton65/espnff).
