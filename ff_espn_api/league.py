@@ -11,6 +11,7 @@ from .settings import Settings
 from .matchup import Matchup
 from .pick import Pick
 from .box_score import BoxScore
+from .box_player import BoxPlayer
 from .player import Player
 from .utils import power_points, two_step_dominance
 from .constant import POSITION_MAP
@@ -200,6 +201,40 @@ class League(object):
             keeper_status = pick['keeper']
 
             self.draft.append(Pick(team, playerId, playerName, round_num, round_pick, bid_amount, keeper_status))
+    
+    def _get_nfl_schedule(self, week: int):
+        endpoint = 'https://fantasy.espn.com/apis/v3/games/ffl/seasons/' + str(self.year) + '?view=proTeamSchedules_wl'
+        r = requests.get(endpoint, cookies=self.cookies)
+        self.status = r.status_code
+        checkRequestStatus(self.status)
+        
+        pro_teams = r.json()['settings']['proTeams']
+        pro_team_schedule = {}
+
+        for team in pro_teams:
+            if team['id'] != 0 and team['byeWeek'] != week:
+                game_data = team['proGamesByScoringPeriod'][str(week)][0]
+                pro_team_schedule[team['id']] = (game_data['homeProTeamId'], game_data['date'])  if team['id'] == game_data['awayProTeamId'] else (game_data['awayProTeamId'], game_data['date'])
+        return pro_team_schedule
+    
+    def _get_positional_ratings(self, week: int):
+        params = {
+            'view': 'mPositionalRatings',
+            'scoringPeriodId': week,
+        }
+
+        r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
+        self.status = r.status_code
+        checkRequestStatus(self.status)
+        ratings = r.json()['positionAgainstOpponent']['positionalRatings']
+
+        positional_ratings = {}
+        for pos, rating in ratings.items():
+            teams_rating = {}
+            for team, data in rating['ratingsByOpponent'].items():
+                teams_rating[team] = data['rank']
+            positional_ratings[pos] = teams_rating
+        return positional_ratings
 
     def load_roster_week(self, week: int) -> None:
         '''Sets Teams Roster for a Certain Week'''
@@ -287,12 +322,13 @@ class League(object):
                     matchup.away_team = team
         
         return matchups
-    
+
     def box_scores(self, week: int = None) -> List[BoxScore]:
-        '''Returns list of box score for a given week'''
-        if self.year < 2018:
-            raise Exception('Cant use box score before 2018')
-        if not week:
+        '''Returns list of box score for a given week\n
+        Should only be used with most recent season'''
+        if self.year < 2019:
+            raise Exception('Cant use box score before 2019')
+        if not week or week > self.current_week:
             week = self.current_week
 
         params = {
@@ -310,7 +346,9 @@ class League(object):
         data = r.json()
 
         schedule = data['schedule']
-        box_data = [BoxScore(matchup) for matchup in schedule]
+        pro_schedule = self._get_nfl_schedule(week)
+        positional_rankings = self._get_positional_ratings(week)
+        box_data = [BoxScore(matchup, pro_schedule, positional_rankings, week) for matchup in schedule]
 
         for team in self.teams:
             for matchup in box_data:
@@ -342,10 +380,11 @@ class League(object):
         return power_rank
 
     def free_agents(self, week: int=None, size: int=50, position: str=None) -> List[Player]:
-        '''Returns a List of Free Agents for a Given Week'''
+        '''Returns a List of Free Agents for a Given Week\n
+        Should only be used with most recent season'''
 
-        if self.year < 2018:
-            raise Exception('Cant use free agents before 2018')
+        if self.year < 2019:
+            raise Exception('Cant use free agents before 2019')
         if not week:
             week = self.current_week
         
@@ -365,6 +404,8 @@ class League(object):
         checkRequestStatus(self.status)
 
         players = r.json()['players']
+        pro_schedule = self._get_nfl_schedule(week)
+        positional_rankings = self._get_positional_ratings(week)
 
-        return [Player(player) for player in players]
+        return [BoxPlayer(player, pro_schedule, positional_rankings, week) for player in players]
             

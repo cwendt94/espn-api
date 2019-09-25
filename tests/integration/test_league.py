@@ -22,20 +22,22 @@ class LeagueTest(TestCase):
         with self.assertRaises(Exception):
             League(2, 2018)
     
+    def test_bad_box_scores(self):
+        league = League(1234, 2018)
+
+        with self.assertRaises(Exception):
+            league.box_scores()
+
+    def test_bad_free_agents(self):
+        league = League(1234, 2018)
+        
+        with self.assertRaises(Exception):
+            league.free_agents()
+
     def test_box_scores(self):
-        league = League(1234, 2018)
+        league = League(48153503, 2019)
         
-        box_scores = league.box_scores(5)
+        box_scores = league.box_scores(week=2)
 
-        self.assertEqual(repr(box_scores[1].away_team), 'Team(Team 5)')
-        self.assertEqual(repr(box_scores[1].away_lineup[1]), 'Player(Keenan Allen, points:9, projected:10)')
-
-    def test_free_agents(self):
-        league = League(1234, 2018)
-        
-        free_agents = league.free_agents(size=15)
-        self.assertEqual(len(free_agents), 15)
-
-        free_agents = league.free_agents(size=10, position='QB')
-        self.assertEqual(repr(free_agents[0]), 'Player(Jameis Winston)')
-        self.assertEqual(len(free_agents), 10)
+        self.assertEqual(repr(box_scores[1].away_team), 'Team(TEAM BERRY)')
+        self.assertEqual(repr(box_scores[1].away_lineup[1]), 'Player(Odell Beckham Jr., points:29, projected:16)')
