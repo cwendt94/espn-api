@@ -207,6 +207,9 @@ class LeagueTest(TestCase):
         current_week = league.power_rankings(league.current_week)
         self.assertEqual(invalid_week, current_week)
 
+        empty_week = league.power_rankings()
+        self.assertEqual(empty_week, current_week)
+
         valid_week = league.power_rankings(13)
         self.assertEqual(valid_week[0][0], '71.70')
         self.assertEqual(repr(valid_week[0][1]), 'Team(Misunderstood  Mistfits )')
