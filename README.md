@@ -174,6 +174,10 @@ Team(Team Viking Queen)
 'TE'
 >>> box_scores[0].home_lineup[2].name
 'Zach Ertz'
+>>> box_scores[0].home_lineup[2].pro_opponent
+'GB'
+>>> box_scores[0].home_lineup[2].pro_pos_rank
+3
 ```
 
 ### Helper functions
