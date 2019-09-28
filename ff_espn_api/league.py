@@ -6,13 +6,13 @@ from typing import List, Tuple
 
 
 from .team import Team
-from .trade import Trade
 from .settings import Settings
 from .matchup import Matchup
 from .pick import Pick
 from .box_score import BoxScore
 from .box_player import BoxPlayer
 from .player import Player
+from .activity import Activity
 from .utils import power_points, two_step_dominance
 from .constant import POSITION_MAP
 
@@ -293,9 +293,30 @@ class League(object):
                 return team
         return None
     
-    # TODO League Trades, checks if any trades happened recently
-    def league_trades(self):
-        pass
+    def recent_activity(self, size: int = 25, only_trades = False) -> List[Activity]:
+        '''Returns a list of recent league activities (Add, Drop, Trade)'''
+        if self.year < 2019:
+            raise Exception('Cant use recent activity before 2019')
+
+        msg_types = [178,180,179,239,181,244]
+        if only_trades:
+            msg_types = [244]
+        params = {
+            'view': 'kona_league_communication'
+        }
+        
+        filters = {"topics":{"filterType":{"value":["ACTIVITY_TRANSACTIONS"]},"limit":size,"limitPerMessageSet":{"value":25},"offset":0,"sortMessageDate":{"sortPriority":1,"sortAsc":False},"sortFor":{"sortPriority":2,"sortAsc":False},"filterDateRange":{"value":1564689600000,"additionalValue":1583110842000},"filterIncludeMessageTypeIds":{"value":msg_types}}}
+        headers = {'x-fantasy-filter': json.dumps(filters)}
+
+        r = requests.get(self.ENDPOINT + '/communication/', params=params, cookies=self.cookies, headers=headers)
+        self.status = r.status_code
+        checkRequestStatus(self.status)
+
+        data = r.json()['topics']
+
+        activity = [Activity(topic, self.player_map, self.get_team_data) for topic in data]
+
+        return activity
 
     def scoreboard(self, week: int = None) -> List[Matchup]:
         '''Returns list of matchups for a given week'''

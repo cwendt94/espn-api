@@ -227,6 +227,24 @@ class LeagueTest(TestCase):
     #     free_agents = league.free_agents()
 
     #     self.assertEqual(repr(free_agents[0]), 'Player(Josh Gordon)')
+
+    @requests_mock.Mocker()        
+    def test_recent_activity(self, m):
+        self.mock_setUp(m)
+
+        league = League(self.league_id, 2018)
+        
+        # TODO hack until I get all mock data for 2019
+        league.year = 2019 
+        self.espn_endpoint = "https://fantasy.espn.com/apis/v3/games/FFL/seasons/" + str(2019) + "/segments/0/leagues/" + str(self.league_id)
+        league.ENDPOINT = self.espn_endpoint
+
+        with open('tests/unit/data/league_recent_activity_2019.json') as f:
+            data = json.loads(f.read())
+        m.get(self.espn_endpoint + '/communication/?view=kona_league_communication', status_code=200, json=data)
+
+        activity  = league.recent_activity()
+        self.assertEqual(repr(activity[0].actions[0][0]), 'Team(Perscription Mixon)')
         
 
 
