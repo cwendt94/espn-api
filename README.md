@@ -179,6 +179,44 @@ Team(Team Viking Queen)
 >>> box_scores[0].home_lineup[2].pro_pos_rank
 3
 ```
+### Leagues Recent Activity
+This can be used to view league trades and wavier wire drops/adds
+```python
+# inputs:
+# - size: int defaults to 25
+# - only_trades: boolean defaults to False
+>>> activity = league.recent_activity() # returns List[Activity]
+>>> len(activity)
+25
+ # Activity object has a field called actions which is a list of tuples (Team Object, action, player)
+ # this list holds all the actions that happend with this activity
+>>> activity[0].actions
+[(Team(Sleepy  Joe ), 'DROPPED', "Ka'imi Fairbairn"), (Team(Sleepy  Joe ), 'ADDED', 'Ty Long')]
+
+>>> for action in activity[0].actions:
+...     action
+...
+(Team(Sleepy  Joe ), 'DROPPED', "Ka'imi Fairbairn")
+(Team(Sleepy  Joe ), 'ADDED', 'Ty Long')
+
+>>> for action in activity[24].actions:
+...     action
+...
+(Team(Mack Sauce), 'DROPPED', 'Terrell Suggs')
+
+>>> activitys = league.recent_activity(only_trades=True)
+>>> for activity in activitys:
+...     for action in activity.actions:
+...             action
+...     print('\n')
+...
+(Team(Team 2), 'TRADED', 'Aaron Rodgers')
+(Team(Team 1), 'TRADED', 'Adrian Peterson')
+
+
+(Team(Team 2), 'TRADED', 'Leighton Vander Esch')
+(Team(Team 1), 'TRADED', 'Tom Brady')
+```
 
 ### Helper functions
 ```python

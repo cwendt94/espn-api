@@ -1,0 +1,1423 @@
+{
+    "topics": [
+        {
+            "author": "{61E5E7DB-8FF9-413B-BC45-10AB6DDA15D6}",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1569537509290,
+                "platform": "cinco_8978",
+                "source": "{61E5E7DB-8FF9-413B-BC45-10AB6DDA15D6}"
+            },
+            "date": 1569537509290,
+            "dateEdited": 1569537509290,
+            "id": "fb0926b0-1678-4e58-a6e0-afebaec2b278",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1569537509290,
+                "platform": "cinco_8978",
+                "source": "{61E5E7DB-8FF9-413B-BC45-10AB6DDA15D6}"
+            },
+            "messages": [
+                {
+                    "author": "{61E5E7DB-8FF9-413B-BC45-10AB6DDA15D6}",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569537509290,
+                        "platform": "cinco_8978",
+                        "source": "{61E5E7DB-8FF9-413B-BC45-10AB6DDA15D6}"
+                    },
+                    "date": 1569537509290,
+                    "id": "e48095b5-f9f7-4a91-830d-a3c6f112bc17",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 178,
+                    "targetId": -16001,
+                    "to": 11,
+                    "topicId": "fb0926b0-1678-4e58-a6e0-afebaec2b278"
+                },
+                {
+                    "author": "{61E5E7DB-8FF9-413B-BC45-10AB6DDA15D6}",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569537509290,
+                        "platform": "cinco_8978",
+                        "source": "{61E5E7DB-8FF9-413B-BC45-10AB6DDA15D6}"
+                    },
+                    "date": 1569537509290,
+                    "id": "ad12e38b-dbad-4ba4-9c01-d8c473054d19",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 179,
+                    "targetId": -16021,
+                    "to": 11,
+                    "topicId": "fb0926b0-1678-4e58-a6e0-afebaec2b278"
+                }
+            ],
+            "totalMessageCount": 2,
+            "type": "ACTIVITY_TRANSACTIONS"
+        },
+        {
+            "author": "{3FAC78F0-4AA2-4982-AC78-F04AA2798222}",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1569452386494,
+                "platform": "cinco_8978",
+                "source": "{3FAC78F0-4AA2-4982-AC78-F04AA2798222}"
+            },
+            "date": 1569452386494,
+            "dateEdited": 1569452386494,
+            "id": "f23458d3-bcf3-4dd1-8eb4-2b3ee58d0ae3",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1569452386494,
+                "platform": "cinco_8978",
+                "source": "{3FAC78F0-4AA2-4982-AC78-F04AA2798222}"
+            },
+            "messages": [
+                {
+                    "author": "{3FAC78F0-4AA2-4982-AC78-F04AA2798222}",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569452386494,
+                        "platform": "cinco_8978",
+                        "source": "{3FAC78F0-4AA2-4982-AC78-F04AA2798222}"
+                    },
+                    "date": 1569452386494,
+                    "id": "e1276c97-5b39-45d3-bd9c-53685432aeb8",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 178,
+                    "targetId": 17437,
+                    "to": 10,
+                    "topicId": "f23458d3-bcf3-4dd1-8eb4-2b3ee58d0ae3"
+                }
+            ],
+            "totalMessageCount": 1,
+            "type": "ACTIVITY_TRANSACTIONS"
+        },
+        {
+            "author": "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1569417517499,
+                "platform": "cinco_8978",
+                "source": "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}"
+            },
+            "date": 1569417517499,
+            "dateEdited": 1569417517499,
+            "id": "9d46865c-381e-4b7f-ae69-1b7ffee23403",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1569417517499,
+                "platform": "cinco_8978",
+                "source": "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}"
+            },
+            "messages": [
+                {
+                    "author": "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569417517499,
+                        "platform": "cinco_8978",
+                        "source": "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}"
+                    },
+                    "date": 1569417517499,
+                    "id": "fd071d3d-9496-4ced-accf-ffcd7135b180",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 179,
+                    "targetId": 9354,
+                    "to": 4,
+                    "topicId": "9d46865c-381e-4b7f-ae69-1b7ffee23403"
+                },
+                {
+                    "author": "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569417517499,
+                        "platform": "cinco_8978",
+                        "source": "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}"
+                    },
+                    "date": 1569417517499,
+                    "id": "6ce2891f-7d43-4cab-95c5-0f30bc5b1dd9",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 178,
+                    "targetId": 17372,
+                    "to": 4,
+                    "topicId": "9d46865c-381e-4b7f-ae69-1b7ffee23403"
+                }
+            ],
+            "totalMessageCount": 2,
+            "type": "ACTIVITY_TRANSACTIONS"
+        },
+        {
+            "author": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1569406985622,
+                "platform": "cinco_8978",
+                "source": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}"
+            },
+            "date": 1569406985622,
+            "dateEdited": 1569406985622,
+            "id": "f841f6c1-9a2e-4cec-b0be-151e1c009d18",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1569406985622,
+                "platform": "cinco_8978",
+                "source": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}"
+            },
+            "messages": [
+                {
+                    "author": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569406985622,
+                        "platform": "cinco_8978",
+                        "source": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}"
+                    },
+                    "date": 1569406985622,
+                    "id": "6a700e04-837f-4a73-839e-103d9f937aef",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 179,
+                    "targetId": 13934,
+                    "to": 1,
+                    "topicId": "f841f6c1-9a2e-4cec-b0be-151e1c009d18"
+                },
+                {
+                    "author": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569406985622,
+                        "platform": "cinco_8978",
+                        "source": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}"
+                    },
+                    "date": 1569406985622,
+                    "id": "97a0abbf-366f-4fb7-a7b7-25a9b101236f",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 178,
+                    "targetId": 3051738,
+                    "to": 1,
+                    "topicId": "f841f6c1-9a2e-4cec-b0be-151e1c009d18"
+                }
+            ],
+            "totalMessageCount": 2,
+            "type": "ACTIVITY_TRANSACTIONS"
+        },
+        {
+            "author": "NightlyLeagueUpdateTaskProcessor",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1569398261886,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "date": 1569398261886,
+            "dateEdited": 1569398261886,
+            "for": 16,
+            "id": "fae3737d-ab37-46ae-8b90-9307a2bc0e09",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1569398261886,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "messages": [
+                {
+                    "author": "NightlyLeagueUpdateTaskProcessor",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569398261886,
+                        "platform": "lm-processor",
+                        "source": "NightlyLeagueUpdateTaskProcessor"
+                    },
+                    "date": 1569398261886,
+                    "for": 16,
+                    "from": 0,
+                    "id": "ffe22b97-5c61-4655-ad5a-0eadab7a4634",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 180,
+                    "targetId": 3043234,
+                    "to": 3,
+                    "topicId": "fae3737d-ab37-46ae-8b90-9307a2bc0e09"
+                },
+                {
+                    "author": "NightlyLeagueUpdateTaskProcessor",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569398261886,
+                        "platform": "lm-processor",
+                        "source": "NightlyLeagueUpdateTaskProcessor"
+                    },
+                    "date": 1569398261886,
+                    "id": "e98483d4-4187-48ab-af3d-a125e881c855",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 181,
+                    "targetId": 2971573,
+                    "to": 3,
+                    "topicId": "fae3737d-ab37-46ae-8b90-9307a2bc0e09"
+                }
+            ],
+            "totalMessageCount": 2,
+            "type": "ACTIVITY_TRANSACTIONS"
+        },
+        {
+            "author": "NightlyLeagueUpdateTaskProcessor",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1569398261886,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "date": 1569398261886,
+            "dateEdited": 1569398261886,
+            "for": 15,
+            "id": "9e18235f-e1e0-46e3-871b-0d1471a0bf02",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1569398261886,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "messages": [
+                {
+                    "author": "NightlyLeagueUpdateTaskProcessor",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569398261886,
+                        "platform": "lm-processor",
+                        "source": "NightlyLeagueUpdateTaskProcessor"
+                    },
+                    "date": 1569398261886,
+                    "for": 15,
+                    "from": 0,
+                    "id": "d85059d7-e4de-499f-a450-9e6ff68607e3",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 180,
+                    "targetId": -16011,
+                    "to": 1,
+                    "topicId": "9e18235f-e1e0-46e3-871b-0d1471a0bf02"
+                },
+                {
+                    "author": "NightlyLeagueUpdateTaskProcessor",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569398261886,
+                        "platform": "lm-processor",
+                        "source": "NightlyLeagueUpdateTaskProcessor"
+                    },
+                    "date": 1569398261886,
+                    "id": "c28195ae-073f-4719-8166-9a2ca578d2b1",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 181,
+                    "targetId": 2969962,
+                    "to": 1,
+                    "topicId": "9e18235f-e1e0-46e3-871b-0d1471a0bf02"
+                }
+            ],
+            "totalMessageCount": 2,
+            "type": "ACTIVITY_TRANSACTIONS"
+        },
+        {
+            "author": "NightlyLeagueUpdateTaskProcessor",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1569398261886,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "date": 1569398261886,
+            "dateEdited": 1569398261886,
+            "for": 8,
+            "id": "b45a0985-bb60-4e90-a328-08deee938b62",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1569398261886,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "messages": [
+                {
+                    "author": "NightlyLeagueUpdateTaskProcessor",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569398261886,
+                        "platform": "lm-processor",
+                        "source": "NightlyLeagueUpdateTaskProcessor"
+                    },
+                    "date": 1569398261886,
+                    "for": 8,
+                    "from": 0,
+                    "id": "f9953ad7-f4fb-4b10-b965-8749ace20306",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 180,
+                    "targetId": 4527,
+                    "to": 5,
+                    "topicId": "b45a0985-bb60-4e90-a328-08deee938b62"
+                },
+                {
+                    "author": "NightlyLeagueUpdateTaskProcessor",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569398261886,
+                        "platform": "lm-processor",
+                        "source": "NightlyLeagueUpdateTaskProcessor"
+                    },
+                    "date": 1569398261886,
+                    "id": "f507b3e8-a6b0-4de2-94c3-10c156fb9624",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 181,
+                    "targetId": 16974,
+                    "to": 5,
+                    "topicId": "b45a0985-bb60-4e90-a328-08deee938b62"
+                }
+            ],
+            "totalMessageCount": 2,
+            "type": "ACTIVITY_TRANSACTIONS"
+        },
+        {
+            "author": "NightlyLeagueUpdateTaskProcessor",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1569398261886,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "date": 1569398261886,
+            "dateEdited": 1569398261886,
+            "for": 7,
+            "id": "753bd0d2-57b3-4d85-8631-2271b92da45a",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1569398261886,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "messages": [
+                {
+                    "author": "NightlyLeagueUpdateTaskProcessor",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569398261886,
+                        "platform": "lm-processor",
+                        "source": "NightlyLeagueUpdateTaskProcessor"
+                    },
+                    "date": 1569398261886,
+                    "id": "4845e318-2889-49d0-9af9-3eca28e4c5e3",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 181,
+                    "targetId": -16010,
+                    "to": 3,
+                    "topicId": "753bd0d2-57b3-4d85-8631-2271b92da45a"
+                },
+                {
+                    "author": "NightlyLeagueUpdateTaskProcessor",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569398261886,
+                        "platform": "lm-processor",
+                        "source": "NightlyLeagueUpdateTaskProcessor"
+                    },
+                    "date": 1569398261886,
+                    "for": 7,
+                    "from": 0,
+                    "id": "28d993e9-f999-4222-962d-5ff12112705f",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 180,
+                    "targetId": 3128452,
+                    "to": 3,
+                    "topicId": "753bd0d2-57b3-4d85-8631-2271b92da45a"
+                }
+            ],
+            "totalMessageCount": 2,
+            "type": "ACTIVITY_TRANSACTIONS"
+        },
+        {
+            "author": "NightlyLeagueUpdateTaskProcessor",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1569398261886,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "date": 1569398261886,
+            "dateEdited": 1569398261886,
+            "for": 5,
+            "id": "cb3b4ccb-5934-4f3e-8290-ccc71ad438f0",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1569398261886,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "messages": [
+                {
+                    "author": "NightlyLeagueUpdateTaskProcessor",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569398261886,
+                        "platform": "lm-processor",
+                        "source": "NightlyLeagueUpdateTaskProcessor"
+                    },
+                    "date": 1569398261886,
+                    "for": 5,
+                    "from": 0,
+                    "id": "8df3fba4-bcff-45ad-995a-95abdc91e7f3",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 180,
+                    "targetId": 12483,
+                    "to": 4,
+                    "topicId": "cb3b4ccb-5934-4f3e-8290-ccc71ad438f0"
+                },
+                {
+                    "author": "NightlyLeagueUpdateTaskProcessor",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569398261886,
+                        "platform": "lm-processor",
+                        "source": "NightlyLeagueUpdateTaskProcessor"
+                    },
+                    "date": 1569398261886,
+                    "id": "a94b8036-bcd9-4bcc-a6be-3a42185f884c",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 181,
+                    "targetId": 16760,
+                    "to": 4,
+                    "topicId": "cb3b4ccb-5934-4f3e-8290-ccc71ad438f0"
+                }
+            ],
+            "totalMessageCount": 2,
+            "type": "ACTIVITY_TRANSACTIONS"
+        },
+        {
+            "author": "NightlyLeagueUpdateTaskProcessor",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1569398261886,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "date": 1569398261886,
+            "dateEdited": 1569398261886,
+            "for": 4,
+            "id": "4bcdd7b3-bc9d-4dcd-8930-f675a3b5f02f",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1569398261886,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "messages": [
+                {
+                    "author": "NightlyLeagueUpdateTaskProcessor",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569398261886,
+                        "platform": "lm-processor",
+                        "source": "NightlyLeagueUpdateTaskProcessor"
+                    },
+                    "date": 1569398261886,
+                    "for": 4,
+                    "from": 0,
+                    "id": "c4615130-2203-4a17-b433-46c7b1df6e23",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 180,
+                    "targetId": 3917792,
+                    "to": 1,
+                    "topicId": "4bcdd7b3-bc9d-4dcd-8930-f675a3b5f02f"
+                }
+            ],
+            "totalMessageCount": 1,
+            "type": "ACTIVITY_TRANSACTIONS"
+        },
+        {
+            "author": "NightlyLeagueUpdateTaskProcessor",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1569398261886,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "date": 1569398261886,
+            "dateEdited": 1569398261886,
+            "for": 2,
+            "id": "6602b6ca-93ce-463d-94cd-99a84d46d74a",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1569398261886,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "messages": [
+                {
+                    "author": "NightlyLeagueUpdateTaskProcessor",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569398261886,
+                        "platform": "lm-processor",
+                        "source": "NightlyLeagueUpdateTaskProcessor"
+                    },
+                    "date": 1569398261886,
+                    "for": 2,
+                    "from": 0,
+                    "id": "c550a3e6-5adb-49d0-9a83-ba723732d132",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 180,
+                    "targetId": 3045127,
+                    "to": 11,
+                    "topicId": "6602b6ca-93ce-463d-94cd-99a84d46d74a"
+                },
+                {
+                    "author": "NightlyLeagueUpdateTaskProcessor",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569398261886,
+                        "platform": "lm-processor",
+                        "source": "NightlyLeagueUpdateTaskProcessor"
+                    },
+                    "date": 1569398261886,
+                    "id": "6ac9aa40-9670-4ab1-b9cd-7fda61b24093",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 181,
+                    "targetId": -16027,
+                    "to": 11,
+                    "topicId": "6602b6ca-93ce-463d-94cd-99a84d46d74a"
+                }
+            ],
+            "totalMessageCount": 2,
+            "type": "ACTIVITY_TRANSACTIONS"
+        },
+        {
+            "author": "NightlyLeagueUpdateTaskProcessor",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1569398261886,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "date": 1569398261886,
+            "dateEdited": 1569398261886,
+            "for": 1,
+            "id": "90754b33-dc20-41bf-aef6-da1bef07d64d",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1569398261886,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "messages": [
+                {
+                    "author": "NightlyLeagueUpdateTaskProcessor",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569398261886,
+                        "platform": "lm-processor",
+                        "source": "NightlyLeagueUpdateTaskProcessor"
+                    },
+                    "date": 1569398261886,
+                    "for": 1,
+                    "from": 0,
+                    "id": "5f620090-782c-4b6f-a153-1794f7e4ab41",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 180,
+                    "targetId": -16030,
+                    "to": 10,
+                    "topicId": "90754b33-dc20-41bf-aef6-da1bef07d64d"
+                },
+                {
+                    "author": "NightlyLeagueUpdateTaskProcessor",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569398261886,
+                        "platform": "lm-processor",
+                        "source": "NightlyLeagueUpdateTaskProcessor"
+                    },
+                    "date": 1569398261886,
+                    "id": "3a4f8855-02e3-4147-ac3a-c066f2b65fb2",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 181,
+                    "targetId": -16025,
+                    "to": 10,
+                    "topicId": "90754b33-dc20-41bf-aef6-da1bef07d64d"
+                }
+            ],
+            "totalMessageCount": 2,
+            "type": "ACTIVITY_TRANSACTIONS"
+        },
+        {
+            "author": "{A99FDB20-D435-420C-9F41-F38D79E28D56}",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1569345805889,
+                "platform": "cinco_8978",
+                "source": "{A99FDB20-D435-420C-9F41-F38D79E28D56}"
+            },
+            "date": 1569345805889,
+            "dateEdited": 1569345805889,
+            "id": "08a45d73-f157-4e63-a714-2e79d50535c1",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1569345805889,
+                "platform": "cinco_8978",
+                "source": "{A99FDB20-D435-420C-9F41-F38D79E28D56}"
+            },
+            "messages": [
+                {
+                    "author": "{A99FDB20-D435-420C-9F41-F38D79E28D56}",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569345805889,
+                        "platform": "cinco_8978",
+                        "source": "{A99FDB20-D435-420C-9F41-F38D79E28D56}"
+                    },
+                    "date": 1569345805889,
+                    "for": 2,
+                    "from": -1,
+                    "id": "20c87c48-03cf-412f-bf31-de5270e8f9eb",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 239,
+                    "targetId": 4361606,
+                    "to": -1,
+                    "topicId": "08a45d73-f157-4e63-a714-2e79d50535c1"
+                }
+            ],
+            "targetId": 4,
+            "totalMessageCount": 2,
+            "type": "ACTIVITY_TRANSACTIONS"
+        },
+        {
+            "author": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1569316641965,
+                "platform": "cinco_8978",
+                "source": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}"
+            },
+            "date": 1569316641965,
+            "dateEdited": 1569316641965,
+            "id": "4df45606-374a-4fc6-99d5-028c72268964",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1569316641965,
+                "platform": "cinco_8978",
+                "source": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}"
+            },
+            "messages": [
+                {
+                    "author": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569316641965,
+                        "platform": "cinco_8978",
+                        "source": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}"
+                    },
+                    "date": 1569316641965,
+                    "for": 1,
+                    "from": -1,
+                    "id": "dc00b072-b791-4649-b647-d494e531c679",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 239,
+                    "targetId": -16006,
+                    "to": -1,
+                    "topicId": "4df45606-374a-4fc6-99d5-028c72268964"
+                }
+            ],
+            "targetId": 4,
+            "totalMessageCount": 1,
+            "type": "ACTIVITY_TRANSACTIONS"
+        },
+        {
+            "author": "{3DDE7D6A-D569-4D2C-9E7D-6AD5693D2CCA}",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1569105080278,
+                "platform": "cinco_8952",
+                "source": "{3DDE7D6A-D569-4D2C-9E7D-6AD5693D2CCA}"
+            },
+            "date": 1569105080278,
+            "dateEdited": 1569105080278,
+            "id": "9c8ef629-ab20-4bdb-ab44-3889e27fc87c",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1569105080278,
+                "platform": "cinco_8952",
+                "source": "{3DDE7D6A-D569-4D2C-9E7D-6AD5693D2CCA}"
+            },
+            "messages": [
+                {
+                    "author": "{3DDE7D6A-D569-4D2C-9E7D-6AD5693D2CCA}",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569105080278,
+                        "platform": "cinco_8952",
+                        "source": "{3DDE7D6A-D569-4D2C-9E7D-6AD5693D2CCA}"
+                    },
+                    "date": 1569105080278,
+                    "id": "5742a34f-0770-4b0d-986f-f9560e446512",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 179,
+                    "targetId": 3128429,
+                    "to": 8,
+                    "topicId": "9c8ef629-ab20-4bdb-ab44-3889e27fc87c"
+                },
+                {
+                    "author": "{3DDE7D6A-D569-4D2C-9E7D-6AD5693D2CCA}",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569105080278,
+                        "platform": "cinco_8952",
+                        "source": "{3DDE7D6A-D569-4D2C-9E7D-6AD5693D2CCA}"
+                    },
+                    "date": 1569105080278,
+                    "id": "66d4da2b-1b8d-4309-9515-b651267ca76c",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 178,
+                    "targetId": 3124084,
+                    "to": 8,
+                    "topicId": "9c8ef629-ab20-4bdb-ab44-3889e27fc87c"
+                }
+            ],
+            "totalMessageCount": 2,
+            "type": "ACTIVITY_TRANSACTIONS"
+        },
+        {
+            "author": "{A99FDB20-D435-420C-9F41-F38D79E28D56}",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1569005387124,
+                "platform": "cinco_8952",
+                "source": "{A99FDB20-D435-420C-9F41-F38D79E28D56}"
+            },
+            "date": 1569005387124,
+            "dateEdited": 1569005387124,
+            "id": "18c7bf72-7c3f-4134-9f78-075768a2bcb6",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1569005387124,
+                "platform": "cinco_8952",
+                "source": "{A99FDB20-D435-420C-9F41-F38D79E28D56}"
+            },
+            "messages": [
+                {
+                    "author": "{A99FDB20-D435-420C-9F41-F38D79E28D56}",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1569005387124,
+                        "platform": "cinco_8952",
+                        "source": "{A99FDB20-D435-420C-9F41-F38D79E28D56}"
+                    },
+                    "date": 1569005387124,
+                    "id": "ee125f68-161a-4e20-9dad-10a623296a58",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 178,
+                    "targetId": 4361606,
+                    "to": 2,
+                    "topicId": "18c7bf72-7c3f-4134-9f78-075768a2bcb6"
+                }
+            ],
+            "totalMessageCount": 1,
+            "type": "ACTIVITY_TRANSACTIONS"
+        },
+        {
+            "author": "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1568935927913,
+                "platform": "cinco_8936",
+                "source": "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}"
+            },
+            "date": 1568935927913,
+            "dateEdited": 1568935927913,
+            "id": "07c258e9-cbb7-430d-9078-a72a71106b77",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1568935927913,
+                "platform": "cinco_8936",
+                "source": "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}"
+            },
+            "messages": [
+                {
+                    "author": "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1568935927913,
+                        "platform": "cinco_8936",
+                        "source": "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}"
+                    },
+                    "date": 1568935927913,
+                    "id": "2490f559-abd7-4f86-a582-8a3808f8c7db",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 178,
+                    "targetId": 4047650,
+                    "to": 4,
+                    "topicId": "07c258e9-cbb7-430d-9078-a72a71106b77"
+                }
+            ],
+            "totalMessageCount": 1,
+            "type": "ACTIVITY_TRANSACTIONS"
+        },
+        {
+            "author": "{08828A8F-80A3-456D-A448-F1DC5E3AC1B7}",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1568906453390,
+                "platform": "cinco_8951",
+                "source": "{08828A8F-80A3-456D-A448-F1DC5E3AC1B7}"
+            },
+            "date": 1568906453390,
+            "dateEdited": 1568906453390,
+            "id": "0eaf6977-416d-44c2-a5ad-be79cce8adcd",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1568906453390,
+                "platform": "cinco_8951",
+                "source": "{08828A8F-80A3-456D-A448-F1DC5E3AC1B7}"
+            },
+            "messages": [
+                {
+                    "author": "{08828A8F-80A3-456D-A448-F1DC5E3AC1B7}",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1568906453390,
+                        "platform": "cinco_8951",
+                        "source": "{08828A8F-80A3-456D-A448-F1DC5E3AC1B7}"
+                    },
+                    "date": 1568906453390,
+                    "id": "4558b69a-661b-4a8c-803e-903306ef847b",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 178,
+                    "targetId": 3127292,
+                    "to": 7,
+                    "topicId": "0eaf6977-416d-44c2-a5ad-be79cce8adcd"
+                },
+                {
+                    "author": "{08828A8F-80A3-456D-A448-F1DC5E3AC1B7}",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1568906453390,
+                        "platform": "cinco_8951",
+                        "source": "{08828A8F-80A3-456D-A448-F1DC5E3AC1B7}"
+                    },
+                    "date": 1568906453390,
+                    "id": "b8e9826e-84b6-4b2d-a090-788383042a91",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 179,
+                    "targetId": 12537,
+                    "to": 7,
+                    "topicId": "0eaf6977-416d-44c2-a5ad-be79cce8adcd"
+                }
+            ],
+            "totalMessageCount": 2,
+            "type": "ACTIVITY_TRANSACTIONS"
+        },
+        {
+            "author": "{03680774-45A0-4E5C-A807-7445A0AE5CCC}",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1568903211672,
+                "platform": "cinco_8951",
+                "source": "{03680774-45A0-4E5C-A807-7445A0AE5CCC}"
+            },
+            "date": 1568903211672,
+            "dateEdited": 1568903211672,
+            "id": "a6fbed54-f892-4503-a338-b7396af998df",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1568903211672,
+                "platform": "cinco_8951",
+                "source": "{03680774-45A0-4E5C-A807-7445A0AE5CCC}"
+            },
+            "messages": [
+                {
+                    "author": "{03680774-45A0-4E5C-A807-7445A0AE5CCC}",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1568903211672,
+                        "platform": "cinco_8951",
+                        "source": "{03680774-45A0-4E5C-A807-7445A0AE5CCC}"
+                    },
+                    "date": 1568903211672,
+                    "id": "032cb414-7f16-4cff-bbe5-fe90e2a1be9f",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 178,
+                    "targetId": 5529,
+                    "to": 5,
+                    "topicId": "a6fbed54-f892-4503-a338-b7396af998df"
+                },
+                {
+                    "author": "{03680774-45A0-4E5C-A807-7445A0AE5CCC}",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1568903211672,
+                        "platform": "cinco_8951",
+                        "source": "{03680774-45A0-4E5C-A807-7445A0AE5CCC}"
+                    },
+                    "date": 1568903211672,
+                    "id": "1cb0c304-9d59-48ef-82ad-0b27e092d69b",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 179,
+                    "targetId": 2979477,
+                    "to": 5,
+                    "topicId": "a6fbed54-f892-4503-a338-b7396af998df"
+                }
+            ],
+            "totalMessageCount": 2,
+            "type": "ACTIVITY_TRANSACTIONS"
+        },
+        {
+            "author": "{3FAC78F0-4AA2-4982-AC78-F04AA2798222}",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1568804644223,
+                "platform": "cinco_8936",
+                "source": "{3FAC78F0-4AA2-4982-AC78-F04AA2798222}"
+            },
+            "date": 1568804644223,
+            "dateEdited": 1568804644223,
+            "id": "11e5f92d-b09c-4f40-9874-23af97649f5a",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1568804644223,
+                "platform": "cinco_8936",
+                "source": "{3FAC78F0-4AA2-4982-AC78-F04AA2798222}"
+            },
+            "messages": [
+                {
+                    "author": "{3FAC78F0-4AA2-4982-AC78-F04AA2798222}",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1568804644223,
+                        "platform": "cinco_8936",
+                        "source": "{3FAC78F0-4AA2-4982-AC78-F04AA2798222}"
+                    },
+                    "date": 1568804644223,
+                    "id": "29a279b3-ce47-4d2d-95ba-726dada4799b",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 178,
+                    "targetId": 2971618,
+                    "to": 10,
+                    "topicId": "11e5f92d-b09c-4f40-9874-23af97649f5a"
+                },
+                {
+                    "author": "{3FAC78F0-4AA2-4982-AC78-F04AA2798222}",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1568804644223,
+                        "platform": "cinco_8936",
+                        "source": "{3FAC78F0-4AA2-4982-AC78-F04AA2798222}"
+                    },
+                    "date": 1568804644223,
+                    "id": "bec88c52-fd84-427e-832e-28f4afc9164f",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 179,
+                    "targetId": 3052876,
+                    "to": 10,
+                    "topicId": "11e5f92d-b09c-4f40-9874-23af97649f5a"
+                }
+            ],
+            "totalMessageCount": 2,
+            "type": "ACTIVITY_TRANSACTIONS"
+        },
+        {
+            "author": "NightlyLeagueUpdateTaskProcessor",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1568794383454,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "date": 1568794383454,
+            "dateEdited": 1568794383454,
+            "for": 20,
+            "id": "6f182aaa-d92a-4b2c-aea1-dff140299f9d",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1568794383454,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "messages": [
+                {
+                    "author": "NightlyLeagueUpdateTaskProcessor",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1568794383454,
+                        "platform": "lm-processor",
+                        "source": "NightlyLeagueUpdateTaskProcessor"
+                    },
+                    "date": 1568794383454,
+                    "for": 20,
+                    "from": 0,
+                    "id": "b7123dc8-0b7b-4408-b92b-7bd4f6de831d",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 180,
+                    "targetId": -16009,
+                    "to": 2,
+                    "topicId": "6f182aaa-d92a-4b2c-aea1-dff140299f9d"
+                },
+                {
+                    "author": "NightlyLeagueUpdateTaskProcessor",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1568794383454,
+                        "platform": "lm-processor",
+                        "source": "NightlyLeagueUpdateTaskProcessor"
+                    },
+                    "date": 1568794383454,
+                    "id": "c46a81b5-9d93-4276-99be-e6510d4dfeed",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 181,
+                    "targetId": -16034,
+                    "to": 2,
+                    "topicId": "6f182aaa-d92a-4b2c-aea1-dff140299f9d"
+                }
+            ],
+            "totalMessageCount": 2,
+            "type": "ACTIVITY_TRANSACTIONS"
+        },
+        {
+            "author": "NightlyLeagueUpdateTaskProcessor",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1568794383454,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "date": 1568794383454,
+            "dateEdited": 1568794383454,
+            "for": 18,
+            "id": "eebf4f4b-1988-4fa1-8a2c-fe06c3bfeff8",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1568794383454,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "messages": [
+                {
+                    "author": "NightlyLeagueUpdateTaskProcessor",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1568794383454,
+                        "platform": "lm-processor",
+                        "source": "NightlyLeagueUpdateTaskProcessor"
+                    },
+                    "date": 1568794383454,
+                    "for": 18,
+                    "from": 0,
+                    "id": "8f647852-12e5-4924-ae81-ce71f806e1c7",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 180,
+                    "targetId": 3115394,
+                    "to": 8,
+                    "topicId": "eebf4f4b-1988-4fa1-8a2c-fe06c3bfeff8"
+                },
+                {
+                    "author": "NightlyLeagueUpdateTaskProcessor",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1568794383454,
+                        "platform": "lm-processor",
+                        "source": "NightlyLeagueUpdateTaskProcessor"
+                    },
+                    "date": 1568794383454,
+                    "id": "4ad3274b-5de5-4f18-bca1-a57effabc5c2",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 181,
+                    "targetId": 3043080,
+                    "to": 8,
+                    "topicId": "eebf4f4b-1988-4fa1-8a2c-fe06c3bfeff8"
+                }
+            ],
+            "totalMessageCount": 2,
+            "type": "ACTIVITY_TRANSACTIONS"
+        },
+        {
+            "author": "NightlyLeagueUpdateTaskProcessor",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1568794383454,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "date": 1568794383454,
+            "dateEdited": 1568794383454,
+            "for": 14,
+            "id": "e0d837b4-10c6-40a8-b0e1-cc5df597c66e",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1568794383454,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "messages": [
+                {
+                    "author": "NightlyLeagueUpdateTaskProcessor",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1568794383454,
+                        "platform": "lm-processor",
+                        "source": "NightlyLeagueUpdateTaskProcessor"
+                    },
+                    "date": 1568794383454,
+                    "for": 14,
+                    "from": 0,
+                    "id": "d2d817e9-e1cd-4713-a148-e1c5abaeaeab",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 180,
+                    "targetId": 3043116,
+                    "to": 1,
+                    "topicId": "e0d837b4-10c6-40a8-b0e1-cc5df597c66e"
+                }
+            ],
+            "totalMessageCount": 1,
+            "type": "ACTIVITY_TRANSACTIONS"
+        },
+        {
+            "author": "NightlyLeagueUpdateTaskProcessor",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1568794383454,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "date": 1568794383454,
+            "dateEdited": 1568794383454,
+            "for": 9,
+            "id": "6d875ba1-ed05-402f-9c74-4c72a1e246d9",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1568794383454,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "messages": [
+                {
+                    "author": "NightlyLeagueUpdateTaskProcessor",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1568794383454,
+                        "platform": "lm-processor",
+                        "source": "NightlyLeagueUpdateTaskProcessor"
+                    },
+                    "date": 1568794383454,
+                    "for": 9,
+                    "from": 0,
+                    "id": "c3897e2c-987c-48dd-bae2-39288de4637b",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 180,
+                    "targetId": 2576414,
+                    "to": 3,
+                    "topicId": "6d875ba1-ed05-402f-9c74-4c72a1e246d9"
+                },
+                {
+                    "author": "NightlyLeagueUpdateTaskProcessor",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1568794383454,
+                        "platform": "lm-processor",
+                        "source": "NightlyLeagueUpdateTaskProcessor"
+                    },
+                    "date": 1568794383454,
+                    "id": "f2187448-d0aa-4c28-853c-fabc7af7d7a5",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 181,
+                    "targetId": 2570986,
+                    "to": 3,
+                    "topicId": "6d875ba1-ed05-402f-9c74-4c72a1e246d9"
+                }
+            ],
+            "totalMessageCount": 2,
+            "type": "ACTIVITY_TRANSACTIONS"
+        },
+        {
+            "author": "NightlyLeagueUpdateTaskProcessor",
+            "creationInfo": {
+                "clientAddress": null,
+                "date": 1568794383454,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "date": 1568794383454,
+            "dateEdited": 1568794383454,
+            "for": 8,
+            "id": "9b5aa2d1-50a7-46f7-865c-63b68294e971",
+            "isDeleted": false,
+            "isEdited": true,
+            "lastUpdateInfo": {
+                "clientAddress": null,
+                "date": 1568794383454,
+                "platform": "lm-processor",
+                "source": "NightlyLeagueUpdateTaskProcessor"
+            },
+            "messages": [
+                {
+                    "author": "NightlyLeagueUpdateTaskProcessor",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1568794383454,
+                        "platform": "lm-processor",
+                        "source": "NightlyLeagueUpdateTaskProcessor"
+                    },
+                    "date": 1568794383454,
+                    "for": 8,
+                    "from": 0,
+                    "id": "5b529642-26dd-4f8f-ba55-0fe7803a40d4",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 180,
+                    "targetId": 3121422,
+                    "to": 2,
+                    "topicId": "9b5aa2d1-50a7-46f7-865c-63b68294e971"
+                },
+                {
+                    "author": "NightlyLeagueUpdateTaskProcessor",
+                    "creationInfo": {
+                        "clientAddress": null,
+                        "date": 1568794383454,
+                        "platform": "lm-processor",
+                        "source": "NightlyLeagueUpdateTaskProcessor"
+                    },
+                    "date": 1568794383454,
+                    "id": "6a94336b-c93e-4de4-88e0-ac1841ca9913",
+                    "isAlternateFormat": false,
+                    "isDeleted": false,
+                    "isEdited": false,
+                    "messageTypeId": 181,
+                    "targetId": 4039359,
+                    "to": 2,
+                    "topicId": "9b5aa2d1-50a7-46f7-865c-63b68294e971"
+                }
+            ],
+            "totalMessageCount": 2,
+            "type": "ACTIVITY_TRANSACTIONS"
+        }
+    ]
+}
