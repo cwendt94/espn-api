@@ -33,7 +33,16 @@ league_id = 1234
 year = 2018
 league = League(league_id, year)
 ```
-For private league you will need to get your swid and espn_s2.(Chrome Browser) You can find these two values after logging into
+For private league you will need to get your swid and espn_s2. You can automatically get these by inputting your ESPN username and password. 
+```python
+from ff_espn_api import League
+league_id = 1234
+year = 2018
+username = 'username@gmail.com'
+password = 'password1234'
+league = League(league_id, year, username, password)
+```
+(Chrome Browser) You can also find these two values after logging into
 your espn fantasy football account on espn's website. Then right click anywhere on the website and click inspect
 option. From there click Application on the top bar. On the left under Storage section click Cookies then http://fantasy.espn.com.
 From there you should be able to find your swid and espn_s2 variables and values!
@@ -43,7 +52,7 @@ league_id = 1234
 year = 2018
 swid = '{03JFJHW-FWFWF-044G}'
 espn_s2 = 'ASCWDWheghjwwqfwjqhgjkjgegkje'
-league = League(league_id, year, espn_s2, swid)
+league = League(league_id, year, espn_s2=espn_s2, swid=swid)
 ```
 
 ### View teams information
