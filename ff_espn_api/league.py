@@ -450,8 +450,7 @@ class League(object):
         # Utilize API-Key and login information to get the swid and s2 keys
         headers['authorization'] = 'APIKEY ' + api_key
         payload = {'loginValue': self.username, 'password': self.password}
-        response = requests.post(url_login,
-                                 headers=headers, json=payload)
+        response = requests.post(url_login, headers=headers, json=payload)
         if response.status_code != 200:
             print('Authentication unsuccessful - check username and password input')
             print('Retry the authentication or continuing without private league access')

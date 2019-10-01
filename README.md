@@ -33,7 +33,8 @@ league_id = 1234
 year = 2018
 league = League(league_id, year)
 ```
-For private league you will need to get your swid and espn_s2. You can automatically get these by inputting your ESPN username and password. 
+For private league you will need to get your swid and espn_s2. You can pull these values automatically by inputting your 
+ESPN username and password. This will simulate logging into your espn account in order to pull the values out.
 ```python
 from ff_espn_api import League
 league_id = 1234
