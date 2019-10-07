@@ -13,6 +13,7 @@ from .box_score import BoxScore
 from .box_player import BoxPlayer
 from .player import Player
 from .activity import Activity
+from .free_agent_auction_bid import FreeAgentAuctionBid
 from .utils import power_points, two_step_dominance
 from .constant import POSITION_MAP
 
@@ -34,7 +35,7 @@ class League(object):
     def __init__(self, league_id: int, year: int,  username=None, password=None, espn_s2=None, swid=None):
         self.league_id = league_id
         self.year = year
-        # older season data is stored at a different endpoint 
+        # older season data is stored at a different endpoint
         if year < 2018:
             self.ENDPOINT = "https://fantasy.espn.com/apis/v3/games/ffl/leagueHistory/" + str(league_id) + "?seasonId=" + str(year)
         else:
@@ -74,7 +75,7 @@ class League(object):
         else:
             self.current_week = data['status']['currentMatchupPeriod']
         self.nfl_week = data['status']['latestScoringPeriod']
-        
+
 
         self._fetch_settings()
         self._fetch_players()
@@ -116,7 +117,7 @@ class League(object):
         team_roster = {}
         for team in data['teams']:
             team_roster[team['id']] = team['roster']
-        
+
         for team in teams:
             for member in members:
                 # For league that is not full the team will not have a owner field
@@ -156,7 +157,7 @@ class League(object):
 
         data = r.json() if self.year > 2017 else r.json()[0]
         self.settings = Settings(data['settings'])
-    
+
     def _fetch_players(self):
         params = {
             'scoringPeriodId': 0,
@@ -187,11 +188,11 @@ class League(object):
         checkRequestStatus(self.status)
 
         data = r.json() if self.year > 2017 else r.json()[0]
-        
+
         # League has not drafted yet
         if not data['draftDetail']['drafted']:
             return
-        
+
         picks = data['draftDetail']['picks']
         for pick in picks:
             team = self.get_team_data(pick['teamId'])
@@ -205,13 +206,13 @@ class League(object):
             keeper_status = pick['keeper']
 
             self.draft.append(Pick(team, playerId, playerName, round_num, round_pick, bid_amount, keeper_status))
-    
+
     def _get_nfl_schedule(self, week: int):
         endpoint = 'https://fantasy.espn.com/apis/v3/games/ffl/seasons/' + str(self.year) + '?view=proTeamSchedules_wl'
         r = requests.get(endpoint, cookies=self.cookies)
         self.status = r.status_code
         checkRequestStatus(self.status)
-        
+
         pro_teams = r.json()['settings']['proTeams']
         pro_team_schedule = {}
 
@@ -220,7 +221,7 @@ class League(object):
                 game_data = team['proGamesByScoringPeriod'][str(week)][0]
                 pro_team_schedule[team['id']] = (game_data['homeProTeamId'], game_data['date'])  if team['id'] == game_data['awayProTeamId'] else (game_data['awayProTeamId'], game_data['date'])
         return pro_team_schedule
-    
+
     def _get_positional_ratings(self, week: int):
         params = {
             'view': 'mPositionalRatings',
@@ -254,7 +255,7 @@ class League(object):
         team_roster = {}
         for team in data['teams']:
             team_roster[team['id']] = team['roster']
-        
+
         for team in self.teams:
             roster = team_roster[team.team_id]
             team._fetch_roster(roster)
@@ -266,7 +267,7 @@ class League(object):
     def top_scorer(self) -> Team:
         most_pf = sorted(self.teams, key=lambda x: x.points_for, reverse=True)
         return most_pf[0]
-    
+
     def least_scorer(self) -> Team:
         least_pf = sorted(self.teams, key=lambda x: x.points_for, reverse=False)
         return least_pf[0]
@@ -282,7 +283,7 @@ class League(object):
         top_scored_tup = [(i, j) for (i, j) in zip(self.teams, top_week_points)]
         top_tup = sorted(top_scored_tup, key=lambda tup: int(tup[1]), reverse=True)
         return top_tup[0]
-    
+
     def least_scored_week(self) -> Tuple[Team, int]:
         least_week_points = []
         for team in self.teams:
@@ -296,7 +297,7 @@ class League(object):
             if team_id == team.team_id:
                 return team
         return None
-    
+
     def recent_activity(self, size: int = 25, only_trades = False) -> List[Activity]:
         '''Returns a list of recent league activities (Add, Drop, Trade)'''
         if self.year < 2019:
@@ -308,7 +309,7 @@ class League(object):
         params = {
             'view': 'kona_league_communication'
         }
-        
+
         filters = {"topics":{"filterType":{"value":["ACTIVITY_TRANSACTIONS"]},"limit":size,"limitPerMessageSet":{"value":25},"offset":0,"sortMessageDate":{"sortPriority":1,"sortAsc":False},"sortFor":{"sortPriority":2,"sortAsc":False},"filterDateRange":{"value":1564689600000,"additionalValue":1583110842000},"filterIncludeMessageTypeIds":{"value":msg_types}}}
         headers = {'x-fantasy-filter': json.dumps(filters)}
 
@@ -321,6 +322,91 @@ class League(object):
         activity = [Activity(topic, self.player_map, self.get_team_data) for topic in data]
 
         return activity
+
+    def get_free_agent_auction_bids(self, week: int = None) -> List[FreeAgentAuctionBid]:
+        '''Returns a list of free agent auction bids'''
+        if not week:
+            week = self.current_week
+
+        params = {
+            'scoringPeriodId': week,
+            'view': 'mTransactions2'
+        }
+
+        filters = {"transactions": {"filterType": {"value": ["WAIVER", "WAIVER_ERROR"]}}}
+        headers = {'x-fantasy-filter': json.dumps(filters)}
+
+        r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies, headers=headers)
+        self.status = r.status_code
+        checkRequestStatus(self.status)
+
+        data = r.json()['transactions']
+
+        bids = [FreeAgentAuctionBid(bid, self.player_map, self.get_team_data) for bid in data]
+
+        return bids
+
+    def free_agent_auction_report(self, week: int = None, report_num: int = None) -> None:
+        '''Returns a human readable free agent auction report'''
+        if not week:
+            week = self.current_week
+        bids = self.get_free_agent_auction_bids(week)
+        # TODO: I don't know what ESPN returns if there are no waivers processed, don't have a league to test on
+        if len(bids) == 0:
+            print("There were no free agent auctions this week")
+            return
+
+        # If there are multiple waiver runs in a scoring period, ESPN API returns them all at once
+        # need to determine how many waiver periods there were, and return the correct one
+        reports = {bids[0].time: [bids[0]]}
+        for bid in bids[1:]:
+            found = False
+            if bid.result != 'Canceled':
+                for report_time in reports:
+                    if bid.time == report_time:
+                        reports[report_time].append(bid)
+                        found = True
+                        break
+                if not found:
+                    reports[bid.time] = [bid]
+        reports = [report for _, report in sorted(reports.items())]
+        if not report_num:
+            report_num = 1
+        if report_num > len(reports):
+            print('ERROR: There are only {} free agent reports for week {}'.format(len(reports), week))
+            return
+        report = reports[report_num - 1]
+
+        # sort by bid amount, grab largest remaining bid, and grab all other bids on that same player
+        report.sort(reverse=True)
+        output = []
+        while len(report) > 0:
+            if report[0].result == 'Processed':
+                temp = '${2}: {0} to {1}'.format(self.player_map[report[0].player],
+                                                  self.get_team_data(report[0].teamId).team_name,
+                                                  report[0].amount)
+                if report[0].dropped_player:
+                    temp += ' (Dropped {})'.format(self.player_map[report[0].dropped_player])
+                output.append(temp)
+                for bid in list(report[1:]):  # iterate over copy of list, freeing us to modify the original
+                    if bid.player == report[0].player:
+                        temp = '    ${1} (${2}): {0}'.format(self.get_team_data(bid.teamId).team_name,
+                                                             bid.amount,
+                                                             bid.amount - report[0].amount)
+                        if bid.amount > report[0].amount:
+                            temp += ' (Player already dropped)'
+                        output.append(temp)
+                        report.remove(bid)
+            else:
+                temp = 'Player already dropped: ${0} {1} to {2} not processed' \
+                    .format(report[0].amount,
+                            self.player_map[report[0].player],
+                            self.get_team_data(report[0].teamId).team_name)
+                output.append(temp)
+            report.remove(report[0])
+
+        report_string = '\n'.join(output)
+        return report_string
 
     def scoreboard(self, week: int = None) -> List[Matchup]:
         '''Returns list of matchups for a given week'''
@@ -345,7 +431,7 @@ class League(object):
                     matchup.home_team = team
                 elif matchup.away_team == team.team_id:
                     matchup.away_team = team
-        
+
         return matchups
 
     def box_scores(self, week: int = None) -> List[BoxScore]:
@@ -360,7 +446,7 @@ class League(object):
             'view': 'mMatchupScore',
             'scoringPeriodId': week,
         }
-        
+
         filters = {"schedule":{"filterMatchupPeriodIds":{"value":[week]}}}
         headers = {'x-fantasy-filter': json.dumps(filters)}
 
@@ -382,7 +468,7 @@ class League(object):
                 elif matchup.away_team == team.team_id:
                     matchup.away_team = team
         return box_data
-        
+
     def power_rankings(self, week: int=None):
         '''Return power rankings for any week'''
 
@@ -412,11 +498,11 @@ class League(object):
             raise Exception('Cant use free agents before 2019')
         if not week:
             week = self.current_week
-        
+
         slot_filter = []
         if position and position in POSITION_MAP:
             slot_filter = [POSITION_MAP[position]]
-        
+
         params = {
             'view': 'kona_player_info',
             'scoringPeriodId': week,
