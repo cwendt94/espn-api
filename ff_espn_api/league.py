@@ -6,12 +6,13 @@ from typing import List, Tuple
 
 
 from .team import Team
-from .trade import Trade
 from .settings import Settings
 from .matchup import Matchup
 from .pick import Pick
 from .box_score import BoxScore
+from .box_player import BoxPlayer
 from .player import Player
+from .activity import Activity
 from .utils import power_points, two_step_dominance
 from .constant import POSITION_MAP
 
@@ -30,7 +31,7 @@ def checkRequestStatus(status: int) -> None:
 
 class League(object):
     '''Creates a League instance for Public/Private ESPN league'''
-    def __init__(self, league_id: int, year: int, espn_s2=None, swid=None):
+    def __init__(self, league_id: int, year: int,  username=None, password=None, espn_s2=None, swid=None):
         self.league_id = league_id
         self.year = year
         # older season data is stored at a different endpoint 
@@ -44,6 +45,8 @@ class League(object):
         self.espn_s2 = espn_s2
         self.swid = swid
         self.cookies = None
+        self.username = username
+        self.password = password
         self.current_week = 0
         self.nfl_week = 0
         if self.espn_s2 and self.swid:
@@ -51,6 +54,8 @@ class League(object):
                 'espn_s2': self.espn_s2,
                 'SWID': self.swid
             }
+        elif self.username and self.password:
+            self.authentication()
         self._fetch_league()
 
     def __repr__(self):
@@ -200,6 +205,40 @@ class League(object):
             keeper_status = pick['keeper']
 
             self.draft.append(Pick(team, playerId, playerName, round_num, round_pick, bid_amount, keeper_status))
+    
+    def _get_nfl_schedule(self, week: int):
+        endpoint = 'https://fantasy.espn.com/apis/v3/games/ffl/seasons/' + str(self.year) + '?view=proTeamSchedules_wl'
+        r = requests.get(endpoint, cookies=self.cookies)
+        self.status = r.status_code
+        checkRequestStatus(self.status)
+        
+        pro_teams = r.json()['settings']['proTeams']
+        pro_team_schedule = {}
+
+        for team in pro_teams:
+            if team['id'] != 0 and team['byeWeek'] != week:
+                game_data = team['proGamesByScoringPeriod'][str(week)][0]
+                pro_team_schedule[team['id']] = (game_data['homeProTeamId'], game_data['date'])  if team['id'] == game_data['awayProTeamId'] else (game_data['awayProTeamId'], game_data['date'])
+        return pro_team_schedule
+    
+    def _get_positional_ratings(self, week: int):
+        params = {
+            'view': 'mPositionalRatings',
+            'scoringPeriodId': week,
+        }
+
+        r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
+        self.status = r.status_code
+        checkRequestStatus(self.status)
+        ratings = r.json()['positionAgainstOpponent']['positionalRatings']
+
+        positional_ratings = {}
+        for pos, rating in ratings.items():
+            teams_rating = {}
+            for team, data in rating['ratingsByOpponent'].items():
+                teams_rating[team] = data['rank']
+            positional_ratings[pos] = teams_rating
+        return positional_ratings
 
     def load_roster_week(self, week: int) -> None:
         '''Sets Teams Roster for a Certain Week'''
@@ -221,7 +260,7 @@ class League(object):
             team._fetch_roster(roster)
 
     def standings(self) -> List[Team]:
-        standings = sorted(self.teams, key=lambda x: x.final_standing, reverse=False)
+        standings = sorted(self.teams, key=lambda x: x.final_standing if x.final_standing != 0 else x.standing, reverse=False)
         return standings
 
     def top_scorer(self) -> Team:
@@ -258,9 +297,30 @@ class League(object):
                 return team
         return None
     
-    # TODO League Trades, checks if any trades happened recently
-    def league_trades(self):
-        pass
+    def recent_activity(self, size: int = 25, only_trades = False) -> List[Activity]:
+        '''Returns a list of recent league activities (Add, Drop, Trade)'''
+        if self.year < 2019:
+            raise Exception('Cant use recent activity before 2019')
+
+        msg_types = [178,180,179,239,181,244]
+        if only_trades:
+            msg_types = [244]
+        params = {
+            'view': 'kona_league_communication'
+        }
+        
+        filters = {"topics":{"filterType":{"value":["ACTIVITY_TRANSACTIONS"]},"limit":size,"limitPerMessageSet":{"value":25},"offset":0,"sortMessageDate":{"sortPriority":1,"sortAsc":False},"sortFor":{"sortPriority":2,"sortAsc":False},"filterDateRange":{"value":1564689600000,"additionalValue":1583110842000},"filterIncludeMessageTypeIds":{"value":msg_types}}}
+        headers = {'x-fantasy-filter': json.dumps(filters)}
+
+        r = requests.get(self.ENDPOINT + '/communication/', params=params, cookies=self.cookies, headers=headers)
+        self.status = r.status_code
+        checkRequestStatus(self.status)
+
+        data = r.json()['topics']
+
+        activity = [Activity(topic, self.player_map, self.get_team_data) for topic in data]
+
+        return activity
 
     def scoreboard(self, week: int = None) -> List[Matchup]:
         '''Returns list of matchups for a given week'''
@@ -287,12 +347,13 @@ class League(object):
                     matchup.away_team = team
         
         return matchups
-    
+
     def box_scores(self, week: int = None) -> List[BoxScore]:
-        '''Returns list of box score for a given week'''
-        if self.year < 2018:
-            raise Exception('Cant use box score before 2018')
-        if not week:
+        '''Returns list of box score for a given week\n
+        Should only be used with most recent season'''
+        if self.year < 2019:
+            raise Exception('Cant use box score before 2019')
+        if not week or week > self.current_week:
             week = self.current_week
 
         params = {
@@ -310,7 +371,9 @@ class League(object):
         data = r.json()
 
         schedule = data['schedule']
-        box_data = [BoxScore(matchup) for matchup in schedule]
+        pro_schedule = self._get_nfl_schedule(week)
+        positional_rankings = self._get_positional_ratings(week)
+        box_data = [BoxScore(matchup, pro_schedule, positional_rankings, week) for matchup in schedule]
 
         for team in self.teams:
             for matchup in box_data:
@@ -320,10 +383,10 @@ class League(object):
                     matchup.away_team = team
         return box_data
         
-    def power_rankings(self, week):
+    def power_rankings(self, week: int=None):
         '''Return power rankings for any week'''
 
-        if week <= 0 or week > self.current_week:
+        if not week or week <= 0 or week > self.current_week:
             week = self.current_week
         # calculate win for every week
         win_matrix = []
@@ -342,10 +405,11 @@ class League(object):
         return power_rank
 
     def free_agents(self, week: int=None, size: int=50, position: str=None) -> List[Player]:
-        '''Returns a List of Free Agents for a Given Week'''
+        '''Returns a List of Free Agents for a Given Week\n
+        Should only be used with most recent season'''
 
-        if self.year < 2018:
-            raise Exception('Cant use free agents before 2018')
+        if self.year < 2019:
+            raise Exception('Cant use free agents before 2019')
         if not week:
             week = self.current_week
         
@@ -365,6 +429,38 @@ class League(object):
         checkRequestStatus(self.status)
 
         players = r.json()['players']
+        pro_schedule = self._get_nfl_schedule(week)
+        positional_rankings = self._get_positional_ratings(week)
 
-        return [Player(player) for player in players]
-            
+        return [BoxPlayer(player, pro_schedule, positional_rankings, week) for player in players]
+
+    def authentication(self):
+        url_api_key = 'https://registerdisney.go.com/jgc/v5/client/ESPN-FANTASYLM-PROD/api-key?langPref=en-US'
+        url_login = 'https://ha.registerdisney.go.com/jgc/v5/client/ESPN-FANTASYLM-PROD/guest/login?langPref=en-US'
+
+        # Make request to get the API-Key
+        headers = {'Content-Type': 'application/json'}
+        response = requests.post(url_api_key, headers=headers)
+        if response.status_code != 200 or 'api-key' not in response.headers:
+            print('Unable to access API-Key')
+            print('Retry the authentication or continuing without private league access')
+            return
+        api_key = response.headers['api-key']
+
+        # Utilize API-Key and login information to get the swid and s2 keys
+        headers['authorization'] = 'APIKEY ' + api_key
+        payload = {'loginValue': self.username, 'password': self.password}
+        response = requests.post(url_login, headers=headers, json=payload)
+        if response.status_code != 200:
+            print('Authentication unsuccessful - check username and password input')
+            print('Retry the authentication or continuing without private league access')
+            return
+        data = response.json()
+        if data['error'] is not None:
+            print('Authentication unsuccessful - error:' + str(data['error']))
+            print('Retry the authentication or continuing without private league access')
+            return
+        self.cookies = {
+            "espn_s2": data['data']['s2'],
+            "swid": data['data']['profile']['swid']
+        }
