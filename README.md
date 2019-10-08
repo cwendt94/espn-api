@@ -4,6 +4,8 @@
 
 This package uses ESPN's Fantasy Football API to extract data from any public or private league. I am currently using this package for my leagues personal website and I plan to keep updating and adding features.
 
+**Notice: I am starting to move some documentation to the project [Wiki Page](https://github.com/cwendt94/ff-espn-api/wiki). The wiki page will have better documentation of Object variables and functions!**
+
 Please feel free to make suggestions, bug reports, and pull request for features or fixes!
 
 This package was inspired and based off of [rbarton65/espnff](https://github.com/rbarton65/espnff).
@@ -31,7 +33,17 @@ league_id = 1234
 year = 2018
 league = League(league_id, year)
 ```
-For private league you will need to get your swid and espn_s2.(Chrome Browser) You can find these two values after logging into
+For private league you will need to get your swid and espn_s2. You can pull these values automatically by inputting your 
+ESPN username and password. This will simulate logging into your espn account in order to pull the values out.
+```python
+from ff_espn_api import League
+league_id = 1234
+year = 2018
+username = 'username@gmail.com'
+password = 'password1234'
+league = League(league_id, year, username, password)
+```
+(Chrome Browser) You can also find these two values after logging into
 your espn fantasy football account on espn's website. Then right click anywhere on the website and click inspect
 option. From there click Application on the top bar. On the left under Storage section click Cookies then http://fantasy.espn.com.
 From there you should be able to find your swid and espn_s2 variables and values!
@@ -41,7 +53,7 @@ league_id = 1234
 year = 2018
 swid = '{03JFJHW-FWFWF-044G}'
 espn_s2 = 'ASCWDWheghjwwqfwjqhgjkjgegkje'
-league = League(league_id, year, espn_s2, swid)
+league = League(league_id, year, espn_s2=espn_s2, swid=swid)
 ```
 
 ### View teams information
@@ -172,6 +184,48 @@ Team(Team Viking Queen)
 'TE'
 >>> box_scores[0].home_lineup[2].name
 'Zach Ertz'
+>>> box_scores[0].home_lineup[2].pro_opponent
+'GB'
+>>> box_scores[0].home_lineup[2].pro_pos_rank
+3
+```
+### Leagues Recent Activity
+This can be used to view league trades and wavier wire drops/adds
+```python
+# inputs:
+# - size: int defaults to 25
+# - only_trades: boolean defaults to False
+>>> activity = league.recent_activity() # returns List[Activity]
+>>> len(activity)
+25
+ # Activity object has a field called actions which is a list of tuples (Team Object, action, player)
+ # this list holds all the actions that happend with this activity
+>>> activity[0].actions
+[(Team(Sleepy  Joe ), 'DROPPED', "Ka'imi Fairbairn"), (Team(Sleepy  Joe ), 'ADDED', 'Ty Long')]
+
+>>> for action in activity[0].actions:
+...     action
+...
+(Team(Sleepy  Joe ), 'DROPPED', "Ka'imi Fairbairn")
+(Team(Sleepy  Joe ), 'ADDED', 'Ty Long')
+
+>>> for action in activity[24].actions:
+...     action
+...
+(Team(Mack Sauce), 'DROPPED', 'Terrell Suggs')
+
+>>> activitys = league.recent_activity(only_trades=True)
+>>> for activity in activitys:
+...     for action in activity.actions:
+...             action
+...     print('\n')
+...
+(Team(Team 2), 'TRADED', 'Aaron Rodgers')
+(Team(Team 1), 'TRADED', 'Adrian Peterson')
+
+
+(Team(Team 2), 'TRADED', 'Leighton Vander Esch')
+(Team(Team 1), 'TRADED', 'Tom Brady')
 ```
 
 ### Helper functions

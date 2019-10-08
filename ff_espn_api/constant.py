@@ -69,3 +69,12 @@ PRO_TEAM_MAP = {
     33: 'BAL',
     34: 'HOU'
 }
+
+ACTIVITY_MAP = {
+    178: 'ADDED',
+    180: 'ADDED',
+    179: 'DROPPED',
+    181: 'DROPPED',
+    239: 'DROPPED',
+    244: 'TRADED'
+}
