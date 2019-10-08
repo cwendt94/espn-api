@@ -31,7 +31,7 @@ def checkRequestStatus(status: int) -> None:
 
 class League(object):
     '''Creates a League instance for Public/Private ESPN league'''
-    def __init__(self, league_id: int, year: int,  username=None, password=None, espn_s2=None, swid=None):
+    def __init__(self, league_id: int, year: int, espn_s2=None, swid=None, username=None, password=None):
         self.league_id = league_id
         self.year = year
         # older season data is stored at a different endpoint 
