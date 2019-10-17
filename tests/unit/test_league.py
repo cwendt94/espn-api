@@ -2,6 +2,7 @@ from unittest import mock, TestCase
 from ff_espn_api import League
 import requests_mock
 import json
+import io
 
 class LeagueTest(TestCase):
     def setUp(self):
@@ -245,6 +246,64 @@ class LeagueTest(TestCase):
 
         activity  = league.recent_activity()
         self.assertEqual(repr(activity[0].actions[0][0]), 'Team(Perscription Mixon)')
+
+    @mock.patch.object(League, '_fetch_league')
+    def test_cookie_set(self, mock_fetch_league):
+        league = League(league_id=1234, year=2019, espn_s2='cookie1', swid='cookie2')
+        self.assertEqual(league.espn_s2, 'cookie1')
+        self.assertEqual(league.swid, 'cookie2')
+    
+    @mock.patch.object(League, 'authentication')
+    @mock.patch.object(League, '_fetch_league')
+    def test_username_pass_set(self, mock_authentication, mock_fetch_league):
+        league = League(league_id=1234, year=2019, username='user', password='pass')
+        self.assertEqual(league.username, 'user')
+        self.assertEqual(league.password, 'pass')
+
+    @requests_mock.Mocker()
+    @mock.patch.object(League, '_fetch_league')
+    @mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_authentication_api_fail(self, mock_request, mock_stdout, mock_fetch_league):
+        url_api_key = 'https://registerdisney.go.com/jgc/v5/client/ESPN-FANTASYLM-PROD/api-key?langPref=en-US'
+        mock_request.post(url_api_key, status_code=400)
+        league = League(league_id=1234, year=2019, username='user', password='pass')
+        self.assertEqual(mock_stdout.getvalue(), 'Unable to access API-Key\nRetry the authentication or continuing without private league access\n')
+    
+    @requests_mock.Mocker()
+    @mock.patch.object(League, '_fetch_league')
+    @mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_authentication_login_fail(self, mock_request, mock_stdout, mock_fetch_league):
+        url_api_key = 'https://registerdisney.go.com/jgc/v5/client/ESPN-FANTASYLM-PROD/api-key?langPref=en-US'
+        url_login = 'https://ha.registerdisney.go.com/jgc/v5/client/ESPN-FANTASYLM-PROD/guest/login?langPref=en-US'
+        mock_request.post(url_api_key,  headers={'api-key':'None'}, status_code=200)
+        mock_request.post(url_login, status_code=400, json={'eror': 'error'})
+
+        league = League(league_id=1234, year=2019, username='user', password='pass')
+        self.assertEqual(mock_stdout.getvalue(), 'Authentication unsuccessful - check username and password input\nRetry the authentication or continuing without private league access\n')
+    
+    @requests_mock.Mocker()
+    @mock.patch.object(League, '_fetch_league')
+    @mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_authentication_login_error(self, mock_request, mock_stdout, mock_fetch_league):
+        url_api_key = 'https://registerdisney.go.com/jgc/v5/client/ESPN-FANTASYLM-PROD/api-key?langPref=en-US'
+        url_login = 'https://ha.registerdisney.go.com/jgc/v5/client/ESPN-FANTASYLM-PROD/guest/login?langPref=en-US'
+        mock_request.post(url_api_key,  headers={'api-key':'None'}, status_code=200)
+        mock_request.post(url_login, status_code=200, json={'error': {}})
+
+        league = League(league_id=1234, year=2019, username='user', password='pass')
+        self.assertEqual(mock_stdout.getvalue(), 'Authentication unsuccessful - error:{}\nRetry the authentication or continuing without private league access\n')
+    
+    @requests_mock.Mocker()
+    @mock.patch.object(League, '_fetch_league')
+    def test_authentication_pass(self, mock_request, mock_fetch_league):
+        url_api_key = 'https://registerdisney.go.com/jgc/v5/client/ESPN-FANTASYLM-PROD/api-key?langPref=en-US'
+        url_login = 'https://ha.registerdisney.go.com/jgc/v5/client/ESPN-FANTASYLM-PROD/guest/login?langPref=en-US'
+        mock_request.post(url_api_key,  headers={'api-key':'None'}, status_code=200)
+        mock_request.post(url_login, status_code=200, json={'error': None,'data': {'s2': 'cookie1', 'profile': {'swid': 'cookie2'}}})
+
+        league = League(league_id=1234, year=2019, username='user', password='pass')
+        self.assertEqual(league.cookies['espn_s2'], 'cookie1')
+        self.assertEqual(league.cookies['swid'], 'cookie2')
         
 
 
