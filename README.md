@@ -4,8 +4,6 @@
 
 This package uses ESPN's Fantasy Football API to extract data from any public or private league. I am currently using this package for my leagues personal website and I plan to keep updating and adding features.
 
-**Notice: I am starting to move some documentation to the project [Wiki Page](https://github.com/cwendt94/ff-espn-api/wiki). The wiki page will have better documentation of Object variables and functions!**
-
 Please feel free to make suggestions, bug reports, and pull request for features or fixes!
 
 This package was inspired and based off of [rbarton65/espnff](https://github.com/rbarton65/espnff).
@@ -23,235 +21,27 @@ pip install ff_espn_api
 ```
 
 ## Usage
-This will show you how to use `ff-espn-api` with private or public leagues
-
-### Initial Start
-Public League
-```python
-from ff_espn_api import League
-league_id = 1234
-year = 2018
-league = League(league_id, year)
-```
-For private league you will need to get your swid and espn_s2. You can pull these values automatically by inputting your 
-ESPN username and password. This will simulate logging into your espn account in order to pull the values out.
-```python
-from ff_espn_api import League
-league_id = 1234
-year = 2018
-username = 'username@gmail.com'
-password = 'password1234'
-league = League(league_id, year, username, password)
-```
-(Chrome Browser) You can also find these two values after logging into
-your espn fantasy football account on espn's website. Then right click anywhere on the website and click inspect
-option. From there click Application on the top bar. On the left under Storage section click Cookies then http://fantasy.espn.com.
-From there you should be able to find your swid and espn_s2 variables and values!
-```python
-from ff_espn_api import League
-league_id = 1234
-year = 2018
-swid = '{03JFJHW-FWFWF-044G}'
-espn_s2 = 'ASCWDWheghjwwqfwjqhgjkjgegkje'
-league = League(league_id, year, espn_s2=espn_s2, swid=swid)
-```
-
-### View teams information
-```python
->>> league.teams
-[Team(Team 1), Team(Team 2), Team(FANTASY GOD), Team(THE KING), Team(Team 5), Team(Team Viking Queen), Team(Team 7), Team(Team 8), Team(Team Mizrachi), Team(Team 10)]
->>> team = league.teams[0]
->>> team.roster
-[Player(Travis Kelce), Player(Zach Ertz), Player(Josh Gordon), Player(Kenyan Drake), Player(Tarik Cohen), Player(Wil Lutz), Player(Dion Lewis), Player(Matthew Stafford), Player(Ezekiel Elliott), PLayer(Brandin Cooks), Player(Kerryon Johnson), Player(Mitchell Trubisky), Player(Bengals D/ST), Player(Courtland Sutton), Player(Spencer Ware), Player(Austin Ekeler)]
->>> team.wins
-10
->>> team.losses
-3
->>> team.final_standing
-4
->>> team.team_name
-'Team 1'
-```
-
-### Player Information
-```python
->>> team = league.teams[0]
->>> player = team.roster[0]
->>> player
-Player(Travis Kelce)
->>> player.name
-'Travis Kelce'
->>> player.playerId
-15847
->>> player.posRank
-10
->>> player.position
-'TE'
->>> player.proTeam
-'KC'
->>> player.eligibleSlots
-['WR/TE', 'TE', 'OP', 'BE', 'IR', 'RB/WR/TE']
->>> player.acquisitionType
-'DRAFT'
-```
-
-### View Free Agents
-You can add filters like:
-size: 10
-position: 'QB' or 'RB' or 'WR' or 'TE' or 'FLEX' or 'D/ST' or 'K'
-```python
->>> league.free_agents(size=5)
-[Player(James White), Player(Phillip Lindsay), Player(Jaylen Samuels), Player(LeSean McCoy), Player(David Njoku)]
->>> league.free_agents(size=5,position='QB')
-[Player(Jameis Winston), Player(Baker Mayfield), Player(Dak Prescott), Player(Josh Allen), Player(Nick Foles)]
->>> league.free_agents(size=5,position='WR')
-[Player(Chris Godwin), Player(Mike Williams), Player(Devin Funchess), Player(Emmanuel Sanders), Player(Josh Reynolds)]
->>> league.free_agents()
-[Player(James White), Player(Phillip Lindsay), Player(Jaylen Samuels), Player(LeSean McCoy), Player(David Njoku), Player(Ravens D/ST), Player(Gus Edwards), Player(Kareem Hunt), Player(Jameis Winston), Player(Matt
-Breida), Player(Chris Godwin), Player(Baker Mayfield), Player(Dak Prescott), Player(Josh Adams), Player(Titans D/ST), Player(Mike Williams), Player(Patriots D/ST), Player(Devin Funchess), Player(Royce Freeman), Player(Emmanuel Sanders), Player(Doug Martin), Player(Josh Reynolds), Player(Cooper Kupp), Player(Josh Allen), Player(T.J. Yeldon), Player(Cameron Brate), Player(Broncos D/ST), Player(DeSean Jackson), Player(DaeSean Hamilton), Player(Duke Johnson Jr.), Player(Derrius Guice), Player(Jeff Wilson Jr.), Player(Dante Pettis), Player(Ian Thomas), Player(Eagles D/ST), Player(Rashaad Penny), Player(Matt Prater), Player(Bills D/ST),
-Player(Dede Westbrook), Player(O.J. Howard), Player(Nick Foles), Player(Curtis Samuel), Player(Robert Foster), Player(Chiefs D/ST), Player(Hunter Henry), Player(Justin Jackson), Player(Anthony Miller), Player(Jalen Richard), Player(Kalen Ballage), Player(Marquez Valdes-Scantling)]
-```
-
-### View league draft
-```python
->>> league.draft
-[Pick(LeVeon Bell, Team(FANTASY GOD)), Pick(Todd Gurley II, Team(Team Mizrachi)), Pick(David Johnson, Team(Team 8)), Pick(Antonio Brown, Team(THE KING)), Pick(Ezekiel Elliott, Team(Team 7)), Pick(DeAndre Hopkins, Team(Team 2)), Pick(Julio Jones, Team(Team Viking Queen)), Pick(Alvin Kamara, Team(Team 10)), Pick(Odell Beckham Jr., Team(Team 5)), Pick(Kareem Hunt, Team(Team 1)), Pick(Michael Thomas, Team(Team 1))...]
->>> first_pick = league.draft[0]
->>> first_pick.playerName
-"Le'Veon Bell"
->>> first_pick.round_num
-1
->>> first_pick.round_pick
-1
->>> first_pick.team
-Team(FANTASY GOD)
->>>
-```
-
-### View league settings
-```python
->>> settings = league.settings
->>> settings.reg_season_count
-13
->>> settings.team_count
-10
->>> settings.veto_votes_required
-4
-```
-### *Get scoreboard of current/specific week (Should only use for seasons before 2018. Use box_scores instead. Box scores has live points and player data)
-```python
->>> league.scoreboard()
-[Matchup(Team(Team 8), Team(THE KING)), Matchup(Team(Team 7), Team(Team 1)), Matchup(Team(Team 2), Team(Team Viking Queen)), Matchup(Team(Team Mizrachi), Team(FANTASY GOD)), Matchup(Team(Team 10), Team(Team 5))]
->>> week = 3
->>> matchups = league.scoreboard(week)
->>> matchups[0].home_score
-89.2
->>> matchups[0].away_score
-88.62
->>> matchups
-[Matchup(Team(Team 1), Team(Team 10)), Matchup(Team(FANTASY GOD), Team(THE KING)), Matchup(Team(Team 7), Team(Team Viking Queen)), Matchup(Team(Team 5), Team(Team 2)), Matchup(Team(Team Mizrachi), Team(Team 8))]
->>> matchups[0].home_team
-Team(Team 1)
->>> matchups[0].away_team
-Team(Team 10)
-```
-### Get power rankings
-```python
->>> league.power_rankings(week=13)
-[('70.85', Team(Team 7)), ('65.20', Team(Team 1)), ('62.45', Team(Team 8)), ('57.70', Team(THE KING)), ('45.10', Team(Team Mizrachi)), ('42.80', Team(Team 10)), ('40.65', Team(Team Viking Queen)), ('37.30', Team(Team 2)), ('27.85', Team(Team 5)), ('20.40', Team(FANTASY GOD))]
-```
-
-### Get box score of current/specific week
-```python
->>> box_scores = league.box_scores(12)
->>> box_scores[0].home_team
-Team(Team 1)
->>> box_scores[0].away_team
-Team(Team Viking Queen)
->>> box_scores[0].home_score
-69.24
->>> box_scores[0].away_score
-87.62
->>> box_scores[0].home_lineup
-[Player(Kareem Hunt, points:0, projected:0), Player(Travis Kelce, points:0, projected:0), Player(Zach Ertz, points:15, projected:9), Player(Josh Gordon, points:7, projected:8), Player(Kenyan Drake, points:21, projected:8), Player(Devin Funchess, points:0, projected:0), Player(Tarik Cohen, points:11, projected:8), Player(Wil Lutz, points:10, projected:7), Player(Dion Lewis, points:4, projected:9), Player(Matthew Stafford, points:5, projected:15), Player(Ezekiel Elliott, points:20, projected:17), Player(Brandin Cooks, points:0, projected:0), Player(Kerryon Johnson, points:0, projected:0), Player(Mitchell Trubisky, points:0, projected:0), Player(Bengals D/ST, points:6, projected:-3), Player(Courtland Sutton, points:7, projected:1)]
->>> box_scores[0].home_lineup[2].points
-15.1
->>> box_scores[0].home_lineup[2].projected_points
-9.97
->>> box_scores[0].home_lineup[2].slot_position
-'TE'
->>> box_scores[0].home_lineup[2].position
-'TE'
->>> box_scores[0].home_lineup[2].name
-'Zach Ertz'
->>> box_scores[0].home_lineup[2].pro_opponent
-'GB'
->>> box_scores[0].home_lineup[2].pro_pos_rank
-3
-```
-### Leagues Recent Activity
-This can be used to view league trades and wavier wire drops/adds
-```python
-# inputs:
-# - size: int defaults to 25
-# - only_trades: boolean defaults to False
->>> activity = league.recent_activity() # returns List[Activity]
->>> len(activity)
-25
- # Activity object has a field called actions which is a list of tuples (Team Object, action, player)
- # this list holds all the actions that happend with this activity
->>> activity[0].actions
-[(Team(Sleepy  Joe ), 'DROPPED', "Ka'imi Fairbairn"), (Team(Sleepy  Joe ), 'ADDED', 'Ty Long')]
-
->>> for action in activity[0].actions:
-...     action
-...
-(Team(Sleepy  Joe ), 'DROPPED', "Ka'imi Fairbairn")
-(Team(Sleepy  Joe ), 'ADDED', 'Ty Long')
-
->>> for action in activity[24].actions:
-...     action
-...
-(Team(Mack Sauce), 'DROPPED', 'Terrell Suggs')
-
->>> activitys = league.recent_activity(only_trades=True)
->>> for activity in activitys:
-...     for action in activity.actions:
-...             action
-...     print('\n')
-...
-(Team(Team 2), 'TRADED', 'Aaron Rodgers')
-(Team(Team 1), 'TRADED', 'Adrian Peterson')
-
-
-(Team(Team 2), 'TRADED', 'Leighton Vander Esch')
-(Team(Team 1), 'TRADED', 'Tom Brady')
-```
-
-### Helper functions
-```python
->>> from ff_espn_api import League
->>> league_id = 1234
->>> year = 2018
->>> league = League(league_id, year)
->>> league.load_roster_week(3)
->>> league.standings()
-[Team(Team 8), Team(THE KING), Team(Team 7), Team(Team 1), Team(Team Viking Queen), Team(Team 2), Team(FANTASY GOD), Team(Team Mizrachi), Team(Team 10), Team(Team 5)]
->>> league.top_scorer()
-Team(Team 8)
->>> league.least_scorer()
-Team(FANTASY GOD)
->>> league.most_points_against()
-Team(Team Mizrachi)
->>> league.top_scored_week()
-(Team(Team Viking Queen), 219.74)
->>> league.least_scored_week()
-(Team(Team 5), 41.48)
->>> league.get_team_data(1)
-Team(Team 1)
-```
+[For usage and API details head over to the Wiki!](https://github.com/cwendt94/ff-espn-api/wiki)
 
 ### Run Tests
 ```
 python3 setup.py nosetests
 ```
+
+## Issue Reporting
+If you find a bug follow the steps below for reporting.
+
+1. Open a [new issue](https://github.com/cwendt94/ff-espn-api/issues) with a brief description of the bug for the title
+
+2. Run the application in debug mode to view ESPN API request's and response's
+    ```python
+    from ff_espn_api import League
+    league = League(league_id=1245, year=2019, debug=True)
+    ```
+    The application will print all requests and the response from ESPN's API in the console. I would suggest piping the console output to a text file as it will be a lot of data.
+
+3. Find the last log before the crash and copy it in the issue descrption with the line number of the crash or possible bug.
+
+4. Submit the new issue!
+
+I will try to comment on the issue as soon as possible with my thoughts and possible fix!
