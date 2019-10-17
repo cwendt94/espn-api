@@ -4,7 +4,7 @@ import time
 import json
 from typing import List, Tuple
 
-
+from .logger import setup_logger
 from .team import Team
 from .settings import Settings
 from .matchup import Matchup
@@ -31,7 +31,8 @@ def checkRequestStatus(status: int) -> None:
 
 class League(object):
     '''Creates a League instance for Public/Private ESPN league'''
-    def __init__(self, league_id: int, year: int, espn_s2=None, swid=None, username=None, password=None):
+    def __init__(self, league_id: int, year: int, espn_s2=None, swid=None, username=None, password=None, debug=False):
+        self.logger = setup_logger(debug=debug)
         self.league_id = league_id
         self.year = year
         # older season data is stored at a different endpoint 
@@ -65,7 +66,7 @@ class League(object):
 
         r = requests.get(self.ENDPOINT, params='', cookies=self.cookies)
         self.status = r.status_code
-
+        self.logger.debug(f'ESPN API Request: {self.ENDPOINT} \nESPN API Response: {r.json()}\n')
         checkRequestStatus(self.status)
 
         data = r.json() if self.year > 2017 else r.json()[0]
@@ -88,7 +89,7 @@ class League(object):
         }
         r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
         self.status = r.status_code
-
+        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} \nESPN API Response: {r.json()}\n')
         checkRequestStatus(self.status)
 
         data = r.json() if self.year > 2017 else r.json()[0]
@@ -100,6 +101,7 @@ class League(object):
         }
         r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
         self.status = r.status_code
+        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} \nESPN API Response: {r.json()}\n')
         checkRequestStatus(self.status)
 
         data = r.json() if self.year > 2017 else r.json()[0]
@@ -110,6 +112,7 @@ class League(object):
         }
         r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
         self.status = r.status_code
+        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} \nESPN API Response: {r.json()}\n')
         checkRequestStatus(self.status)
 
         data = r.json() if self.year > 2017 else r.json()[0]
@@ -151,7 +154,7 @@ class League(object):
 
         r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
         self.status = r.status_code
-
+        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} \nESPN API Response: {r.json()}\n')
         checkRequestStatus(self.status)
 
         data = r.json() if self.year > 2017 else r.json()[0]
@@ -166,7 +169,7 @@ class League(object):
         endpoint = 'https://fantasy.espn.com/apis/v3/games/ffl/seasons/' + str(self.year) + '/players'
         r = requests.get(endpoint, params=params, cookies=self.cookies)
         self.status = r.status_code
-
+        self.logger.debug(f'ESPN API Request: url: {endpoint} params: {params} \nESPN API Response: {r.json()}\n')
         checkRequestStatus(self.status)
 
         data = r.json()
@@ -183,7 +186,7 @@ class League(object):
 
         r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
         self.status = r.status_code
-
+        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} \nESPN API Response: {r.json()}\n')
         checkRequestStatus(self.status)
 
         data = r.json() if self.year > 2017 else r.json()[0]
@@ -210,6 +213,7 @@ class League(object):
         endpoint = 'https://fantasy.espn.com/apis/v3/games/ffl/seasons/' + str(self.year) + '?view=proTeamSchedules_wl'
         r = requests.get(endpoint, cookies=self.cookies)
         self.status = r.status_code
+        self.logger.debug(f'ESPN API Request: url: {endpoint} \nESPN API Response: {r.json()}\n')
         checkRequestStatus(self.status)
         
         pro_teams = r.json()['settings']['proTeams']
@@ -229,6 +233,7 @@ class League(object):
 
         r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
         self.status = r.status_code
+        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} \nESPN API Response: {r.json()}\n')
         checkRequestStatus(self.status)
         ratings = r.json()['positionAgainstOpponent']['positionalRatings']
 
@@ -248,6 +253,7 @@ class League(object):
         }
         r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
         self.status = r.status_code
+        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} \nESPN API Response: {r.json()}\n')
         checkRequestStatus(self.status)
 
         data = r.json() if self.year > 2017 else r.json()[0]
@@ -314,6 +320,7 @@ class League(object):
 
         r = requests.get(self.ENDPOINT + '/communication/', params=params, cookies=self.cookies, headers=headers)
         self.status = r.status_code
+        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT}/communication/ params: {params} headers: {headers} \nESPN API Response: {r.json()}\n')
         checkRequestStatus(self.status)
 
         data = r.json()['topics']
@@ -332,6 +339,7 @@ class League(object):
         }
         r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
         self.status = r.status_code
+        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} \nESPN API Response: {r.json()}\n')
         checkRequestStatus(self.status)
 
         data = r.json() if self.year > 2017 else r.json()[0]
@@ -366,6 +374,7 @@ class League(object):
 
         r = requests.get(self.ENDPOINT + '?view=mMatchup', params=params, cookies=self.cookies, headers=headers)
         self.status = r.status_code
+        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT}?view=mMatchup params: {params} headers: {headers} \nESPN API Response: {r.json()}\n')
         checkRequestStatus(self.status)
 
         data = r.json()
@@ -426,6 +435,7 @@ class League(object):
 
         r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies, headers=headers)
         self.status = r.status_code
+        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} headers: {headers} \nESPN API Response: {r.json()}\n')
         checkRequestStatus(self.status)
 
         players = r.json()['players']
