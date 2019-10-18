@@ -3,7 +3,8 @@ __all__ = ['League',
            'Settings',
            'Matchup',
            'Player',
-           'Pick'
+           'Pick',
+           'BoxPlayer'
            ]
 
 from .league import League
@@ -12,3 +13,4 @@ from .settings import Settings
 from .matchup import Matchup
 from .player import Player
 from .pick import Pick
+from .box_player import BoxPlayer

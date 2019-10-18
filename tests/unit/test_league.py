@@ -1,5 +1,5 @@
 from unittest import mock, TestCase
-from ff_espn_api import League
+from ff_espn_api import League, BoxPlayer
 import requests_mock
 import json
 import io
@@ -214,20 +214,20 @@ class LeagueTest(TestCase):
         valid_week = league.power_rankings(13)
         self.assertEqual(valid_week[0][0], '71.70')
         self.assertEqual(repr(valid_week[0][1]), 'Team(Misunderstood  Mistfits )')
-        
-    # TODO need to get data for most recent season
-    # @requests_mock.Mocker()        
-    # def test_free_agents(self, m):
-    #     self.mock_setUp(m)
 
-    #     league = League(self.league_id, self.season)
-        
-    #     with open('tests/unit/data/league_free_agents_2018.json') as f:
-    #         data = json.loads(f.read())
-    #     m.get(self.espn_endpoint + '?view=kona_player_info&scoringPeriodId=16', status_code=200, json=data)
-    #     free_agents = league.free_agents()
+    @requests_mock.Mocker()
+    @mock.patch.object(League, '_get_nfl_schedule')   
+    @mock.patch.object(League, '_get_positional_ratings')
+    @mock.patch.object(BoxPlayer, '__init__') 
+    def test_free_agents(self, m, mock_boxplayer, mock_nfl_schedule, mock_pos_ratings):
+        self.mock_setUp(m)
+        mock_boxplayer.return_value = None
+        league = League(self.league_id, self.season)
+        m.get(self.espn_endpoint + '?view=kona_player_info&scoringPeriodId=16', status_code=200, json={'players': [1, 2]})
+        league.year = 2019
+        free_agents = league.free_agents(position='QB')
 
-    #     self.assertEqual(repr(free_agents[0]), 'Player(Josh Gordon)')
+        self.assertEqual(len(free_agents), 2)
 
     @requests_mock.Mocker()        
     def test_recent_activity(self, m):
@@ -246,6 +246,7 @@ class LeagueTest(TestCase):
 
         activity  = league.recent_activity()
         self.assertEqual(repr(activity[0].actions[0][0]), 'Team(Perscription Mixon)')
+        self.assertEqual(len(repr(activity)), 2255)
 
     @mock.patch.object(League, '_fetch_league')
     def test_cookie_set(self, mock_fetch_league):
