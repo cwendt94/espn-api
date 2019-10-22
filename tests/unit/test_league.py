@@ -1,5 +1,5 @@
 from unittest import mock, TestCase
-from ff_espn_api import League, BoxPlayer
+from espn_api.football import League, BoxPlayer
 import requests_mock
 import json
 import io

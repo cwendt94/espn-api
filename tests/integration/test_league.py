@@ -1,5 +1,5 @@
 from unittest import TestCase
-from ff_espn_api import League
+from espn_api.football import League
 
 # Integration test to make sure ESPN's API didnt change
 class LeagueTest(TestCase):
