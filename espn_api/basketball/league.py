@@ -5,6 +5,7 @@ import json
 from typing import List, Tuple
 
 from .team import Team
+from .player import Player
 import pdb
 
 
@@ -89,7 +90,7 @@ class League(object):
                 elif member['id'] == team['owners'][0]:
                     break
             roster = team_roster[team['id']]
-            self.teams.append(Team(team, member))
+            self.teams.append(Team(team, member, roster))
 
         # sort by team ID
         self.teams = sorted(self.teams, key=lambda x: x.team_id, reverse=False)
@@ -125,3 +126,4 @@ class League(object):
             "espn_s2": data['data']['s2'],
             "swid": data['data']['profile']['swid']
         }
+
