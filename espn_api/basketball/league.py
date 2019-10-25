@@ -4,6 +4,7 @@ import time
 import json
 from typing import List, Tuple
 
+from .logger import setup_logger
 from .team import Team
 from .player import Player
 import pdb
@@ -24,6 +25,7 @@ def checkRequestStatus(status: int) -> None:
 class League(object):
     '''Creates a League instance for Public/Private ESPN league'''
     def __init__(self, league_id: int, year: int, espn_s2=None, swid=None, username=None, password=None, debug=False):
+        self.logger = setup_logger(debug=debug)
         self.league_id = league_id
         self.year = year
         # older season data is stored at a different endpoint 
@@ -53,6 +55,8 @@ class League(object):
 
         r = requests.get(self.ENDPOINT, params='', cookies=self.cookies)
         self.status = r.status_code
+        self.logger.debug(f'ESPN API Request: {self.ENDPOINT} \nESPN API Response: {r.json()}\n')
+        checkRequestStatus(self.status)
 
         data = r.json() if self.year > 2017 else r.json()[0]
 
@@ -65,6 +69,8 @@ class League(object):
         }
         r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
         self.status = r.status_code
+        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} \nESPN API Response: {r.json()}\n')
+        checkRequestStatus(self.status)
 
         data = r.json() if self.year > 2017 else r.json()[0]
         teams = data['teams']
@@ -75,6 +81,8 @@ class League(object):
         }
         r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
         self.status = r.status_code
+        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} \nESPN API Response: {r.json()}\n')
+        checkRequestStatus(self.status)
 
         data = r.json() if self.year > 2017 else r.json()[0]
         team_roster = {}
