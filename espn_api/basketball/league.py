@@ -64,27 +64,19 @@ class League(object):
 
     def _fetch_teams(self):
         '''Fetch teams in league'''
+        '?view=mDraftDetail&view=mLiveScoring&view=mMatchupScore&view=mPendingTransactions&view=mPositionalRatings&view=mRoster&view=mSettings&view=mTeam&view=modular&view=mNav'
         params = {
-            'view': 'mTeam'
+            'view': ['mTeam', 'mRoster']
         }
-        r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
-        self.status = r.status_code
-        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} \nESPN API Response: {r.json()}\n')
+        response = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
+        self.status = response.status_code
+        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} \nESPN API Response: {response.json()}\n')
         checkRequestStatus(self.status)
-
-        data = r.json() if self.year > 2017 else r.json()[0]
+        
+        data = response.json() if self.year > 2017 else response.json()[0]
         teams = data['teams']
         members = data['members']
-
-        params = {
-            'view': 'mMatchup',
-        }
-        r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
-        self.status = r.status_code
-        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} \nESPN API Response: {r.json()}\n')
-        checkRequestStatus(self.status)
-
-        data = r.json() if self.year > 2017 else r.json()[0]
+        
         team_roster = {}
         for team in data['teams']:
             team_roster[team['id']] = team['roster']
