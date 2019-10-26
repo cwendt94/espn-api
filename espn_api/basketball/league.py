@@ -7,7 +7,6 @@ from typing import List, Tuple
 from .logger import setup_logger
 from .team import Team
 from .player import Player
-import pdb
 
 
 def checkRequestStatus(status: int) -> None:

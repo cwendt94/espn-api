@@ -18,10 +18,6 @@ class Team(object):
         else:
             self.logo_url = ''
         self.roster = []
-        self.schedule = []
-        self.scores = []
-        self.outcomes = []
-        self.mov = []
         self._fetch_roster(roster)
 
     def __repr__(self):
