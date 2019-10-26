@@ -1,8 +1,10 @@
+import pdb
 from .player import Player
+from .matchup import Matchup
 
 class Team(object):
     '''Teams are part of the league'''
-    def __init__(self, data, member, roster):
+    def __init__(self, data, member, roster, schedule):
         self.team_id = data['id']
         self.team_abbrev = data['abbrev']
         self.team_name = "%s %s" % (data['location'], data['nickname'])
@@ -18,8 +20,11 @@ class Team(object):
         else:
             self.logo_url = ''
         self.roster = []
+        self.schedule = []
+        
         self._fetch_roster(roster)
-
+        self._fetch_schedule(schedule)
+        
     def __repr__(self):
         return 'Team(%s)' % (self.team_name, )
     
@@ -32,3 +37,19 @@ class Team(object):
         for player in roster:
             self.roster.append(Player(player))
 
+
+    def _fetch_schedule(self, data):
+        '''Fetch schedule and scores for team'''
+        for match in data:
+            if 'away' in match.keys():
+                if match['away']['teamId'] == self.team_id:
+                    new_match = Matchup(match)
+                    setattr(new_match, 'away_team', self)
+                    self.schedule.append(new_match)
+                elif match['home']['teamId'] == self.team_id:
+                    new_match = Matchup(match)
+                    setattr(new_match, 'home_team', self)
+                    self.schedule.append(new_match)
+                    
+        
+                    

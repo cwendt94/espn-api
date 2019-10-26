@@ -38,6 +38,7 @@ class League(object):
         self.cookies = None
         self.username = username
         self.password = password
+        self.current_week = 0
         if self.espn_s2 and self.swid:
             self.cookies = {
                 'espn_s2': self.espn_s2,
@@ -45,38 +46,42 @@ class League(object):
             }
         elif self.username and self.password:
             self.authentication()
-        self._fetch_league()
+            
+        data = self._fetch_league()
+        self._fetch_teams(data)
 
     def __repr__(self):
         return 'League(%s, %s)' % (self.league_id, self.year, )
 
     def _fetch_league(self):
-
-        r = requests.get(self.ENDPOINT, params='', cookies=self.cookies)
+        
+        params = {
+            'view': ['mTeam', 'mRoster', 'mMatchup']
+        }
+        r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
         self.status = r.status_code
         self.logger.debug(f'ESPN API Request: {self.ENDPOINT} \nESPN API Response: {r.json()}\n')
         checkRequestStatus(self.status)
 
         data = r.json() if self.year > 2017 else r.json()[0]
 
-        self._fetch_teams()
+        if self.year < 2018:
+            self.current_week = data['scoringPeriodId']
+        else:
+            self.current_week = data['status']['currentMatchupPeriod']
 
-    def _fetch_teams(self):
-        '''Fetch teams in league'''
-        params = {
-            'view': ['mTeam', 'mRoster']
-        }
-        response = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
-        self.status = response.status_code
-        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} \nESPN API Response: {response.json()}\n')
-        checkRequestStatus(self.status)
-        
-        data = response.json() if self.year > 2017 else response.json()[0]
+        return(data)
+
+
+    def _fetch_teams(self, data):
+        '''Fetch teams in league'''        
         teams = data['teams']
         members = data['members']
-        
+        schedule = data['schedule']
+
         team_roster = {}
         for team in data['teams']:
+            
             team_roster[team['id']] = team['roster']
         
         for team in teams:
@@ -88,10 +93,23 @@ class League(object):
                 elif member['id'] == team['owners'][0]:
                     break
             roster = team_roster[team['id']]
-            self.teams.append(Team(team, member, roster))
+            self.teams.append(Team(team, member, roster, schedule))
+
+        # replace opponentIds in schedule with team instances
+        for team in self.teams:
+            for week, matchup in enumerate(team.schedule):
+                for opponent in self.teams:
+                    if matchup.away_team == opponent.team_id:
+                        matchup.away_team = opponent
+                    if matchup.home_team == opponent.team_id:
+                        matchup.home_team = opponent
+                        
 
         # sort by team ID
         self.teams = sorted(self.teams, key=lambda x: x.team_id, reverse=False)
+
+
+
 
 
     def authentication(self):
