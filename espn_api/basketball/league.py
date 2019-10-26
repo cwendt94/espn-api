@@ -64,7 +64,6 @@ class League(object):
 
     def _fetch_teams(self):
         '''Fetch teams in league'''
-        '?view=mDraftDetail&view=mLiveScoring&view=mMatchupScore&view=mPendingTransactions&view=mPositionalRatings&view=mRoster&view=mSettings&view=mTeam&view=modular&view=mNav'
         params = {
             'view': ['mTeam', 'mRoster']
         }
