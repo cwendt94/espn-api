@@ -14,6 +14,12 @@ class Player(object):
         self.stats = {}
 
         # add available stats
+
+        # 0020XX is full season stats for 20XX
+        # 1020XX is projected season stats for 20XX
+        # I think 0120XX, 0220XX, and 0320XX are last 7, last 15, and last 30
+        # but I haven't figured out which yet (too season in season!)
+        
         for split in data['playerPoolEntry']['player']['stats']:
             
             if split['stats']:
