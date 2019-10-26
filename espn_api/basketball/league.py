@@ -7,6 +7,7 @@ from typing import List, Tuple
 from .logger import setup_logger
 from .team import Team
 from .player import Player
+from .matchup import Matchup
 
 
 def checkRequestStatus(status: int) -> None:
@@ -111,6 +112,33 @@ class League(object):
     def standings(self) -> List[Team]:
         standings = sorted(self.teams, key=lambda x: x.final_standing if x.final_standing != 0 else x.standing, reverse=False)
         return standings
+
+    def scoreboard(self, week: int = None) -> List[Matchup]:
+        '''Returns list of matchups for a given week'''
+        if not week:
+            week = self.current_week
+
+        params = {
+            'view': 'mMatchup',
+        }
+        r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
+        self.status = r.status_code
+        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} \nESPN API Response: {r.json()}\n')
+        checkRequestStatus(self.status)
+
+        data = r.json() if self.year > 2017 else r.json()[0]
+        schedule = data['schedule']
+        matchups = [Matchup(matchup) for matchup in schedule if matchup['matchupPeriodId'] == week]
+
+        for team in self.teams:
+            for matchup in matchups:
+                if matchup.home_team == team.team_id:
+                    matchup.home_team = team
+                elif matchup.away_team == team.team_id:
+                    matchup.away_team = team
+        
+        return matchups
+
 
 
 
