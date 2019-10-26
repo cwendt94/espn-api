@@ -108,7 +108,9 @@ class League(object):
         # sort by team ID
         self.teams = sorted(self.teams, key=lambda x: x.team_id, reverse=False)
 
-
+    def standings(self) -> List[Team]:
+        standings = sorted(self.teams, key=lambda x: x.final_standing if x.final_standing != 0 else x.standing, reverse=False)
+        return standings
 
 
 

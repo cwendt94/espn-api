@@ -19,6 +19,8 @@ class Team(object):
             self.logo_url = data['logo']
         else:
             self.logo_url = ''
+        self.standing = data['playoffSeed']
+        self.final_standing = data['rankCalculatedFinal']
         self.roster = []
         self.schedule = []
         
