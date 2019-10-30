@@ -3,13 +3,15 @@ from .constant import STATS_MAP
 class Matchup(object):
     '''Creates Matchup instance'''
     def __init__(self, data):
+        self.home_team_live_score = None
+        self.away_team_live_score = None
         self._fetch_matchup_info(data)
-
+        
     def __repr__(self):
         # TODO: use final score when that's available?
         # writing this too early to see if data['home']['totalPoints'] is final score
         # it might also be used for points leagues instead of category leagues
-        if 'cumulativeScore' not in data['home'].keys():
+        if not self.away_team_live_score:
             return 'Matchup(%s, %s)' % (self.home_team, self.away_team, )
         else:
             return 'Matchup(%s %s - %s %s)' % (self.home_team,
@@ -20,10 +22,8 @@ class Matchup(object):
     def _fetch_matchup_info(self, data):
         '''Fetch info for matchup'''
         self.home_team = data['home']['teamId']
-        self.home_team_live_score = None
         self.home_final_score = data['home']['totalPoints']
         self.away_team = data['away']['teamId']
-        self.away_team_live_score = None
         self.away_final_score = data['away']['totalPoints']
         self.winner = data['winner']
         self.home_team_cats = None
