@@ -11,5 +11,10 @@ class Matchup(object):
         '''Fetch info for matchup'''
         self.home_team = self.data['home']['teamId']
         self.home_score = self.data['home']['totalPoints']
-        self.away_team = self.data['away']['teamId']
-        self.away_score = self.data['away']['totalPoints']
+
+        # For Leagues with bye weeks
+        self.away_team = 0
+        self.away_score = 0
+        if 'away' in self.data:
+            self.away_team = self.data['away']['teamId']
+            self.away_score = self.data['away']['totalPoints']
