@@ -3,6 +3,7 @@ from .constant import ACTIVITY_MAP
 class Activity(object):
     def __init__(self, data, player_map, get_team_data):
         self.actions = [] # List of tuples (Team, action, player)
+        self.date = data['date']
         for msg in data['messages']:
             team = ''
             action = 'UNKNOWN'
