@@ -14,7 +14,7 @@ from .box_player import BoxPlayer
 from .player import Player
 from .activity import Activity
 from .utils import power_points, two_step_dominance
-from .constant import POSITION_MAP
+from .constant import POSITION_MAP, ACTIVITY_MAP
 
 
 def checkRequestStatus(status: int) -> None:
@@ -303,14 +303,14 @@ class League(object):
                 return team
         return None
     
-    def recent_activity(self, size: int = 25, only_trades = False) -> List[Activity]:
+    def recent_activity(self, size: int = 25, msg_type: str = None) -> List[Activity]:
         '''Returns a list of recent league activities (Add, Drop, Trade)'''
         if self.year < 2019:
             raise Exception('Cant use recent activity before 2019')
 
         msg_types = [178,180,179,239,181,244]
-        if only_trades:
-            msg_types = [244]
+        if msg_type in ACTIVITY_MAP:
+            msg_types = [ACTIVITY_MAP[msg_type]]
         params = {
             'view': 'kona_league_communication'
         }

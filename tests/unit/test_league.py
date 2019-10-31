@@ -246,7 +246,7 @@ class LeagueTest(TestCase):
 
         activity  = league.recent_activity()
         self.assertEqual(repr(activity[0].actions[0][0]), 'Team(Perscription Mixon)')
-        self.assertEqual(len(repr(activity)), 2255)
+        self.assertEqual(len(repr(activity)), 2369)
 
     @mock.patch.object(League, '_fetch_league')
     def test_cookie_set(self, mock_fetch_league):

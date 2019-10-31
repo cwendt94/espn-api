@@ -8,3 +8,7 @@ __pycache__
 .env
 *~
 venv/
+.coverage
+build
+dist
+env
