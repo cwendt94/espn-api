@@ -58,7 +58,7 @@ class League(object):
     def _fetch_league(self):
         
         params = {
-            'view': ['mTeam', 'mRoster', 'mMatchup']
+            'view': ['mTeam', 'mRoster', 'mMatchup',]
         }
         r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
         self.status = r.status_code
@@ -69,6 +69,9 @@ class League(object):
 
         self.currentMatchupPeriod = data['status']['currentMatchupPeriod']
         self.scoringPeriodId = data['scoringPeriodId']
+        self.firstScoringPeriod = data['status']['firstScoringPeriod']
+        self.start_date = datetime.datetime.fromtimestamp(min([i[1][1]/1000 for i in self._get_nba_schedule(1).items()])).date()
+        
         return(data)
 
 
