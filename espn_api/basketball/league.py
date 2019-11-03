@@ -9,6 +9,7 @@ from .logger import setup_logger
 from .team import Team
 from .player import Player
 from .matchup import Matchup
+from .constant import PRO_TEAM_MAP
 
 
 def checkRequestStatus(status: int) -> None:
@@ -40,7 +41,6 @@ class League(object):
         self.cookies = None
         self.username = username
         self.password = password
-        self.matchupPeriod = 0
         if self.espn_s2 and self.swid:
             self.cookies = {
                 'espn_s2': self.espn_s2,
@@ -155,7 +155,7 @@ class League(object):
         for team in pro_teams:
             if team['id'] != 0 and str(scoringPeriodId) in team['proGamesByScoringPeriod'].keys():
                 game_data = team['proGamesByScoringPeriod'][str(scoringPeriodId)][0]
-                pro_team_schedule[team['id']] = (game_data['homeProTeamId'], game_data['date'])  if team['id'] == game_data['awayProTeamId'] else (game_data['awayProTeamId'], game_data['date'])
+                pro_team_schedule[PRO_TEAM_MAP[team['id']]] = (PRO_TEAM_MAP[game_data['homeProTeamId']], game_data['date'])  if team['id'] == game_data['awayProTeamId'] else (PRO_TEAM_MAP[game_data['awayProTeamId']], game_data['date'])
         return pro_team_schedule
 
     
