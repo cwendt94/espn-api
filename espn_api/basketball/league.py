@@ -3,11 +3,13 @@ import datetime
 import time
 import json
 from typing import List, Tuple
+import pdb
 
 from .logger import setup_logger
 from .team import Team
 from .player import Player
 from .matchup import Matchup
+from .constant import PRO_TEAM_MAP
 
 
 def checkRequestStatus(status: int) -> None:
@@ -39,7 +41,6 @@ class League(object):
         self.cookies = None
         self.username = username
         self.password = password
-        self.current_week = 0
         if self.espn_s2 and self.swid:
             self.cookies = {
                 'espn_s2': self.espn_s2,
@@ -57,7 +58,7 @@ class League(object):
     def _fetch_league(self):
         
         params = {
-            'view': ['mTeam', 'mRoster', 'mMatchup']
+            'view': ['mTeam', 'mRoster', 'mMatchup',]
         }
         r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
         self.status = r.status_code
@@ -66,11 +67,11 @@ class League(object):
 
         data = r.json() if self.year > 2017 else r.json()[0]
 
-        if self.year < 2018:
-            self.current_week = data['scoringPeriodId']
-        else:
-            self.current_week = data['status']['currentMatchupPeriod']
-
+        self.currentMatchupPeriod = data['status']['currentMatchupPeriod']
+        self.scoringPeriodId = data['scoringPeriodId']
+        self.firstScoringPeriod = data['status']['firstScoringPeriod']
+        self.start_date = datetime.datetime.fromtimestamp(min([i[1][1]/1000 for i in self._get_nba_schedule(1).items()])).date()
+        
         return(data)
 
 
@@ -113,10 +114,10 @@ class League(object):
         standings = sorted(self.teams, key=lambda x: x.final_standing if x.final_standing != 0 else x.standing, reverse=False)
         return standings
 
-    def scoreboard(self, week: int = None) -> List[Matchup]:
-        '''Returns list of matchups for a given week'''
-        if not week:
-            week = self.current_week
+    def scoreboard(self, matchupPeriod: int = None) -> List[Matchup]:
+        '''Returns list of matchups for a given matchup period'''
+        if not matchupPeriod:
+            matchupPeriod=self.currentMatchupPeriod
 
         params = {
             'view': 'mMatchup',
@@ -128,7 +129,7 @@ class League(object):
 
         data = r.json() if self.year > 2017 else r.json()[0]
         schedule = data['schedule']
-        matchups = [Matchup(matchup) for matchup in schedule if matchup['matchupPeriodId'] == week]
+        matchups = [Matchup(matchup) for matchup in schedule if matchup['matchupPeriodId'] == matchupPeriod]
 
         for team in self.teams:
             for matchup in matchups:
@@ -139,7 +140,28 @@ class League(object):
         
         return matchups
 
+    
+    def _get_nba_schedule(self, scoringPeriodId: int = None):
+        '''get nba schedule for a given scoring period'''
+        if not scoringPeriodId:
+            scoringPeriodId=self.scoringPeriodId
+            
+        endpoint = 'https://fantasy.espn.com/apis/v3/games/fba/seasons/' + str(self.year) + '?view=proTeamSchedules_wl'
+        r = requests.get(endpoint, cookies=self.cookies)
+        self.status = r.status_code
+        self.logger.debug(f'ESPN API Request: url: {endpoint} \nESPN API Response: {r.json()}\n')
+        checkRequestStatus(self.status)
+        
+        pro_teams = r.json()['settings']['proTeams']
+        pro_team_schedule = {}
 
+        for team in pro_teams:
+            if team['id'] != 0 and str(scoringPeriodId) in team['proGamesByScoringPeriod'].keys():
+                game_data = team['proGamesByScoringPeriod'][str(scoringPeriodId)][0]
+                pro_team_schedule[PRO_TEAM_MAP[team['id']]] = (PRO_TEAM_MAP[game_data['homeProTeamId']], game_data['date'])  if team['id'] == game_data['awayProTeamId'] else (PRO_TEAM_MAP[game_data['awayProTeamId']], game_data['date'])
+        return pro_team_schedule
+
+    
 
 
     def authentication(self):
