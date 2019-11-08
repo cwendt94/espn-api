@@ -1,9 +1,11 @@
 [![Build Status](https://travis-ci.org/cwendt94/ff-espn-api.svg?branch=master)](https://travis-ci.org/cwendt94/ff-espn-api) [![codecov](https://codecov.io/gh/cwendt94/ff-espn-api/branch/master/graphs/badge.svg)](https://codecov.io/gh/cwendt94/ff-espn-api) [![Join the chat at https://gitter.im/ff-espn-api/community](https://badges.gitter.im/ff-espn-api/community.svg)](https://gitter.im/ff-espn-api/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![PyPI version](https://badge.fury.io/py/ff-espn-api.svg)](https://badge.fury.io/py/ff-espn-api)
 
-# ff-espn-api
+# ff-espn-api -> espn-api
+## ESPN API
+## **ff_espn_api will be transitioning to espn_api! espn_api will have all of the features that ff_espn_api has just different import syntax and folder structure. espn_api will now be supporting multiple ESPN fantasy sports starting with basketball!**  
+## **ff_espn_api version 1.8.9 will still be avaiable but will no longer be updated. To get the newest updates switch over to espn_api!**
 
-This package uses ESPN's Fantasy Football API to extract data from any public or private league. I am currently using this package for my leagues personal website and I plan to keep updating and adding features.
-
+This package uses ESPN's Fantasy API to extract data from any public or private league for **Fantasy Football and Basketball**.  
 Please feel free to make suggestions, bug reports, and pull request for features or fixes!
 
 This package was inspired and based off of [rbarton65/espnff](https://github.com/rbarton65/espnff).
@@ -17,7 +19,7 @@ python3 setup.py install
 ```
 With pip:
 ```
-pip install ff_espn_api
+pip install espn_api
 ```
 
 ## Usage
@@ -31,11 +33,11 @@ python3 setup.py nosetests
 ## Issue Reporting
 If you find a bug follow the steps below for reporting.
 
-1. Open a [new issue](https://github.com/cwendt94/ff-espn-api/issues) with a brief description of the bug for the title
+1. Open a [new issue](https://github.com/cwendt94/ff-espn-api/issues) with a brief description of the bug for the title. In the title also add which sport (Football or Basketball)
 
 2. Run the application in debug mode to view ESPN API request's and response's
     ```python
-    from ff_espn_api import League
+    # ... import statement above
     league = League(league_id=1245, year=2019, debug=True)
     ```
     The application will print all requests and the response from ESPN's API in the console. I would suggest piping the console output to a text file as it will be a lot of data.

@@ -3,9 +3,9 @@ from setuptools import setup
 setup(
     name='espn_api',
     packages=['espn_api'],
-    version='1.1.8',
+    version='1.0.0',
     author='Christian Wendt',
-    description='Fantasy ESPN API',
+    description='ESPN API',
     install_requires=['requests>=2.0.0,<3.0.0'],
     setup_requires=['nose>=1.0'],
     test_suite='nose.collector',

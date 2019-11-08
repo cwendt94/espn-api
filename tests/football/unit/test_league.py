@@ -10,19 +10,19 @@ class LeagueTest(TestCase):
         self.season = 2018
         self.espn_endpoint = "https://fantasy.espn.com/apis/v3/games/FFL/seasons/" + str(self.season) + "/segments/0/leagues/" + str(self.league_id)
         self.players_endpoint = 'https://fantasy.espn.com/apis/v3/games/ffl/seasons/' + str(self.season) + '/players?scoringPeriodId=0&view=players_wl'
-        with open('tests/unit/data/league_2018.json') as data:
+        with open('tests/football/unit/data/league_2018.json') as data:
             self.league_data = json.loads(data.read())
-        with open('tests/unit/data/league_team_2018.json') as data:
+        with open('tests/football/unit/data/league_team_2018.json') as data:
             self.team_data = json.loads(data.read())
-        with open('tests/unit/data/league_settings_2018.json') as data:
+        with open('tests/football/unit/data/league_settings_2018.json') as data:
             self.settings_data = json.loads(data.read())
-        with open('tests/unit/data/league_matchup_2018.json') as data:
+        with open('tests/football/unit/data/league_matchup_2018.json') as data:
             self.matchup_data = json.loads(data.read())
-        with open('tests/unit/data/league_roster_2018.json') as data:
+        with open('tests/football/unit/data/league_roster_2018.json') as data:
             self.roster_data = json.loads(data.read())
-        with open('tests/unit/data/league_draft_2018.json') as data:
+        with open('tests/football/unit/data/league_draft_2018.json') as data:
             self.draft_data = json.loads(data.read())
-        with open('tests/unit/data/league_players_2018.json') as data:
+        with open('tests/football/unit/data/league_players_2018.json') as data:
             self.players_data = json.loads(data.read())
     
     def mock_setUp(self, m):
@@ -62,7 +62,7 @@ class LeagueTest(TestCase):
 
         league = League(self.league_id, self.season)
         
-        with open('tests/unit/data/league_roster_week1.json') as f:
+        with open('tests/football/unit/data/league_roster_week1.json') as f:
             data = json.loads(f.read())
         m.get(self.espn_endpoint + '?view=mRoster&scoringPeriodId=1', status_code=200, json=data)
         league.load_roster_week(1)
@@ -147,7 +147,7 @@ class LeagueTest(TestCase):
 
         league = League(self.league_id, self.season)
         
-        with open('tests/unit/data/league_matchupScore_2018.json') as f:
+        with open('tests/football/unit/data/league_matchupScore_2018.json') as f:
             data = json.loads(f.read())
         m.get(self.espn_endpoint + '?view=mMatchupScore', status_code=200, json=data)
 
@@ -240,7 +240,7 @@ class LeagueTest(TestCase):
         self.espn_endpoint = "https://fantasy.espn.com/apis/v3/games/FFL/seasons/" + str(2019) + "/segments/0/leagues/" + str(self.league_id)
         league.ENDPOINT = self.espn_endpoint
 
-        with open('tests/unit/data/league_recent_activity_2019.json') as f:
+        with open('tests/football/unit/data/league_recent_activity_2019.json') as f:
             data = json.loads(f.read())
         m.get(self.espn_endpoint + '/communication/?view=kona_league_communication', status_code=200, json=data)
 
