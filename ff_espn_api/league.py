@@ -269,6 +269,8 @@ class League(object):
 
         for team in self.teams:
             for matchup in matchups:
+                if matchup.winner == team.team_id:
+                    matchup.winner = team
                 if matchup.home_team == team.team_id:
                     matchup.home_team = team
                 elif matchup.away_team == team.team_id:
