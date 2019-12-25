@@ -1,3 +1,6 @@
+WINNERS_BRACKET = 'WINNERS_BRACKET'
+
+
 class Matchup(object):
     '''Creates Matchup instance'''
     def __init__(self, data):
@@ -6,6 +9,9 @@ class Matchup(object):
 
     def __repr__(self):
         return 'Matchup(%s, %s)' % (self.home_team, self.away_team, )
+
+    def is_playoff(self):
+        return WINNERS_BRACKET == self.playoff_tier_type
 
     def _fetch_matchup_info(self):
         '''Fetch info for matchup'''
@@ -18,3 +24,5 @@ class Matchup(object):
         if 'away' in self.data:
             self.away_team = self.data['away']['teamId']
             self.away_score = self.data['away']['totalPoints']
+        self.playoff_tier_type = self.data.get('playoffTierType', 'regular')
+        self.winner = self.home_team if self.data['winner'] == 'HOME' else self.away_team
