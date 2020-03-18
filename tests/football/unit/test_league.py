@@ -237,8 +237,8 @@ class LeagueTest(TestCase):
         
         # TODO hack until I get all mock data for 2019
         league.year = 2019 
-        self.espn_endpoint = "https://fantasy.espn.com/apis/v3/games/FFL/seasons/" + str(2019) + "/segments/0/leagues/" + str(self.league_id)
-        league.ENDPOINT = self.espn_endpoint
+        self.espn_endpoint = "https://fantasy.espn.com/apis/v3/games/ffl/seasons/" + str(2019) + "/segments/0/leagues/" + str(self.league_id)
+        league.espn_request.LEAGUE_ENDPOINT = self.espn_endpoint
 
         with open('tests/football/unit/data/league_recent_activity_2019.json') as f:
             data = json.loads(f.read())
@@ -253,58 +253,6 @@ class LeagueTest(TestCase):
         league = League(league_id=1234, year=2019, espn_s2='cookie1', swid='cookie2')
         self.assertEqual(league.espn_s2, 'cookie1')
         self.assertEqual(league.swid, 'cookie2')
-    
-    @mock.patch.object(League, 'authentication')
-    @mock.patch.object(League, '_fetch_league')
-    def test_username_pass_set(self, mock_authentication, mock_fetch_league):
-        league = League(league_id=1234, year=2019, username='user', password='pass')
-        self.assertEqual(league.username, 'user')
-        self.assertEqual(league.password, 'pass')
-
-    @requests_mock.Mocker()
-    @mock.patch.object(League, '_fetch_league')
-    @mock.patch('sys.stdout', new_callable=io.StringIO)
-    def test_authentication_api_fail(self, mock_request, mock_stdout, mock_fetch_league):
-        url_api_key = 'https://registerdisney.go.com/jgc/v5/client/ESPN-FANTASYLM-PROD/api-key?langPref=en-US'
-        mock_request.post(url_api_key, status_code=400)
-        league = League(league_id=1234, year=2019, username='user', password='pass')
-        self.assertEqual(mock_stdout.getvalue(), 'Unable to access API-Key\nRetry the authentication or continuing without private league access\n')
-    
-    @requests_mock.Mocker()
-    @mock.patch.object(League, '_fetch_league')
-    @mock.patch('sys.stdout', new_callable=io.StringIO)
-    def test_authentication_login_fail(self, mock_request, mock_stdout, mock_fetch_league):
-        url_api_key = 'https://registerdisney.go.com/jgc/v5/client/ESPN-FANTASYLM-PROD/api-key?langPref=en-US'
-        url_login = 'https://ha.registerdisney.go.com/jgc/v5/client/ESPN-FANTASYLM-PROD/guest/login?langPref=en-US'
-        mock_request.post(url_api_key,  headers={'api-key':'None'}, status_code=200)
-        mock_request.post(url_login, status_code=400, json={'eror': 'error'})
-
-        league = League(league_id=1234, year=2019, username='user', password='pass')
-        self.assertEqual(mock_stdout.getvalue(), 'Authentication unsuccessful - check username and password input\nRetry the authentication or continuing without private league access\n')
-    
-    @requests_mock.Mocker()
-    @mock.patch.object(League, '_fetch_league')
-    @mock.patch('sys.stdout', new_callable=io.StringIO)
-    def test_authentication_login_error(self, mock_request, mock_stdout, mock_fetch_league):
-        url_api_key = 'https://registerdisney.go.com/jgc/v5/client/ESPN-FANTASYLM-PROD/api-key?langPref=en-US'
-        url_login = 'https://ha.registerdisney.go.com/jgc/v5/client/ESPN-FANTASYLM-PROD/guest/login?langPref=en-US'
-        mock_request.post(url_api_key,  headers={'api-key':'None'}, status_code=200)
-        mock_request.post(url_login, status_code=200, json={'error': {}})
-
-        league = League(league_id=1234, year=2019, username='user', password='pass')
-        self.assertEqual(mock_stdout.getvalue(), 'Authentication unsuccessful - error:{}\nRetry the authentication or continuing without private league access\n')
-    
-    @requests_mock.Mocker()
-    @mock.patch.object(League, '_fetch_league')
-    def test_authentication_pass(self, mock_request, mock_fetch_league):
-        url_api_key = 'https://registerdisney.go.com/jgc/v5/client/ESPN-FANTASYLM-PROD/api-key?langPref=en-US'
-        url_login = 'https://ha.registerdisney.go.com/jgc/v5/client/ESPN-FANTASYLM-PROD/guest/login?langPref=en-US'
-        mock_request.post(url_api_key,  headers={'api-key':'None'}, status_code=200)
-        mock_request.post(url_login, status_code=200, json={'error': None,'data': {'s2': 'cookie1', 'profile': {'swid': 'cookie2'}}})
-
-        league = League(league_id=1234, year=2019, username='user', password='pass')
-        self.assertEqual(league.cookies['espn_s2'], 'cookie1')
-        self.assertEqual(league.cookies['swid'], 'cookie2')
         
 
 
