@@ -1,10 +1,10 @@
-import requests
 import datetime
 import time
 import json
 from typing import List, Tuple
 
-from .logger import setup_logger
+from ..utils.logger import Logger
+from ..requests.espn_requests import EspnFantasyRequests
 from .team import Team
 from .settings import Settings
 from .matchup import Matchup
@@ -16,60 +16,35 @@ from .activity import Activity
 from .utils import power_points, two_step_dominance
 from .constant import POSITION_MAP, ACTIVITY_MAP
 
-
-def checkRequestStatus(status: int) -> None:
-    if 500 <= status <= 503:
-            raise Exception(status)
-    if status == 401:
-        raise Exception("Access Denied")
-
-    elif status == 404:
-        raise Exception("Invalid League")
-
-    elif status != 200:
-        raise Exception('Unknown %s Error' % status)
-
 class League(object):
     '''Creates a League instance for Public/Private ESPN league'''
     def __init__(self, league_id: int, year: int, espn_s2=None, swid=None, username=None, password=None, debug=False):
-        self.logger = setup_logger(debug=debug)
+        self.logger = Logger(name='Football League', debug=debug)
         self.league_id = league_id
         self.year = year
-        # older season data is stored at a different endpoint 
-        if year < 2018:
-            self.ENDPOINT = "https://fantasy.espn.com/apis/v3/games/ffl/leagueHistory/" + str(league_id) + "?seasonId=" + str(year)
-        else:
-            self.ENDPOINT = "https://fantasy.espn.com/apis/v3/games/FFL/seasons/" + str(year) + "/segments/0/leagues/" + str(league_id)
         self.teams = []
         self.draft = []
         self.player_map = {}
-        self.espn_s2 = espn_s2
-        self.swid = swid
-        self.cookies = None
-        self.username = username
-        self.password = password
         self.current_week = 0
         self.nfl_week = 0
-        if self.espn_s2 and self.swid:
-            self.cookies = {
-                'espn_s2': self.espn_s2,
-                'SWID': self.swid
+
+        cookies = None
+        if espn_s2 and swid:
+            cookies = {
+                'espn_s2': espn_s2,
+                'SWID': swid
             }
-        elif self.username and self.password:
-            self.authentication()
+        self.espn_request = EspnFantasyRequests(sport='nfl', year=year, league_id=league_id, cookies=cookies, logger=self.logger)
+        if username and password:
+            self.espn_request.authentication(username, password)
         self._fetch_league()
 
     def __repr__(self):
         return 'League(%s, %s)' % (self.league_id, self.year, )
 
     def _fetch_league(self):
+        data = self.espn_request.league_get()
 
-        r = requests.get(self.ENDPOINT, params='', cookies=self.cookies)
-        self.status = r.status_code
-        self.logger.debug(f'ESPN API Request: {self.ENDPOINT} \nESPN API Response: {r.json()}\n')
-        checkRequestStatus(self.status)
-
-        data = r.json() if self.year > 2017 else r.json()[0]
         if self.year < 2018:
             self.current_week = data['scoringPeriodId']
         else:
@@ -87,35 +62,21 @@ class League(object):
         params = {
             'view': 'mTeam'
         }
-        r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
-        self.status = r.status_code
-        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} \nESPN API Response: {r.json()}\n')
-        checkRequestStatus(self.status)
-
-        data = r.json() if self.year > 2017 else r.json()[0]
+        data = self.espn_request.league_get(params=params)
         teams = data['teams']
         members = data['members']
 
         params = {
             'view': 'mMatchup',
         }
-        r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
-        self.status = r.status_code
-        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} \nESPN API Response: {r.json()}\n')
-        checkRequestStatus(self.status)
-
-        data = r.json() if self.year > 2017 else r.json()[0]
+        data = self.espn_request.league_get(params=params)
         schedule = data['schedule']
 
         params = {
             'view': 'mRoster',
         }
-        r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
-        self.status = r.status_code
-        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} \nESPN API Response: {r.json()}\n')
-        checkRequestStatus(self.status)
+        data = self.espn_request.league_get(params=params)
 
-        data = r.json() if self.year > 2017 else r.json()[0]
         team_roster = {}
         for team in data['teams']:
             team_roster[team['id']] = team['roster']
@@ -152,12 +113,7 @@ class League(object):
             'view': 'mSettings',
         }
 
-        r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
-        self.status = r.status_code
-        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} \nESPN API Response: {r.json()}\n')
-        checkRequestStatus(self.status)
-
-        data = r.json() if self.year > 2017 else r.json()[0]
+        data = self.espn_request.league_get(params=params)
         self.settings = Settings(data['settings'])
     
     def _fetch_players(self):
@@ -165,31 +121,17 @@ class League(object):
             'scoringPeriodId': 0,
             'view': 'players_wl',
         }
-
-        endpoint = 'https://fantasy.espn.com/apis/v3/games/ffl/seasons/' + str(self.year) + '/players'
-        r = requests.get(endpoint, params=params, cookies=self.cookies)
-        self.status = r.status_code
-        self.logger.debug(f'ESPN API Request: url: {endpoint} params: {params} \nESPN API Response: {r.json()}\n')
-        checkRequestStatus(self.status)
-
-        data = r.json()
+        data = self.espn_request.get(extend='/players', params=params)
         # Map all player id's to player name
         for player in data:
             self.player_map[player['id']] = player['fullName']
-
 
     def _fetch_draft(self):
         '''Creates list of Pick objects from the leagues draft'''
         params = {
             'view': 'mDraftDetail',
         }
-
-        r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
-        self.status = r.status_code
-        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} \nESPN API Response: {r.json()}\n')
-        checkRequestStatus(self.status)
-
-        data = r.json() if self.year > 2017 else r.json()[0]
+        data = self.espn_request.league_get(params=params)
         
         # League has not drafted yet
         if not data['draftDetail']['drafted']:
@@ -210,13 +152,12 @@ class League(object):
             self.draft.append(Pick(team, playerId, playerName, round_num, round_pick, bid_amount, keeper_status))
     
     def _get_nfl_schedule(self, week: int):
-        endpoint = 'https://fantasy.espn.com/apis/v3/games/ffl/seasons/' + str(self.year) + '?view=proTeamSchedules_wl'
-        r = requests.get(endpoint, cookies=self.cookies)
-        self.status = r.status_code
-        self.logger.debug(f'ESPN API Request: url: {endpoint} \nESPN API Response: {r.json()}\n')
-        checkRequestStatus(self.status)
+        params = {
+            'view': 'proTeamSchedules_wl'
+        }
+        data = self.espn_request.get(params=params)
         
-        pro_teams = r.json()['settings']['proTeams']
+        pro_teams = data['settings']['proTeams']
         pro_team_schedule = {}
 
         for team in pro_teams:
@@ -230,12 +171,8 @@ class League(object):
             'view': 'mPositionalRatings',
             'scoringPeriodId': week,
         }
-
-        r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
-        self.status = r.status_code
-        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} \nESPN API Response: {r.json()}\n')
-        checkRequestStatus(self.status)
-        ratings = r.json()['positionAgainstOpponent']['positionalRatings']
+        data = self.espn_request.league_get(params=params)
+        ratings = data['positionAgainstOpponent']['positionalRatings']
 
         positional_ratings = {}
         for pos, rating in ratings.items():
@@ -251,12 +188,8 @@ class League(object):
             'view': 'mRoster',
             'scoringPeriodId': week
         }
-        r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
-        self.status = r.status_code
-        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} \nESPN API Response: {r.json()}\n')
-        checkRequestStatus(self.status)
+        data = self.espn_request.league_get(params=params)
 
-        data = r.json() if self.year > 2017 else r.json()[0]
         team_roster = {}
         for team in data['teams']:
             team_roster[team['id']] = team['roster']
@@ -317,13 +250,9 @@ class League(object):
         
         filters = {"topics":{"filterType":{"value":["ACTIVITY_TRANSACTIONS"]},"limit":size,"limitPerMessageSet":{"value":25},"offset":0,"sortMessageDate":{"sortPriority":1,"sortAsc":False},"sortFor":{"sortPriority":2,"sortAsc":False},"filterDateRange":{"value":1564689600000,"additionalValue":1583110842000},"filterIncludeMessageTypeIds":{"value":msg_types}}}
         headers = {'x-fantasy-filter': json.dumps(filters)}
+        data = self.espn_request.league_get(extend='/communication/', params=params, headers=headers)
 
-        r = requests.get(self.ENDPOINT + '/communication/', params=params, cookies=self.cookies, headers=headers)
-        self.status = r.status_code
-        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT}/communication/ params: {params} headers: {headers} \nESPN API Response: {r.json()}\n')
-        checkRequestStatus(self.status)
-
-        data = r.json()['topics']
+        data = data['topics']
 
         activity = [Activity(topic, self.player_map, self.get_team_data) for topic in data]
 
@@ -337,12 +266,7 @@ class League(object):
         params = {
             'view': 'mMatchupScore',
         }
-        r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
-        self.status = r.status_code
-        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} \nESPN API Response: {r.json()}\n')
-        checkRequestStatus(self.status)
-
-        data = r.json() if self.year > 2017 else r.json()[0]
+        data = self.espn_request.league_get(params=params)
 
         schedule = data['schedule']
         matchups = [Matchup(matchup) for matchup in schedule if matchup['matchupPeriodId'] == week]
@@ -371,13 +295,7 @@ class League(object):
         
         filters = {"schedule":{"filterMatchupPeriodIds":{"value":[week]}}}
         headers = {'x-fantasy-filter': json.dumps(filters)}
-
-        r = requests.get(self.ENDPOINT + '?view=mMatchup', params=params, cookies=self.cookies, headers=headers)
-        self.status = r.status_code
-        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT}?view=mMatchup params: {params} headers: {headers} \nESPN API Response: {r.json()}\n')
-        checkRequestStatus(self.status)
-
-        data = r.json()
+        data = self.espn_request.league_get(extend='?view=mMatchup', params=params, headers=headers)
 
         schedule = data['schedule']
         pro_schedule = self._get_nfl_schedule(week)
@@ -433,44 +351,10 @@ class League(object):
         filters = {"players":{"filterStatus":{"value":["FREEAGENT","WAIVERS"]},"filterSlotIds":{"value":slot_filter},"limit":size,"sortPercOwned":{"sortPriority":1,"sortAsc":False},"sortDraftRanks":{"sortPriority":100,"sortAsc":True,"value":"STANDARD"}}}
         headers = {'x-fantasy-filter': json.dumps(filters)}
 
-        r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies, headers=headers)
-        self.status = r.status_code
-        self.logger.debug(f'ESPN API Request: url: {self.ENDPOINT} params: {params} headers: {headers} \nESPN API Response: {r.json()}\n')
-        checkRequestStatus(self.status)
+        data = self.espn_request.league_get(params=params, headers=headers)
 
-        players = r.json()['players']
+        players = data['players']
         pro_schedule = self._get_nfl_schedule(week)
         positional_rankings = self._get_positional_ratings(week)
 
         return [BoxPlayer(player, pro_schedule, positional_rankings, week) for player in players]
-
-    def authentication(self):
-        url_api_key = 'https://registerdisney.go.com/jgc/v5/client/ESPN-FANTASYLM-PROD/api-key?langPref=en-US'
-        url_login = 'https://ha.registerdisney.go.com/jgc/v5/client/ESPN-FANTASYLM-PROD/guest/login?langPref=en-US'
-
-        # Make request to get the API-Key
-        headers = {'Content-Type': 'application/json'}
-        response = requests.post(url_api_key, headers=headers)
-        if response.status_code != 200 or 'api-key' not in response.headers:
-            print('Unable to access API-Key')
-            print('Retry the authentication or continuing without private league access')
-            return
-        api_key = response.headers['api-key']
-
-        # Utilize API-Key and login information to get the swid and s2 keys
-        headers['authorization'] = 'APIKEY ' + api_key
-        payload = {'loginValue': self.username, 'password': self.password}
-        response = requests.post(url_login, headers=headers, json=payload)
-        if response.status_code != 200:
-            print('Authentication unsuccessful - check username and password input')
-            print('Retry the authentication or continuing without private league access')
-            return
-        data = response.json()
-        if data['error'] is not None:
-            print('Authentication unsuccessful - error:' + str(data['error']))
-            print('Retry the authentication or continuing without private league access')
-            return
-        self.cookies = {
-            "espn_s2": data['data']['s2'],
-            "swid": data['data']['profile']['swid']
-        }
