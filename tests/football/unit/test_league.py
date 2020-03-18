@@ -251,8 +251,8 @@ class LeagueTest(TestCase):
     @mock.patch.object(League, '_fetch_league')
     def test_cookie_set(self, mock_fetch_league):
         league = League(league_id=1234, year=2019, espn_s2='cookie1', swid='cookie2')
-        self.assertEqual(league.espn_s2, 'cookie1')
-        self.assertEqual(league.swid, 'cookie2')
+        self.assertEqual(league.espn_request.cookies['espn_s2'], 'cookie1')
+        self.assertEqual(league.espn_request.cookies['SWID'], 'cookie2')
         
 
 
