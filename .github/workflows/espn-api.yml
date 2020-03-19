@@ -5,15 +5,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-        - uses: actions/checkout@v2
-        - name: Set up Python
-        uses: actions/setup-python@v1
-        with:
-            python-version: '3.x'
-        - name: Install dependencies
-        run: |
-            python setup.py install
-            pip install codecov
-        - name: Test with nosetests
-        run: |
-            python3 setup.py nosetests
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: |
+        python setup.py install
+        pip install codecov
+    - name: Test with nosetests
+      run: |
+        python3 setup.py nosetests
+        codecov
