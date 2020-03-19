@@ -13,8 +13,8 @@ jobs:
     - name: Install dependencies
       run: |
         python setup.py install
-        pip install codecov
     - name: Test with nosetests
       run: |
         python3 setup.py nosetests
-        codecov
+    - name: Upload coverage to Codecov  
+      uses: codecov/codecov-action@v1
