@@ -11,9 +11,7 @@ jobs:
       with:
         python-version: '3.x'
     - name: Install dependencies
-      run: |
-        python setup.py install
-        pip install coverage
+      run: python setup.py install
     - name: Test with nosetests
       run: python3 setup.py nosetests
     - name: Upload coverage to Codecov  
