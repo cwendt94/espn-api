@@ -23,7 +23,15 @@ pip install espn_api
 ```
 
 ## Usage
-[For usage and API details head over to the Wiki!](https://github.com/cwendt94/ff-espn-api/wiki)
+```python
+# Football API
+from espn_api.football import League
+# Basketball API
+from espn_api.basketball import League
+# Init
+league = League(league_id=222, year=2019, username='username', password='password')
+```
+[For more usage and API details head over to the Wiki!](https://github.com/cwendt94/ff-espn-api/wiki)
 
 ### Run Tests
 ```
