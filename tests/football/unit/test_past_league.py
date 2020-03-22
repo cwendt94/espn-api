@@ -1,5 +1,5 @@
 from unittest import mock, TestCase
-from ff_espn_api import League
+from espn_api.football import League
 import requests_mock
 import json
 
@@ -11,19 +11,19 @@ class LeaguePastTest(TestCase):
         self.season = 2015
         self.espn_endpoint = "https://fantasy.espn.com/apis/v3/games/ffl/leagueHistory/" + str(self.league_id) + "?seasonId=2015"
         self.players_endpoint = 'https://fantasy.espn.com/apis/v3/games/ffl/seasons/' + str(self.season) + '/players?scoringPeriodId=0&view=players_wl'
-        with open('tests/unit/data/league_2015.json') as data:
+        with open('tests/football/unit/data/league_2015.json') as data:
             self.league_data = json.loads(data.read())
-        with open('tests/unit/data/league_team_2015.json') as data:
+        with open('tests/football/unit/data/league_team_2015.json') as data:
             self.team_data = json.loads(data.read())
-        with open('tests/unit/data/league_settings_2015.json') as data:
+        with open('tests/football/unit/data/league_settings_2015.json') as data:
             self.settings_data = json.loads(data.read())
-        with open('tests/unit/data/league_matchup_2015.json') as data:
+        with open('tests/football/unit/data/league_matchup_2015.json') as data:
             self.matchup_data = json.loads(data.read())
-        with open('tests/unit/data/league_roster_2015.json') as data:
+        with open('tests/football/unit/data/league_roster_2015.json') as data:
             self.roster_data = json.loads(data.read())
-        with open('tests/unit/data/league_draft_2015.json') as data:
+        with open('tests/football/unit/data/league_draft_2015.json') as data:
             self.draft_data = json.loads(data.read())
-        with open('tests/unit/data/league_players_2015.json') as data:
+        with open('tests/football/unit/data/league_players_2015.json') as data:
             self.players_data = json.loads(data.read())
     
     def mock_setUp(self, m):
@@ -49,7 +49,7 @@ class LeaguePastTest(TestCase):
 
         league = League(self.league_id, self.season)
         
-        with open('tests/unit/data/league_matchupScore_2015.json') as f:
+        with open('tests/football/unit/data/league_matchupScore_2015.json') as f:
             data = json.loads(f.read())
         m.get(self.espn_endpoint + '&view=mMatchupScore', status_code=200, json=data)
 

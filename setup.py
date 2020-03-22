@@ -1,11 +1,11 @@
 from setuptools import setup
 
 setup(
-    name='ff_espn_api',
-    packages=['ff_espn_api'],
-    version='1.1.9',
+    name='espn_api',
+    packages=['espn_api'],
+    version='0.1.0',
     author='Christian Wendt',
-    description='Fantasy Football ESPN API',
+    description='ESPN API',
     install_requires=['requests>=2.0.0,<3.0.0'],
     setup_requires=['nose>=1.0'],
     test_suite='nose.collector',
