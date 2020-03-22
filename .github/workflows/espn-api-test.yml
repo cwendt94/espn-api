@@ -16,4 +16,6 @@ jobs:
     - name: Install dependencies
       run: python setup.py install
     - name: Test integration
-      run: python3 setup.py nosetests --tests tests/football/integration/
+      run: |
+        python3 setup.py nosetests --tests tests/football/integration/
+        python3 setup.py nosetests --tests tests/basketball/integration/
