@@ -1,4 +1,4 @@
-name: Espn Api Test
+name: Espn API Integration Test
 on:
     schedule:
       # run once a day
