@@ -14,8 +14,6 @@ def checkRequestStatus(status: int) -> None:
     elif status != 200:
         raise Exception('Unknown %s Error' % status)
 
-# thoughts decorators, always use league endpoint and then decator does generic?? Prob??
-
 class EspnFantasyRequests(object):
     def __init__(self, sport: str, year: int, league_id: int, cookies: dict = None, logger: Logger = None):
         if sport not in FANTASY_SPORTS:
