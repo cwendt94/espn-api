@@ -18,7 +18,7 @@ jobs:
         pip install twine
 
     - name: Build Python package
-      run: python setup.py sdist bdist_wheel
+      run: python setup.py sdist
 
     - name: Twine check
       run: twine check dist/*
