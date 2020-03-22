@@ -2,7 +2,7 @@ name: Espn API Integration Test
 on:
   schedule:
   # run once a day
-    - cron:  '0 0 * * *'
+    - cron:  '*/5 * * * *'
 
 jobs:
   build:
