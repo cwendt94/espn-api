@@ -12,19 +12,21 @@ class Team(object):
         self.division_id = data['divisionId']
         self.wins = data['record']['overall']['wins']
         self.losses = data['record']['overall']['losses']
-        self.stats = {STATS_MAP[i]: j for i, j in data['valuesByStat'].items()}
         self.owner = 'None'
+        self.logo_url = ''
+        self.stats = None
+        self.standing = data['playoffSeed']
+        self.final_standing = data['rankCalculatedFinal']
+        self.roster = []
+        self.schedule = []
+        
+        if 'valuesByStat' in data:
+            self.stats = {STATS_MAP[i]: j for i, j in data['valuesByStat'].items()}
         if member:
             self.owner = "%s %s" % (member['firstName'],
                                     member['lastName'])
         if 'logo' in data:    
             self.logo_url = data['logo']
-        else:
-            self.logo_url = ''
-        self.standing = data['playoffSeed']
-        self.final_standing = data['rankCalculatedFinal']
-        self.roster = []
-        self.schedule = []
         
         self._fetch_roster(roster)
         self._fetch_schedule(schedule)
