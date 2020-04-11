@@ -10,7 +10,7 @@
                 "id": 1,
                 "keeper": false,
                 "lineupSlotId": 2,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 1,
                 "owningTeamIds": [
@@ -29,7 +29,7 @@
                 "id": 2,
                 "keeper": false,
                 "lineupSlotId": 2,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 2,
                 "owningTeamIds": [
@@ -48,7 +48,7 @@
                 "id": 3,
                 "keeper": false,
                 "lineupSlotId": 4,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 3,
                 "owningTeamIds": [
@@ -67,7 +67,7 @@
                 "id": 4,
                 "keeper": false,
                 "lineupSlotId": 2,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 4,
                 "owningTeamIds": [
@@ -86,7 +86,7 @@
                 "id": 5,
                 "keeper": false,
                 "lineupSlotId": 2,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 5,
                 "owningTeamIds": [
@@ -105,7 +105,7 @@
                 "id": 6,
                 "keeper": false,
                 "lineupSlotId": 2,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 6,
                 "owningTeamIds": [
@@ -124,7 +124,7 @@
                 "id": 7,
                 "keeper": false,
                 "lineupSlotId": 2,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 7,
                 "owningTeamIds": [
@@ -143,7 +143,7 @@
                 "id": 8,
                 "keeper": false,
                 "lineupSlotId": 2,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 8,
                 "owningTeamIds": [
@@ -162,7 +162,7 @@
                 "id": 9,
                 "keeper": false,
                 "lineupSlotId": 4,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 9,
                 "owningTeamIds": [
@@ -181,7 +181,7 @@
                 "id": 10,
                 "keeper": false,
                 "lineupSlotId": 2,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 10,
                 "owningTeamIds": [
@@ -200,7 +200,7 @@
                 "id": 11,
                 "keeper": false,
                 "lineupSlotId": 4,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 11,
                 "owningTeamIds": [
@@ -219,7 +219,7 @@
                 "id": 12,
                 "keeper": false,
                 "lineupSlotId": 2,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 12,
                 "owningTeamIds": [
@@ -238,7 +238,7 @@
                 "id": 13,
                 "keeper": false,
                 "lineupSlotId": 2,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 13,
                 "owningTeamIds": [
@@ -257,7 +257,7 @@
                 "id": 14,
                 "keeper": false,
                 "lineupSlotId": 2,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 14,
                 "owningTeamIds": [
@@ -276,7 +276,7 @@
                 "id": 15,
                 "keeper": false,
                 "lineupSlotId": 4,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 15,
                 "owningTeamIds": [
@@ -295,7 +295,7 @@
                 "id": 16,
                 "keeper": false,
                 "lineupSlotId": 4,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 16,
                 "owningTeamIds": [
@@ -314,7 +314,7 @@
                 "id": 17,
                 "keeper": false,
                 "lineupSlotId": 4,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 17,
                 "owningTeamIds": [
@@ -333,7 +333,7 @@
                 "id": 18,
                 "keeper": false,
                 "lineupSlotId": 4,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 18,
                 "owningTeamIds": [
@@ -352,7 +352,7 @@
                 "id": 19,
                 "keeper": false,
                 "lineupSlotId": 4,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 19,
                 "owningTeamIds": [
@@ -371,7 +371,7 @@
                 "id": 20,
                 "keeper": false,
                 "lineupSlotId": 4,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 20,
                 "owningTeamIds": [
@@ -390,7 +390,7 @@
                 "id": 21,
                 "keeper": false,
                 "lineupSlotId": 2,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 21,
                 "owningTeamIds": [
@@ -409,7 +409,7 @@
                 "id": 22,
                 "keeper": false,
                 "lineupSlotId": 2,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 22,
                 "owningTeamIds": [
@@ -428,7 +428,7 @@
                 "id": 23,
                 "keeper": false,
                 "lineupSlotId": 2,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 23,
                 "owningTeamIds": [
@@ -447,7 +447,7 @@
                 "id": 24,
                 "keeper": false,
                 "lineupSlotId": 4,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 24,
                 "owningTeamIds": [
@@ -466,7 +466,7 @@
                 "id": 25,
                 "keeper": false,
                 "lineupSlotId": 4,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 25,
                 "owningTeamIds": [
@@ -485,7 +485,7 @@
                 "id": 26,
                 "keeper": false,
                 "lineupSlotId": 4,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 26,
                 "owningTeamIds": [
@@ -504,7 +504,7 @@
                 "id": 27,
                 "keeper": false,
                 "lineupSlotId": 4,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 27,
                 "owningTeamIds": [
@@ -523,7 +523,7 @@
                 "id": 28,
                 "keeper": false,
                 "lineupSlotId": 4,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 28,
                 "owningTeamIds": [
@@ -542,7 +542,7 @@
                 "id": 29,
                 "keeper": false,
                 "lineupSlotId": 2,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 29,
                 "owningTeamIds": [
@@ -561,7 +561,7 @@
                 "id": 30,
                 "keeper": false,
                 "lineupSlotId": 2,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 30,
                 "owningTeamIds": [
@@ -580,7 +580,7 @@
                 "id": 31,
                 "keeper": false,
                 "lineupSlotId": 6,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 31,
                 "owningTeamIds": [
@@ -599,7 +599,7 @@
                 "id": 32,
                 "keeper": false,
                 "lineupSlotId": 6,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 32,
                 "owningTeamIds": [
@@ -618,7 +618,7 @@
                 "id": 33,
                 "keeper": false,
                 "lineupSlotId": 23,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 33,
                 "owningTeamIds": [
@@ -637,7 +637,7 @@
                 "id": 34,
                 "keeper": false,
                 "lineupSlotId": 4,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 34,
                 "owningTeamIds": [
@@ -656,7 +656,7 @@
                 "id": 35,
                 "keeper": false,
                 "lineupSlotId": 0,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 35,
                 "owningTeamIds": [
@@ -675,7 +675,7 @@
                 "id": 36,
                 "keeper": false,
                 "lineupSlotId": 2,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 36,
                 "owningTeamIds": [
@@ -694,7 +694,7 @@
                 "id": 37,
                 "keeper": false,
                 "lineupSlotId": 23,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 37,
                 "owningTeamIds": [
@@ -713,7 +713,7 @@
                 "id": 38,
                 "keeper": false,
                 "lineupSlotId": 23,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 38,
                 "owningTeamIds": [
@@ -732,7 +732,7 @@
                 "id": 39,
                 "keeper": false,
                 "lineupSlotId": 6,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 39,
                 "owningTeamIds": [
@@ -751,7 +751,7 @@
                 "id": 40,
                 "keeper": false,
                 "lineupSlotId": 0,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 40,
                 "owningTeamIds": [
@@ -770,7 +770,7 @@
                 "id": 41,
                 "keeper": false,
                 "lineupSlotId": 4,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 41,
                 "owningTeamIds": [
@@ -789,7 +789,7 @@
                 "id": 42,
                 "keeper": false,
                 "lineupSlotId": 4,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 42,
                 "owningTeamIds": [
@@ -808,7 +808,7 @@
                 "id": 43,
                 "keeper": false,
                 "lineupSlotId": 2,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 43,
                 "owningTeamIds": [
@@ -827,7 +827,7 @@
                 "id": 44,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 44,
                 "owningTeamIds": [
@@ -846,7 +846,7 @@
                 "id": 45,
                 "keeper": false,
                 "lineupSlotId": 23,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 45,
                 "owningTeamIds": [
@@ -865,7 +865,7 @@
                 "id": 46,
                 "keeper": false,
                 "lineupSlotId": 23,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 46,
                 "owningTeamIds": [
@@ -884,7 +884,7 @@
                 "id": 47,
                 "keeper": false,
                 "lineupSlotId": 23,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 47,
                 "owningTeamIds": [
@@ -903,7 +903,7 @@
                 "id": 48,
                 "keeper": false,
                 "lineupSlotId": 4,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 48,
                 "owningTeamIds": [
@@ -922,7 +922,7 @@
                 "id": 49,
                 "keeper": false,
                 "lineupSlotId": 4,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 49,
                 "owningTeamIds": [
@@ -941,7 +941,7 @@
                 "id": 50,
                 "keeper": false,
                 "lineupSlotId": 23,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 50,
                 "owningTeamIds": [
@@ -960,7 +960,7 @@
                 "id": 51,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 51,
                 "owningTeamIds": [
@@ -979,7 +979,7 @@
                 "id": 52,
                 "keeper": false,
                 "lineupSlotId": 0,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 52,
                 "owningTeamIds": [
@@ -998,7 +998,7 @@
                 "id": 53,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 53,
                 "owningTeamIds": [
@@ -1017,7 +1017,7 @@
                 "id": 54,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 54,
                 "owningTeamIds": [
@@ -1036,7 +1036,7 @@
                 "id": 55,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 55,
                 "owningTeamIds": [
@@ -1055,7 +1055,7 @@
                 "id": 56,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 56,
                 "owningTeamIds": [
@@ -1074,7 +1074,7 @@
                 "id": 57,
                 "keeper": false,
                 "lineupSlotId": 2,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 57,
                 "owningTeamIds": [
@@ -1093,7 +1093,7 @@
                 "id": 58,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 58,
                 "owningTeamIds": [
@@ -1112,7 +1112,7 @@
                 "id": 59,
                 "keeper": false,
                 "lineupSlotId": 23,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 59,
                 "owningTeamIds": [
@@ -1131,7 +1131,7 @@
                 "id": 60,
                 "keeper": false,
                 "lineupSlotId": 23,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 60,
                 "owningTeamIds": [
@@ -1150,7 +1150,7 @@
                 "id": 61,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 61,
                 "owningTeamIds": [
@@ -1169,7 +1169,7 @@
                 "id": 62,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 62,
                 "owningTeamIds": [
@@ -1188,7 +1188,7 @@
                 "id": 63,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 63,
                 "owningTeamIds": [
@@ -1207,7 +1207,7 @@
                 "id": 64,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 64,
                 "owningTeamIds": [
@@ -1226,7 +1226,7 @@
                 "id": 65,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 65,
                 "owningTeamIds": [
@@ -1245,7 +1245,7 @@
                 "id": 66,
                 "keeper": false,
                 "lineupSlotId": 2,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 66,
                 "owningTeamIds": [
@@ -1264,7 +1264,7 @@
                 "id": 67,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 67,
                 "owningTeamIds": [
@@ -1283,7 +1283,7 @@
                 "id": 68,
                 "keeper": false,
                 "lineupSlotId": 6,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 68,
                 "owningTeamIds": [
@@ -1302,7 +1302,7 @@
                 "id": 69,
                 "keeper": false,
                 "lineupSlotId": 23,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 69,
                 "owningTeamIds": [
@@ -1321,7 +1321,7 @@
                 "id": 70,
                 "keeper": false,
                 "lineupSlotId": 4,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 70,
                 "owningTeamIds": [
@@ -1340,7 +1340,7 @@
                 "id": 71,
                 "keeper": false,
                 "lineupSlotId": 0,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 71,
                 "owningTeamIds": [
@@ -1359,7 +1359,7 @@
                 "id": 72,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 72,
                 "owningTeamIds": [
@@ -1378,7 +1378,7 @@
                 "id": 73,
                 "keeper": false,
                 "lineupSlotId": 0,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 73,
                 "owningTeamIds": [
@@ -1397,7 +1397,7 @@
                 "id": 74,
                 "keeper": false,
                 "lineupSlotId": 0,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 74,
                 "owningTeamIds": [
@@ -1416,7 +1416,7 @@
                 "id": 75,
                 "keeper": false,
                 "lineupSlotId": 6,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 75,
                 "owningTeamIds": [
@@ -1435,7 +1435,7 @@
                 "id": 76,
                 "keeper": false,
                 "lineupSlotId": 6,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 76,
                 "owningTeamIds": [
@@ -1454,7 +1454,7 @@
                 "id": 77,
                 "keeper": false,
                 "lineupSlotId": 0,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 77,
                 "owningTeamIds": [
@@ -1473,7 +1473,7 @@
                 "id": 78,
                 "keeper": false,
                 "lineupSlotId": 6,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 78,
                 "owningTeamIds": [
@@ -1492,7 +1492,7 @@
                 "id": 79,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 79,
                 "owningTeamIds": [
@@ -1511,7 +1511,7 @@
                 "id": 80,
                 "keeper": false,
                 "lineupSlotId": 6,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 80,
                 "owningTeamIds": [
@@ -1530,7 +1530,7 @@
                 "id": 81,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 81,
                 "owningTeamIds": [
@@ -1549,7 +1549,7 @@
                 "id": 82,
                 "keeper": false,
                 "lineupSlotId": 0,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 82,
                 "owningTeamIds": [
@@ -1568,7 +1568,7 @@
                 "id": 83,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 83,
                 "owningTeamIds": [
@@ -1587,7 +1587,7 @@
                 "id": 84,
                 "keeper": false,
                 "lineupSlotId": 6,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 84,
                 "owningTeamIds": [
@@ -1606,7 +1606,7 @@
                 "id": 85,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 85,
                 "owningTeamIds": [
@@ -1625,7 +1625,7 @@
                 "id": 86,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 86,
                 "owningTeamIds": [
@@ -1644,7 +1644,7 @@
                 "id": 87,
                 "keeper": false,
                 "lineupSlotId": 6,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 87,
                 "owningTeamIds": [
@@ -1663,7 +1663,7 @@
                 "id": 88,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 88,
                 "owningTeamIds": [
@@ -1682,7 +1682,7 @@
                 "id": 89,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 89,
                 "owningTeamIds": [
@@ -1701,7 +1701,7 @@
                 "id": 90,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 90,
                 "owningTeamIds": [
@@ -1720,7 +1720,7 @@
                 "id": 91,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 91,
                 "owningTeamIds": [
@@ -1739,7 +1739,7 @@
                 "id": 92,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 92,
                 "owningTeamIds": [
@@ -1758,7 +1758,7 @@
                 "id": 93,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 93,
                 "owningTeamIds": [
@@ -1777,7 +1777,7 @@
                 "id": 94,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 94,
                 "owningTeamIds": [
@@ -1796,7 +1796,7 @@
                 "id": 95,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 95,
                 "owningTeamIds": [
@@ -1815,7 +1815,7 @@
                 "id": 96,
                 "keeper": false,
                 "lineupSlotId": 0,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 96,
                 "owningTeamIds": [
@@ -1834,7 +1834,7 @@
                 "id": 97,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 97,
                 "owningTeamIds": [
@@ -1853,7 +1853,7 @@
                 "id": 98,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 98,
                 "owningTeamIds": [
@@ -1872,7 +1872,7 @@
                 "id": 99,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 99,
                 "owningTeamIds": [
@@ -1891,7 +1891,7 @@
                 "id": 100,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 100,
                 "owningTeamIds": [
@@ -1910,7 +1910,7 @@
                 "id": 101,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 101,
                 "owningTeamIds": [
@@ -1929,7 +1929,7 @@
                 "id": 102,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 102,
                 "owningTeamIds": [
@@ -1948,7 +1948,7 @@
                 "id": 103,
                 "keeper": false,
                 "lineupSlotId": 0,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 103,
                 "owningTeamIds": [
@@ -1967,7 +1967,7 @@
                 "id": 104,
                 "keeper": false,
                 "lineupSlotId": 16,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 104,
                 "owningTeamIds": [
@@ -1986,7 +1986,7 @@
                 "id": 105,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 105,
                 "owningTeamIds": [
@@ -2005,7 +2005,7 @@
                 "id": 106,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 106,
                 "owningTeamIds": [
@@ -2024,7 +2024,7 @@
                 "id": 107,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 107,
                 "owningTeamIds": [
@@ -2043,7 +2043,7 @@
                 "id": 108,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 108,
                 "owningTeamIds": [
@@ -2062,7 +2062,7 @@
                 "id": 109,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 109,
                 "owningTeamIds": [
@@ -2081,7 +2081,7 @@
                 "id": 110,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 110,
                 "owningTeamIds": [
@@ -2100,7 +2100,7 @@
                 "id": 111,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 111,
                 "owningTeamIds": [
@@ -2119,7 +2119,7 @@
                 "id": 112,
                 "keeper": false,
                 "lineupSlotId": 16,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 112,
                 "owningTeamIds": [
@@ -2138,7 +2138,7 @@
                 "id": 113,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 113,
                 "owningTeamIds": [
@@ -2157,7 +2157,7 @@
                 "id": 114,
                 "keeper": false,
                 "lineupSlotId": 16,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 114,
                 "owningTeamIds": [
@@ -2176,7 +2176,7 @@
                 "id": 115,
                 "keeper": false,
                 "lineupSlotId": 16,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 115,
                 "owningTeamIds": [
@@ -2195,7 +2195,7 @@
                 "id": 116,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 116,
                 "owningTeamIds": [
@@ -2214,7 +2214,7 @@
                 "id": 117,
                 "keeper": false,
                 "lineupSlotId": 17,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 117,
                 "owningTeamIds": [
@@ -2233,7 +2233,7 @@
                 "id": 118,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 118,
                 "owningTeamIds": [
@@ -2252,7 +2252,7 @@
                 "id": 119,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 119,
                 "owningTeamIds": [
@@ -2271,7 +2271,7 @@
                 "id": 120,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 120,
                 "owningTeamIds": [
@@ -2290,7 +2290,7 @@
                 "id": 121,
                 "keeper": false,
                 "lineupSlotId": 16,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 121,
                 "owningTeamIds": [
@@ -2309,7 +2309,7 @@
                 "id": 122,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 122,
                 "owningTeamIds": [
@@ -2328,7 +2328,7 @@
                 "id": 123,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 123,
                 "owningTeamIds": [
@@ -2347,7 +2347,7 @@
                 "id": 124,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 124,
                 "owningTeamIds": [
@@ -2366,7 +2366,7 @@
                 "id": 125,
                 "keeper": false,
                 "lineupSlotId": 16,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 125,
                 "owningTeamIds": [
@@ -2385,7 +2385,7 @@
                 "id": 126,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 126,
                 "owningTeamIds": [
@@ -2404,7 +2404,7 @@
                 "id": 127,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 127,
                 "owningTeamIds": [
@@ -2423,7 +2423,7 @@
                 "id": 128,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 128,
                 "owningTeamIds": [
@@ -2442,7 +2442,7 @@
                 "id": 129,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 129,
                 "owningTeamIds": [
@@ -2461,7 +2461,7 @@
                 "id": 130,
                 "keeper": false,
                 "lineupSlotId": 16,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 130,
                 "owningTeamIds": [
@@ -2480,7 +2480,7 @@
                 "id": 131,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 131,
                 "owningTeamIds": [
@@ -2499,7 +2499,7 @@
                 "id": 132,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 132,
                 "owningTeamIds": [
@@ -2518,7 +2518,7 @@
                 "id": 133,
                 "keeper": false,
                 "lineupSlotId": 16,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 133,
                 "owningTeamIds": [
@@ -2537,7 +2537,7 @@
                 "id": 134,
                 "keeper": false,
                 "lineupSlotId": 17,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 134,
                 "owningTeamIds": [
@@ -2556,7 +2556,7 @@
                 "id": 135,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 135,
                 "owningTeamIds": [
@@ -2575,7 +2575,7 @@
                 "id": 136,
                 "keeper": false,
                 "lineupSlotId": 17,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 136,
                 "owningTeamIds": [
@@ -2594,7 +2594,7 @@
                 "id": 137,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 137,
                 "owningTeamIds": [
@@ -2613,7 +2613,7 @@
                 "id": 138,
                 "keeper": false,
                 "lineupSlotId": 16,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 138,
                 "owningTeamIds": [
@@ -2632,7 +2632,7 @@
                 "id": 139,
                 "keeper": false,
                 "lineupSlotId": 16,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 139,
                 "owningTeamIds": [
@@ -2651,7 +2651,7 @@
                 "id": 140,
                 "keeper": false,
                 "lineupSlotId": 17,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 140,
                 "owningTeamIds": [
@@ -2670,7 +2670,7 @@
                 "id": 141,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 141,
                 "owningTeamIds": [
@@ -2689,7 +2689,7 @@
                 "id": 142,
                 "keeper": false,
                 "lineupSlotId": 17,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 142,
                 "owningTeamIds": [
@@ -2708,7 +2708,7 @@
                 "id": 143,
                 "keeper": false,
                 "lineupSlotId": 17,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 143,
                 "owningTeamIds": [
@@ -2727,7 +2727,7 @@
                 "id": 144,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 144,
                 "owningTeamIds": [
@@ -2746,7 +2746,7 @@
                 "id": 145,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 145,
                 "owningTeamIds": [
@@ -2765,7 +2765,7 @@
                 "id": 146,
                 "keeper": false,
                 "lineupSlotId": 17,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 146,
                 "owningTeamIds": [
@@ -2784,7 +2784,7 @@
                 "id": 147,
                 "keeper": false,
                 "lineupSlotId": 20,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 147,
                 "owningTeamIds": [
@@ -2803,7 +2803,7 @@
                 "id": 148,
                 "keeper": false,
                 "lineupSlotId": 17,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 148,
                 "owningTeamIds": [
@@ -2822,7 +2822,7 @@
                 "id": 149,
                 "keeper": false,
                 "lineupSlotId": 17,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 149,
                 "owningTeamIds": [
@@ -2841,7 +2841,7 @@
                 "id": 150,
                 "keeper": false,
                 "lineupSlotId": 17,
-                "memberId": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                "memberId": "{6863-6934-3455}",
                 "nominatingTeamId": 0,
                 "overallPickNumber": 150,
                 "owningTeamIds": [

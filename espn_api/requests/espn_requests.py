@@ -49,7 +49,39 @@ class EspnFantasyRequests(object):
         if self.logger:
             self.logger.log_request(endpoint=endpoint, params=params, headers=headers, response=r.json())
         return r.json()
+
+    def get_league(self):
+        '''Gets all of the leagues initial data (teams, roster, matchups, settings)'''
+        params = {
+            'view': ['mTeam', 'mRoster', 'mMatchup', 'mSettings'] 
+        }
+        data = self.league_get(params=params)
+        return data
     
+    def get_pro_schedule(self):
+        '''Gets the current sports professional team schedules'''
+        params = {
+            'view': 'proTeamSchedules_wl'
+        }
+        data = self.get(params=params)
+        return data
+    
+    def get_pro_players(self):
+        '''Gets the current sports professional players'''
+        params = {
+            'view': 'players_wl'
+        }
+        data = self.get(extend='/players', params=params)
+        return data
+
+    def get_league_draft(self):
+        '''Gets the leagues draft'''
+        params = {
+            'view': 'mDraftDetail',
+        }
+        data = self.league_get(params=params)
+        return data
+
     def authentication(self, username: str, password: str):
         url_api_key = 'https://registerdisney.go.com/jgc/v5/client/ESPN-FANTASYLM-PROD/api-key?langPref=en-US'
         url_login = 'https://ha.registerdisney.go.com/jgc/v5/client/ESPN-FANTASYLM-PROD/guest/login?langPref=en-US'

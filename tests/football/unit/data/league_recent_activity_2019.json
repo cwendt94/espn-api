@@ -103,12 +103,12 @@
             "type": "ACTIVITY_TRANSACTIONS"
         },
         {
-            "author": "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}",
+            "author": "{4899-74322-677}",
             "creationInfo": {
                 "clientAddress": null,
                 "date": 1569417517499,
                 "platform": "cinco_8978",
-                "source": "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}"
+                "source": "{4899-74322-677}"
             },
             "date": 1569417517499,
             "dateEdited": 1569417517499,
@@ -119,16 +119,16 @@
                 "clientAddress": null,
                 "date": 1569417517499,
                 "platform": "cinco_8978",
-                "source": "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}"
+                "source": "{4899-74322-677}"
             },
             "messages": [
                 {
-                    "author": "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}",
+                    "author": "{4899-74322-677}",
                     "creationInfo": {
                         "clientAddress": null,
                         "date": 1569417517499,
                         "platform": "cinco_8978",
-                        "source": "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}"
+                        "source": "{4899-74322-677}"
                     },
                     "date": 1569417517499,
                     "id": "fd071d3d-9496-4ced-accf-ffcd7135b180",
@@ -141,12 +141,12 @@
                     "topicId": "9d46865c-381e-4b7f-ae69-1b7ffee23403"
                 },
                 {
-                    "author": "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}",
+                    "author": "{4899-74322-677}",
                     "creationInfo": {
                         "clientAddress": null,
                         "date": 1569417517499,
                         "platform": "cinco_8978",
-                        "source": "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}"
+                        "source": "{4899-74322-677}"
                     },
                     "date": 1569417517499,
                     "id": "6ce2891f-7d43-4cab-95c5-0f30bc5b1dd9",
@@ -163,12 +163,12 @@
             "type": "ACTIVITY_TRANSACTIONS"
         },
         {
-            "author": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+            "author": "{6863-6934-3455}",
             "creationInfo": {
                 "clientAddress": null,
                 "date": 1569406985622,
                 "platform": "cinco_8978",
-                "source": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}"
+                "source": "{6863-6934-3455}"
             },
             "date": 1569406985622,
             "dateEdited": 1569406985622,
@@ -179,16 +179,16 @@
                 "clientAddress": null,
                 "date": 1569406985622,
                 "platform": "cinco_8978",
-                "source": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}"
+                "source": "{6863-6934-3455}"
             },
             "messages": [
                 {
-                    "author": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                    "author": "{6863-6934-3455}",
                     "creationInfo": {
                         "clientAddress": null,
                         "date": 1569406985622,
                         "platform": "cinco_8978",
-                        "source": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}"
+                        "source": "{6863-6934-3455}"
                     },
                     "date": 1569406985622,
                     "id": "6a700e04-837f-4a73-839e-103d9f937aef",
@@ -201,12 +201,12 @@
                     "topicId": "f841f6c1-9a2e-4cec-b0be-151e1c009d18"
                 },
                 {
-                    "author": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                    "author": "{6863-6934-3455}",
                     "creationInfo": {
                         "clientAddress": null,
                         "date": 1569406985622,
                         "platform": "cinco_8978",
-                        "source": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}"
+                        "source": "{6863-6934-3455}"
                     },
                     "date": 1569406985622,
                     "id": "97a0abbf-366f-4fb7-a7b7-25a9b101236f",
@@ -709,12 +709,12 @@
             "type": "ACTIVITY_TRANSACTIONS"
         },
         {
-            "author": "{A99FDB20-D435-420C-9F41-F38D79E28D56}",
+            "author": "{55791-3368-10456}",
             "creationInfo": {
                 "clientAddress": null,
                 "date": 1569345805889,
                 "platform": "cinco_8978",
-                "source": "{A99FDB20-D435-420C-9F41-F38D79E28D56}"
+                "source": "{55791-3368-10456}"
             },
             "date": 1569345805889,
             "dateEdited": 1569345805889,
@@ -725,16 +725,16 @@
                 "clientAddress": null,
                 "date": 1569345805889,
                 "platform": "cinco_8978",
-                "source": "{A99FDB20-D435-420C-9F41-F38D79E28D56}"
+                "source": "{55791-3368-10456}"
             },
             "messages": [
                 {
-                    "author": "{A99FDB20-D435-420C-9F41-F38D79E28D56}",
+                    "author": "{55791-3368-10456}",
                     "creationInfo": {
                         "clientAddress": null,
                         "date": 1569345805889,
                         "platform": "cinco_8978",
-                        "source": "{A99FDB20-D435-420C-9F41-F38D79E28D56}"
+                        "source": "{55791-3368-10456}"
                     },
                     "date": 1569345805889,
                     "for": 2,
@@ -754,12 +754,12 @@
             "type": "ACTIVITY_TRANSACTIONS"
         },
         {
-            "author": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+            "author": "{6863-6934-3455}",
             "creationInfo": {
                 "clientAddress": null,
                 "date": 1569316641965,
                 "platform": "cinco_8978",
-                "source": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}"
+                "source": "{6863-6934-3455}"
             },
             "date": 1569316641965,
             "dateEdited": 1569316641965,
@@ -770,16 +770,16 @@
                 "clientAddress": null,
                 "date": 1569316641965,
                 "platform": "cinco_8978",
-                "source": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}"
+                "source": "{6863-6934-3455}"
             },
             "messages": [
                 {
-                    "author": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}",
+                    "author": "{6863-6934-3455}",
                     "creationInfo": {
                         "clientAddress": null,
                         "date": 1569316641965,
                         "platform": "cinco_8978",
-                        "source": "{B6ACB659-53A5-4CF2-A937-A616B0EE9830}"
+                        "source": "{6863-6934-3455}"
                     },
                     "date": 1569316641965,
                     "for": 1,
@@ -799,12 +799,12 @@
             "type": "ACTIVITY_TRANSACTIONS"
         },
         {
-            "author": "{3DDE7D6A-D569-4D2C-9E7D-6AD5693D2CCA}",
+            "author": "{0009-3468-72}",
             "creationInfo": {
                 "clientAddress": null,
                 "date": 1569105080278,
                 "platform": "cinco_8952",
-                "source": "{3DDE7D6A-D569-4D2C-9E7D-6AD5693D2CCA}"
+                "source": "{0009-3468-72}"
             },
             "date": 1569105080278,
             "dateEdited": 1569105080278,
@@ -815,16 +815,16 @@
                 "clientAddress": null,
                 "date": 1569105080278,
                 "platform": "cinco_8952",
-                "source": "{3DDE7D6A-D569-4D2C-9E7D-6AD5693D2CCA}"
+                "source": "{0009-3468-72}"
             },
             "messages": [
                 {
-                    "author": "{3DDE7D6A-D569-4D2C-9E7D-6AD5693D2CCA}",
+                    "author": "{0009-3468-72}",
                     "creationInfo": {
                         "clientAddress": null,
                         "date": 1569105080278,
                         "platform": "cinco_8952",
-                        "source": "{3DDE7D6A-D569-4D2C-9E7D-6AD5693D2CCA}"
+                        "source": "{0009-3468-72}"
                     },
                     "date": 1569105080278,
                     "id": "5742a34f-0770-4b0d-986f-f9560e446512",
@@ -837,12 +837,12 @@
                     "topicId": "9c8ef629-ab20-4bdb-ab44-3889e27fc87c"
                 },
                 {
-                    "author": "{3DDE7D6A-D569-4D2C-9E7D-6AD5693D2CCA}",
+                    "author": "{0009-3468-72}",
                     "creationInfo": {
                         "clientAddress": null,
                         "date": 1569105080278,
                         "platform": "cinco_8952",
-                        "source": "{3DDE7D6A-D569-4D2C-9E7D-6AD5693D2CCA}"
+                        "source": "{0009-3468-72}"
                     },
                     "date": 1569105080278,
                     "id": "66d4da2b-1b8d-4309-9515-b651267ca76c",
@@ -859,12 +859,12 @@
             "type": "ACTIVITY_TRANSACTIONS"
         },
         {
-            "author": "{A99FDB20-D435-420C-9F41-F38D79E28D56}",
+            "author": "{55791-3368-10456}",
             "creationInfo": {
                 "clientAddress": null,
                 "date": 1569005387124,
                 "platform": "cinco_8952",
-                "source": "{A99FDB20-D435-420C-9F41-F38D79E28D56}"
+                "source": "{55791-3368-10456}"
             },
             "date": 1569005387124,
             "dateEdited": 1569005387124,
@@ -875,16 +875,16 @@
                 "clientAddress": null,
                 "date": 1569005387124,
                 "platform": "cinco_8952",
-                "source": "{A99FDB20-D435-420C-9F41-F38D79E28D56}"
+                "source": "{55791-3368-10456}"
             },
             "messages": [
                 {
-                    "author": "{A99FDB20-D435-420C-9F41-F38D79E28D56}",
+                    "author": "{55791-3368-10456}",
                     "creationInfo": {
                         "clientAddress": null,
                         "date": 1569005387124,
                         "platform": "cinco_8952",
-                        "source": "{A99FDB20-D435-420C-9F41-F38D79E28D56}"
+                        "source": "{55791-3368-10456}"
                     },
                     "date": 1569005387124,
                     "id": "ee125f68-161a-4e20-9dad-10a623296a58",
@@ -901,12 +901,12 @@
             "type": "ACTIVITY_TRANSACTIONS"
         },
         {
-            "author": "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}",
+            "author": "{4899-74322-677}",
             "creationInfo": {
                 "clientAddress": null,
                 "date": 1568935927913,
                 "platform": "cinco_8936",
-                "source": "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}"
+                "source": "{4899-74322-677}"
             },
             "date": 1568935927913,
             "dateEdited": 1568935927913,
@@ -917,16 +917,16 @@
                 "clientAddress": null,
                 "date": 1568935927913,
                 "platform": "cinco_8936",
-                "source": "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}"
+                "source": "{4899-74322-677}"
             },
             "messages": [
                 {
-                    "author": "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}",
+                    "author": "{4899-74322-677}",
                     "creationInfo": {
                         "clientAddress": null,
                         "date": 1568935927913,
                         "platform": "cinco_8936",
-                        "source": "{E78E538D-6C8D-462C-8E53-8D6C8DF62CFF}"
+                        "source": "{4899-74322-677}"
                     },
                     "date": 1568935927913,
                     "id": "2490f559-abd7-4f86-a582-8a3808f8c7db",
@@ -943,12 +943,12 @@
             "type": "ACTIVITY_TRANSACTIONS"
         },
         {
-            "author": "{08828A8F-80A3-456D-A448-F1DC5E3AC1B7}",
+            "author": "{3456-789-1112}",
             "creationInfo": {
                 "clientAddress": null,
                 "date": 1568906453390,
                 "platform": "cinco_8951",
-                "source": "{08828A8F-80A3-456D-A448-F1DC5E3AC1B7}"
+                "source": "{3456-789-1112}"
             },
             "date": 1568906453390,
             "dateEdited": 1568906453390,
@@ -959,16 +959,16 @@
                 "clientAddress": null,
                 "date": 1568906453390,
                 "platform": "cinco_8951",
-                "source": "{08828A8F-80A3-456D-A448-F1DC5E3AC1B7}"
+                "source": "{3456-789-1112}"
             },
             "messages": [
                 {
-                    "author": "{08828A8F-80A3-456D-A448-F1DC5E3AC1B7}",
+                    "author": "{3456-789-1112}",
                     "creationInfo": {
                         "clientAddress": null,
                         "date": 1568906453390,
                         "platform": "cinco_8951",
-                        "source": "{08828A8F-80A3-456D-A448-F1DC5E3AC1B7}"
+                        "source": "{3456-789-1112}"
                     },
                     "date": 1568906453390,
                     "id": "4558b69a-661b-4a8c-803e-903306ef847b",
@@ -981,12 +981,12 @@
                     "topicId": "0eaf6977-416d-44c2-a5ad-be79cce8adcd"
                 },
                 {
-                    "author": "{08828A8F-80A3-456D-A448-F1DC5E3AC1B7}",
+                    "author": "{3456-789-1112}",
                     "creationInfo": {
                         "clientAddress": null,
                         "date": 1568906453390,
                         "platform": "cinco_8951",
-                        "source": "{08828A8F-80A3-456D-A448-F1DC5E3AC1B7}"
+                        "source": "{3456-789-1112}"
                     },
                     "date": 1568906453390,
                     "id": "b8e9826e-84b6-4b2d-a090-788383042a91",
@@ -1003,12 +1003,12 @@
             "type": "ACTIVITY_TRANSACTIONS"
         },
         {
-            "author": "{03680774-45A0-4E5C-A807-7445A0AE5CCC}",
+            "author": "{1234-5678-9101}",
             "creationInfo": {
                 "clientAddress": null,
                 "date": 1568903211672,
                 "platform": "cinco_8951",
-                "source": "{03680774-45A0-4E5C-A807-7445A0AE5CCC}"
+                "source": "{1234-5678-9101}"
             },
             "date": 1568903211672,
             "dateEdited": 1568903211672,
@@ -1019,16 +1019,16 @@
                 "clientAddress": null,
                 "date": 1568903211672,
                 "platform": "cinco_8951",
-                "source": "{03680774-45A0-4E5C-A807-7445A0AE5CCC}"
+                "source": "{1234-5678-9101}"
             },
             "messages": [
                 {
-                    "author": "{03680774-45A0-4E5C-A807-7445A0AE5CCC}",
+                    "author": "{1234-5678-9101}",
                     "creationInfo": {
                         "clientAddress": null,
                         "date": 1568903211672,
                         "platform": "cinco_8951",
-                        "source": "{03680774-45A0-4E5C-A807-7445A0AE5CCC}"
+                        "source": "{1234-5678-9101}"
                     },
                     "date": 1568903211672,
                     "id": "032cb414-7f16-4cff-bbe5-fe90e2a1be9f",
@@ -1041,12 +1041,12 @@
                     "topicId": "a6fbed54-f892-4503-a338-b7396af998df"
                 },
                 {
-                    "author": "{03680774-45A0-4E5C-A807-7445A0AE5CCC}",
+                    "author": "{1234-5678-9101}",
                     "creationInfo": {
                         "clientAddress": null,
                         "date": 1568903211672,
                         "platform": "cinco_8951",
-                        "source": "{03680774-45A0-4E5C-A807-7445A0AE5CCC}"
+                        "source": "{1234-5678-9101}"
                     },
                     "date": 1568903211672,
                     "id": "1cb0c304-9d59-48ef-82ad-0b27e092d69b",

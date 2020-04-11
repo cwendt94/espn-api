@@ -4,10 +4,11 @@ import sys
 class Logger(object):
     def __init__(self, name: str, debug=False):
         level = logging.DEBUG if debug else logging.INFO
-        self.logging = logging.getLogger('League')
+        self.logging = logging.getLogger(name)
         
         # if logger already exists don't add handlers
         if len(self.logging.handlers):
+            self.logging.handlers[0].setLevel(level)
             return
 
         handler = logging.StreamHandler(sys.stdout)

@@ -3,10 +3,8 @@ import time
 import json
 from typing import List, Tuple
 
-from ..utils.logger import Logger
-from ..requests.espn_requests import EspnFantasyRequests
+from ..base_league import BaseLeague
 from .team import Team
-from .settings import Settings
 from .matchup import Matchup
 from .pick import Pick
 from .box_score import BoxScore
@@ -16,81 +14,23 @@ from .activity import Activity
 from .utils import power_points, two_step_dominance
 from .constant import POSITION_MAP, ACTIVITY_MAP
 
-class League(object):
+class League(BaseLeague):
     '''Creates a League instance for Public/Private ESPN league'''
     def __init__(self, league_id: int, year: int, espn_s2=None, swid=None, username=None, password=None, debug=False):
-        self.logger = Logger(name='Football League', debug=debug)
-        self.league_id = league_id
-        self.year = year
-        self.teams = []
-        self.draft = []
-        self.player_map = {}
-        self.current_week = 0
-        self.nfl_week = 0
-
-        cookies = None
-        if espn_s2 and swid:
-            cookies = {
-                'espn_s2': espn_s2,
-                'SWID': swid
-            }
-        self.espn_request = EspnFantasyRequests(sport='nfl', year=year, league_id=league_id, cookies=cookies, logger=self.logger)
-        if username and password:
-            self.espn_request.authentication(username, password)
+        super().__init__(league_id=league_id, year=year, sport='nfl', espn_s2=espn_s2, swid=swid, username=username, password=password, debug=debug)
         self._fetch_league()
 
-    def __repr__(self):
-        return 'League(%s, %s)' % (self.league_id, self.year, )
-
     def _fetch_league(self):
-        data = self.espn_request.league_get()
+        data = super()._fetch_league()
 
-        if self.year < 2018:
-            self.current_week = data['scoringPeriodId']
-        else:
-            self.current_week = data['status']['currentMatchupPeriod']
         self.nfl_week = data['status']['latestScoringPeriod']
-        
-
-        self._fetch_settings()
         self._fetch_players()
-        self._fetch_teams()
+        self._fetch_teams(data)
         self._fetch_draft()
 
-    def _fetch_teams(self):
+    def _fetch_teams(self, data):
         '''Fetch teams in league'''
-        params = {
-            'view': 'mTeam'
-        }
-        data = self.espn_request.league_get(params=params)
-        teams = data['teams']
-        members = data['members']
-
-        params = {
-            'view': 'mMatchup',
-        }
-        data = self.espn_request.league_get(params=params)
-        schedule = data['schedule']
-
-        params = {
-            'view': 'mRoster',
-        }
-        data = self.espn_request.league_get(params=params)
-
-        team_roster = {}
-        for team in data['teams']:
-            team_roster[team['id']] = team['roster']
-        
-        for team in teams:
-            for member in members:
-                # For league that is not full the team will not have a owner field
-                if 'owners' not in team or not team['owners']:
-                    member = None
-                    break
-                elif member['id'] == team['owners'][0]:
-                    break
-            roster = team_roster[team['id']]
-            self.teams.append(Team(team, roster, member, schedule))
+        super()._fetch_teams(data, TeamClass=Team)
 
         # replace opponentIds in schedule with team instances
         for team in self.teams:
@@ -105,33 +45,9 @@ class League(object):
                 mov = team.scores[week] - opponent.scores[week]
                 team.mov.append(mov)
 
-        # sort by team ID
-        self.teams = sorted(self.teams, key=lambda x: x.team_id, reverse=False)
-
-    def _fetch_settings(self):
-        params = {
-            'view': 'mSettings',
-        }
-
-        data = self.espn_request.league_get(params=params)
-        self.settings = Settings(data['settings'])
-    
-    def _fetch_players(self):
-        params = {
-            'scoringPeriodId': 0,
-            'view': 'players_wl',
-        }
-        data = self.espn_request.get(extend='/players', params=params)
-        # Map all player id's to player name
-        for player in data:
-            self.player_map[player['id']] = player['fullName']
-
     def _fetch_draft(self):
         '''Creates list of Pick objects from the leagues draft'''
-        params = {
-            'view': 'mDraftDetail',
-        }
-        data = self.espn_request.league_get(params=params)
+        data = self.espn_request.get_league_draft()
         
         # League has not drafted yet
         if not data['draftDetail']['drafted']:
@@ -150,21 +66,6 @@ class League(object):
             keeper_status = pick['keeper']
 
             self.draft.append(Pick(team, playerId, playerName, round_num, round_pick, bid_amount, keeper_status))
-    
-    def _get_nfl_schedule(self, week: int):
-        params = {
-            'view': 'proTeamSchedules_wl'
-        }
-        data = self.espn_request.get(params=params)
-        
-        pro_teams = data['settings']['proTeams']
-        pro_team_schedule = {}
-
-        for team in pro_teams:
-            if team['id'] != 0 and team['byeWeek'] != week:
-                game_data = team['proGamesByScoringPeriod'][str(week)][0]
-                pro_team_schedule[team['id']] = (game_data['homeProTeamId'], game_data['date'])  if team['id'] == game_data['awayProTeamId'] else (game_data['awayProTeamId'], game_data['date'])
-        return pro_team_schedule
     
     def _get_positional_ratings(self, week: int):
         params = {
@@ -289,16 +190,16 @@ class League(object):
             week = self.current_week
 
         params = {
-            'view': 'mMatchupScore',
+            'view': ['mMatchupScore', 'mScoreboard'],
             'scoringPeriodId': week,
         }
         
         filters = {"schedule":{"filterMatchupPeriodIds":{"value":[week]}}}
         headers = {'x-fantasy-filter': json.dumps(filters)}
-        data = self.espn_request.league_get(extend='?view=mMatchup', params=params, headers=headers)
+        data = self.espn_request.league_get(params=params, headers=headers)
 
         schedule = data['schedule']
-        pro_schedule = self._get_nfl_schedule(week)
+        pro_schedule = self._get_pro_schedule(week)
         positional_rankings = self._get_positional_ratings(week)
         box_data = [BoxScore(matchup, pro_schedule, positional_rankings, week) for matchup in schedule]
 
@@ -354,7 +255,7 @@ class League(object):
         data = self.espn_request.league_get(params=params, headers=headers)
 
         players = data['players']
-        pro_schedule = self._get_nfl_schedule(week)
+        pro_schedule = self._get_pro_schedule(week)
         positional_rankings = self._get_positional_ratings(week)
 
         return [BoxPlayer(player, pro_schedule, positional_rankings, week) for player in players]

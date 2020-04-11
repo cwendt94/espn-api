@@ -9,28 +9,16 @@ class LeagueTest(TestCase):
         self.league_id = 123
         self.season = 2018
         self.espn_endpoint = "https://fantasy.espn.com/apis/v3/games/FFL/seasons/" + str(self.season) + "/segments/0/leagues/" + str(self.league_id)
-        self.players_endpoint = 'https://fantasy.espn.com/apis/v3/games/ffl/seasons/' + str(self.season) + '/players?scoringPeriodId=0&view=players_wl'
-        with open('tests/football/unit/data/league_2018.json') as data:
+        self.players_endpoint = 'https://fantasy.espn.com/apis/v3/games/ffl/seasons/' + str(self.season) + '/players?view=players_wl'
+        with open('tests/football/unit/data/league_2018_data.json') as data:
             self.league_data = json.loads(data.read())
-        with open('tests/football/unit/data/league_team_2018.json') as data:
-            self.team_data = json.loads(data.read())
-        with open('tests/football/unit/data/league_settings_2018.json') as data:
-            self.settings_data = json.loads(data.read())
-        with open('tests/football/unit/data/league_matchup_2018.json') as data:
-            self.matchup_data = json.loads(data.read())
-        with open('tests/football/unit/data/league_roster_2018.json') as data:
-            self.roster_data = json.loads(data.read())
         with open('tests/football/unit/data/league_draft_2018.json') as data:
             self.draft_data = json.loads(data.read())
         with open('tests/football/unit/data/league_players_2018.json') as data:
             self.players_data = json.loads(data.read())
     
     def mock_setUp(self, m):
-        m.get(self.espn_endpoint, status_code=200, json=self.league_data)
-        m.get(self.espn_endpoint + '?view=mTeam', status_code=200, json=self.team_data)
-        m.get(self.espn_endpoint + '?view=mSettings', status_code=200, json=self.settings_data)
-        m.get(self.espn_endpoint + '?view=mMatchup', status_code=200, json=self.matchup_data)
-        m.get(self.espn_endpoint + '?view=mRoster', status_code=200, json=self.roster_data)
+        m.get(self.espn_endpoint + '?view=mTeam&view=mRoster&view=mMatchup&view=mSettings', status_code=200, json=self.league_data)
         m.get(self.espn_endpoint + '?view=mDraftDetail', status_code=200, json=self.draft_data)
         m.get(self.players_endpoint, status_code=200, json=self.players_data)
 
@@ -216,7 +204,7 @@ class LeagueTest(TestCase):
         self.assertEqual(repr(valid_week[0][1]), 'Team(Misunderstood  Mistfits )')
 
     @requests_mock.Mocker()
-    @mock.patch.object(League, '_get_nfl_schedule')   
+    @mock.patch.object(League, '_get_pro_schedule')   
     @mock.patch.object(League, '_get_positional_ratings')
     @mock.patch.object(BoxPlayer, '__init__') 
     def test_free_agents(self, m, mock_boxplayer, mock_nfl_schedule, mock_pos_ratings):
