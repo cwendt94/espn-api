@@ -1,6 +1,7 @@
 from .constant import POSITION_MAP, PRO_TEAM_MAP
 from .player import Player
 from datetime import datetime, timedelta
+from .utils import json_parsing
 
 class BoxPlayer(Player):
     '''player with extra data from a matchup'''
@@ -20,9 +21,10 @@ class BoxPlayer(Player):
         if player['proTeamId'] in pro_schedule:
             (opp_id, date) = pro_schedule[player['proTeamId']]
             self.game_played = 100 if datetime.now() > datetime.fromtimestamp(date/1000.0) + timedelta(hours=3) else 0
-            if str(player['defaultPositionId']) in positional_rankings:
+            posId = str(player['defaultPositionId'])
+            if posId in positional_rankings:
                 self.pro_opponent = PRO_TEAM_MAP[opp_id]
-                self.pro_pos_rank = positional_rankings[str(player['defaultPositionId'])][str(opp_id)]
+                self.pro_pos_rank = positional_rankings[posId][str(opp_id)] if str(opp_id) in positional_rankings[posId] else 0
 
 
         player_stats = player['stats']
