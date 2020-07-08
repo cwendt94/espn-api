@@ -1,7 +1,6 @@
 from .constant import POSITION_MAP, PRO_TEAM_MAP
 from .player import Player
 from datetime import datetime, timedelta
-from .utils import json_parsing
 
 class BoxPlayer(Player):
     '''player with extra data from a matchup'''
