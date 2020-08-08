@@ -1,4 +1,4 @@
-from .constant import POSITION_MAP, PRO_TEAM_MAP
+from .constant import POSITION_MAP, PRO_TEAM_MAP, PLAYER_STATS_MAP
 from .player import Player
 from datetime import datetime, timedelta
 
@@ -30,9 +30,12 @@ class BoxPlayer(Player):
         for stats in player_stats:
             if stats['statSourceId'] == 0 and stats['scoringPeriodId'] == week:
                 self.points = round(stats['appliedTotal'], 2)
+                self.points_breakdown = {PLAYER_STATS_MAP.get(int(k), k):v for (k,v) in stats['appliedStats'].items()}
             elif stats['statSourceId'] == 1 and stats['scoringPeriodId'] == week:
                 self.projected_points = round(stats['appliedTotal'], 2)
-            
-    
+                self.projected_breakdown = {PLAYER_STATS_MAP.get(int(k), k):v for (k,v) in stats['appliedStats'].items()}
+
+
+
     def __repr__(self):
         return 'Player(%s, points:%d, projected:%d)' % (self.name, self.points, self.projected_points)
