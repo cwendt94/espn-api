@@ -1,10 +1,7 @@
 ![](https://github.com/cwendt94/espn-api/workflows/Espn%20API/badge.svg)
 ![](https://github.com/cwendt94/espn-api/workflows/Espn%20API%20Integration%20Test/badge.svg) [![codecov](https://codecov.io/gh/cwendt94/espn-api/branch/master/graphs/badge.svg)](https://codecov.io/gh/cwendt94/espn-api) [![Join the chat at https://gitter.im/ff-espn-api/community](https://badges.gitter.im/ff-espn-api/community.svg)](https://gitter.im/ff-espn-api/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![PyPI version](https://badge.fury.io/py/espn-api.svg)](https://badge.fury.io/py/espn-api)
 
-# ff-espn-api -> espn-api
 ## ESPN API
-## **ff_espn_api will be transitioning to espn_api! espn_api will have all of the features that ff_espn_api has just different import syntax and folder structure. espn_api will now be supporting multiple ESPN fantasy sports starting with basketball!**  
-## **ff_espn_api version 1.8.9 will still be avaiable but will no longer be updated. To get the newest updates switch over to espn_api!**
 
 This package uses ESPN's Fantasy API to extract data from any public or private league for **Fantasy Football and Basketball**.  
 Please feel free to make suggestions, bug reports, and pull request for features or fixes!
