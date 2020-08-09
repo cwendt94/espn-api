@@ -17,3 +17,8 @@ class BoxScore(object):
             self.away_score =  round(data['away']['rosterForCurrentScoringPeriod']['appliedStatTotal'], 2)
             away_roster = data['away']['rosterForCurrentScoringPeriod']['entries']
             self.away_lineup = [BoxPlayer(player, pro_schedule, positional_rankings, week) for player in away_roster]
+
+    def __repr__(self):
+        away_team = self.away_team if self.away_team else "BYE"
+        home_team = self.home_team if self.home_team else "BYE"
+        return 'Box Score(%s at %s)' % (away_team, home_team)
