@@ -2,7 +2,7 @@
 ![](https://github.com/cwendt94/espn-api/workflows/Espn%20API%20Integration%20Test/badge.svg) [![codecov](https://codecov.io/gh/cwendt94/espn-api/branch/master/graphs/badge.svg)](https://codecov.io/gh/cwendt94/espn-api) [![Join the chat at https://gitter.im/ff-espn-api/community](https://badges.gitter.im/ff-espn-api/community.svg)](https://gitter.im/ff-espn-api/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![PyPI version](https://badge.fury.io/py/espn-api.svg)](https://badge.fury.io/py/espn-api)
 
 ## ESPN API
-
+## [NOTICE] Currently username and password are not working, ESPN recently changed their authentication. You can still access your private league using SWID and ESPN_S2.
 This package uses ESPN's Fantasy API to extract data from any public or private league for **Fantasy Football and Basketball**.  
 Please feel free to make suggestions, bug reports, and pull request for features or fixes!
 
