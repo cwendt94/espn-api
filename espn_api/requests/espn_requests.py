@@ -1,4 +1,5 @@
 import requests
+import json
 from .constant import FANTASY_BASE_ENDPOINT, FANTASY_SPORTS
 from ..utils.logger import Logger
 
@@ -71,7 +72,9 @@ class EspnFantasyRequests(object):
         params = {
             'view': 'players_wl'
         }
-        data = self.get(extend='/players', params=params)
+        filters = {"filterActive":{"value":True}}
+        headers = {'x-fantasy-filter': json.dumps(filters)}
+        data = self.get(extend='/players', params=params, headers=headers)
         return data
 
     def get_league_draft(self):
