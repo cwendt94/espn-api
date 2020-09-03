@@ -26,14 +26,16 @@ class BoxPlayer(Player):
                 self.pro_pos_rank = positional_rankings[posId][str(opp_id)] if str(opp_id) in positional_rankings[posId] else 0
 
 
-        player_stats = player['stats']
+        player_stats = player.get('stats')
         for stats in player_stats:
-            if stats['statSourceId'] == 0 and stats['scoringPeriodId'] == week:
-                self.points = round(stats['appliedTotal'], 2)
-                self.points_breakdown = {PLAYER_STATS_MAP.get(int(k), k):v for (k,v) in stats['appliedStats'].items()}
-            elif stats['statSourceId'] == 1 and stats['scoringPeriodId'] == week:
-                self.projected_points = round(stats['appliedTotal'], 2)
-                self.projected_breakdown = {PLAYER_STATS_MAP.get(int(k), k):v for (k,v) in stats['appliedStats'].items()}
+            stats_breakdown = stats.get('appliedStats') if stats.get('appliedStats') else stats.get('stats', {})
+            points = round(stats.get('appliedTotal', 0), 2)
+            if stats.get('statSourceId') == 0 and stats.get('scoringPeriodId') == week:
+                self.points = points
+                self.points_breakdown = {PLAYER_STATS_MAP.get(int(k), k):v for (k,v) in stats_breakdown.items()}
+            elif stats.get('statSourceId') == 1 and stats.get('scoringPeriodId') == week:
+                self.projected_points = points
+                self.projected_breakdown = {PLAYER_STATS_MAP.get(int(k), k):v for (k,v) in stats_breakdown.items()}
 
 
 
