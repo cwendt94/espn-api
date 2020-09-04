@@ -7,8 +7,6 @@ class BoxPlayer(Player):
     def __init__(self, data, pro_schedule, positional_rankings, week):
         super(BoxPlayer, self).__init__(data)
         self.slot_position = 'FA'
-        self.points = 0
-        self.projected_points = 0
         self.pro_opponent = "None" # professional team playing against
         self.pro_pos_rank = 0 # rank of professional team against player position
         self.game_played = 100 # 0-100 for percent of game played
@@ -26,12 +24,10 @@ class BoxPlayer(Player):
                 self.pro_pos_rank = positional_rankings[posId][str(opp_id)] if str(opp_id) in positional_rankings[posId] else 0
 
         stats = self.stats.get(week)
-        if stats and stats.get('stat_source') == 0:
-            self.points = stats.get('points')
-            self.points_breakdown = stats.get('breakdown')
-        elif stats and stats.get('stat_source') == 1:
-            self.projected_points = stats.get('points')
-            self.projected_breakdown = stats.get('breakdown')
+        self.points = stats.get('points', 0)
+        self.points_breakdown = stats.get('breakdown', 0)
+        self.projected_points = stats.get('projected_points', 0)
+        self.projected_breakdown = stats.get('projected_breakdown', 0)
 
 
 

@@ -265,6 +265,8 @@ class League(BaseLeague):
         if playerId is None:
             return None
         params = { 'view': 'kona_playercard' }
+        # need to get final scoring period for league and add to filte 
+        # example {"players":{"filterIds":{"value":[5536]},"filterStatsForTopScoringPeriodIds":{"value":16}}}
         filters = {'players':{'filterIds':{'value':[playerId]}}}
         headers = {'x-fantasy-filter': json.dumps(filters)}
 

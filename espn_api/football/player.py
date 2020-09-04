@@ -27,7 +27,12 @@ class Player(object):
             points = round(stats.get('appliedTotal', 0), 2)
             scoring_period = stats.get('scoringPeriodId')
             stat_source = stats.get('statSourceId')
-            self.stats[scoring_period] = {'breakdown': breakdown, 'points': points, 'stat_source': stat_source}
+            (points_type, breakdown_type) = ('points', 'breakdown') if stat_source == 0 else ('projected_points', 'projected_breakdown')
+            if self.stats.get(scoring_period):
+                self.stats[scoring_period][points_type] = points
+                self.stats[scoring_period][breakdown_type] = breakdown
+            else:
+                self.stats[scoring_period] = {points_type: points, breakdown_type: breakdown}
             
     def __repr__(self):
         return 'Player(%s)' % (self.name, )
