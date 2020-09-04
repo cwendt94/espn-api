@@ -25,17 +25,13 @@ class BoxPlayer(Player):
                 self.pro_opponent = PRO_TEAM_MAP[opp_id]
                 self.pro_pos_rank = positional_rankings[posId][str(opp_id)] if str(opp_id) in positional_rankings[posId] else 0
 
-
-        player_stats = player.get('stats')
-        for stats in player_stats:
-            stats_breakdown = stats.get('appliedStats') if stats.get('appliedStats') else stats.get('stats', {})
-            points = round(stats.get('appliedTotal', 0), 2)
-            if stats.get('statSourceId') == 0 and stats.get('scoringPeriodId') == week:
-                self.points = points
-                self.points_breakdown = {PLAYER_STATS_MAP.get(int(k), k):v for (k,v) in stats_breakdown.items()}
-            elif stats.get('statSourceId') == 1 and stats.get('scoringPeriodId') == week:
-                self.projected_points = points
-                self.projected_breakdown = {PLAYER_STATS_MAP.get(int(k), k):v for (k,v) in stats_breakdown.items()}
+        stats = self.stats.get(week)
+        if stats and stats.get('stat_source') == 0:
+            self.points = stats.get('points')
+            self.points_breakdown = stats.get('breakdown')
+        elif stats and stats.get('stat_source') == 1:
+            self.projected_points = stats.get('points')
+            self.projected_breakdown = stats.get('breakdown')
 
 
 
