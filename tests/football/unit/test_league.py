@@ -16,6 +16,8 @@ class LeagueTest(TestCase):
             self.draft_data = json.loads(data.read())
         with open('tests/football/unit/data/league_players_2018.json') as data:
             self.players_data = json.loads(data.read())
+        with open('tests/football/unit/data/league_2019_playerCard.json') as data:
+            self.player_card_data = json.loads(data.read())
     
     def mock_setUp(self, m):
         m.get(self.espn_endpoint + '?view=mTeam&view=mRoster&view=mMatchup&view=mSettings', status_code=200, json=self.league_data)
@@ -241,6 +243,21 @@ class LeagueTest(TestCase):
         league = League(league_id=1234, year=2019, espn_s2='cookie1', swid='cookie2')
         self.assertEqual(league.espn_request.cookies['espn_s2'], 'cookie1')
         self.assertEqual(league.espn_request.cookies['SWID'], 'cookie2')
+    
+    @requests_mock.Mocker()
+    def test_player_info(self, m):
+        self.mock_setUp(m)
+        m.get(self.espn_endpoint + '?view=kona_playercard', status_code=200, json=self.player_card_data)
+
+
+        league = League(self.league_id, self.season)
+        # Invalid name
+        player = league.player_info('Test 1')
+        self.assertEqual(player, None)
+
+        player = league.player_info('James Conner')
+        self.assertEqual(player.name, 'James Conner')
+        self.assertEqual(player.stats[1]['points'], 10.5)
         
 
 
