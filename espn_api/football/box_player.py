@@ -23,7 +23,7 @@ class BoxPlayer(Player):
                 self.pro_opponent = PRO_TEAM_MAP[opp_id]
                 self.pro_pos_rank = positional_rankings[posId][str(opp_id)] if str(opp_id) in positional_rankings[posId] else 0
 
-        stats = self.stats.get(week)
+        stats = self.stats.get(week, {})
         self.points = stats.get('points', 0)
         self.points_breakdown = stats.get('breakdown', 0)
         self.projected_points = stats.get('projected_points', 0)
