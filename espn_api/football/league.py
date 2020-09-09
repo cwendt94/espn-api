@@ -149,12 +149,10 @@ class League(BaseLeague):
             'view': 'kona_league_communication'
         }
         
-        filters = {"topics":{"filterType":{"value":["ACTIVITY_TRANSACTIONS"]},"limit":size,"limitPerMessageSet":{"value":25},"offset":0,"sortMessageDate":{"sortPriority":1,"sortAsc":False},"sortFor":{"sortPriority":2,"sortAsc":False},"filterDateRange":{"value":1564689600000,"additionalValue":1583110842000},"filterIncludeMessageTypeIds":{"value":msg_types}}}
+        filters = {"topics":{"filterType":{"value":["ACTIVITY_TRANSACTIONS"]},"limit":size,"limitPerMessageSet":{"value":25},"offset":0,"sortMessageDate":{"sortPriority":1,"sortAsc":False},"sortFor":{"sortPriority":2,"sortAsc":False},"filterIncludeMessageTypeIds":{"value":msg_types}}}
         headers = {'x-fantasy-filter': json.dumps(filters)}
         data = self.espn_request.league_get(extend='/communication/', params=params, headers=headers)
-
         data = data['topics']
-
         activity = [Activity(topic, self.player_map, self.get_team_data) for topic in data]
 
         return activity
@@ -259,3 +257,19 @@ class League(BaseLeague):
         positional_rankings = self._get_positional_ratings(week)
 
         return [BoxPlayer(player, pro_schedule, positional_rankings, week) for player in players]
+
+    def player_info(self, name: str):
+        ''' Returns Player class if name found '''
+        playerId = self.player_map.get(name)
+
+        if playerId is None:
+            return None
+        params = { 'view': 'kona_playercard' }
+        filters = {'players':{'filterIds':{'value':[playerId]}, 'filterStatsForTopScoringPeriodIds':{'value':16}}}
+        headers = {'x-fantasy-filter': json.dumps(filters)}
+
+        data = self.espn_request.league_get(params=params, headers=headers)
+        
+        player = data['players'][0]
+        return Player(player)
+

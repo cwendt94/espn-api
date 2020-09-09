@@ -41,3 +41,4 @@ class LeagueTest(TestCase):
 
         self.assertEqual(repr(box_scores[1].away_team), 'Team(TEAM BERRY)')
         self.assertEqual(repr(box_scores[1].away_lineup[1]), 'Player(Odell Beckham Jr., points:29, projected:16)')
+        self.assertEqual(repr(box_scores[1]), 'Box Score(Team(TEAM BERRY) at Team(TEAM HOLLAND))')

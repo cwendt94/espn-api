@@ -69,7 +69,9 @@ class BaseLeague(ABC):
         data = self.espn_request.get_pro_players()
         # Map all player id's to player name
         for player in data:
+            # two way map to find playerId's by name
             self.player_map[player['id']] = player['fullName']
+            self.player_map[player['fullName']] = player['id']
     
     def _get_pro_schedule(self, scoringPeriodId: int = None):
         data = self.espn_request.get_pro_schedule()
