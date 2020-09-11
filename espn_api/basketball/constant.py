@@ -99,6 +99,18 @@ STATS_MAP = {
     }
     
 
+#ACTIVITY_MAP = {
+#}
+
 ACTIVITY_MAP = {
+    178: 'FA ADDED',
+    180: 'WAVIER ADDED',
+    179: 'DROPPED',
+    181: 'DROPPED',
+    239: 'DROPPED',
+    244: 'TRADED',
+    'FA': 178,
+    'WAVIER': 180,
+    'TRADED': 244
 }
 
