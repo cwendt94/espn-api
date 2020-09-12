@@ -12,24 +12,19 @@ kt_league = bb_league(league_id=79672, year=2020, espn_s2='AECESfzTnGtRTZ6HqNd54
 
 #-------------------------
 
-def sendMessage(activity,league):
+def sendMessage(activity):
 
     a = activity.split(',')
 
-    if league == 'goat':
-        if 'ADDED' in a[1]: n_a, n_d = 2, 4
-        elif 'ADDED' in a[3]: n_a, n_d = 4, 2
-        else: resource.push('TRADE ALERT!')
+    if 'ADDED' in a[1]: n_a, n_d = 2, 4
+    elif 'ADDED' in a[3]: n_a, n_d = 4, 2
+    else: resource.push('TRADE ALERT!')
 
-        team = a[0][a[0].find('Team(')+5:a[0].find(')')]
-        add = a[n_a][:a[n_a].find(')')]
-        drop = a[n_d][:a[n_d].find(')')]
-        activity_string = team + ' added ' + add + ' and dropped ' + drop
+    team = a[0][a[0].find('Team(')+5:a[0].find(')')]
+    add = a[n_a][:a[n_a].find(')')]
+    drop = a[n_d][:a[n_d].find(')')]
+    activity_string = team + ' added ' + add + ' and dropped ' + drop
         
-    elif league == 'kt':
-        team = a[0][a[0].find('Team(')+5:a[0].find(')')]
-        activity_string = team + ' made a transaction!'
-
     resource.push(activity_string)
     #print(activity_string) # FIXME: for testing
 
@@ -38,7 +33,7 @@ def sendMessage(activity,league):
 
 
 tmp_goat = goat_league.recent_activity()[0]
-tmp_kt = kt_league.recent_activity()[0].date
+tmp_kt = kt_league.recent_activity()[0]
 #tmp_goat = 'initialize' # FIXME: for testing
 #tmp_kt = 'initialize' # FIXME: for testing
 
@@ -49,16 +44,18 @@ while True:
     # Check GOAT League
     if str(tmp_goat) != str(activity_goat[0]):
         print('Alert!')
-        sendMessage(str(activity_goat[0]),'goat')
+        sendMessage(str(activity_goat[0]))
         tmp_goat = activity_goat[0]
 
     # Check KT League
-    if str(tmp_kt) != str(activity_kt[0].date):
+    if str(tmp_kt) != str(activity_kt[0]):
         print('Alert!')
-        sendMessage(str(activity_kt[0]),'kt')
-        tmp_kt = activity_kt[0].date
+        sendMessage(str(activity_kt[0]))
+        tmp_kt = activity_kt[0]
 
-    sys.stdout.write("\rTime running: {} Seconds".format(round(time.time()-starttime,2)))
+    str_time = round((time.time()-starttime)/float(60),2)
+    sys.stdout.write("\rTime running: {} Minutes".format(str_time))
     sys.stdout.flush()
-    time.sleep(30.0 - ((time.time() - starttime) % 30.0)) # check every 30 seconds                                                                                                                                                                                                      
+    time.sleep(30.0 - ((time.time() - starttime) % 30.0)) # check every 30 seconds
+    #time.sleep(2.0 - ((time.time() - starttime) % 2.0)) # FIXME: for testing
     
