@@ -15,18 +15,22 @@ kt_league = bb_league(league_id=79672, year=2020, espn_s2='AECESfzTnGtRTZ6HqNd54
 def sendMessage(activity):
 
     a = activity.split(',')
-
-    if 'ADDED' in a[1]: n_a, n_d = 2, 4
-    elif 'ADDED' in a[3]: n_a, n_d = 4, 2
-    else: resource.push('TRADE ALERT!')
+    addition = True if len(a) > 3 else False
 
     team = a[0][a[0].find('Team(')+5:a[0].find(')')]
-    add = a[n_a][:a[n_a].find(')')]
-    drop = a[n_d][:a[n_d].find(')')]
-    activity_string = team + ' added ' + add + ' and dropped ' + drop
+    if addition:
+        if 'ADDED' in a[1]: n_a, n_d = 2, 4
+        elif 'ADDED' in a[3]: n_a, n_d = 4, 2
+        else: resource.push('TRADE ALERT!')
+        add = a[n_a][:a[n_a].find(')')]
+        drop = a[n_d][:a[n_d].find(')')]
+        activity_string = team + ' added ' + add + ' and dropped ' + drop
+    else:
+        drop = a[2][:a[2].find(')')]
+        activity_string = team + ' dropped ' + drop
         
-    resource.push(activity_string)
-    #print(activity_string) # FIXME: for testing
+    #resource.push(activity_string)
+    print(activity_string) # FIXME: for testing
 
 
 #-------------------------
@@ -49,12 +53,18 @@ while True:
 
     # Check KT League
     if str(tmp_kt) != str(activity_kt[0]):
+        print()
         print('Alert!')
+        print()
         sendMessage(str(activity_kt[0]))
         tmp_kt = activity_kt[0]
 
-    str_time = round((time.time()-starttime)/float(60),2)
-    sys.stdout.write("\rTime running: {} Minutes".format(str_time))
+    duration = time.time()-starttime
+    if duration <= 60: denom, unit = 1.0, 'seconds'
+    elif duration > 60 and duration <= 3600: denom, unit = 60.0, 'minutes '
+    elif duration > 3600: denom, unit = 3600, 'hours   '
+    str_time = round(duration/float(denom),0)
+    sys.stdout.write("\rTime running: {} {}".format(str_time, unit))
     sys.stdout.flush()
     time.sleep(30.0 - ((time.time() - starttime) % 30.0)) # check every 30 seconds
     #time.sleep(2.0 - ((time.time() - starttime) % 2.0)) # FIXME: for testing
