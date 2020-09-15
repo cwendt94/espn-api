@@ -34,6 +34,7 @@ class League(BaseLeague):
 
         # replace opponentIds in schedule with team instances
         for team in self.teams:
+            team.division_name = self.settings.division_map.get(team.division_id, '')
             for week, matchup in enumerate(team.schedule):
                 for opponent in self.teams:
                     if matchup == opponent.team_id:
