@@ -7,6 +7,7 @@ class Team(object):
         self.team_abbrev = data['abbrev']
         self.team_name = "%s %s" % (data['location'], data['nickname'])
         self.division_id = data['divisionId']
+        self.division_name = '' # set by caller
         self.wins = data['record']['overall']['wins']
         self.losses = data['record']['overall']['losses']
         self.points_for = data['record']['overall']['pointsFor']
