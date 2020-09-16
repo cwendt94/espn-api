@@ -9,6 +9,8 @@ from .team import Team
 from .player import Player
 from .matchup import Matchup
 from .constant import PRO_TEAM_MAP
+from.activity import Activity
+from .constant import POSITION_MAP, ACTIVITY_MAP
 
 class League(BaseLeague):
     '''Creates a League instance for Public/Private ESPN league'''
@@ -21,7 +23,7 @@ class League(BaseLeague):
     def _fetch_league(self):
         data = super()._fetch_league()
         self.start_date = datetime.datetime.fromtimestamp(min([i[1][1]/1000 for i in self._get_pro_schedule(1).items()])).date()
-        
+        self._fetch_players()
         return(data)
 
 
@@ -66,3 +68,28 @@ class League(BaseLeague):
         
         return matchups
 
+    def get_team_data(self, team_id: int) -> Team:
+        for team in self.teams:
+            if team_id == team.team_id:
+                return team
+        return None
+
+    def recent_activity(self, size: int = 25, msg_type: str = None) -> List[Activity]:
+        '''Returns a list of recent league activities (Add, Drop, Trade)'''
+        if self.year < 2019:
+            raise Exception('Cant use recent activity before 2019')
+
+        msg_types = [178,180,179,239,181,244]
+        if msg_type in ACTIVITY_MAP:
+            msg_types = [ACTIVITY_MAP[msg_type]]
+        params = {
+            'view': 'kona_league_communication'
+        }
+
+        filters = {"topics":{"filterType":{"value":["ACTIVITY_TRANSACTIONS"]},"limit":size,"limitPerMessageSet":{"value":25},"offset":0,"sortMessageDate":{"sortPriority":1,"sortAsc":False},"sortFor":{"sortPriority":2,"sortAsc":False},"filterIncludeMessageTypeIds":{"value":msg_types}}}
+        headers = {'x-fantasy-filter': json.dumps(filters)}
+        data = self.espn_request.league_get(extend='/communication/', params=params, headers=headers)
+        data = data['topics']
+        activity = [Activity(topic, self.player_map, self.get_team_data) for topic in data]
+
+        return activity
