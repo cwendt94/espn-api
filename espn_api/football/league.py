@@ -259,11 +259,12 @@ class League(BaseLeague):
 
         return [BoxPlayer(player, pro_schedule, positional_rankings, week) for player in players]
 
-    def player_info(self, name: str):
+    def player_info(self, name: str = None, playerId: int = None):
         ''' Returns Player class if name found '''
-        playerId = self.player_map.get(name)
 
-        if playerId is None:
+        if name:
+            playerId = self.player_map.get(name)
+        if playerId is None or isinstance(playerId, str):
             return None
         params = { 'view': 'kona_playercard' }
         filters = {'players':{'filterIds':{'value':[playerId]}, 'filterStatsForTopScoringPeriodIds':{'value':16}}}
@@ -271,6 +272,6 @@ class League(BaseLeague):
 
         data = self.espn_request.league_get(params=params, headers=headers)
         
-        player = data['players'][0]
-        return Player(player)
+        if len(data['players']) > 0:
+            return Player(data['players'][0])
 
