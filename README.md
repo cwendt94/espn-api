@@ -35,6 +35,9 @@ league = League(league_id=222, year=2019)
 ```
 python3 setup.py nosetests
 ```
+## [Discussions](https://github.com/cwendt94/espn-api/discussions) (new)
+If you have any questions about the package, ESPN API data, or want to talk about a feature please start a [discussion](https://github.com/cwendt94/espn-api/discussions)! 
+
 
 ## Issue Reporting
 If you find a bug follow the steps below for reporting.
