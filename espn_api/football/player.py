@@ -10,6 +10,7 @@ class Player(object):
         self.eligibleSlots = [POSITION_MAP[pos] for pos in json_parsing(data, 'eligibleSlots')]
         self.acquisitionType = json_parsing(data, 'acquisitionType')
         self.proTeam = PRO_TEAM_MAP[json_parsing(data, 'proTeamId')]
+        self.injuryStatus = json_parsing(data, 'injuryStatus')
         self.stats = {}
 
         # Get players main position
@@ -20,7 +21,7 @@ class Player(object):
 
         # set each scoring period stat
         player = data['playerPoolEntry']['player'] if 'playerPoolEntry' in data else data['player']
-        self.injuryStatus = player.get('injuryStatus')
+        self.injuryStatus = player.get('injuryStatus', self.injuryStatus)
 
         player_stats = player.get('stats')
         for stats in player_stats:
