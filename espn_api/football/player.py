@@ -22,6 +22,7 @@ class Player(object):
         # set each scoring period stat
         player = data['playerPoolEntry']['player'] if 'playerPoolEntry' in data else data['player']
         self.injuryStatus = player.get('injuryStatus', self.injuryStatus)
+        self.injured = player.get('injured', False)
 
         player_stats = player.get('stats')
         for stats in player_stats:
