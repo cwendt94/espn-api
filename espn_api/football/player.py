@@ -18,8 +18,10 @@ class Player(object):
                 self.position = POSITION_MAP[pos]
                 break
 
-        # set each scoring period statsd
+        # set each scoring period stat
         player = data['playerPoolEntry']['player'] if 'playerPoolEntry' in data else data['player']
+        self.injuryStatus = player.get('injuryStatus')
+
         player_stats = player.get('stats')
         for stats in player_stats:
             stats_breakdown = stats.get('appliedStats') if stats.get('appliedStats') else stats.get('stats', {})
