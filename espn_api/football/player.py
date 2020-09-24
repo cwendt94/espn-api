@@ -24,7 +24,7 @@ class Player(object):
         self.injuryStatus = player.get('injuryStatus', self.injuryStatus)
         self.injured = player.get('injured', False)
 
-        player_stats = player.get('stats')
+        player_stats = player.get('stats', [])
         for stats in player_stats:
             stats_breakdown = stats.get('appliedStats') if stats.get('appliedStats') else stats.get('stats', {})
             breakdown = {PLAYER_STATS_MAP.get(int(k), k):v for (k,v) in stats_breakdown.items()}
