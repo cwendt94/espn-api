@@ -31,7 +31,16 @@ POSITION_MAP = {
     'TE': 6,
     'D/ST': 16,
     'K': 17,
-    'FLEX': 23
+    'FLEX': 23,
+    'DT': 8,
+    'DE': 9,
+    'LB': 10,
+    'DL': 11,
+    'CB': 12,
+    'S': 13,
+    'DB': 14,
+    'DP': 15,
+    'HC': 19
 }
 
 PRO_TEAM_MAP = {
