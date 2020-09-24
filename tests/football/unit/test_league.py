@@ -215,7 +215,7 @@ class LeagueTest(TestCase):
         league = League(self.league_id, self.season)
         m.get(self.espn_endpoint + '?view=kona_player_info&scoringPeriodId=16', status_code=200, json={'players': [1, 2]})
         league.year = 2019
-        free_agents = league.free_agents(position='QB')
+        free_agents = league.free_agents(position='QB', position_id=0)
 
         self.assertEqual(len(free_agents), 2)
 

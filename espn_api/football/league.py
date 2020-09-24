@@ -231,7 +231,7 @@ class League(BaseLeague):
         power_rank = power_points(dominance_matrix, teams_sorted, week)
         return power_rank
 
-    def free_agents(self, week: int=None, size: int=50, position: str=None) -> List[Player]:
+    def free_agents(self, week: int=None, size: int=50, position: str=None, position_id: int=None) -> List[Player]:
         '''Returns a List of Free Agents for a Given Week\n
         Should only be used with most recent season'''
 
@@ -243,6 +243,9 @@ class League(BaseLeague):
         slot_filter = []
         if position and position in POSITION_MAP:
             slot_filter = [POSITION_MAP[position]]
+        if position_id:
+            slot_filter.append(position_id)
+
         
         params = {
             'view': 'kona_player_info',
