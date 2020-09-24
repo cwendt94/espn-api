@@ -243,7 +243,7 @@ class League(BaseLeague):
         slot_filter = []
         if position and position in POSITION_MAP:
             slot_filter = [POSITION_MAP[position]]
-        if position_id and position_id in POSITION_MAP:
+        if position_id:
             slot_filter.append(position_id)
 
         
