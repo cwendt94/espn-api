@@ -46,6 +46,7 @@ class BaseLeague(ABC):
         teams = data['teams']
         members = data['members']
         schedule = data['schedule']
+        seasonId = data['seasonId']
 
         team_roster = {}
         for team in data['teams']:
@@ -60,7 +61,7 @@ class BaseLeague(ABC):
                 elif member['id'] == team['owners'][0]:
                     break
             roster = team_roster[team['id']]
-            self.teams.append(TeamClass(team, roster=roster, member=member, schedule=schedule))
+            self.teams.append(TeamClass(team, roster=roster, member=member, schedule=schedule, year=seasonId))
 
         # sort by team ID
         self.teams = sorted(self.teams, key=lambda x: x.team_id, reverse=False)

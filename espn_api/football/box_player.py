@@ -4,8 +4,8 @@ from datetime import datetime, timedelta
 
 class BoxPlayer(Player):
     '''player with extra data from a matchup'''
-    def __init__(self, data, pro_schedule, positional_rankings, week):
-        super(BoxPlayer, self).__init__(data)
+    def __init__(self, data, pro_schedule, positional_rankings, week, year):
+        super(BoxPlayer, self).__init__(data, year)
         self.slot_position = 'FA'
         self.pro_opponent = "None" # professional team playing against
         self.pro_pos_rank = 0 # rank of professional team against player position
