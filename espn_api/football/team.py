@@ -2,7 +2,7 @@ from .player import Player
 
 class Team(object):
     '''Teams are part of the league'''
-    def __init__(self, data, roster, member, schedule):
+    def __init__(self, data, roster, member, schedule, year):
         self.team_id = data['id']
         self.team_abbrev = data['abbrev']
         self.team_name = "%s %s" % (data['location'], data['nickname'])
@@ -30,18 +30,18 @@ class Team(object):
         self.outcomes = []
         self.mov = []
         self._fetch_schedule(schedule)
-        self._fetch_roster(roster)
+        self._fetch_roster(roster, year)
 
     def __repr__(self):
         return 'Team(%s)' % (self.team_name, )
     
-    def _fetch_roster(self, data):
+    def _fetch_roster(self, data, year):
         '''Fetch teams roster'''
         self.roster.clear()
         roster = data['entries']
 
         for player in roster:
-            self.roster.append(Player(player))
+            self.roster.append(Player(player, year))
 
     def _fetch_schedule(self, data):
         '''Fetch schedule and scores for team'''

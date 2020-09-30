@@ -98,7 +98,7 @@ class League(BaseLeague):
         
         for team in self.teams:
             roster = team_roster[team.team_id]
-            team._fetch_roster(roster)
+            team._fetch_roster(roster, self.year)
 
     def standings(self) -> List[Team]:
         standings = sorted(self.teams, key=lambda x: x.final_standing if x.final_standing != 0 else x.standing, reverse=False)
@@ -200,7 +200,7 @@ class League(BaseLeague):
         schedule = data['schedule']
         pro_schedule = self._get_pro_schedule(week)
         positional_rankings = self._get_positional_ratings(week)
-        box_data = [BoxScore(matchup, pro_schedule, positional_rankings, week) for matchup in schedule]
+        box_data = [BoxScore(matchup, pro_schedule, positional_rankings, week, self.year) for matchup in schedule]
 
         for team in self.teams:
             for matchup in box_data:
@@ -260,7 +260,7 @@ class League(BaseLeague):
         pro_schedule = self._get_pro_schedule(week)
         positional_rankings = self._get_positional_ratings(week)
 
-        return [BoxPlayer(player, pro_schedule, positional_rankings, week) for player in players]
+        return [BoxPlayer(player, pro_schedule, positional_rankings, week, self.year) for player in players]
 
     def player_info(self, name: str = None, playerId: int = None):
         ''' Returns Player class if name found '''
@@ -270,11 +270,11 @@ class League(BaseLeague):
         if playerId is None or isinstance(playerId, str):
             return None
         params = { 'view': 'kona_playercard' }
-        filters = {'players':{'filterIds':{'value':[playerId]}, 'filterStatsForTopScoringPeriodIds':{'value':16}}}
+        filters = {'players':{'filterIds':{'value':[playerId]}, 'filterStatsForTopScoringPeriodIds':{'value':16, "additionalValue":["002020", "102020"]}}}
         headers = {'x-fantasy-filter': json.dumps(filters)}
 
         data = self.espn_request.league_get(params=params, headers=headers)
         
         if len(data['players']) > 0:
-            return Player(data['players'][0])
+            return Player(data['players'][0], self.year)
 

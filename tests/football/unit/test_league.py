@@ -251,6 +251,7 @@ class LeagueTest(TestCase):
 
 
         league = League(self.league_id, self.season)
+        league.year = 2019
         # Invalid name
         player = league.player_info('Test 1')
         self.assertEqual(player, None)

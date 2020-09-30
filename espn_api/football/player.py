@@ -3,7 +3,7 @@ from .utils import json_parsing
 
 class Player(object):
     '''Player are part of team'''
-    def __init__(self, data):
+    def __init__(self, data, year):
         self.name = json_parsing(data, 'fullName')
         self.playerId = json_parsing(data, 'id')
         self.posRank = json_parsing(data, 'positionalRanking')
@@ -26,6 +26,8 @@ class Player(object):
 
         player_stats = player.get('stats', [])
         for stats in player_stats:
+            if stats.get('seasonId') != year:
+                continue
             stats_breakdown = stats.get('appliedStats') if stats.get('appliedStats') else stats.get('stats', {})
             breakdown = {PLAYER_STATS_MAP.get(int(k), k):v for (k,v) in stats_breakdown.items()}
             points = round(stats.get('appliedTotal', 0), 2)
@@ -37,6 +39,8 @@ class Player(object):
                 self.stats[scoring_period][breakdown_type] = breakdown
             else:
                 self.stats[scoring_period] = {points_type: points, breakdown_type: breakdown}
+        self.total_points = self.stats.get(0, {}).get('points', 0)
+        self.projected_total_points = self.stats.get(0, {}).get('projected_points', 0)
             
     def __repr__(self):
         return 'Player(%s)' % (self.name, )
