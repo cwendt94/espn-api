@@ -154,7 +154,7 @@ class League(BaseLeague):
         headers = {'x-fantasy-filter': json.dumps(filters)}
         data = self.espn_request.league_get(extend='/communication/', params=params, headers=headers)
         data = data['topics']
-        activity = [Activity(topic, self.player_map, self.get_team_data) for topic in data]
+        activity = [Activity(topic, self.player_map, self.get_team_data, self.player_info) for topic in data]
 
         return activity
 
@@ -270,7 +270,7 @@ class League(BaseLeague):
         if playerId is None or isinstance(playerId, str):
             return None
         params = { 'view': 'kona_playercard' }
-        filters = {'players':{'filterIds':{'value':[playerId]}, 'filterStatsForTopScoringPeriodIds':{'value':16, "additionalValue":["002020", "102020"]}}}
+        filters = {'players':{'filterIds':{'value':[playerId]}, 'filterStatsForTopScoringPeriodIds':{'value':16, "additionalValue":["00{}".format(self.year), "10{}".format(self.year)]}}}
         headers = {'x-fantasy-filter': json.dumps(filters)}
 
         data = self.espn_request.league_get(params=params, headers=headers)

@@ -233,10 +233,11 @@ class LeagueTest(TestCase):
         with open('tests/football/unit/data/league_recent_activity_2019.json') as f:
             data = json.loads(f.read())
         m.get(self.espn_endpoint + '/communication/?view=kona_league_communication', status_code=200, json=data)
+        m.get(self.espn_endpoint + '?view=kona_playercard', status_code=200, json=self.player_card_data)
 
         activity  = league.recent_activity()
         self.assertEqual(repr(activity[0].actions[0][0]), 'Team(Perscription Mixon)')
-        self.assertEqual(len(repr(activity)), 2369)
+        self.assertEqual(len(repr(activity)), 2765)
 
     @mock.patch.object(League, '_fetch_league')
     def test_cookie_set(self, mock_fetch_league):
@@ -248,7 +249,6 @@ class LeagueTest(TestCase):
     def test_player_info(self, m):
         self.mock_setUp(m)
         m.get(self.espn_endpoint + '?view=kona_playercard', status_code=200, json=self.player_card_data)
-
 
         league = League(self.league_id, self.season)
         league.year = 2019
