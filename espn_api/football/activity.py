@@ -17,10 +17,11 @@ class Activity(object):
                 team = get_team_data(msg['to'])
             if msg_id in ACTIVITY_MAP:
                 action = ACTIVITY_MAP[msg_id]
-            for team_player in team.roster:
-                if team_player.playerId == msg['targetId']:
-                    player = team_player
-                    break
+            if team:
+                for team_player in team.roster:
+                    if team_player.playerId == msg['targetId']:
+                        player = team_player
+                        break
             if not player:
                 player = player_info(playerId=msg['targetId'])
             self.actions.append((team, action, player))
