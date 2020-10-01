@@ -191,7 +191,7 @@ class League(BaseLeague):
         Should only be used with most recent season'''
         if self.year < 2019:
             raise Exception('Cant use box score before 2019')
-        if not week: # or week > self.current_week:
+        if not week or week > self.current_week:
             week = self.current_week
 
         params = {
