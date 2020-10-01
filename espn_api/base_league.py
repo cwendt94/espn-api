@@ -43,6 +43,7 @@ class BaseLeague(ABC):
     
     def _fetch_teams(self, data, TeamClass):
         '''Fetch teams in league'''
+        self.teams = []
         teams = data['teams']
         members = data['members']
         schedule = data['schedule']
