@@ -7,9 +7,12 @@ import pandas as pd
 
 class League(BaseLeague):
     
-    def __init__(self, league_id, year, sport, espn_s2, swid, username, password):
-        super().__init__(league_id=league_id, year=year, sport='nhl', espn_s2=espn_s2, swid=swid, username=username, password=password)
-        self.data = self._fetch_league()
+    def __init__(self, league_id, year, espn_s2 = None, swid = None, username = None, password = None, testing = False, test_data = None):
+        if(testing):
+            self.data = test_data
+        else:
+            super().__init__(league_id=league_id, year=year, sport='nhl', espn_s2=espn_s2, swid=swid, username=username, password=password)
+            self.data = self._fetch_league()
         member_list = []
         for member in self.data['members']:
             member_list.append(Member(member))
@@ -46,7 +49,7 @@ class League(BaseLeague):
                 return team
         print(f'No Team Found with {owner_name} as owner')
         
-    def get_leage_player_stats(self):
+    def get_league_player_stats(self):
         des_columns = ['Owner_Name','Player_Name','statSourceId', 'seasonID', 'proTeamID', 'scoringPeriodID',
        'statSplitTypeID', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16',
         '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35',
