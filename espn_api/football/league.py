@@ -84,6 +84,12 @@ class League(BaseLeague):
             positional_ratings[pos] = teams_rating
         return positional_ratings
 
+    def refresh(self):
+        '''Gets latest league data. This can be used instead of creating a new League class each week'''
+        data = super()._fetch_league()
+
+        self.nfl_week = data['status']['latestScoringPeriod']
+        self._fetch_teams(data)
     def load_roster_week(self, week: int) -> None:
         '''Sets Teams Roster for a Certain Week'''
         params = {

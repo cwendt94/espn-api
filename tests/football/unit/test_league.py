@@ -45,7 +45,13 @@ class LeagueTest(TestCase):
         self.assertEqual(repr(league.settings), 'Settings(FXBG League)')
         self.assertEqual(league.current_week, 16)
         self.assertEqual(len(league.teams), 10)
-    
+
+        league.refresh()
+        self.assertEqual(repr(league), 'League(123, 2018)')
+        self.assertEqual(repr(league.settings), 'Settings(FXBG League)')
+        self.assertEqual(league.current_week, 16)
+        self.assertEqual(len(league.teams), 10)
+
     @requests_mock.Mocker()        
     def test_load_roster_week(self, m):
         self.mock_setUp(m)
