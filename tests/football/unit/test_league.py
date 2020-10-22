@@ -208,8 +208,8 @@ class LeagueTest(TestCase):
         self.assertEqual(empty_week, current_week)
 
         valid_week = league.power_rankings(13)
-        self.assertEqual(valid_week[0][0], '71.70')
-        self.assertEqual(repr(valid_week[0][1]), 'Team(Misunderstood  Mistfits )')
+        self.assertEqual(valid_week[0][0], '71.15')
+        self.assertEqual(repr(valid_week[0][1]), 'Team(Perscription Mixon)')
 
     @requests_mock.Mocker()
     @mock.patch.object(League, '_get_pro_schedule')   
