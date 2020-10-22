@@ -221,9 +221,9 @@ class League(BaseLeague):
                               reverse=False)
 
         for team in teams_sorted:
-            wins = [0]*32
+            wins = [0]*len(teams_sorted) 
             for mov, opponent in zip(team.mov[:week], team.schedule[:week]):
-                opp = int(opponent.team_id)-1
+                opp = teams_sorted.index(opponent)
                 if mov > 0:
                     wins[opp] += 1
             win_matrix.append(wins)
