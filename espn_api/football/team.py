@@ -10,6 +10,7 @@ class Team(object):
         self.division_name = '' # set by caller
         self.wins = data['record']['overall']['wins']
         self.losses = data['record']['overall']['losses']
+        self.ties = data['record']['overall']['ties']
         self.points_for = data['record']['overall']['pointsFor']
         self.points_against = round(data['record']['overall']['pointsAgainst'], 2)
         self.owner = 'None'

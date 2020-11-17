@@ -13,6 +13,7 @@ class Team(object):
         self.division_name = '' # set by caller
         self.wins = data['record']['overall']['wins']
         self.losses = data['record']['overall']['losses']
+        self.ties = data['record']['overall']['ties']
         self.owner = 'None'
         self.logo_url = ''
         self.stats = None
