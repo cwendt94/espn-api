@@ -13,6 +13,24 @@ POSITION_MAP = {
     11: 'UT',
     12: 'BE',
     13: 'IR',
+    14: '',
+    15: 'Rookie',
+    # reverse
+    'PG': 0,
+    'SG': 1,
+    'SF': 2,
+    'PF': 3,
+    'C': 4,
+    'G': 5,
+    'F': 6,
+    'SG/SF': 7,
+    'G/F': 8,
+    'PF/C': 9,
+    'F/C': 10,
+    'UT': 11,
+    'BE': 12,
+    'IR': 13,
+    'Rookie': 15
 }
 
 PRO_TEAM_MAP = {
