@@ -93,3 +93,31 @@ class League(BaseLeague):
         activity = [Activity(topic, self.player_map, self.get_team_data) for topic in data]
 
         return activity
+
+    def free_agents(self, week: int=None, size: int=50, position: str=None, position_id: int=None) -> List[Player]:
+        '''Returns a List of Free Agents for a Given Week\n
+        Should only be used with most recent season'''
+
+        if self.year < 2019:
+            raise Exception('Cant use free agents before 2019')
+        if not week:
+            week = self.current_week
+        
+        slot_filter = []
+        if position and position in POSITION_MAP:
+            slot_filter = [POSITION_MAP[position]]
+        if position_id:
+            slot_filter.append(position_id)
+
+        
+        params = {
+            'view': 'kona_player_info',
+            'scoringPeriodId': week,
+        }
+        filters = {"players":{"filterStatus":{"value":["FREEAGENT","WAIVERS"]},"filterSlotIds":{"value":slot_filter},"limit":size,"sortPercOwned":{"sortPriority":1,"sortAsc":False},"sortDraftRanks":{"sortPriority":100,"sortAsc":True,"value":"STANDARD"}}}
+        headers = {'x-fantasy-filter': json.dumps(filters)}
+
+        data = self.espn_request.league_get(params=params, headers=headers)
+        players = data['players']
+
+        return [Player(player) for player in players]

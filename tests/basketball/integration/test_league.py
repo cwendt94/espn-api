@@ -15,6 +15,12 @@ class LeagueTest(TestCase):
 
         self.assertEqual(scores[0].home_final_score, 4240.0)
         self.assertEqual(scores[0].away_final_score, 2965.0)
+    
+    def test_league_free_agents(self):
+        league = League(411647, 2019)
+        free_agents = league.free_agents()
+
+        self.assertNotEqual(len(free_agents), 0)
 
     def test_past_league(self):
         league = League(411647, 2017)

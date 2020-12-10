@@ -20,18 +20,16 @@ class Player(object):
         # 1020XX is projected season stats for 20XX
         # I think 0120XX, 0220XX, and 0320XX are last 7, last 15, and last 30
         # but I haven't figured out which yet (too season in season!)
-
-        if 'stats' in data['playerPoolEntry']['player'].keys():
-            for split in data['playerPoolEntry']['player']['stats']:
-                
-                if split['stats']:
-                    self.stats[split['id']] = {}
-                    if 'averageStats' in split.keys():
-                        self.stats[split['id']]['avg'] = {STATS_MAP[i]: split['averageStats'][i] for i in split['averageStats'].keys() if STATS_MAP[i] != ''}
-                        self.stats[split['id']]['total'] = {STATS_MAP[i]: split['stats'][i] for i in split['stats'].keys() if STATS_MAP[i] != ''}
-                    else:
-                        self.stats[split['id']]['avg'] = None
-                        self.stats[split['id']]['total'] = None
+        player = data['playerPoolEntry']['player'] if 'playerPoolEntry' in data else data['player']
+        for split in  player.get('stats', []):
+            if split['stats']:
+                self.stats[split['id']] = {}
+                if 'averageStats' in split.keys():
+                    self.stats[split['id']]['avg'] = {STATS_MAP[i]: split['averageStats'][i] for i in split['averageStats'].keys() if STATS_MAP[i] != ''}
+                    self.stats[split['id']]['total'] = {STATS_MAP[i]: split['stats'][i] for i in split['stats'].keys() if STATS_MAP[i] != ''}
+                else:
+                    self.stats[split['id']]['avg'] = None
+                    self.stats[split['id']]['total'] = None
             
     def __repr__(self):
         return 'Player(%s)' % (self.name, )
