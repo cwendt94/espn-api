@@ -37,7 +37,7 @@ class BaseLeague(ABC):
         if self.year < 2018:
             self.current_week = data['scoringPeriodId']
         else:
-            self.current_week = self.scoringPeriodId if self.scoringPeriodId <=  data['status']['finalScoringPeriod'] else data['status']['finalScoringPeriod']
+            self.current_week = self.scoringPeriodId if self.scoringPeriodId <= self.currentMatchupPeriod else self.currentMatchupPeriod 
         self.settings = SettingsClass(data['settings'])
         return data
     
