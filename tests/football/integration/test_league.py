@@ -7,7 +7,7 @@ class LeagueTest(TestCase):
     def test_league_init(self):
         league = League(1234, 2018)
 
-        self.assertEqual(league.current_week, 17)
+        self.assertEqual(league.current_week, 15)
 
     def test_past_league(self):
         league = League(12345, 2017)
