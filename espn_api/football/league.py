@@ -196,7 +196,7 @@ class League(BaseLeague):
         if week and week <= self.current_week:
             scoring_period = week
             for matchup_id in self.settings.matchup_periods:
-              if week in matchup_periods[matchup_id]:
+              if week in self.settings.matchup_periods[matchup_id]:
                 matchup_period = matchup_id
                 break
 
