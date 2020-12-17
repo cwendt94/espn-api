@@ -27,7 +27,7 @@ class BaseLeague(ABC):
 
     def __repr__(self):
         return 'League(%s, %s)' % (self.league_id, self.year, )
-    
+
     def _fetch_league(self, SettingsClass = BaseSettings):
         data = self.espn_request.get_league()
 
@@ -37,10 +37,10 @@ class BaseLeague(ABC):
         if self.year < 2018:
             self.current_week = data['scoringPeriodId']
         else:
-            self.current_week = self.scoringPeriodId if self.scoringPeriodId <= self.currentMatchupPeriod else self.currentMatchupPeriod 
+            self.current_week = self.scoringPeriodId if self.scoringPeriodId <= data['status']['finalScoringPeriod'] else data['status']['finalScoringPeriod']
         self.settings = SettingsClass(data['settings'])
         return data
-    
+
     def _fetch_teams(self, data, TeamClass):
         '''Fetch teams in league'''
         self.teams = []
@@ -52,7 +52,7 @@ class BaseLeague(ABC):
         team_roster = {}
         for team in data['teams']:
             team_roster[team['id']] = team['roster']
-        
+
         for team in teams:
             for member in members:
                 # For league that is not full the team will not have a owner field
@@ -66,7 +66,7 @@ class BaseLeague(ABC):
 
         # sort by team ID
         self.teams = sorted(self.teams, key=lambda x: x.team_id, reverse=False)
-    
+
     def _fetch_players(self):
         data = self.espn_request.get_pro_players()
         # Map all player id's to player name
@@ -76,10 +76,10 @@ class BaseLeague(ABC):
             # if two players have the same fullname use first one for now
             if player['fullName'] not in self.player_map:
                 self.player_map[player['fullName']] = player['id']
-    
+
     def _get_pro_schedule(self, scoringPeriodId: int = None):
         data = self.espn_request.get_pro_schedule()
-        
+
         pro_teams = data['settings']['proTeams']
         pro_team_schedule = {}
 
@@ -88,7 +88,7 @@ class BaseLeague(ABC):
                 game_data = team['proGamesByScoringPeriod'][str(scoringPeriodId)][0]
                 pro_team_schedule[team['id']] = (game_data['homeProTeamId'], game_data['date'])  if team['id'] == game_data['awayProTeamId'] else (game_data['awayProTeamId'], game_data['date'])
         return pro_team_schedule
-    
+
     def standings(self) -> List:
         standings = sorted(self.teams, key=lambda x: x.final_standing if x.final_standing != 0 else x.standing, reverse=False)
         return standings
