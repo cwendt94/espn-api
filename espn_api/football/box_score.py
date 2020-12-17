@@ -4,7 +4,7 @@ class BoxScore(object):
     ''' '''
     def __init__(self, data, pro_schedule, positional_rankings, week, year):
         self.home_team = data['home']['teamId']
-        self.home_score = round(data['home']['rosterForCurrentScoringPeriod']['appliedStatTotal'], 2)
+        self.home_score = round(data['home']['totalPoints'], 2)
         home_roster = data['home']['rosterForCurrentScoringPeriod']['entries']
         self.home_lineup = [BoxPlayer(player, pro_schedule, positional_rankings, week, year) for player in home_roster]
 
@@ -14,7 +14,7 @@ class BoxScore(object):
         self.away_lineup = []
         if 'away' in data:
             self.away_team = data['away']['teamId']
-            self.away_score =  round(data['away']['rosterForCurrentScoringPeriod']['appliedStatTotal'], 2)
+            self.away_score =  round(data['away']['totalPoints'], 2)
             away_roster = data['away']['rosterForCurrentScoringPeriod']['entries']
             self.away_lineup = [BoxPlayer(player, pro_schedule, positional_rankings, week, year) for player in away_roster]
 

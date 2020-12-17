@@ -2,6 +2,7 @@ class BaseSettings(object):
     '''Creates Settings object'''
     def __init__(self, data):
         self.reg_season_count = data['scheduleSettings']['matchupPeriodCount']
+        self.matchup_periods = data['scheduleSettings']['matchupPeriods']
         self.veto_votes_required = data['tradeSettings']['vetoVotesRequired']
         self.team_count = data['size']
         self.playoff_team_count = data['scheduleSettings']['playoffTeamCount']
