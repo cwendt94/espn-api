@@ -212,7 +212,7 @@ class League(BaseLeague):
         schedule = data['schedule']
         pro_schedule = self._get_pro_schedule(scoring_period)
         positional_rankings = self._get_positional_ratings(scoring_period)
-        box_data = [BoxScore(matchup, pro_schedule, positional_rankings, week, self.year) for matchup in schedule]
+        box_data = [BoxScore(matchup, pro_schedule, positional_rankings, scoring_period, self.year) for matchup in schedule]
 
         for team in self.teams:
             for matchup in box_data:
