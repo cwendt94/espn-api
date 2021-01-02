@@ -8,7 +8,7 @@ class Matchup(object):
         self.home_team_live_score = None
         self.away_team_live_score = None
         self._fetch_matchup_info(data)
-        
+
     def __repr__(self):
         # TODO: use final score when that's available?
         # writing this too early to see if data['home']['totalPoints'] is final score
@@ -30,18 +30,18 @@ class Matchup(object):
         self.winner = data['winner']
         self.home_team_cats = None
         self.away_team_cats = None
-        
+
         # if stats are available
-        if 'cumulativeScore' in data['home'].keys():
+        if 'cumulativeScore' in data['home'].keys() and data['home']['cumulativeScore']['scoreByStat']:
 
             self.home_team_live_score = (data['home']['cumulativeScore']['wins'] +
                                          data['home']['cumulativeScore']['ties']/2)
             self.away_team_live_score = (data['away']['cumulativeScore']['wins'] +
                                          data['away']['cumulativeScore']['ties']/2)
-            
+
             self.home_team_cats = { STATS_MAP[i]: {'score': data['home']['cumulativeScore']['scoreByStat'][i]['score'],
                                                    'result': data['home']['cumulativeScore']['scoreByStat'][i]['result']} for i in data['home']['cumulativeScore']['scoreByStat'].keys()}
-            
+
             self.away_team_cats = { STATS_MAP[i]: {'score': data['away']['cumulativeScore']['scoreByStat'][i]['score'],
                                                    'result': data['away']['cumulativeScore']['scoreByStat'][i]['result']} for i in data['away']['cumulativeScore']['scoreByStat'].keys()}
-        
+
