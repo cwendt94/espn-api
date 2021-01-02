@@ -21,6 +21,7 @@ pip install espn_api
 ```
 
 ## Usage
+### [For Getting Started and API details head over to the Wiki!](https://github.com/cwendt94/espn-api/wiki)
 ```python
 # Football API
 from espn_api.football import League
@@ -29,7 +30,6 @@ from espn_api.basketball import League
 # Init
 league = League(league_id=222, year=2019)
 ```
-[For more usage and API details head over to the Wiki!](https://github.com/cwendt94/espn-api/wiki)
 
 ### Run Tests
 ```
