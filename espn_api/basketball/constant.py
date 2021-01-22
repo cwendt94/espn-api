@@ -115,10 +115,6 @@ STATS_MAP = {
     '44': '',
     '45': '',
     }
-    
-
-#ACTIVITY_MAP = {
-#}
 
 ACTIVITY_MAP = {
     178: 'FA ADDED',
@@ -131,4 +127,3 @@ ACTIVITY_MAP = {
     'WAIVER': 180,
     'TRADED': 244
 }
-
