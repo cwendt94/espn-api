@@ -16,11 +16,12 @@ def checkRequestStatus(status: int) -> None:
         raise Exception('Unknown %s Error' % status)
 
 class EspnFantasyRequests(object):
-    def __init__(self, sport: str, year: int, league_id: int, cookies: dict = None, logger: Logger = None):
+    def __init__(self, sport: str, year: int, league_id: int, scoring_period: int = None, cookies: dict = None, logger: Logger = None):
         if sport not in FANTASY_SPORTS:
             raise Exception(f'Unknown sport: {sport}, available options are {FANTASY_SPORTS.keys()}')
         self.year = year
         self.league_id = league_id
+        self.scoring_period = scoring_period
         self.ENDPOINT = FANTASY_BASE_ENDPOINT + FANTASY_SPORTS[sport] + '/seasons/' +  str(self.year)
         self.cookies = cookies
         self.logger = logger
@@ -56,6 +57,8 @@ class EspnFantasyRequests(object):
         params = {
             'view': ['mTeam', 'mRoster', 'mMatchup', 'mSettings'] 
         }
+        if self.scoring_period is not None:
+            params['scoringPeriodId'] = self.scoring_period
         data = self.league_get(params=params)
         return data
     

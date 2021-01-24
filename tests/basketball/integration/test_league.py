@@ -9,6 +9,11 @@ class LeagueTest(TestCase):
 
         self.assertEqual(league.scoringPeriodId, 178)
 
+    def test_league_init_scoring_period(self):
+        league = League(411647, 2019, scoring_period=168)
+
+        self.assertEqual(league.scoringPeriodId, 168)
+
     def test_league_scoreboard(self):
         league = League(411647, 2019)
         scores = league.scoreboard()
@@ -26,6 +31,11 @@ class LeagueTest(TestCase):
         league = League(411647, 2017)
         
         self.assertEqual(league.scoringPeriodId, 170)
+
+    def test_past_league_scoring_period(self):
+        league = League(411647, 2017, scoring_period=168)
+
+        self.assertEqual(league.scoringPeriodId, 168)
 
     def test_past_league_scoreboard(self):
         league = League(411647, 2017)

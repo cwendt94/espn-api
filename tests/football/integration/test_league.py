@@ -7,11 +7,27 @@ class LeagueTest(TestCase):
     def test_league_init(self):
         league = League(1234, 2018)
 
+        self.assertEqual(league.scoringPeriodId, 18)
         self.assertEqual(league.current_week, 17)
+
+    def test_league_init_scoring_period(self):
+        league = League(1234, 2018, scoring_period=16)
+
+        self.assertEqual(league.scoringPeriodId, 16)
+        self.assertEqual(league.current_week, 16)
 
     def test_past_league(self):
         league = League(12345, 2017)
 
+        self.assertEqual(league.scoringPeriodId, 17)
+        self.assertEqual(league.current_week, 17)
+        self.assertEqual(league.nfl_week, 18)
+
+    def test_past_league_scoring_period(self):
+        league = League(12345, 2017, scoring_period=16)
+
+        self.assertEqual(league.scoringPeriodId, 16)
+        self.assertEqual(league.current_week, 16)
         self.assertEqual(league.nfl_week, 18)
 
     def test_private_league(self):
