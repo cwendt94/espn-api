@@ -22,6 +22,9 @@ class Player(object):
         # I think 0120XX, 0220XX, and 0320XX are last 7, last 15, and last 30
         # but I haven't figured out which yet (too season in season!)
         player = data['playerPoolEntry']['player'] if 'playerPoolEntry' in data else data['player']
+        self.injuryStatus = player.get('injuryStatus', self.injuryStatus)
+        self.injured = player.get('injured', False)
+
         for split in  player.get('stats', []):
             if split['stats']:
                 self.stats[split['id']] = {}
