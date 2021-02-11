@@ -22,6 +22,22 @@ class LeagueTest(TestCase):
 
         self.assertNotEqual(len(free_agents), 0)
 
+    def test_league_box_scores(self):
+        league = League(411647, 2019)
+        final_matchup = league.box_scores()[0]
+        middle_matchup = league.box_scores(matchup_period=7)[0]
+        # same matchup period but single scoring period
+        scoring_period_matchup = league.box_scores(scoring_period=48)[0]
+
+        self.assertEqual(final_matchup.home_score, 4240.0)
+        self.assertEqual(final_matchup.away_lineup[0].points, 156.0)
+
+        self.assertEqual(middle_matchup.home_score, 1234.0)
+        self.assertEqual(middle_matchup.away_lineup[0].points, 12.5)
+
+        self.assertEqual(scoring_period_matchup.home_score, 234.0)
+        self.assertEqual(scoring_period_matchup.away_lineup[0].points, 0)
+
     def test_past_league(self):
         league = League(411647, 2017)
         
