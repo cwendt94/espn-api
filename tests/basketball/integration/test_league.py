@@ -27,7 +27,7 @@ class LeagueTest(TestCase):
         final_matchup = league.box_scores()[0]
         middle_matchup = league.box_scores(matchup_period=7)[0]
         # same matchup period but single scoring period
-        scoring_period_matchup = league.box_scores(scoring_period=48)[0]
+        scoring_period_matchup = league.box_scores(scoring_period=48, matchup_total=False)[0]
 
         self.assertEqual(final_matchup.home_score, 4240.0)
         self.assertEqual(final_matchup.away_lineup[0].points, 156.0)
