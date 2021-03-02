@@ -136,20 +136,21 @@ class League(BaseLeague):
 
         return [Player(player) for player in players]
 
-    def box_scores(self, matchup_period: int = None, scoring_period: int = None) -> List[BoxScore]:
+    def box_scores(self, matchup_period: int = None, scoring_period: int = None, matchup_total: bool = True) -> List[BoxScore]:
         '''Returns list of box score for a given matchup or scoring period'''
         if self.year < 2019:
             raise Exception('Cant use box score before 2019')
 
         matchup_id = self.currentMatchupPeriod
         scoring_id = self.current_week
-        total_points = True
-        if matchup_period and matchup_period < matchup_id:
+        if matchup_period and scoring_period:
+            matchup_id = matchup_period
+            scoring_id = scoring_period
+        elif matchup_period and matchup_period < matchup_id:
             matchup_id = matchup_period
             scoring_id = self.matchup_ids[matchup_period][-1] if matchup_period in self.matchup_ids else 1
         elif scoring_period and scoring_period <= scoring_id:
             scoring_id = scoring_period
-            total_points = False
             for matchup in self.matchup_ids.keys():
                 if str(scoring_id) in self.matchup_ids[matchup]:
                     matchup_id = matchup
@@ -166,7 +167,7 @@ class League(BaseLeague):
 
         schedule = data['schedule']
         pro_schedule = self._get_pro_schedule(scoring_id)
-        box_data = [BoxScore(matchup, pro_schedule, total_points) for matchup in schedule]
+        box_data = [BoxScore(matchup, pro_schedule, matchup_total) for matchup in schedule]
 
         for team in self.teams:
             for matchup in box_data:
