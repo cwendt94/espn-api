@@ -5,7 +5,7 @@ from unittest import TestCase
 from espn_api.hockey import League
 
 #Load League Data
-jsonFile = open("data.json", "r+")
+jsonFile = open('tests/hockey/data.json', "r+")
 data = json.load(jsonFile)
 jsonFile.close()
 
