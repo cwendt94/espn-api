@@ -6,7 +6,7 @@ setup(
     version='0.12.1',
     author='Christian Wendt',
     description='ESPN API',
-    install_requires=['requests>=2.0.0,<3.0.0', 'pandas>=0.11.0,<1.1.1'],
+    install_requires=['requests>=2.0.0,<3.0.0', 'pandas>=0.11.0,<=0.25.3', 'numpy>=1.15,<=1.17.0'],
     setup_requires=['nose>=1.0'],
     test_suite='nose.collector',
     tests_require=['nose', 'requests_mock', 'coverage'],
