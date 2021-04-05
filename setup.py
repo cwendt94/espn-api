@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name='espn_api',
     packages=find_packages(),
-    version='0.13.0',
+    version='0.14.0',
     author='Christian Wendt',
     description='ESPN API',
     install_requires=['requests>=2.0.0,<3.0.0', 'pandas>=0.11.0,<=0.25.3', 'numpy>=1.15,<=1.17.0'],
