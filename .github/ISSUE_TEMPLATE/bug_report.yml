@@ -1,0 +1,22 @@
+name: 🐛 Bug report
+description: Create a report to help us improve
+issue_body: false 
+
+body:
+- type: dropdown
+  attributes:
+     label: Sport
+     options:
+     - Football
+     - Basketball
+     - Baseball
+     - Hockey
+   validations:
+     required: true
+
+- type: textarea
+  attributes:
+    label: Summary
+    description: Explain the problem briefly below.
+  validations:
+    required: true
