@@ -20,3 +20,9 @@ body:
     description: Explain the problem briefly below.
   validations:
     required: true
+
+- type: textarea
+  attributes:
+    label: Logs/Data
+    description: >-
+      If you have any logs or data when the bug occurred, please provide it here.
