@@ -5,14 +5,14 @@ issue_body: false
 body:
 - type: dropdown
   attributes:
-     label: Sport
-     options:
+    label: Sport
+    options:
      - Football
      - Basketball
      - Baseball
      - Hockey
-   validations:
-     required: true
+  validations:
+    required: true
 
 - type: textarea
   attributes:
