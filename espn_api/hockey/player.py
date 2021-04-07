@@ -1,6 +1,6 @@
 import pandas as pd
-from .constants import position_dict
-from .constants import team_dict
+from .constant import position_dict
+from .constant import team_dict
 
 class Player(object):
     

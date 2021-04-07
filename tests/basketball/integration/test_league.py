@@ -1,7 +1,7 @@
 from unittest import TestCase
 from espn_api.basketball import League
 
-# Integration test to make sure ESPN's API didnt change
+# Integration test to make sure ESPN's API didn't change
 class LeagueTest(TestCase):
     
     def test_league_init(self):

@@ -12,5 +12,5 @@ from .member import Member
 from .player import Player
 from .record import Record
 from .team import Team
-from .constants import position_dict
-from .constants import team_dict
+from .constant import position_dict
+from .constant import team_dict

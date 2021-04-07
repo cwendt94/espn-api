@@ -1,70 +1,81 @@
+import datetime
+from typing import List
+
 from ..base_league import BaseLeague
-from .member import Member
 from .team import Team
-from .record import Record
 from .player import Player
-import pandas as pd
+from .matchup import Matchup
+from .box_score import BoxScore
+from .activity import Activity
+
 
 class League(BaseLeague):
-    
-    def __init__(self, league_id, year, espn_s2 = None, swid = None, username = None, password = None, testing = False, test_data = None):
-        if(testing):
-            self.data = test_data
-        else:
-            super().__init__(league_id=league_id, year=year, sport='nhl', espn_s2=espn_s2, swid=swid, username=username, password=password)
-            self.data = self._fetch_league()
-        member_list = []
-        for member in self.data['members']:
-            member_list.append(Member(member))
-        self.member_list = member_list
-        team_list = []
-        for team in self.data['teams']:
-            team_list.append(Team(team, member_list))
-        self.team_list = team_list
-        
-    def get_league_players(self):
-        player_array = []
-        for team in self.team_list:
-            for player in team.roster:
-                player_array.append([player.full_name,player.pro_teamID, player.pro_team])
-        return pd.DataFrame(data = player_array, columns = ['player_name', 'pro_teamID', 'pro_team'])
-    
-    def get_league_records(self):
-        team_records = []
-        for team in self.team_list:
-            team_records.append([team.get_owner_name(), 'Away', team.away.wins, team.away.losses, team.away.ties])
-            team_records.append([team.get_owner_name(), 'Home', team.home.wins, team.home.losses, team.home.ties])
-            team_records.append([team.get_owner_name(), 'Division', team.division.wins, team.division.losses, team.division.ties])
-            team_records.append([team.get_owner_name(), 'Overall', team.overall.wins, team.overall.losses, team.overall.ties])
-        return pd.DataFrame(data = team_records, columns = ['team_owner', 'record_type', 'wins', 'losses', 'ties'])
-    
-    def get_standings(self):
-        standings = list(map(lambda team: [team.get_owner_name(), team.overall.wins, team.overall.losses, team.overall.ties], self.team_list))
-        #return standings
-        return pd.DataFrame(data = standings, columns = ['team_owner', 'wins', 'losses', 'ties']).sort_values(by = ['wins', 'ties'], ascending = [False,False]).reset_index(drop = True)
-      
-    def get_team_by_owner_name(self, owner_name):
-        for team in self.team_list:
-            if(team.get_owner_name() == owner_name):
-                return team
-        print(f'No Team Found with {owner_name} as owner')
-        
-    def get_league_player_stats(self):
-        des_columns = ['Owner_Name','Player_Name','statSourceId', 'seasonID', 'proTeamID', 'scoringPeriodID',
-       'statSplitTypeID', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16',
-        '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35',
-         '36', '37', '38', '39', '99']
+    '''Creates a League instance for Public/Private ESPN league'''
 
-        df = pd.DataFrame(columns = des_columns)
+    def __init__(self, league_id: int, year: int, espn_s2=None, swid=None, username=None, password=None, debug=False):
+        super().__init__(league_id=league_id, year=year, sport='nhl', espn_s2=espn_s2, swid=swid, username=username,
+                         password=password, debug=debug)
 
-        for team in self.team_list:
-            for player in team.roster:
-                #columns.append(list(player.stats.columns))
-                stats = player.stats.copy()
-                stats['Owner_Name'] = team.get_owner_name()
-                stats['Player_Name'] = player.full_name
-                #stats.columns = des_columns
-                df =  df.append(stats)
-        return df.reindex(columns = des_columns)
-        
-        
+        data = self._fetch_league()
+        self._fetch_teams(data)
+
+    def _fetch_league(self):
+        data = super()._fetch_league()
+        self.start_date = datetime.datetime.fromtimestamp(
+            min([i[1][1] / 1000 for i in self._get_pro_schedule(1).items()])).date()
+        self._fetch_players()
+        self._map_matchup_ids(data['schedule'])
+        return (data)
+
+    def _map_matchup_ids(self, schedule):
+        self.matchup_ids = {}
+        for match in schedule:
+            matchup_period = match.get('matchupPeriodId')
+            scoring_periods = match['home'].get('pointsByScoringPeriod', {}).keys()
+            if len(scoring_periods) > 0:
+                if matchup_period not in self.matchup_ids:
+                    self.matchup_ids[matchup_period] = sorted(scoring_periods)
+                else:
+                    self.matchup_ids[matchup_period] = sorted(
+                        set(self.matchup_ids[matchup_period] + list(scoring_periods)))
+
+    def _fetch_teams(self, data):
+        '''Fetch teams in league'''
+        super()._fetch_teams(data, TeamClass=Team)
+
+        # replace opponentIds in schedule with team instances
+        for team in self.teams:
+            team.division_name = self.settings.division_map.get(team.division_id, '')
+            for week, matchup in enumerate(team.schedule):
+                for opponent in self.teams:
+                    if matchup.away_team == opponent.team_id:
+                        matchup.away_team = opponent
+                    if matchup.home_team == opponent.team_id:
+                        matchup.home_team = opponent
+
+
+    def standings(self) -> List[Team]:
+        '''Fetch teams in league'''
+        raise NotImplementedError
+
+    def scoreboard(self, matchupPeriod: int = None) -> List[Matchup]:
+        '''Returns list of matchups for a given matchup period'''
+        raise NotImplementedError
+
+    def get_team_data(self, team_id: int) -> Team:
+        raise NotImplementedError
+
+    def recent_activity(self, size: int = 25, msg_type: str = None) -> List[Activity]:
+        '''Returns a list of recent league activities (Add, Drop, Trade)'''
+        raise NotImplementedError
+
+    def free_agents(self, week: int = None, size: int = 50, position: str = None, position_id: int = None) -> List[
+        Player]:
+        '''Returns a List of Free Agents for a Given Week
+        Should only be used with most recent season'''
+        raise NotImplementedError
+
+    def box_scores(self, matchup_period: int = None, scoring_period: int = None, matchup_total: bool = True) -> List[
+        BoxScore]:
+        '''Returns list of box score for a given matchup or scoring period'''
+        raise NotImplementedError
