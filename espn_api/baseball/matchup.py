@@ -28,8 +28,6 @@ class Matchup(object):
         self.away_team = data['away']['teamId']
         self.away_final_score = data['away']['totalPoints']
         self.winner = data['winner']
-        self.home_team_cats = None
-        self.away_team_cats = None
 
         # if stats are available
         if 'cumulativeScore' in data['home'].keys() and data['home']['cumulativeScore']['scoreByStat']:
@@ -38,10 +36,3 @@ class Matchup(object):
                                          data['home']['cumulativeScore']['ties']/2)
             self.away_team_live_score = (data['away']['cumulativeScore']['wins'] +
                                          data['away']['cumulativeScore']['ties']/2)
-
-            self.home_team_cats = { STATS_MAP[i]: {'score': data['home']['cumulativeScore']['scoreByStat'][i]['score'],
-                                                   'result': data['home']['cumulativeScore']['scoreByStat'][i]['result']} for i in data['home']['cumulativeScore']['scoreByStat'].keys()}
-
-            self.away_team_cats = { STATS_MAP[i]: {'score': data['away']['cumulativeScore']['scoreByStat'][i]['score'],
-                                                   'result': data['away']['cumulativeScore']['scoreByStat'][i]['result']} for i in data['away']['cumulativeScore']['scoreByStat'].keys()}
-
