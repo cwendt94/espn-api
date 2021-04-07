@@ -16,14 +16,11 @@ class Team(object):
         self.ties = data['record']['overall']['ties']
         self.owner = 'None'
         self.logo_url = ''
-        self.stats = None
         self.standing = data['playoffSeed']
         self.final_standing = data['rankCalculatedFinal']
         self.roster = []
         self.schedule = []
         
-        if 'valuesByStat' in data:
-            self.stats = {STATS_MAP[i]: j for i, j in data['valuesByStat'].items()}
         if member:
             self.owner = "%s %s" % (member['firstName'],
                                     member['lastName'])
