@@ -12,8 +12,8 @@ class BaseLeagueTest(TestCase):
         self.season = 2020
         self.league = BaseLeague(self.league_id, self.season, sport= 'nhl')
 
-        with open('tests/hockey/unit/data/league_data.json') as data:
-            self.league_data = json.loads(data.read())
+        with open('data/league_data.json') as data:
+                self.league_data = json.loads(data.read())
 
 
     def test_base_league(self):
@@ -34,7 +34,7 @@ class BaseLeagueTest(TestCase):
 
     @mock.patch.object(EspnFantasyRequests, 'get_pro_players')
     def test_base_league_fetch_players(self, mock_get_players):
-        with open('tests/hockey/unit/data/player_data.json') as data:
+        with open('data/player_data.json') as data:
             player_data = json.loads(data.read())
         mock_get_players.return_value = player_data
 
@@ -46,7 +46,7 @@ class BaseLeagueTest(TestCase):
 
     @mock.patch.object(EspnFantasyRequests, 'get_pro_schedule')
     def test_base_league_fetch_schedule(self, mock_get_pro_schedule):
-        with open('tests/hockey/unit/data/pro_schedule.json') as data:
+        with open('data/pro_schedule.json') as data:
             schedule_data = json.loads(data.read())
         mock_get_pro_schedule.return_value = schedule_data
 
@@ -109,7 +109,24 @@ class HockeyLeagueTest(BaseLeagueTest):
 
         for actual_team in actual_teams:
             assert(repr(actual_team) in expected_teams)
-        mock_league_request.assert_called_once()
+        mock_league_request.assert_called_once()\
 
+    @mock.patch.object(EspnFantasyRequests, 'league_get')
+    @mock.patch.object(EspnFantasyRequests, 'get_league')
+    def test_league(self, mock_get_league_request, mock_league_get_request):
+        with open('data/matchup_data.json') as file:
+            matchup_data = json.loads(file.read())
+        mock_get_league_request.return_value = self.league_data
+        mock_league_get_request.return_value = matchup_data
+        league = HockeyLeague(self.league_id, self.season)
+
+        first_expected_matchup = 'Matchup(Team(Drop Trou and Shattenkirk) 9.0 - 1.0 Team(Eichel Scott Paper Company ))'
+
+        actual_matchups = league.scoreboard()
+
+        assert(first_expected_matchup == repr(actual_matchups[0]))
+
+        mock_get_league_request.assert_called_once()
+        mock_league_get_request.assert_called_once()
 
 

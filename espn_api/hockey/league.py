@@ -1,4 +1,5 @@
 import datetime
+import json
 from typing import List
 
 from ..base_league import BaseLeague
@@ -55,12 +56,31 @@ class League(BaseLeague):
 
 
     def standings(self) -> List[Team]:
-        '''Fetch teams in league'''
-        raise NotImplementedError
+        '''Fetch teams in league sorted by standing'''
+        standings = sorted(self.teams, key=lambda x: x.final_standing if x.final_standing != 0 else x.standing,
+                           reverse=False)
+        return standings
 
     def scoreboard(self, matchupPeriod: int = None) -> List[Matchup]:
         '''Returns list of matchups for a given matchup period'''
-        raise NotImplementedError
+        if not matchupPeriod:
+            matchupPeriod=self.currentMatchupPeriod
+
+        params = {
+            'view': 'mMatchup',
+        }
+        data = self.espn_request.league_get(params=params)
+        schedule = data['schedule']
+        matchups = [Matchup(matchup) for matchup in schedule if matchup['matchupPeriodId'] == matchupPeriod]
+
+        for team in self.teams:
+            for matchup in matchups:
+                if matchup.home_team == team.team_id:
+                    matchup.home_team = team
+                elif matchup.away_team == team.team_id:
+                    matchup.away_team = team
+
+        return matchups
 
     def get_team_data(self, team_id: int) -> Team:
         raise NotImplementedError
