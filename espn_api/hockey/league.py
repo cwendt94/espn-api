@@ -2,12 +2,13 @@ import datetime
 import json
 from typing import List
 
-from ..base_league import BaseLeague
-from .team import Team
-from .player import Player
-from .matchup import Matchup
-from .box_score import BoxScore
+from espn_api.hockey.constant import ACTIVITY_MAP
 from .activity import Activity
+from .box_score import BoxScore
+from .matchup import Matchup
+from .player import Player
+from .team import Team
+from ..base_league import BaseLeague
 
 
 class League(BaseLeague):
@@ -90,7 +91,27 @@ class League(BaseLeague):
 
     def recent_activity(self, size: int = 25, msg_type: str = None) -> List[Activity]:
         '''Returns a list of recent league activities (Add, Drop, Trade)'''
-        raise NotImplementedError
+        if self.year < 2019:
+            raise Exception('Cant use recent activity before 2019')
+
+        msg_types = [178, 180, 179, 239, 181, 244]
+        if msg_type in ACTIVITY_MAP:
+            msg_types = [ACTIVITY_MAP[msg_type]]
+        params = {
+            'view': 'kona_league_communication'
+        }
+
+        filters = {"topics": {"filterType": {"value": ["ACTIVITY_TRANSACTIONS"]}, "limit": size,
+                              "limitPerMessageSet": {"value": 25}, "offset": 0,
+                              "sortMessageDate": {"sortPriority": 1, "sortAsc": False},
+                              "sortFor": {"sortPriority": 2, "sortAsc": False},
+                              "filterIncludeMessageTypeIds": {"value": msg_types}}}
+        headers = {'x-fantasy-filter': json.dumps(filters)}
+        data = self.espn_request.league_get(extend='/communication/', params=params, headers=headers)
+        data = data['topics']
+        activity = [Activity(topic, self.player_map, self.get_team_data) for topic in data]
+
+        return activity
 
     def free_agents(self, week: int = None, size: int = 50, position: str = None, position_id: int = None) -> List[
         Player]:

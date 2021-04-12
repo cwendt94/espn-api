@@ -141,3 +141,20 @@ class HockeyLeagueTest(BaseLeagueTest):
 
         mock_get_league_request.assert_called_once()
 
+    @mock.patch.object(EspnFantasyRequests, 'league_get')
+    @mock.patch.object(EspnFantasyRequests, 'get_league')
+    def test_league(self, mock_get_league_request, mock_league_get_request):
+        with open('data/recent_activity_data.json') as file:
+            activity_data = json.loads(file.read())
+        mock_get_league_request.return_value = self.league_data
+        mock_league_get_request.return_value = activity_data
+        league = HockeyLeague(self.league_id, self.season)
+
+        first_expected_activity = 'Activity((Team(2 Minutes for.. Rooping?),FA ADDED,Jake DeBrusk))'
+
+        actual_activities = league.recent_activity()
+
+        assert(first_expected_activity == repr(actual_activities[0]))
+
+        mock_get_league_request.assert_called_once()
+        mock_league_get_request.assert_called_once()
