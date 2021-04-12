@@ -129,4 +129,15 @@ class HockeyLeagueTest(BaseLeagueTest):
         mock_get_league_request.assert_called_once()
         mock_league_get_request.assert_called_once()
 
+    @mock.patch.object(EspnFantasyRequests, 'get_league')
+    def test_league_get_team_data(self, mock_get_league_request):
+        mock_get_league_request.return_value = self.league_data
+        league = HockeyLeague(self.league_id, self.season)
+
+        expected_team = 'Team(The Return of the Captain)'
+        actual_team = league.get_team_data(9)
+
+        assert(expected_team == repr(actual_team))
+
+        mock_get_league_request.assert_called_once()
 
