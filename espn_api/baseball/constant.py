@@ -113,7 +113,7 @@ STATS_MAP = {
     52: 'PK', # pickoff
     53: 'QS',
     54: 'L',
-    55: 'WPTG',
+    55: 'WPCT', # Win Percentage
     56: 'SVO', # Save opportunity
     57: 'SV',
     58: 'BS', # Blown Save
