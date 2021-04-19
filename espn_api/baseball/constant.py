@@ -133,7 +133,7 @@ STATS_MAP = {
     72: 'E',
     73: 'DP', # Double plays turned
     # Not sure what to call the next four
-    # 74 is games played where the player's team won
+    # 74 is games played where the batter's team won
     # 75 is the same except when the team lost
     # 76 and 77 are the same except for pitchers
     74: 'B_G_W', 
