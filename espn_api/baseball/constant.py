@@ -18,8 +18,8 @@ POSITION_MAP = {
     16: 'BE',
     17: 'IL',
     18: '18',
-    19: 'IF' # 1B/2B/SS/3B
-    22: '22' # Josh Fleming (2020)
+    19: 'IF', # 1B/2B/SS/3B
+    22: '22', # Josh Fleming (2020)
     # reverse TODO
 }
 
@@ -58,7 +58,7 @@ PRO_TEAM_MAP = {
 }
 
 STATS_MAP = {
-    0: 'AB',
+    0: 'AB',WPTG baseball
     1: 'H',
     2: 'AVG',
     3: '2B',
