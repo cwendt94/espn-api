@@ -73,11 +73,11 @@ STATS_MAP = {
     12: 'HBP',
     13: 'SF', # Sacrifice Fly
     14: 'SH', # Sacrifice Hit - i.e. Sacrifice Bunt
-    15: 'SAC' # Total Sacrifices = SF + SH
+    15: 'SAC', # Total Sacrifices = SF + SH
     16: 'PA',
     17: 'B_OBP',
     18: 'OPS', # OBP + SLG
-    19: 'RC' # Runs Created =  TB * (H + BB) / (AB + BB)
+    19: 'RC', # Runs Created =  TB * (H + BB) / (AB + BB)
     20: 'R',
     21: 'RBI',
     # 22: '',
@@ -101,7 +101,7 @@ STATS_MAP = {
     40: 'P_IBB', # Intentional Walks given
     41: 'WHIP',
     42: 'HBP',
-    43: 'P_OBP' # On-base percentage against
+    43: 'P_OBP', # On-base percentage against
     44: 'P_R',
     45: 'ER',
     46: 'P_HR',
@@ -129,7 +129,7 @@ STATS_MAP = {
     68: 'PO', # Put Outs
     69: 'A', # Assists
     70: 'OFA', # Outfield Assists
-    71 'FPCT', # Fielding Percentage
+    71: 'FPCT', # Fielding Percentage
     72: 'E',
     73: 'DP', # Double plays turned
     # Not sure what to call the next four
