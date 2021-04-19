@@ -58,7 +58,7 @@ PRO_TEAM_MAP = {
 }
 
 STATS_MAP = {
-    0: 'AB',WPTG baseball
+    0: 'AB',
     1: 'H',
     2: 'AVG',
     3: '2B',
