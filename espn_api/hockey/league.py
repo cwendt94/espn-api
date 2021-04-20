@@ -2,7 +2,7 @@ import datetime
 import json
 from typing import List
 
-from espn_api.hockey.constant import ACTIVITY_MAP
+from espn_api.hockey.constant import ACTIVITY_MAP, POSITION_MAP
 from .activity import Activity
 from .box_score import BoxScore
 from .matchup import Matchup
@@ -117,7 +117,32 @@ class League(BaseLeague):
         Player]:
         '''Returns a List of Free Agents for a Given Week
         Should only be used with most recent season'''
-        raise NotImplementedError
+        if self.year < 2019:
+            raise Exception('Cant use free agents before 2019')
+        if not week:
+            week = self.current_week
+
+        slot_filter = []
+        if position and position in POSITION_MAP:
+            slot_filter = [POSITION_MAP[position]]
+        if position_id:
+            slot_filter.append(position_id)
+
+        params = {
+            'view': 'kona_player_info',
+            'scoringPeriodId': week,
+        }
+        filters = {
+            "players": {"filterStatus": {"value": ["FREEAGENT", "WAIVERS"]}, "filterSlotIds": {"value": slot_filter},
+                        "limit": size, "sortPercOwned": {"sortPriority": 1, "sortAsc": False},
+                        "sortDraftRanks": {"sortPriority": 100, "sortAsc": True, "value": "STANDARD"}}}
+        headers = {'x-fantasy-filter': json.dumps(filters)}
+
+        data = self.espn_request.league_get(params=params, headers=headers)
+        players = data['players']
+
+        free_agents = [Player(player) for player in players]
+        return free_agents
 
     def box_scores(self, matchup_period: int = None, scoring_period: int = None, matchup_total: bool = True) -> List[
         BoxScore]:

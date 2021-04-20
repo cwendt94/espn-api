@@ -1,13 +1,18 @@
 #Constants
-position_dict = {   
-      1 : 'Center'
+POSITION_MAP = {
+    # Remaining: F, IR, Util
+    0 : '0'
+    , 1 : 'Center'
     , 2 : 'Left Wing'
     , 3 : 'Right Wing'
     , 4 : 'Defense'
     , 5 : 'Goalie'
+    , 6 : '6' # Forward ?
+    , 7 : '7' # Goalie, F (Goalie Bench?)
+    , 8 : 'IR' # Goalie, F
 }
 
-team_dict = {
+PRO_TEAM_MAP = {
        1: 'Boston Bruins'
     ,  2: 'Buffalo Sabres'
     ,  3: 'Calgary Flames'

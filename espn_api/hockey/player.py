@@ -1,51 +1,42 @@
 import pandas as pd
-from .constant import position_dict
-from .constant import team_dict
+
+from espn_api.utils.utils import json_parsing
+from .constant import POSITION_MAP, STATS_MAP, PRO_TEAM_MAP
 
 class Player(object):
-    
+
     def __init__(self, data):
-        self.full_name = data['playerPoolEntry']['player']['fullName']
-        self.status = data['playerPoolEntry']['status']
-        self.playerID = data['playerId']
-        self.acquisition_type = data['acquisitionType']
-        self.injury_status = data['injuryStatus']
-        self.line_up_slotID = data['lineupSlotId']
-        self.line_up_lock_status = data['playerPoolEntry']['lineupLocked']
-        self.on_teamID = data['playerPoolEntry']['onTeamId']
-        self.trade_locked = data['playerPoolEntry']['tradeLocked']
-        self.positionID = data['playerPoolEntry']['player']['defaultPositionId']
-        self.position = ''
-        if(position_dict[self.positionID] != None):
-            self.position = position_dict[self.positionID]
-        else:
-            self.position = 'Unkown'
-        ratings = {}
-        for key in data['playerPoolEntry']['ratings'].keys():
-            r = data['playerPoolEntry']['ratings'][key]
-            if(not(r['positionalRanking'] == r['statCategoryRanking'] == r['totalRanking'] == r['totalRating'] == 0)):
-                ratings[key] = r
-        self.ratings = pd.DataFrame(ratings)
-        self.pro_teamID = data['playerPoolEntry']['player']['proTeamId']
-        self.pro_team = ''
-        if(team_dict[self.pro_teamID] != None):
-            self.pro_team = team_dict[self.pro_teamID]
-        else:
-            self.pro_team = 'Unkown'
-        initial_stats = list(filter(lambda x: x['stats'] != {}, data['playerPoolEntry']['player']['stats']))
-        stat_dict = []
-        for stat in initial_stats:
-            #innerDict['externalId'] = entry['playerPoolEntry']['player']['externalId']
-            #['statSourceId']
-            innerDict = {}
-            innerDict['statSourceId'] = stat['statSourceId']
-            innerDict['seasonID'] = stat['seasonId']
-            innerDict['proTeamID'] = stat['proTeamId']
-            innerDict['scoringPeriodID'] = stat['scoringPeriodId']
-            innerDict['statSplitTypeID'] = stat['statSplitTypeId']
-            #innerDict.append(stat['stats'], ignore_index=True)
-            innerDict.update(stat['stats'])
-            stat_dict.append(innerDict)
-        self.stats = pd.DataFrame(stat_dict)
-        
-        
+        self.name = json_parsing(data, 'fullName')
+        self.playerId = json_parsing(data, 'id')
+        self.position = POSITION_MAP[json_parsing(data, 'defaultPositionId') - 1]
+        self.lineupSlot = POSITION_MAP.get(data.get('lineupSlotId'), '')
+        self.eligibleSlots = [POSITION_MAP[pos] for pos in json_parsing(data, 'eligibleSlots')]
+        self.acquisitionType = json_parsing(data, 'acquisitionType')
+        self.proTeam = PRO_TEAM_MAP[json_parsing(data, 'proTeamId')]
+        self.injuryStatus = json_parsing(data, 'injuryStatus')
+        self.stats = {}
+
+        # add available stats
+
+        # 0020XX is full season stats for 20XX
+        # 1020XX is projected season stats for 20XX
+        # I think 0120XX, 0220XX, and 0320XX are last 7, last 15, and last 30
+        # but I haven't figured out which yet (too season in season!)
+        player = data['playerPoolEntry']['player'] if 'playerPoolEntry' in data else data['player']
+        self.injuryStatus = player.get('injuryStatus', self.injuryStatus)
+        self.injured = player.get('injured', False)
+
+        for split in player.get('stats', []):
+            if split['stats']:
+                self.stats[split['id']] = {}
+                if 'averageStats' in split.keys():
+                    self.stats[split['id']]['avg'] = {STATS_MAP[i]: split['averageStats'][i] for i in
+                                                      split['averageStats'].keys() if STATS_MAP[i] != ''}
+                    self.stats[split['id']]['total'] = {STATS_MAP[i]: split['stats'][i] for i in split['stats'].keys()
+                                                        if STATS_MAP[i] != ''}
+                else:
+                    self.stats[split['id']]['avg'] = None
+                    self.stats[split['id']]['total'] = None
+
+    def __repr__(self):
+        return 'Player(%s)' % (self.name,)
