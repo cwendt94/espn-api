@@ -1,7 +1,7 @@
 #Constants
 POSITION_MAP = {
     # Remaining: F, IR, Util
-    0 : '0'
+    0 : '0' # IR?
     , 1 : 'Center'
     , 2 : 'Left Wing'
     , 3 : 'Right Wing'
@@ -9,7 +9,7 @@ POSITION_MAP = {
     , 5 : 'Goalie'
     , 6 : '6' # Forward ?
     , 7 : '7' # Goalie, F (Goalie Bench?)
-    , 8 : 'IR' # Goalie, F
+    , 8 : '8' # Goalie, F
 }
 
 PRO_TEAM_MAP = {

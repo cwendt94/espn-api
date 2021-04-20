@@ -176,3 +176,22 @@ class HockeyLeagueTest(BaseLeagueTest):
 
         mock_get_league_request.assert_called_once()
         mock_league_get_request.assert_called_once()
+
+    @mock.patch.object(EspnFantasyRequests, 'league_get')
+    @mock.patch.object(EspnFantasyRequests, 'get_league')
+    def test_league_box_scores(self, mock_get_league_request, mock_league_get_request):
+        with open('data/box_score_data.json') as file:
+            box_score_data = json.loads(file.read())
+        mock_get_league_request.return_value = self.league_data
+        mock_league_get_request.return_value = box_score_data
+        league = HockeyLeague(self.league_id, self.season)
+
+        first_box_score = 'Box Score(12 at Team(2 Minutes for.. Rooping?))'
+
+        actual_box_scores = league.box_scores()
+
+        self.assertEqual(len(actual_box_scores), 6)
+        self.assertEqual(first_box_score, repr(actual_box_scores[0]))
+
+        mock_get_league_request.assert_called_once()
+        mock_league_get_request.assert_called_once()
