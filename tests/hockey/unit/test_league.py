@@ -17,11 +17,11 @@ class BaseLeagueTest(TestCase):
 
 
     def test_base_league(self):
-        assert(self.league.league_id == 1)
-        assert(self.league.year == self.season)
-        assert(self.league.teams == [])
-        assert(self.league.draft == [])
-        assert(self.league.player_map == {})
+        self.assertEqual(self.league.league_id, 1)
+        self.assertEqual(self.league.year, self.season)
+        self.assertEqual(self.league.teams, [])
+        self.assertEqual(self.league.draft, [])
+        self.assertEqual(self.league.player_map, {})
 
     @mock.patch.object(EspnFantasyRequests, 'get_league')
     def test_base_league_fetch_league(self, mock_get_league_request):
@@ -30,7 +30,7 @@ class BaseLeagueTest(TestCase):
         self.league._fetch_league()
         mock_get_league_request.assert_called_once()
 
-        assert(self.league.currentMatchupPeriod)
+        self.assertIsNotNone(self.league.currentMatchupPeriod)
 
     @mock.patch.object(EspnFantasyRequests, 'get_pro_players')
     def test_base_league_fetch_players(self, mock_get_players):
@@ -40,8 +40,8 @@ class BaseLeagueTest(TestCase):
 
         self.league._fetch_players()
 
-        assert(self.league.player_map['Charlie  Coyle'] == 2555315)
-        assert(self.league.player_map[2555315] == 'Charlie  Coyle')
+        self.assertEqual(self.league.player_map['Charlie  Coyle'], 2555315)
+        self.assertEqual(self.league.player_map[2555315], 'Charlie  Coyle')
         mock_get_players.assert_called_once()
 
     @mock.patch.object(EspnFantasyRequests, 'get_pro_schedule')
@@ -52,7 +52,7 @@ class BaseLeagueTest(TestCase):
 
         schedule = self.league._get_pro_schedule(scoringPeriodId=35)
 
-        assert (schedule[11] == (13, 1613520000000))
+        self.assertEqual(schedule[11], (13, 1613520000000))
         mock_get_pro_schedule.assert_called_once()
 
     def test_base_league_standings(self):
@@ -70,7 +70,7 @@ class BaseLeagueTest(TestCase):
         actual_standings = self.league.standings()
 
         for i, actual_team in enumerate(actual_standings):
-            assert(repr(actual_team) == expected_standings[i])
+            self.assertEqual(repr(actual_team), expected_standings[i])
 
 
 
@@ -84,10 +84,10 @@ class HockeyLeagueTest(BaseLeagueTest):
         mock_league_request.return_value = self.league_data
 
         league = HockeyLeague(self.league_id, self.season)
-        assert(league.scoringPeriodId == 265)
-        assert(league.currentMatchupPeriod == 24)
-        assert(league.current_week == 264)
-        assert(league.year == self.season)
+        self.assertEqual(league.scoringPeriodId, 265)
+        self.assertEqual(league.currentMatchupPeriod, 24)
+        self.assertEqual(league.current_week, 264)
+        self.assertEqual(league.year, self.season)
         mock_league_request.assert_called_once()
 
     @mock.patch.object(EspnFantasyRequests, 'get_league')
@@ -108,7 +108,7 @@ class HockeyLeagueTest(BaseLeagueTest):
         actual_teams = set(league.teams)
 
         for actual_team in actual_teams:
-            assert(repr(actual_team) in expected_teams)
+            self.assertIn(repr(actual_team), expected_teams)
         mock_league_request.assert_called_once()\
 
     @mock.patch.object(EspnFantasyRequests, 'league_get')
@@ -124,7 +124,7 @@ class HockeyLeagueTest(BaseLeagueTest):
 
         actual_matchups = league.scoreboard()
 
-        assert(first_expected_matchup == repr(actual_matchups[0]))
+        self.assertEqual(first_expected_matchup, repr(actual_matchups[0]))
 
         mock_get_league_request.assert_called_once()
         mock_league_get_request.assert_called_once()
@@ -137,7 +137,7 @@ class HockeyLeagueTest(BaseLeagueTest):
         expected_team = 'Team(The Return of the Captain)'
         actual_team = league.get_team_data(9)
 
-        assert(expected_team == repr(actual_team))
+        self.assertEqual(expected_team, repr(actual_team))
 
         mock_get_league_request.assert_called_once()
 
@@ -154,7 +154,7 @@ class HockeyLeagueTest(BaseLeagueTest):
 
         actual_free_agents = league.free_agents()
 
-        assert (first_expected_free_agent == repr(actual_free_agents[0]))
+        self.assertEqual(first_expected_free_agent, repr(actual_free_agents[0]))
 
         mock_get_league_request.assert_called_once()
         mock_league_get_request.assert_called_once()
@@ -172,7 +172,7 @@ class HockeyLeagueTest(BaseLeagueTest):
 
         actual_activities = league.recent_activity()
 
-        assert(first_expected_activity == repr(actual_activities[0]))
+        self.assertEqual(first_expected_activity, repr(actual_activities[0]))
 
         mock_get_league_request.assert_called_once()
         mock_league_get_request.assert_called_once()
