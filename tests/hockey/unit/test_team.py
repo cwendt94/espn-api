@@ -49,7 +49,6 @@ class TestHockeyTeam(TestCase):
                             'Anthony Cirelli',
                             'Alexandar Georgiev',
                             'Nikita Gusev']
-        print(df)
 
         self.assertListEqual(list(df.index), expected_players)
 
