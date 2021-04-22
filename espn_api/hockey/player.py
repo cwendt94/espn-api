@@ -1,7 +1,8 @@
 import pandas as pd
 
 from espn_api.utils.utils import json_parsing
-from .constant import POSITION_MAP, STATS_MAP, PRO_TEAM_MAP
+from .constant import POSITION_MAP, STATS_MAP, PRO_TEAM_MAP, STATS_IDENTIFIER
+
 
 class Player(object):
 
@@ -15,28 +16,47 @@ class Player(object):
         self.proTeam = PRO_TEAM_MAP[json_parsing(data, 'proTeamId')]
         self.injuryStatus = json_parsing(data, 'injuryStatus')
         self.stats = {}
+        self.df = {}
 
-        # add available stats
-
-        # 0020XX is full season stats for 20XX
-        # 1020XX is projected season stats for 20XX
-        # I think 0120XX, 0220XX, and 0320XX are last 7, last 15, and last 30
-        # but I haven't figured out which yet (too season in season!)
+        '''
+        Options
+        1. Today
+        2. This season (2021) 002021
+        3. Last 7             012021
+        4. Last 15            022021
+        5. Last 30            032021
+        6. Last season (2020) 002020
+        7. 2021 Projections   102021
+        '''
         player = data['playerPoolEntry']['player'] if 'playerPoolEntry' in data else data['player']
         self.injuryStatus = player.get('injuryStatus', self.injuryStatus)
         self.injured = player.get('injured', False)
 
         for split in player.get('stats', []):
             if split['stats']:
-                self.stats[split['id']] = {}
-                if 'averageStats' in split.keys():
-                    self.stats[split['id']]['avg'] = {STATS_MAP[i]: split['averageStats'][i] for i in
-                                                      split['averageStats'].keys() if STATS_MAP[i] != ''}
-                    self.stats[split['id']]['total'] = {STATS_MAP[i]: split['stats'][i] for i in split['stats'].keys()
+                id = split['id']
+                stat_key = get_stat_key(id)
+
+                self.stats[stat_key] = {}
+
+                if 'stats' in split.keys():
+                    self.stats[stat_key]['total'] = {STATS_MAP[i]: split['stats'][i] for i in split['stats'].keys()
                                                         if STATS_MAP[i] != ''}
                 else:
-                    self.stats[split['id']]['avg'] = None
-                    self.stats[split['id']]['total'] = None
+                    self.stats[stat_key]['total'] = None
 
     def __repr__(self):
         return 'Player(%s)' % (self.name,)
+
+    def to_df(self, stat: str) -> pd.DataFrame:
+        if stat not in self.df:
+            self.df[stat] = pd.DataFrame(self.stats[stat]['total'], index= [self.name])
+
+        return self.df[stat]
+
+def get_stat_key(id: str) -> str:
+    if id[:2] in STATS_IDENTIFIER:
+        stat_type = STATS_IDENTIFIER[id[:2]]
+        return stat_type + ' ' + id[2:]
+
+    return id

@@ -12,6 +12,15 @@ POSITION_MAP = {
     , 8 : '8' # Goalie, F
 }
 
+STATS_IDENTIFIER = {
+    '00': 'Total',
+    '01': 'Last 7',
+    '02': 'Last 15',
+    '03': 'Last 30',
+    '10': 'Projected',
+    '20': '20'
+}
+
 PRO_TEAM_MAP = {
        1: 'Boston Bruins'
     ,  2: 'Buffalo Sabres'
@@ -93,6 +102,7 @@ STATS_MAP = {
     '43': '43',
     '44': '44',
     '45': '45',
+    '99': '99'
     }
 
 ACTIVITY_MAP = {
