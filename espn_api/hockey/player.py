@@ -52,6 +52,10 @@ class Player(object):
         if stat not in self.df:
             self.df[stat] = pd.DataFrame(self.stats[stat]['total'], index= [self.name])
 
+        self.df[stat]['Team'] = [self.proTeam]
+        self.df[stat]['Position'] = [self.position]
+        self.df[stat]['lineUpSlot'] = [self.lineupSlot]
+
         return self.df[stat]
 
 def get_stat_key(id: str) -> str:
