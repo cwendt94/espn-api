@@ -1,6 +1,5 @@
 from .constant import POSITION_MAP, PRO_TEAM_MAP, STATS_MAP
-from .utils import json_parsing
-import pdb
+from espn_api.utils.utils import json_parsing
 
 class Player(object):
     '''Player are part of team'''

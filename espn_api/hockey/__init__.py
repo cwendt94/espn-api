@@ -3,8 +3,8 @@ __all__ = ['League',
            'Player',
            'Record',
            'Team',
-           'position_dict',
-           'team_dict'
+           'POSITION_MAP',
+           'PRO_TEAM_MAP'
            ]
 
 from .league import League
@@ -12,5 +12,5 @@ from .member import Member
 from .player import Player
 from .record import Record
 from .team import Team
-from .constants import position_dict
-from .constants import team_dict
+from .constant import POSITION_MAP
+from .constant import PRO_TEAM_MAP

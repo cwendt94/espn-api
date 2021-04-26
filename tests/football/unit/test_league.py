@@ -31,7 +31,7 @@ class LeagueTest(TestCase):
             League(self.league_id, self.season)
     
     @requests_mock.Mocker()        
-    def test_uknown_error_status(self, m):
+    def test_unknown_error_status(self, m):
         m.get(self.espn_endpoint, status_code=300, json=self.league_data)
         with self.assertRaises(Exception):
             League(self.league_id, self.season)

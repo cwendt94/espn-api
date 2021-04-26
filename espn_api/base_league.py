@@ -73,7 +73,7 @@ class BaseLeague(ABC):
         for player in data:
             # two way map to find playerId's by name
             self.player_map[player['id']] = player['fullName']
-            # if two players have the same fullname use first one for now
+            # if two players have the same fullname use first one for now TODO update for multiple player names
             if player['fullName'] not in self.player_map:
                 self.player_map[player['fullName']] = player['id']
 
