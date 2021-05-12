@@ -74,7 +74,7 @@ class League(BaseLeague):
             'scoringPeriodId': week,
         }
         data = self.espn_request.league_get(params=params)
-        ratings = data['positionAgainstOpponent']['positionalRatings']
+        ratings = data.get('positionAgainstOpponent', {}).get('positionalRatings', {})
 
         positional_ratings = {}
         for pos, rating in ratings.items():
