@@ -86,7 +86,7 @@ class BaseLeague(ABC):
         for team in pro_teams:
             pro_game = team.get('proGamesByScoringPeriod', {})
             if team['id'] != 0 and (str(scoringPeriodId) in pro_game.keys() and pro_game[str(scoringPeriodId)]):
-                game_data =pro_game[str(scoringPeriodId)][0]
+                game_data = pro_game[str(scoringPeriodId)][0]
                 pro_team_schedule[team['id']] = (game_data['homeProTeamId'], game_data['date'])  if team['id'] == game_data['awayProTeamId'] else (game_data['awayProTeamId'], game_data['date'])
         return pro_team_schedule
 
