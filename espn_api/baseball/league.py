@@ -9,7 +9,7 @@ from ..base_league import BaseLeague
 from .team import Team
 from .player import Player
 from .matchup import Matchup
-from .constant import PRO_TEAM_MAP
+from .box_score import BoxScore
 from.activity import Activity
 from .constant import POSITION_MAP, ACTIVITY_MAP
 
@@ -118,3 +118,36 @@ class League(BaseLeague):
         players = data['players']
 
         return [Player(player) for player in players]
+
+    def box_scores(self, matchup_period: int = None, scoring_period: int = None) -> List[BoxScore]:
+        '''Returns list of box score for a given matchup or scoring period'''
+        if self.year < 2019:
+            raise Exception('Cant use box score before 2019')
+
+        matchup_id = self.currentMatchupPeriod
+        scoring_id = self.current_week
+        if matchup_period and scoring_period:
+            matchup_id = matchup_period
+            scoring_id = scoring_period
+        elif matchup_period and matchup_period < matchup_id:
+            matchup_id = matchup_period
+
+        params = {
+            'view': ['mMatchupScore', 'mScoreboard'],
+            'scoringPeriodId': scoring_id
+        }
+
+        filters = {"schedule":{"filterMatchupPeriodIds":{"value":[matchup_id]}}}
+        headers = {'x-fantasy-filter': json.dumps(filters)}
+        data = self.espn_request.league_get(params=params, headers=headers)
+
+        schedule = data['schedule']
+        box_data = [BoxScore(matchup) for matchup in schedule]
+
+        for team in self.teams:
+            for matchup in box_data:
+                if matchup.home_team == team.team_id:
+                    matchup.home_team = team
+                elif matchup.away_team == team.team_id:
+                    matchup.away_team = team
+        return box_data
