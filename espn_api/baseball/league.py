@@ -2,14 +2,14 @@ import datetime
 import time
 import json
 import math
-from typing import List, Tuple
+from typing import List, Tuple, Union
 import pdb
 
 from ..base_league import BaseLeague
 from .team import Team
 from .player import Player
 from .matchup import Matchup
-from .box_score import BoxScore
+from .box_score import BoxScore, H2HCategoryBoxScore
 from.activity import Activity
 from .constant import POSITION_MAP, ACTIVITY_MAP
 
@@ -19,6 +19,13 @@ class League(BaseLeague):
         super().__init__(league_id=league_id, year=year, sport='mlb', espn_s2=espn_s2, swid=swid, username=username, password=password, debug=debug)
             
         data = self._fetch_league()
+        self.scoring_type = data['settings']['scoringSettings']['scoringType']
+
+        if self.scoring_type == 'H2H_CATEGORY':
+            self._box_score_class = H2HCategoryBoxScore
+        else:
+            self._box_score_class = BoxScore
+
         self._fetch_teams(data)
 
     def _fetch_league(self):
@@ -119,7 +126,7 @@ class League(BaseLeague):
 
         return [Player(player) for player in players]
 
-    def box_scores(self, matchup_period: int = None, scoring_period: int = None) -> List[BoxScore]:
+    def box_scores(self, matchup_period: int = None, scoring_period: int = None) -> List[Union[BoxScore, H2HCategoryBoxScore]]:
         '''Returns list of box score for a given matchup or scoring period'''
         if self.year < 2019:
             raise Exception('Cant use box score before 2019')
@@ -142,7 +149,7 @@ class League(BaseLeague):
         data = self.espn_request.league_get(params=params, headers=headers)
 
         schedule = data['schedule']
-        box_data = [BoxScore(matchup) for matchup in schedule]
+        box_data = [self._box_score_class(matchup) for matchup in schedule]
 
         for team in self.teams:
             for matchup in box_data:
