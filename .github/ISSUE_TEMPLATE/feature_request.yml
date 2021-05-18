@@ -6,6 +6,7 @@ body:
   attributes:
     label: Sport
     options:
+     - All
      - Football
      - Basketball
      - Baseball
