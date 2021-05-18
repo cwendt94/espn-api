@@ -9,7 +9,7 @@ from ..base_league import BaseLeague
 from .team import Team
 from .player import Player
 from .matchup import Matchup
-from .box_score import BoxScore, H2HCategoryBoxScore
+from .box_score import BoxScore, H2HCategoryBoxScore, H2HPointsBoxScore
 from.activity import Activity
 from .constant import POSITION_MAP, ACTIVITY_MAP
 
@@ -23,6 +23,8 @@ class League(BaseLeague):
 
         if self.scoring_type == 'H2H_CATEGORY':
             self._box_score_class = H2HCategoryBoxScore
+        elif self.scoring_type == 'H2H_POINTS':
+            self._box_score_class = H2HPointsBoxScore
         else:
             self._box_score_class = BoxScore
 

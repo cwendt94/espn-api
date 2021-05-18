@@ -33,6 +33,7 @@ class BoxScore(ABC):
 
 
 class H2HCategoryBoxScore(BoxScore):
+    '''Boxscore class for head to head categories leagues'''
     def __init__(self, data):
         super().__init__(data)
 
@@ -63,3 +64,13 @@ class H2HCategoryBoxScore(BoxScore):
             self.away_losses = team.get('losses')
             self.away_ties = team.get('ties')
             self.away_stats = team.get('stats')
+
+
+class H2HPointsBoxScore(BoxScore):
+    '''Boxscore class for head to head points leagues'''
+    def __init__(self, data):
+        super().__init__(data)
+
+    def _process_team(self, team_data, is_home_team):
+        super()._process_team(team_data, is_home_team)
+        # TODO implement setting the scores
