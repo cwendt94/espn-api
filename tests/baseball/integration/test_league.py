@@ -3,11 +3,11 @@ from espn_api.baseball import League
 
 # Integration test to make sure ESPN's API didnt change
 class LeagueTest(TestCase):
+    def setUp(self):
+        self.league = League(81134470, 2021)
     
     def test_league_init(self):
-        league = League(81134470, 2021)
-
-        self.assertEqual(len(league.teams), 8)
+        self.assertEqual(len(self.league.teams), 8)
 
    #  def test_league_scoreboard(self):
    #      league = League(81134470, 2021)
@@ -17,7 +17,11 @@ class LeagueTest(TestCase):
    #      self.assertEqual(scores[0].away_final_score, 2965.0)
     
     def test_league_free_agents(self):
-        league = League(81134470, 2021)
-        free_agents = league.free_agents()
+        free_agents = self.league.free_agents()
 
         self.assertNotEqual(len(free_agents), 0)
+    
+    def test_league_box_scores(self):
+        box_scores = self.league.box_scores(1)
+
+        self.assertNotEqual(len(box_scores), 0)

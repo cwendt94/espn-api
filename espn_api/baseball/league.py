@@ -2,14 +2,14 @@ import datetime
 import time
 import json
 import math
-from typing import List, Tuple
+from typing import List, Tuple, Union
 import pdb
 
 from ..base_league import BaseLeague
 from .team import Team
 from .player import Player
 from .matchup import Matchup
-from .constant import PRO_TEAM_MAP
+from .box_score import BoxScore, H2HCategoryBoxScore, H2HPointsBoxScore
 from.activity import Activity
 from .constant import POSITION_MAP, ACTIVITY_MAP
 
@@ -19,6 +19,15 @@ class League(BaseLeague):
         super().__init__(league_id=league_id, year=year, sport='mlb', espn_s2=espn_s2, swid=swid, username=username, password=password, debug=debug)
             
         data = self._fetch_league()
+        self.scoring_type = data['settings']['scoringSettings']['scoringType']
+
+        if self.scoring_type == 'H2H_CATEGORY':
+            self._box_score_class = H2HCategoryBoxScore
+        elif self.scoring_type == 'H2H_POINTS':
+            self._box_score_class = H2HPointsBoxScore
+        else:
+            self._box_score_class = BoxScore
+
         self._fetch_teams(data)
 
     def _fetch_league(self):
@@ -118,3 +127,36 @@ class League(BaseLeague):
         players = data['players']
 
         return [Player(player) for player in players]
+
+    def box_scores(self, matchup_period: int = None, scoring_period: int = None) -> List[Union[BoxScore, H2HCategoryBoxScore]]:
+        '''Returns list of box score for a given matchup or scoring period'''
+        if self.year < 2019:
+            raise Exception('Cant use box score before 2019')
+
+        matchup_id = self.currentMatchupPeriod
+        scoring_id = self.current_week
+        if matchup_period and scoring_period:
+            matchup_id = matchup_period
+            scoring_id = scoring_period
+        elif matchup_period and matchup_period < matchup_id:
+            matchup_id = matchup_period
+
+        params = {
+            'view': ['mMatchupScore', 'mScoreboard'],
+            'scoringPeriodId': scoring_id
+        }
+
+        filters = {"schedule":{"filterMatchupPeriodIds":{"value":[matchup_id]}}}
+        headers = {'x-fantasy-filter': json.dumps(filters)}
+        data = self.espn_request.league_get(params=params, headers=headers)
+
+        schedule = data['schedule']
+        box_data = [self._box_score_class(matchup) for matchup in schedule]
+
+        for team in self.teams:
+            for matchup in box_data:
+                if matchup.home_team == team.team_id:
+                    matchup.home_team = team
+                elif matchup.away_team == team.team_id:
+                    matchup.away_team = team
+        return box_data
