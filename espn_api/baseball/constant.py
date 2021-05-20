@@ -17,10 +17,9 @@ POSITION_MAP = {
     15: 'RP',
     16: 'BE',
     17: 'IL',
-    18: '18',
     19: 'IF', # 1B/2B/SS/3B
-    22: '22', # Josh Fleming (2020)
     # reverse TODO
+    # 18, 21, 22 have appeared but unknown what position they correspond to
 }
 
 PRO_TEAM_MAP = {
