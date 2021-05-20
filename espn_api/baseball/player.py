@@ -9,7 +9,7 @@ class Player(object):
         self.playerId = json_parsing(data, 'id')
         self.position = POSITION_MAP[json_parsing(data, 'defaultPositionId') - 1]
         self.lineupSlot = POSITION_MAP.get(data.get('lineupSlotId'), '')
-        self.eligibleSlots = [POSITION_MAP[pos] for pos in json_parsing(data, 'eligibleSlots')]
+        self.eligibleSlots = [POSITION_MAP.get(pos, pos) for pos in json_parsing(data, 'eligibleSlots')]  # if position isn't in position map, just use the position id number
         self.acquisitionType = json_parsing(data, 'acquisitionType')
         self.proTeam = PRO_TEAM_MAP[json_parsing(data, 'proTeamId')]
         self.injuryStatus = json_parsing(data, 'injuryStatus')
