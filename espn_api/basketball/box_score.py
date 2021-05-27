@@ -7,6 +7,7 @@ class BoxScore(object):
         self.home_team = data['home']['teamId']
         self.home_projected = -1 # week is over/not set
         roster_key = 'rosterForMatchupPeriod' if by_matchup else 'rosterForCurrentScoringPeriod'
+         # TODO combine home and away logic into common function
         home_roster =  data['home'].get(roster_key, {})
         if 'totalPointsLive' in data['home'] and by_matchup:
           self.home_score = round(data['home']['totalPointsLive'], 2)
@@ -23,7 +24,7 @@ class BoxScore(object):
         if 'away' in data:
           self.away_team = data['away']['teamId']
           away_roster = data['away'].get(roster_key, {})
-          if 'totalPointsLive' in data['away']:
+          if 'totalPointsLive' in data['away'] and by_matchup:
             self.away_score = round(data['away']['totalPointsLive'], 2)
             self.away_projected = round(data['away'].get('totalProjectedPointsLive', -1), 2)
           else:
