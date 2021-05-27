@@ -8,7 +8,7 @@ class BoxScore(object):
         self.home_projected = -1 # week is over/not set
         roster_key = 'rosterForMatchupPeriod' if by_matchup else 'rosterForCurrentScoringPeriod'
         home_roster =  data['home'].get(roster_key, {})
-        if 'totalPointsLive' in data['home']:
+        if 'totalPointsLive' in data['home'] and by_matchup:
           self.home_score = round(data['home']['totalPointsLive'], 2)
           self.home_projected = round(data['home'].get('totalProjectedPointsLive', -1), 2)
         else:
