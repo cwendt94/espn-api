@@ -65,8 +65,8 @@ class League(BaseLeague):
             round_pick = pick['roundPickNumber']
             bid_amount = pick['bidAmount']
             keeper_status = pick['keeper']
-
-            self.draft.append(Pick(team, playerId, playerName, round_num, round_pick, bid_amount, keeper_status))
+            nominatingTeam = self.get_team_data(pick['nominatingTeamId'])
+            self.draft.append(Pick(team, playerId, playerName, round_num, round_pick, bid_amount, keeper_status, nominatingTeam))
 
     def _get_positional_ratings(self, week: int):
         params = {
