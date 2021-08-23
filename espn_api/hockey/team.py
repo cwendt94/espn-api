@@ -1,5 +1,3 @@
-import pandas as pd
-
 from .constant import STATS_MAP
 from .matchup import Matchup
 from .player import Player
@@ -25,7 +23,6 @@ class Team(object):
         self.roster = []
         self.schedule = []
         self.year = year
-        self.roster_df = {}
 
         if 'valuesByStat' in data:
             self.stats = {STATS_MAP[i]: j for i, j in data['valuesByStat'].items()}
@@ -61,12 +58,3 @@ class Team(object):
                     new_match = Matchup(match)
                     setattr(new_match, 'home_team', self)
                     self.schedule.append(new_match)
-
-    def get_roster_df(self, stat: str = None):
-        if not stat:
-            stat = 'Total {}'.format(self.year)
-
-        if stat not in self.roster_df:
-            self.roster_df[stat] = pd.concat([player.to_df(stat) for player in self.roster], sort=False)
-
-        return self.roster_df[stat]

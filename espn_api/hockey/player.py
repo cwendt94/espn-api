@@ -1,5 +1,3 @@
-import pandas as pd
-
 from espn_api.utils.utils import json_parsing
 from .constant import POSITION_MAP, STATS_MAP, PRO_TEAM_MAP, STATS_IDENTIFIER
 
@@ -16,7 +14,6 @@ class Player(object):
         self.proTeam = PRO_TEAM_MAP[json_parsing(data, 'proTeamId')]
         self.injuryStatus = json_parsing(data, 'injuryStatus')
         self.stats = {}
-        self.df = {}
 
         '''
         Options
@@ -47,16 +44,6 @@ class Player(object):
 
     def __repr__(self):
         return 'Player(%s)' % (self.name,)
-
-    def to_df(self, stat: str) -> pd.DataFrame:
-        if stat not in self.df:
-            self.df[stat] = pd.DataFrame(self.stats[stat]['total'], index= [self.name])
-
-        self.df[stat]['Team'] = [self.proTeam]
-        self.df[stat]['Position'] = [self.position]
-        self.df[stat]['lineUpSlot'] = [self.lineupSlot]
-
-        return self.df[stat]
 
 def get_stat_key(id: str) -> str:
     if id[:2] in STATS_IDENTIFIER:
