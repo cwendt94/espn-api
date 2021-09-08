@@ -11,7 +11,7 @@ class Player(object):
         self.lineupSlot = POSITION_MAP.get(data.get('lineupSlotId'), '')
         self.eligibleSlots = [POSITION_MAP[pos] for pos in json_parsing(data, 'eligibleSlots')]
         self.acquisitionType = json_parsing(data, 'acquisitionType')
-        self.proTeam = PRO_TEAM_MAP[json_parsing(data, 'proTeamId')]
+        self.proTeam = PRO_TEAM_MAP.get(json_parsing(data, 'proTeamId'), 'Unknown Team')
         self.injuryStatus = json_parsing(data, 'injuryStatus')
         self.stats = {}
 
