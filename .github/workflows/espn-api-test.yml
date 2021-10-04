@@ -19,3 +19,5 @@ jobs:
       run: |
         python3 setup.py nosetests --tests tests/football/integration/
         python3 setup.py nosetests --tests tests/basketball/integration/
+        python3 setup.py nosetests --tests tests/hockey/integration/
+        python3 setup.py nosetests --tests tests/baseball/integration/
