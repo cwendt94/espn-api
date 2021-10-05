@@ -58,7 +58,7 @@ PRO_TEAM_MAP = {
     , 29: 'Columbus Blue Jackets'
     , 30: 'Minnesota Wild'
     , 37: 'Vegas Golden Knights'
-    , 124292: 'Seattle Krakens'
+    , 124292: 'Seattle Kraken'
 }
 
 STATS_MAP = {
