@@ -39,7 +39,7 @@ class Team(object):
     def _fetch_roster(self, data, year):
         '''Fetch teams roster'''
         self.roster.clear()
-        roster = data['entries']
+        roster = data.get('entries', [])
 
         for player in roster:
             self.roster.append(Player(player, year))

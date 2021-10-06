@@ -51,7 +51,7 @@ class BaseLeague(ABC):
 
         team_roster = {}
         for team in data['teams']:
-            team_roster[team['id']] = team['roster']
+            team_roster[team['id']] = team.get('roster', {})
 
         for team in teams:
             for member in members:
