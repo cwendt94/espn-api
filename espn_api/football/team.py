@@ -13,6 +13,8 @@ class Team(object):
         self.ties = data['record']['overall']['ties']
         self.points_for = data['record']['overall']['pointsFor']
         self.points_against = round(data['record']['overall']['pointsAgainst'], 2)
+        self.playoff_pct = data.get('currentSimulationResults', {}).get('playoffPct', 0) * 100
+        self.draft_projected_rank = data.get('draftDayProjectedRank', 0)
         self.owner = 'None'
         if member:
             self.owner = "%s %s" % (member['firstName'],
