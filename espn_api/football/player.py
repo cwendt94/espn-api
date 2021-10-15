@@ -28,7 +28,7 @@ class Player(object):
         for stats in player_stats:
             if stats.get('seasonId') != year:
                 continue
-            stats_breakdown = stats.get('appliedStats') if stats.get('appliedStats') else stats.get('stats', {})
+            stats_breakdown = stats.get('stats') if stats.get('stats') else stats.get('appliedStats', {})
             breakdown = {PLAYER_STATS_MAP.get(int(k), k):v for (k,v) in stats_breakdown.items()}
             points = round(stats.get('appliedTotal', 0), 2)
             scoring_period = stats.get('scoringPeriodId')

@@ -98,6 +98,7 @@ PLAYER_STATS_MAP = {
     19: "passing2PtConversions",
     20: "passingInterceptions",
 
+    23: "rushingAttempts",
     24: "rushingYards",
     25: "rushingTouchdowns",
     26: "rushing2PtConversions",
@@ -106,6 +107,7 @@ PLAYER_STATS_MAP = {
     43: "receivingTouchdowns",
     44: "receiving2PtConversions",
     53: "receivingReceptions",
+    58: "receivingTargets",
 
     72: "lostFumbles",
 
