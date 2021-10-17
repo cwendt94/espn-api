@@ -28,7 +28,7 @@ class Player(object):
         for stats in player_stats:
             if stats.get('seasonId') != year:
                 continue
-            stats_breakdown = stats.get('stats') if stats.get('stats') else stats.get('appliedStats', {})
+            stats_breakdown = stats.get('stats') or stats.get('appliedStats', {})
             breakdown = {PLAYER_STATS_MAP.get(int(k), k):v for (k,v) in stats_breakdown.items()}
             points = round(stats.get('appliedTotal', 0), 2)
             scoring_period = stats.get('scoringPeriodId')
@@ -43,5 +43,4 @@ class Player(object):
         self.projected_total_points = self.stats.get(0, {}).get('projected_points', 0)
             
     def __repr__(self):
-        return 'Player(%s)' % (self.name, )
-        
+        return f'Player({self.name})'

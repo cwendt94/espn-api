@@ -25,7 +25,7 @@ class Player(object):
         6. Last season (2020) 002020
         7. 2021 Projections   102021
         '''
-        player = data['playerPoolEntry']['player'] if 'playerPoolEntry' in data else data['player']
+        player = data.get('playerPoolEntry', {}).get('player') or data['player']
         self.injuryStatus = player.get('injuryStatus', self.injuryStatus)
         self.injured = player.get('injured', False)
 

@@ -35,4 +35,4 @@ class Player(object):
                     self.stats[split['id']]['total'] = None
             
     def __repr__(self):
-        return 'Player(%s)' % (self.name, )
+        return f'Player({self.name})'

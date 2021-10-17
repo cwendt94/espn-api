@@ -32,6 +32,6 @@ class BoxScore(object):
           self.away_lineup = [BoxPlayer(player, pro_schedule) for player in away_roster.get('entries', [])]
 
     def __repr__(self):
-        away_team = self.away_team if self.away_team else "BYE"
-        home_team = self.home_team if self.home_team else "BYE"
-        return 'Box Score(%s at %s)' % (away_team, home_team)
+        away_team = self.away_team or "BYE"
+        home_team = self.home_team or "BYE"
+        return f'Box Score({away_team} at {home_team})'

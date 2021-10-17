@@ -29,7 +29,5 @@ class BoxPlayer(Player):
         self.projected_points = stats.get('projected_points', 0)
         self.projected_breakdown = stats.get('projected_breakdown', 0)
 
-
-
     def __repr__(self):
-        return 'Player(%s, points:%d, projected:%d)' % (self.name, self.points, self.projected_points)
+        return f'Player({self.name}, points:{self.points}, projected:{self.projected_points})'

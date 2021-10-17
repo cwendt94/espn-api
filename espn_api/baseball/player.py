@@ -16,7 +16,7 @@ class Player(object):
         self.stats = {}
 
         # add available stats
-        player = data['playerPoolEntry']['player'] if 'playerPoolEntry' in data else data['player']
+        player = data.get('playerPoolEntry', {}).get('player') or data['player']
         self.injuryStatus = player.get('injuryStatus', self.injuryStatus)
         self.injured = player.get('injured', False)
             

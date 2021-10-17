@@ -31,7 +31,7 @@ class Team(object):
         self._fetch_schedule(schedule)
         
     def __repr__(self):
-        return 'Team(%s)' % (self.team_name, )
+        return f'Team({self.team_name})'
     
 
     def _fetch_roster(self, data):
@@ -55,6 +55,3 @@ class Team(object):
                     new_match = Matchup(match)
                     setattr(new_match, 'home_team', self)
                     self.schedule.append(new_match)
-                    
-        
-                    

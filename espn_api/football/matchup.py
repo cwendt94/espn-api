@@ -5,7 +5,7 @@ class Matchup(object):
         self._fetch_matchup_info()
 
     def __repr__(self):
-        return 'Matchup(%s, %s)' % (self.home_team, self.away_team, )
+        return f'Matchup({self.home_team}, {self.away_team})'
 
     def _fetch_matchup_info(self):
         '''Fetch info for matchup'''

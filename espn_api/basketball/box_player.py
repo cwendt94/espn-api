@@ -23,13 +23,11 @@ class BoxPlayer(Player):
                 
         player_stats = player.get('stats', [])
         for stats in player_stats:
-            stats_breakdown = stats.get('appliedStats') if stats.get('appliedStats') else stats.get('stats', {})
+            stats_breakdown = stats.get('appliedStats') or stats.get('stats', {})
             breakdown = {STATS_MAP.get(k, k):v for (k,v) in stats_breakdown.items()}
             points = round(stats.get('appliedTotal', 0), 2)
             self.points = points
             self.points_breakdown = breakdown
 
-
-
     def __repr__(self):
-        return 'Player(%s, points:%d)' % (self.name, self.points)
+        return f'Player({self.name}, points:{self.points})'
