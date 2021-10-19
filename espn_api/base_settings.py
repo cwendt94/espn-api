@@ -18,4 +18,4 @@ class BaseSettings(object):
         for division in divisions: self.division_map[division.get('id', 0)] = division.get('name')
 
     def __repr__(self):
-        return 'Settings(%s)' % (self.name)
+        return f'Settings({self.name})'

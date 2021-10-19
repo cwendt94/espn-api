@@ -27,7 +27,7 @@ class League(BaseLeague):
             min([i[1][1] / 1000 for i in self._get_pro_schedule(1).items()])).date()
         self._fetch_players()
         self._map_matchup_ids(data['schedule'])
-        return (data)
+        return data
 
     def _map_matchup_ids(self, schedule):
         self.matchup_ids = {}

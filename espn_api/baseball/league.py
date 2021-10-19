@@ -33,7 +33,7 @@ class League(BaseLeague):
     def _fetch_league(self):
         data = super()._fetch_league()
         self._fetch_players()
-        return(data)
+        return data
 
     def _fetch_teams(self, data):
         '''Fetch teams in league'''        

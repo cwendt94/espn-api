@@ -12,12 +12,9 @@ class Matchup(object):
         # writing this too early to see if data['home']['totalPoints'] is final score
         # it might also be used for points leagues instead of category leagues
         if not self.away_team_live_score:
-            return 'Matchup(%s, %s)' % (self.home_team, self.away_team, )
+            return f'Matchup({self.home_team}, {self.away_team})'
         else:
-            return 'Matchup(%s %s - %s %s)' % (self.home_team,
-                                               str(round(self.home_team_live_score, 1)),
-                                               str(round(self.away_team_live_score, 1)),
-                                               self.away_team)
+            return f'Matchup({self.home_team} {round(self.home_team_live_score, 1)} - {round(self.away_team_live_score, 1)} {self.away_team})'
 
     def _fetch_matchup_info(self, data):
         '''Fetch info for matchup'''

@@ -21,4 +21,3 @@ class Record(object):
     def get_standing_str(self):
         docstring = f"Wins: {self.wins} \nLosses: {self.losses} \nTies: {self.ties}"
         return docstring
-    
