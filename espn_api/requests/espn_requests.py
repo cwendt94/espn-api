@@ -3,17 +3,33 @@ import json
 from .constant import FANTASY_BASE_ENDPOINT, FANTASY_SPORTS
 from ..utils.logger import Logger
 
-def checkRequestStatus(status: int) -> None:
-    if 500 <= status <= 503:
-            raise Exception(status)
+
+class ESPNAccessDenied(Exception):
+    pass
+
+
+class ESPNInvalidLeague(Exception):
+    pass
+
+
+class ESPNUnknownError(Exception):
+    pass
+
+
+def checkRequestStatus(status: int, cookies=None, league_id=None) -> None:
+    if cookies is None:
+        cookies = {}
+    if league_id is None:
+        league_id = ""
     if status == 401:
-        raise Exception("Access Denied")
+        raise ESPNAccessDenied(f"League {league_id} cannot be accessed with swid={cookies.get('espn_s2')} and swid={cookies.get('SWID')}")
 
     elif status == 404:
-        raise Exception("Invalid League")
+        raise ESPNInvalidLeague(f"League {league_id} does not exist")
 
     elif status != 200:
-        raise Exception('Unknown %s Error' % status)
+        raise ESPNUnknownError(f"ESPN returned an HTTP {status}")
+
 
 class EspnFantasyRequests(object):
     def __init__(self, sport: str, year: int, league_id: int, cookies: dict = None, logger: Logger = None):
@@ -21,27 +37,26 @@ class EspnFantasyRequests(object):
             raise Exception(f'Unknown sport: {sport}, available options are {FANTASY_SPORTS.keys()}')
         self.year = year
         self.league_id = league_id
-        self.ENDPOINT = FANTASY_BASE_ENDPOINT + FANTASY_SPORTS[sport] + '/seasons/' +  str(self.year)
+        self.ENDPOINT = FANTASY_BASE_ENDPOINT + FANTASY_SPORTS[sport] + '/seasons/' + str(self.year)
         self.cookies = cookies
         self.logger = logger
 
         self.LEAGUE_ENDPOINT = FANTASY_BASE_ENDPOINT + FANTASY_SPORTS[sport]
-        # older season data is stored at a different endpoint 
+        # older season data is stored at a different endpoint
         if year < 2018:
             self.LEAGUE_ENDPOINT += "/leagueHistory/" + str(league_id) + "?seasonId=" + str(year)
         else:
             self.LEAGUE_ENDPOINT += "/seasons/" + str(year) + "/segments/0/leagues/" + str(league_id)
-        
-    
+
     def league_get(self, params: dict = None, headers: dict = None, extend: str = ''):
         endpoint = self.LEAGUE_ENDPOINT + extend
         r = requests.get(endpoint, params=params, headers=headers, cookies=self.cookies)
-        checkRequestStatus(r.status_code)
+        checkRequestStatus(r.status_code, cookies=self.cookies, league_id=self.league_id)
 
         if self.logger:
             self.logger.log_request(endpoint=endpoint, params=params, headers=headers, response=r.json())
         return r.json() if self.year > 2017 else r.json()[0]
-    
+
     def get(self, params: dict = None, headers: dict = None, extend: str = ''):
         endpoint = self.ENDPOINT + extend
         r = requests.get(endpoint, params=params, headers=headers, cookies=self.cookies)
@@ -54,11 +69,11 @@ class EspnFantasyRequests(object):
     def get_league(self):
         '''Gets all of the leagues initial data (teams, roster, matchups, settings)'''
         params = {
-            'view': ['mTeam', 'mRoster', 'mMatchup', 'mSettings', 'mStandings'] 
+            'view': ['mTeam', 'mRoster', 'mMatchup', 'mSettings', 'mStandings']
         }
         data = self.league_get(params=params)
         return data
-    
+
     def get_pro_schedule(self):
         '''Gets the current sports professional team schedules'''
         params = {
@@ -66,13 +81,13 @@ class EspnFantasyRequests(object):
         }
         data = self.get(params=params)
         return data
-    
+
     def get_pro_players(self):
         '''Gets the current sports professional players'''
         params = {
             'view': 'players_wl'
         }
-        filters = {"filterActive":{"value":True}}
+        filters = {"filterActive": {"value": True}}
         headers = {'x-fantasy-filter': json.dumps(filters)}
         data = self.get(extend='/players', params=params, headers=headers)
         return data
@@ -115,4 +130,3 @@ class EspnFantasyRequests(object):
             "espn_s2": data['data']['s2'],
             "swid": data['data']['profile']['swid']
         }
-    
