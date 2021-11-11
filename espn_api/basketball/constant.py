@@ -116,6 +116,14 @@ STATS_MAP = {
     '45': '',
     }
 
+STAT_ID_MAP = {
+    '00': 'total',
+    '10': 'projected_total',
+    '01': 'last_7',
+    '02': 'last_15',
+    '03': 'last_30'
+}
+
 ACTIVITY_MAP = {
     178: 'FA ADDED',
     180: 'WAIVER ADDED',
