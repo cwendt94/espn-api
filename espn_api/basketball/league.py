@@ -108,12 +108,15 @@ class League(BaseLeague):
 
         return activity
 
-    def free_agents(self, week: int=None, size: int=50, position: str=None, position_id: int=None) -> List[Player]:
-        '''Returns a List of Free Agents for a Given Week\n
+    def players(self, week: int=None, size: int=50, position: str=None, position_id: int=None, types: list=[]) -> List[Player]:
+        '''Returns a List of Players\n
         Should only be used with most recent season'''
 
         if self.year < 2019:
             raise Exception('Cant use free agents before 2019')
+        for type in types:
+            if not type in {"FREEAGENT", "WAIVERS", "ONTEAM"}:
+                raise Exception('Invalid type: {}'.format(type))
         if not week:
             week = self.current_week
         
@@ -128,7 +131,7 @@ class League(BaseLeague):
             'view': 'kona_player_info',
             'scoringPeriodId': week,
         }
-        filters = {"players":{"filterStatus":{"value":["FREEAGENT","WAIVERS"]},"filterSlotIds":{"value":slot_filter},"limit":size,"sortPercOwned":{"sortPriority":1,"sortAsc":False},"sortDraftRanks":{"sortPriority":100,"sortAsc":True,"value":"STANDARD"}}}
+        filters = {"players":{"filterStatus":{"value":types},"filterSlotIds":{"value":slot_filter},"limit":size,"sortPercOwned":{"sortPriority":1,"sortAsc":False},"sortDraftRanks":{"sortPriority":100,"sortAsc":True,"value":"STANDARD"}}}
         headers = {'x-fantasy-filter': json.dumps(filters)}
 
         data = self.espn_request.league_get(params=params, headers=headers)
