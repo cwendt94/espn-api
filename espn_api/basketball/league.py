@@ -134,7 +134,7 @@ class League(BaseLeague):
         data = self.espn_request.league_get(params=params, headers=headers)
         players = data['players']
 
-        return [Player(player) for player in players]
+        return [Player(player, self.year) for player in players]
 
     def box_scores(self, matchup_period: int = None, scoring_period: int = None, matchup_total: bool = True) -> List[BoxScore]:
         '''Returns list of box score for a given matchup or scoring period'''
@@ -167,7 +167,7 @@ class League(BaseLeague):
 
         schedule = data['schedule']
         pro_schedule = self._get_pro_schedule(scoring_id)
-        box_data = [BoxScore(matchup, pro_schedule, matchup_total) for matchup in schedule]
+        box_data = [BoxScore(matchup, pro_schedule, matchup_total, self.year) for matchup in schedule]
 
         for team in self.teams:
             for matchup in box_data:

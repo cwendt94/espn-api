@@ -2,7 +2,7 @@ from .box_player import BoxPlayer
 
 class BoxScore(object):
     ''' '''
-    def __init__(self, data, pro_schedule, by_matchup):
+    def __init__(self, data, pro_schedule, by_matchup, year):
         self.winner = data['winner']
         self.home_team = data['home']['teamId']
         self.home_projected = -1 # week is over/not set
@@ -14,7 +14,7 @@ class BoxScore(object):
           self.home_projected = round(data['home'].get('totalProjectedPointsLive', -1), 2)
         else:
           self.home_score = round(home_roster.get('appliedStatTotal', 0), 2)
-        self.home_lineup = [BoxPlayer(player, pro_schedule) for player in home_roster.get('entries', [])]
+        self.home_lineup = [BoxPlayer(player, pro_schedule, year) for player in home_roster.get('entries', [])]
 
         # For Leagues with bye weeks
         self.away_team = 0
@@ -29,7 +29,7 @@ class BoxScore(object):
             self.away_projected = round(data['away'].get('totalProjectedPointsLive', -1), 2)
           else:
             self.away_score = round(away_roster.get('appliedStatTotal', 0), 2)
-          self.away_lineup = [BoxPlayer(player, pro_schedule) for player in away_roster.get('entries', [])]
+          self.away_lineup = [BoxPlayer(player, pro_schedule, year) for player in away_roster.get('entries', [])]
 
     def __repr__(self):
         away_team = self.away_team or "BYE"
