@@ -117,8 +117,7 @@ STATS_MAP = {
     }
 
 STAT_ID_MAP = {
-    '00': 'total',
-    '10': 'projected_total',
+    '10': 'projected',
     '01': 'last_7',
     '02': 'last_15',
     '03': 'last_30'
