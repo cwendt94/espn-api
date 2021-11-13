@@ -16,10 +16,6 @@ class Player(object):
 
         # add available stats
 
-        # 0020XX is full season stats for 20XX
-        # 1020XX is projected season stats for 20XX
-        # I think 0120XX, 0220XX, and 0320XX are last 7, last 15, and last 30
-        # but I haven't figured out which yet (too season in season!)
         player = data['playerPoolEntry']['player'] if 'playerPoolEntry' in data else data['player']
         self.injuryStatus = player.get('injuryStatus', self.injuryStatus)
         self.injured = player.get('injured', False)
@@ -46,4 +42,4 @@ class Player(object):
     
     def _stat_id_pretty(self, id: str):
         id_type = STAT_ID_MAP.get(id[:2])
-        return f'{id_type}_{id[2:]}' if id_type else id
+        return f'{id[2:]}_{id_type}' if id_type else id[2:]
