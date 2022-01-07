@@ -54,22 +54,30 @@ class Team(object):
                 if matchup['away']['teamId'] == self.team_id:
                     score = matchup['away']['totalPoints']
                     opponentId = matchup['home']['teamId']
-                    self.outcomes.append(matchup['winner'])
+                    self.outcomes.append(self._get_winner(matchup['winner'], True))
                     self.scores.append(score)
                     self.schedule.append(opponentId)
                 elif matchup['home']['teamId'] == self.team_id:
                     score = matchup['home']['totalPoints']
                     opponentId = matchup['away']['teamId']
-                    self.outcomes.append(matchup['winner'])
+                    self.outcomes.append(self._get_winner(matchup['winner'], False))
                     self.scores.append(score)
                     self.schedule.append(opponentId)
             elif matchup['home']['teamId'] == self.team_id:
                 score = matchup['home']['totalPoints']
                 opponentId = matchup['home']['teamId']
-                self.outcomes.append(matchup['winner'])
+                self.outcomes.append(self._get_winner(matchup['winner'], False))
                 self.scores.append(score)
                 self.schedule.append(opponentId)
     
+    def _get_winner(self, winner: str, is_away: bool) -> str:
+        if winner == 'UNDECIDED':
+            return 'U'
+        elif (is_away and winner == 'AWAY') or (not is_away and winner == 'HOME'):
+            return 'W'
+        else:
+            return 'L'
+
     def get_player_name(self, playerId: int) -> str:
         for player in self.roster:
             if player.playerId == playerId:
