@@ -3,7 +3,7 @@ from .box_player import BoxPlayer
 class BoxScore(object):
     ''' '''
     def __init__(self, data, pro_schedule, by_matchup, year):
-        self.winner = data['winner']
+        self.winner = data.get('winner', 'UNDECIDED')
         self.home_team = data['home']['teamId']
         self.home_projected = -1 # week is over/not set
         roster_key = 'rosterForMatchupPeriod' if by_matchup else 'rosterForCurrentScoringPeriod'
