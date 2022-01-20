@@ -33,7 +33,7 @@ class League(BaseLeague):
         self.matchup_ids = {}
         for match in schedule:
             matchup_period = match.get('matchupPeriodId')
-            scoring_periods = match['home'].get('pointsByScoringPeriod', {}).keys()
+            scoring_periods = match.get('home', {}).get('pointsByScoringPeriod', {}).keys()
             if len(scoring_periods) > 0:
                 if matchup_period not in self.matchup_ids:
                     self.matchup_ids[matchup_period] = sorted(scoring_periods)
