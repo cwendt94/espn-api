@@ -282,7 +282,7 @@ class League(BaseLeague):
         if playerId is None or isinstance(playerId, str):
             return None
         params = { 'view': 'kona_playercard' }
-        filters = {'players':{'filterIds':{'value':[playerId]}, 'filterStatsForTopScoringPeriodIds':{'value':16, "additionalValue":["00{}".format(self.year), "10{}".format(self.year)]}}}
+        filters = {'players':{'filterIds':{'value':[playerId]}, 'filterStatsForTopScoringPeriodIds':{'value':17, "additionalValue":["00{}".format(self.year), "10{}".format(self.year)]}}}
         headers = {'x-fantasy-filter': json.dumps(filters)}
 
         data = self.espn_request.league_get(params=params, headers=headers)
