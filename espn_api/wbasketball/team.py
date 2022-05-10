@@ -1,4 +1,3 @@
-import pdb
 from .player import Player
 from .matchup import Matchup
 from .constant import STATS_MAP

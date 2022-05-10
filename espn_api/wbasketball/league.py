@@ -3,7 +3,6 @@ import time
 import json
 import math
 from typing import List, Tuple
-import pdb
 
 from ..base_league import BaseLeague
 from .team import Team
