@@ -124,7 +124,7 @@ STATS_MAP = {
     60: 'HLD',
     # 61: '',
     62: 'CG',
-    # 63: '',
+    63: 'QS', # Quality Starts
     # 64: '',
     65: 'NH', # No-hitters
     66: 'PG', # Perfect Games
@@ -148,6 +148,7 @@ STATS_MAP = {
     # 80: ,
     81: 'G', # Games Played
     82: 'K/BB', # Strikeout to Walk Ratio
+    83: 'SVHD', # Saves + Holds
     99: 'STARTER',
 }
 
