@@ -4,5 +4,6 @@ FANTASY_SPORTS = {
     'nfl' : 'ffl',
     'nba' : 'fba',
     'nhl' : 'fhl',
-    'mlb' : 'flb'
+    'mlb' : 'flb',
+    'wnba' : 'wfba'
 }
