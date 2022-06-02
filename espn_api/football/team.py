@@ -13,6 +13,10 @@ class Team(object):
         self.ties = data['record']['overall']['ties']
         self.points_for = data['record']['overall']['pointsFor']
         self.points_against = round(data['record']['overall']['pointsAgainst'], 2)
+        self.acquisitions = data.get('transactionCounter', {}).get('acquisitions', 0)
+        self.acquisition_budget_spent = data.get('transactionCounter', {}).get('acquisitionBudgetSpent', 0)
+        self.drops = data.get('transactionCounter', {}).get('drops', 0)
+        self.trades = data.get('transactionCounter', {}).get('trades', 0)
         self.playoff_pct = data.get('currentSimulationResults', {}).get('playoffPct', 0) * 100
         self.draft_projected_rank = data.get('draftDayProjectedRank', 0)
         self.owner = 'None'
