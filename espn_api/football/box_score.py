@@ -3,6 +3,9 @@ from .box_player import BoxPlayer
 class BoxScore(object):
     ''' '''
     def __init__(self, data, pro_schedule, positional_rankings, week, year):
+        self.matchup_type = data.get('playoffTierType', 'NONE') 
+        self.is_playoff = self.matchup_type != 'None'
+        
         self.home_team = data['home']['teamId']
         self.home_projected = -1 # week is over/not set
         if 'totalPointsLive' in data['home']:
