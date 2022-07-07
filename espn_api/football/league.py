@@ -1,7 +1,7 @@
 import datetime
 import time
 import json
-from typing import List, Tuple
+from typing import List, Tuple, Union
 
 from ..base_league import BaseLeague
 from .team import Team
@@ -274,19 +274,24 @@ class League(BaseLeague):
 
         return [BoxPlayer(player, pro_schedule, positional_rankings, week, self.year) for player in players]
 
-    def player_info(self, name: str = None, playerId: int = None):
+    def player_info(self, name: str = None, playerId: Union[int, list] = None) -> Union[Player, List[Player]]:
         ''' Returns Player class if name found '''
 
         if name:
             playerId = self.player_map.get(name)
         if playerId is None or isinstance(playerId, str):
             return None
+        if not isinstance(playerId, list):
+            playerId = [playerId]
+
         params = { 'view': 'kona_playercard' }
-        filters = {'players':{'filterIds':{'value':[playerId]}, 'filterStatsForTopScoringPeriodIds':{'value':17, "additionalValue":["00{}".format(self.year), "10{}".format(self.year)]}}}
+        filters = {'players':{'filterIds':{'value': playerId}, 'filterStatsForTopScoringPeriodIds':{'value':17, "additionalValue":["00{}".format(self.year), "10{}".format(self.year)]}}}
         headers = {'x-fantasy-filter': json.dumps(filters)}
 
         data = self.espn_request.league_get(params=params, headers=headers)
 
-        if len(data['players']) > 0:
+        if len(data['players']) == 1:
             return Player(data['players'][0], self.year)
+        if len(data['players']) > 1:
+            return [Player(player, self.year) for player in data['players']]
 
