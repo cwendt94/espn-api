@@ -12,3 +12,6 @@ class LeagueTest(TestCase):
         self.assertEqual(league.start_date.month, 1)
         self.assertEqual(league.start_date.day, 13)
 
+    def test_blank_league_init(self):
+        blank_league = League(77421173, 2021, fetch_league=False)
+        self.assertEqual(len(blank_league.teams), 0)

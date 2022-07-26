@@ -49,3 +49,7 @@ class LeagueTest(TestCase):
 
     #     self.assertTrue(scores[0].home_final_score > 0)
     #     self.assertTrue(scores[0].away_final_score > 0)
+    
+    def test_blank_league_init(self):
+        blank_league = League(1010650954, 2022, fetch_league=False)
+        self.assertEqual(len(blank_league.teams), 0)
