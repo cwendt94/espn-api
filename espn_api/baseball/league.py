@@ -15,20 +15,30 @@ from .constant import POSITION_MAP, ACTIVITY_MAP
 
 class League(BaseLeague):
     '''Creates a League instance for Public/Private ESPN league'''
-    def __init__(self, league_id: int, year: int, espn_s2=None, swid=None, username=None, password=None, debug=False):
+    
+    ScoreTypes = {'H2H_CATEGORY': H2HCategoryBoxScore, 'H2H_POINTS': H2HPointsBoxScore}
+    
+    def __init__(self, league_id: int, year: int, espn_s2=None, swid=None, username=None, password=None, fetch_league=True, debug=False):
         super().__init__(league_id=league_id, year=year, sport='mlb', espn_s2=espn_s2, swid=swid, username=username, password=password, debug=debug)
-            
+
+        self._set_scoring_class = lambda scoring_type: League.ScoreTypes.get(scoring_type, BoxScore)
+
+        self.scoring_type = None
+        self._box_score_class = None
+        
+        if fetch_league:
+            data = self._fetch_league()
+            self.scoring_type = data['settings']['scoringSettings']['scoringType']
+            self._fetch_teams(data)
+        
+        if self._box_score_class is None:
+            self._box_score_class = self._set_scoring_class(self.scoring_type)
+
+    def fetch_league(self):
         data = self._fetch_league()
         self.scoring_type = data['settings']['scoringSettings']['scoringType']
-
-        if self.scoring_type == 'H2H_CATEGORY':
-            self._box_score_class = H2HCategoryBoxScore
-        elif self.scoring_type == 'H2H_POINTS':
-            self._box_score_class = H2HPointsBoxScore
-        else:
-            self._box_score_class = BoxScore
-
         self._fetch_teams(data)
+        self._box_score_class = self._set_scoring_class(self.scoring_type)
 
     def _fetch_league(self):
         data = super()._fetch_league()

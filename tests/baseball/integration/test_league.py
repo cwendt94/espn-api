@@ -5,6 +5,7 @@ from espn_api.baseball import League
 class LeagueTest(TestCase):
     def setUp(self):
         self.league = League(81134470, 2021)
+        self.blank_league = League(81134470, 2021, fetch_league=False)
     
     def test_league_init(self):
         self.assertEqual(len(self.league.teams), 8)
@@ -25,3 +26,6 @@ class LeagueTest(TestCase):
         box_scores = self.league.box_scores(1)
 
         self.assertNotEqual(len(box_scores), 0)
+
+    def test_blank_league_init(self):
+        self.assertEqual(len(self.blank_league.teams), 0)

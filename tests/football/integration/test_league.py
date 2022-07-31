@@ -55,3 +55,7 @@ class LeagueTest(TestCase):
         self.assertEqual(len(players), 2)
         self.assertEqual(players[0].name, 'Patrick Mahomes')
         self.assertEqual(players[1].name, 'Austin Ekeler')
+
+    def test_blank_league_init(self):
+        blank_league = League(48153503, 2019, fetch_league=False)
+        self.assertEqual(len(blank_league.teams), 0)
