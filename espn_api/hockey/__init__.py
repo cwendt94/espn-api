@@ -1,11 +1,4 @@
-__all__ = ['League',
-           'Team',
-           'Player',
-           'Record',
-           'Team',
-           'POSITION_MAP',
-           'PRO_TEAM_MAP'
-           ]
+__all__ = ["League", "Team", "Player", "Record", "Team", "POSITION_MAP", "PRO_TEAM_MAP"]
 
 from .league import League
 from .member import Member

@@ -4,7 +4,6 @@ from espn_api.hockey import League
 
 # Integration test to make sure ESPN's API didn't change
 class LeagueTest(TestCase):
-
     def test_league_init(self):
         league = League(77421173, 2021)
 

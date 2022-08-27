@@ -3,7 +3,7 @@ from espn_api.wbasketball import League
 
 # Integration test to make sure ESPN's API didn't change
 class LeagueTest(TestCase):
-    
+
     # def test_league_init(self):
     #     league = League(1010650954, 2022)
 
@@ -15,7 +15,7 @@ class LeagueTest(TestCase):
 
     #     self.assertEqual(scores[0].home_final_score, 136.3)
     #     self.assertEqual(scores[0].away_final_score, 224.3)
-    
+
     def test_league_free_agents(self):
         league = League(1010650954, 2022)
         free_agents = league.free_agents()
@@ -40,7 +40,7 @@ class LeagueTest(TestCase):
 
     # def test_past_league(self):
     #     league = League(411647, 2017)
-        
+
     #     self.assertEqual(league.scoringPeriodId, 170)
 
     # def test_past_league_scoreboard(self):
@@ -49,7 +49,7 @@ class LeagueTest(TestCase):
 
     #     self.assertTrue(scores[0].home_final_score > 0)
     #     self.assertTrue(scores[0].away_final_score > 0)
-    
+
     def test_blank_league_init(self):
         blank_league = League(1010650954, 2022, fetch_league=False)
         self.assertEqual(len(blank_league.teams), 0)

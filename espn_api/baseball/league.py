@@ -10,33 +10,51 @@ from .team import Team
 from .player import Player
 from .matchup import Matchup
 from .box_score import BoxScore, H2HCategoryBoxScore, H2HPointsBoxScore
-from.activity import Activity
+from .activity import Activity
 from .constant import POSITION_MAP, ACTIVITY_MAP
 
-class League(BaseLeague):
-    '''Creates a League instance for Public/Private ESPN league'''
-    
-    ScoreTypes = {'H2H_CATEGORY': H2HCategoryBoxScore, 'H2H_POINTS': H2HPointsBoxScore}
-    
-    def __init__(self, league_id: int, year: int, espn_s2=None, swid=None, fetch_league=True, debug=False):
-        super().__init__(league_id=league_id, year=year, sport='mlb', espn_s2=espn_s2, swid=swid, debug=debug)
 
-        self._set_scoring_class = lambda scoring_type: League.ScoreTypes.get(scoring_type, BoxScore)
+class League(BaseLeague):
+    """Creates a League instance for Public/Private ESPN league"""
+
+    ScoreTypes = {"H2H_CATEGORY": H2HCategoryBoxScore, "H2H_POINTS": H2HPointsBoxScore}
+
+    def __init__(
+        self,
+        league_id: int,
+        year: int,
+        espn_s2=None,
+        swid=None,
+        fetch_league=True,
+        debug=False,
+    ):
+        super().__init__(
+            league_id=league_id,
+            year=year,
+            sport="mlb",
+            espn_s2=espn_s2,
+            swid=swid,
+            debug=debug,
+        )
+
+        self._set_scoring_class = lambda scoring_type: League.ScoreTypes.get(
+            scoring_type, BoxScore
+        )
 
         self.scoring_type = None
         self._box_score_class = None
-        
+
         if fetch_league:
             data = self._fetch_league()
-            self.scoring_type = data['settings']['scoringSettings']['scoringType']
+            self.scoring_type = data["settings"]["scoringSettings"]["scoringType"]
             self._fetch_teams(data)
-        
+
         if self._box_score_class is None:
             self._box_score_class = self._set_scoring_class(self.scoring_type)
 
     def fetch_league(self):
         data = self._fetch_league()
-        self.scoring_type = data['settings']['scoringSettings']['scoringType']
+        self.scoring_type = data["settings"]["scoringSettings"]["scoringType"]
         self._fetch_teams(data)
         self._box_score_class = self._set_scoring_class(self.scoring_type)
 
@@ -46,34 +64,42 @@ class League(BaseLeague):
         return data
 
     def _fetch_teams(self, data):
-        '''Fetch teams in league'''        
+        """Fetch teams in league"""
         super()._fetch_teams(data, TeamClass=Team)
 
         # replace opponentIds in schedule with team instances
         for team in self.teams:
-            team.division_name = self.settings.division_map.get(team.division_id, '')
+            team.division_name = self.settings.division_map.get(team.division_id, "")
             for week, matchup in enumerate(team.schedule):
                 for opponent in self.teams:
                     if matchup.away_team == opponent.team_id:
                         matchup.away_team = opponent
                     if matchup.home_team == opponent.team_id:
                         matchup.home_team = opponent
-                        
+
     def standings(self) -> List[Team]:
-        standings = sorted(self.teams, key=lambda x: x.final_standing if x.final_standing != 0 else x.standing, reverse=False)
+        standings = sorted(
+            self.teams,
+            key=lambda x: x.final_standing if x.final_standing != 0 else x.standing,
+            reverse=False,
+        )
         return standings
 
     def scoreboard(self, matchupPeriod: int = None) -> List[Matchup]:
-        '''Returns list of matchups for a given matchup period'''
+        """Returns list of matchups for a given matchup period"""
         if not matchupPeriod:
-            matchupPeriod=self.currentMatchupPeriod
+            matchupPeriod = self.currentMatchupPeriod
 
         params = {
-            'view': 'mMatchup',
+            "view": "mMatchup",
         }
         data = self.espn_request.league_get(params=params)
-        schedule = data['schedule']
-        matchups = [Matchup(matchup) for matchup in schedule if matchup['matchupPeriodId'] == matchupPeriod]
+        schedule = data["schedule"]
+        matchups = [
+            Matchup(matchup)
+            for matchup in schedule
+            if matchup["matchupPeriodId"] == matchupPeriod
+        ]
 
         for team in self.teams:
             for matchup in matchups:
@@ -81,7 +107,7 @@ class League(BaseLeague):
                     matchup.home_team = team
                 elif matchup.away_team == team.team_id:
                     matchup.away_team = team
-        
+
         return matchups
 
     def get_team_data(self, team_id: int) -> Team:
@@ -91,57 +117,88 @@ class League(BaseLeague):
         return None
 
     def recent_activity(self, size: int = 25, msg_type: str = None) -> List[Activity]:
-        '''Returns a list of recent league activities (Add, Drop, Trade)'''
+        """Returns a list of recent league activities (Add, Drop, Trade)"""
         if self.year < 2019:
-            raise Exception('Cant use recent activity before 2019')
+            raise Exception("Cant use recent activity before 2019")
 
-        msg_types = [178,180,179,239,181,244]
+        msg_types = [178, 180, 179, 239, 181, 244]
         if msg_type in ACTIVITY_MAP:
             msg_types = [ACTIVITY_MAP[msg_type]]
-        params = {
-            'view': 'kona_league_communication'
-        }
+        params = {"view": "kona_league_communication"}
 
-        filters = {"topics":{"filterType":{"value":["ACTIVITY_TRANSACTIONS"]},"limit":size,"limitPerMessageSet":{"value":25},"offset":0,"sortMessageDate":{"sortPriority":1,"sortAsc":False},"sortFor":{"sortPriority":2,"sortAsc":False},"filterIncludeMessageTypeIds":{"value":msg_types}}}
-        headers = {'x-fantasy-filter': json.dumps(filters)}
-        data = self.espn_request.league_get(extend='/communication/', params=params, headers=headers)
-        data = data['topics']
-        activity = [Activity(topic, self.player_map, self.get_team_data) for topic in data]
+        filters = {
+            "topics": {
+                "filterType": {"value": ["ACTIVITY_TRANSACTIONS"]},
+                "limit": size,
+                "limitPerMessageSet": {"value": 25},
+                "offset": 0,
+                "sortMessageDate": {"sortPriority": 1, "sortAsc": False},
+                "sortFor": {"sortPriority": 2, "sortAsc": False},
+                "filterIncludeMessageTypeIds": {"value": msg_types},
+            }
+        }
+        headers = {"x-fantasy-filter": json.dumps(filters)}
+        data = self.espn_request.league_get(
+            extend="/communication/", params=params, headers=headers
+        )
+        data = data["topics"]
+        activity = [
+            Activity(topic, self.player_map, self.get_team_data) for topic in data
+        ]
 
         return activity
 
-    def free_agents(self, week: int=None, size: int=50, position: str=None, position_id: int=None) -> List[Player]:
-        '''Returns a List of Free Agents for a Given Week\n
-        Should only be used with most recent season'''
+    def free_agents(
+        self,
+        week: int = None,
+        size: int = 50,
+        position: str = None,
+        position_id: int = None,
+    ) -> List[Player]:
+        """Returns a List of Free Agents for a Given Week\n
+        Should only be used with most recent season"""
 
         if self.year < 2019:
-            raise Exception('Cant use free agents before 2019')
+            raise Exception("Cant use free agents before 2019")
         if not week:
             week = self.current_week
-        
+
         slot_filter = []
         if position and position in POSITION_MAP:
             slot_filter = [POSITION_MAP[position]]
         if position_id:
             slot_filter.append(position_id)
 
-        
         params = {
-            'view': 'kona_player_info',
-            'scoringPeriodId': week,
+            "view": "kona_player_info",
+            "scoringPeriodId": week,
         }
-        filters = {"players":{"filterStatus":{"value":["FREEAGENT","WAIVERS"]},"filterSlotIds":{"value":slot_filter},"limit":size,"sortPercOwned":{"sortPriority":1,"sortAsc":False},"sortDraftRanks":{"sortPriority":100,"sortAsc":True,"value":"STANDARD"}}}
-        headers = {'x-fantasy-filter': json.dumps(filters)}
+        filters = {
+            "players": {
+                "filterStatus": {"value": ["FREEAGENT", "WAIVERS"]},
+                "filterSlotIds": {"value": slot_filter},
+                "limit": size,
+                "sortPercOwned": {"sortPriority": 1, "sortAsc": False},
+                "sortDraftRanks": {
+                    "sortPriority": 100,
+                    "sortAsc": True,
+                    "value": "STANDARD",
+                },
+            }
+        }
+        headers = {"x-fantasy-filter": json.dumps(filters)}
 
         data = self.espn_request.league_get(params=params, headers=headers)
-        players = data['players']
+        players = data["players"]
 
         return [Player(player) for player in players]
 
-    def box_scores(self, matchup_period: int = None, scoring_period: int = None) -> List[Union[BoxScore, H2HCategoryBoxScore]]:
-        '''Returns list of box score for a given matchup or scoring period'''
+    def box_scores(
+        self, matchup_period: int = None, scoring_period: int = None
+    ) -> List[Union[BoxScore, H2HCategoryBoxScore]]:
+        """Returns list of box score for a given matchup or scoring period"""
         if self.year < 2019:
-            raise Exception('Cant use box score before 2019')
+            raise Exception("Cant use box score before 2019")
 
         matchup_id = self.currentMatchupPeriod
         scoring_id = self.current_week
@@ -152,15 +209,15 @@ class League(BaseLeague):
             matchup_id = matchup_period
 
         params = {
-            'view': ['mMatchupScore', 'mScoreboard'],
-            'scoringPeriodId': scoring_id
+            "view": ["mMatchupScore", "mScoreboard"],
+            "scoringPeriodId": scoring_id,
         }
 
-        filters = {"schedule":{"filterMatchupPeriodIds":{"value":[matchup_id]}}}
-        headers = {'x-fantasy-filter': json.dumps(filters)}
+        filters = {"schedule": {"filterMatchupPeriodIds": {"value": [matchup_id]}}}
+        headers = {"x-fantasy-filter": json.dumps(filters)}
         data = self.espn_request.league_get(params=params, headers=headers)
 
-        schedule = data['schedule']
+        schedule = data["schedule"]
         box_data = [self._box_score_class(matchup) for matchup in schedule]
 
         for team in self.teams:
