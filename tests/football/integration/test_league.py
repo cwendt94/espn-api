@@ -42,6 +42,10 @@ class LeagueTest(TestCase):
         self.assertEqual(repr(box_scores[1].away_team), 'Team(TEAM BERRY)')
         self.assertEqual(repr(box_scores[1].away_lineup[1]), 'Player(Odell Beckham Jr., points:29.0, projected:16.72)')
         self.assertEqual(repr(box_scores[1]), 'Box Score(Team(TEAM BERRY) at Team(TEAM HOLLAND))')
+        self.assertEqual(box_scores[0].is_playoff, False)
+
+        box_scores = league.box_scores()
+        self.assertEqual(box_scores[0].is_playoff, True)
 
     def test_player_info(self):
         league = League(48153503, 2019)
