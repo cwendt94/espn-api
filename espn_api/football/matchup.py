@@ -12,7 +12,7 @@ class Matchup(object):
         self.home_team = self.data['home']['teamId']
         self.home_score = self.data['home']['totalPoints']
         self.matchup_type = self.data.get('playoffTierType', 'NONE')
-        self.is_playoff = self.matchup_type != 'None'
+        self.is_playoff = self.matchup_type != 'NONE'
 
         # For Leagues with bye weeks
         self.away_team = 0
