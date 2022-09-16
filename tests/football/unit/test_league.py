@@ -265,6 +265,8 @@ class LeagueTest(TestCase):
         player = league.player_info('James Conner')
         self.assertEqual(player.name, 'James Conner')
         self.assertEqual(player.stats[1]['points'], 10.5)
+        self.assertEqual(player.percent_owned, 96.73)
+        self.assertEqual(player.percent_started, 73.87)
         
 
 

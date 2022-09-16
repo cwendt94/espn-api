@@ -23,6 +23,8 @@ class Player(object):
         player = data['playerPoolEntry']['player'] if 'playerPoolEntry' in data else data['player']
         self.injuryStatus = player.get('injuryStatus', self.injuryStatus)
         self.injured = player.get('injured', False)
+        self.percent_owned = round(player.get('ownership', {}).get('percentOwned', -1), 2)
+        self.percent_started = round(player.get('ownership', {}).get('percentStarted', -1), 2)
 
         player_stats = player.get('stats', [])
         for stats in player_stats:
