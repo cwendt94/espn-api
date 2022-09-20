@@ -11,6 +11,7 @@ class Player(object):
         self.acquisitionType = json_parsing(data, 'acquisitionType')
         self.proTeam = PRO_TEAM_MAP[json_parsing(data, 'proTeamId')]
         self.injuryStatus = json_parsing(data, 'injuryStatus')
+        self.onTeamId = json_parsing(data, 'onTeamId')
         self.stats = {}
 
         # Get players main position
@@ -43,6 +44,6 @@ class Player(object):
                 self.stats[scoring_period] = {points_type: points, breakdown_type: breakdown}
         self.total_points = self.stats.get(0, {}).get('points', 0)
         self.projected_total_points = self.stats.get(0, {}).get('projected_points', 0)
-            
+
     def __repr__(self):
         return f'Player({self.name})'
