@@ -8,9 +8,8 @@ class LeagueTest(TestCase):
     def test_league_init(self):
         league = League(77421173, 2021)
 
-        self.assertEqual(league.start_date.year, 2021)
-        self.assertEqual(league.start_date.month, 1)
-        self.assertEqual(league.start_date.day, 13)
+        self.assertEqual(league.teams[0].__repr__(), 'Team(Cambridge Bay Caribou)')
+        self.assertEqual(league.teams[1].roster[0].name, 'Steven Stamkos')
 
     def test_blank_league_init(self):
         blank_league = League(77421173, 2021, fetch_league=False)

@@ -28,7 +28,6 @@ class League(BaseLeague):
 
     def _fetch_league(self):
         data = super()._fetch_league()
-        self.start_date = datetime.datetime.fromtimestamp(min([i[1][1]/1000 for i in self._get_pro_schedule(1).items()])).date()
         self._fetch_players()
         self._map_matchup_ids(data['schedule'])
         return(data)
