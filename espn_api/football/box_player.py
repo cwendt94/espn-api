@@ -11,6 +11,7 @@ class BoxPlayer(Player):
         self.pro_opponent = "None" # professional team playing against
         self.pro_pos_rank = 0 # rank of professional team against player position
         self.game_played = 100 # 0-100 for percent of game played
+        self.on_bye_week = False
 
         if 'lineupSlotId' in data:
             self.slot_position = POSITION_MAP[data['lineupSlotId']]
@@ -24,6 +25,8 @@ class BoxPlayer(Player):
             if posId in positional_rankings:
                 self.pro_opponent = PRO_TEAM_MAP[opp_id]
                 self.pro_pos_rank = positional_rankings[posId][str(opp_id)] if str(opp_id) in positional_rankings[posId] else 0
+        else: # bye week
+            self.on_bye_week = True
 
         stats = self.stats.get(week, {})
         self.points = stats.get('points', 0)
