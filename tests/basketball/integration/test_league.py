@@ -1,4 +1,5 @@
 from unittest import TestCase
+import unittest
 from espn_api.basketball import League
 
 # Integration test to make sure ESPN's API didn't change
@@ -16,11 +17,23 @@ class LeagueTest(TestCase):
         self.assertEqual(scores[0].home_final_score, 4240.0)
         self.assertEqual(scores[0].away_final_score, 2965.0)
     
-    def test_league_free_agents(self):
+    def test_league_players(self):
         league = League(411647, 2019)
-        free_agents = league.free_agents()
+        # set size=1000 to get all players (doesn't have to be 1000, just needs to be large)
+        free_agents = league.players(size=1000, types=["FREEAGENT"])
+        waivers = league.players(size=1000, types=["WAIVERS"])
+        on_team = league.players(size=1000, types=["ONTEAM"])
+        all1 = league.players(size=1000, types=["FREEAGENT", "WAIVERS", "ONTEAM"])
+        all2 = league.players(size=1000)
 
         self.assertNotEqual(len(free_agents), 0)
+        
+        self.assertNotEqual(len(on_team), 0)
+        
+        self.assertEqual(len(all1), len(all2))
+        self.assertNotEqual(len(all2), 0)
+        
+        self.assertEqual(len(free_agents)+len(waivers)+len(on_team), len(all2))
 
     def test_league_box_scores(self):
         league = League(411647, 2019)
