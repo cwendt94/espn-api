@@ -14,6 +14,7 @@ class BaseSettings(object):
         self.name = data['name']
         self.tie_rule = data['scoringSettings']['matchupTieRule']
         self.playoff_seed_tie_rule = data['scoringSettings']['playoffMatchupTieRule']
+        self.scoring_type = data.get('scoringSettings', {}).get('scoringType')
         self.faab = data['acquisitionSettings']['isUsingAcquisitionBudget']
         divisions = data.get('scheduleSettings', {}).get('divisions', [])
         for division in divisions: self.division_map[division.get('id', 0)] = division.get('name')
