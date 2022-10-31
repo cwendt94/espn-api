@@ -21,7 +21,7 @@ class League(BaseLeague):
     def fetch_league(self):
         data = self._fetch_league()
         self._fetch_teams(data)
-        print('Scoring Type', self.settings.scoring_type)
+
         self.BoxScoreClass = get_box_scoring_type_class(self.settings.scoring_type)
 
     def _fetch_league(self):
