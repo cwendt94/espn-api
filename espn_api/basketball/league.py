@@ -1,15 +1,11 @@
-import datetime
-import time
 import json
-import math
 from typing import List, Tuple
-import pdb
 
 from ..base_league import BaseLeague
 from .team import Team
 from .player import Player
 from .matchup import Matchup
-from .box_score import BoxScore
+from .box_score import get_box_scoring_type_class, BoxScore
 from .constant import PRO_TEAM_MAP
 from.activity import Activity
 from .constant import POSITION_MAP, ACTIVITY_MAP
@@ -26,8 +22,11 @@ class League(BaseLeague):
         data = self._fetch_league()
         self._fetch_teams(data)
 
+        self.BoxScoreClass = get_box_scoring_type_class(self.settings.scoring_type)
+
     def _fetch_league(self):
         data = super()._fetch_league()
+
         self._fetch_players()
         self._map_matchup_ids(data['schedule'])
         return(data)
@@ -170,7 +169,7 @@ class League(BaseLeague):
 
         schedule = data['schedule']
         pro_schedule = self._get_pro_schedule(scoring_id)
-        box_data = [BoxScore(matchup, pro_schedule, matchup_total, self.year) for matchup in schedule]
+        box_data = [self.BoxScoreClass(matchup, pro_schedule, matchup_total, self.year) for matchup in schedule]
 
         for team in self.teams:
             for matchup in box_data:
