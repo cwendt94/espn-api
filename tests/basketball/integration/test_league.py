@@ -41,11 +41,11 @@ class LeagueTest(TestCase):
     def test_league_box_scores_category(self):
         league = League(1631984064, 2023)
 
-        score = league.box_scores(scoring_period=15)
+        score = league.box_scores(scoring_period=15, matchup_total=False)
 
         self.assertEqual(score[0].__repr__(), 'Box Score(Team(Team McWilliams) at Team(Team Wendt))')
-        self.assertEqual(score[0].away_lineup[0].name, 'Collin Sexton')
-        self.assertEqual(score[0].away_stats['PTS'], { 'value': 120.0, 'result': 'WIN' })
+        self.assertEqual(score[0].away_lineup[0].name, 'Stephen Curry')
+        self.assertEqual(score[0].away_stats['PTS'], { 'value': 195.0, 'result': 'LOSS' })
 
     def test_past_league(self):
         league = League(411647, 2017)
