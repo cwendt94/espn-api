@@ -32,6 +32,7 @@ class BaseLeague(ABC):
         self.currentMatchupPeriod = data['status']['currentMatchupPeriod']
         self.scoringPeriodId = data['scoringPeriodId']
         self.firstScoringPeriod = data['status']['firstScoringPeriod']
+        self.finalScoringPeriod = data['status']['finalScoringPeriod']
         if self.year < 2018:
             self.current_week = data['scoringPeriodId']
         else:
@@ -86,6 +87,17 @@ class BaseLeague(ABC):
             if team['id'] != 0 and (str(scoringPeriodId) in pro_game.keys() and pro_game[str(scoringPeriodId)]):
                 game_data = pro_game[str(scoringPeriodId)][0]
                 pro_team_schedule[team['id']] = (game_data['homeProTeamId'], game_data['date'])  if team['id'] == game_data['awayProTeamId'] else (game_data['awayProTeamId'], game_data['date'])
+        return pro_team_schedule
+    
+    def _get_all_pro_schedule(self):
+        data = self.espn_request.get_pro_schedule()
+
+        pro_teams = data['settings']['proTeams']
+        pro_team_schedule = {}
+
+        for team in pro_teams:
+            pro_game = team.get('proGamesByScoringPeriod', {})
+            pro_team_schedule[team['id']] = pro_game
         return pro_team_schedule
 
     def standings(self) -> List:

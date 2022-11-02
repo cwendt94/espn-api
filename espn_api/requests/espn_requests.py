@@ -2,6 +2,7 @@ import requests
 import json
 from .constant import FANTASY_BASE_ENDPOINT, FANTASY_SPORTS
 from ..utils.logger import Logger
+from typing import List
 
 
 class ESPNAccessDenied(Exception):
@@ -99,6 +100,19 @@ class EspnFantasyRequests(object):
         }
         data = self.league_get(params=params)
         return data
+    def get_player_card(self, playerIds: List[int], max_scoring_period: int, additional_filters: List = None):
+        '''Gets the player card'''
+        params = { 'view': 'kona_playercard' }
+
+        additional_value = ["00{}".format(self.year), "10{}".format(self.year)]
+        if additional_filters : additional_value += additional_filters
+
+        filters = {'players':{'filterIds':{'value': playerIds}, 'filterStatsForTopScoringPeriodIds':{'value': max_scoring_period, 'additionalValue': additional_value}}}
+        headers = {'x-fantasy-filter': json.dumps(filters)}
+
+        data = self.league_get(params=params, headers=headers)
+        return data
+
     # Username and password no longer works using their API without using google recaptcha
     # Possibly revisit in future if anything changes
  

@@ -289,11 +289,7 @@ class League(BaseLeague):
         if not isinstance(playerId, list):
             playerId = [playerId]
 
-        params = { 'view': 'kona_playercard' }
-        filters = {'players':{'filterIds':{'value': playerId}, 'filterStatsForTopScoringPeriodIds':{'value':17, "additionalValue":["00{}".format(self.year), "10{}".format(self.year)]}}}
-        headers = {'x-fantasy-filter': json.dumps(filters)}
-
-        data = self.espn_request.league_get(params=params, headers=headers)
+        data = self.espn_request.get_player_card(playerId, self.finalScoringPeriod)
 
         if len(data['players']) == 1:
             return Player(data['players'][0], self.year)
