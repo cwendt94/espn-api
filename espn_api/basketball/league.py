@@ -1,5 +1,5 @@
 import json
-from typing import List, Tuple
+from typing import List, Tuple, Union
 
 from ..base_league import BaseLeague
 from .team import Team
@@ -178,3 +178,22 @@ class League(BaseLeague):
                 elif matchup.away_team == team.team_id:
                     matchup.away_team = team
         return box_data
+
+    def player_info(self, name: str = None, playerId: Union[int, list] = None) -> Union[Player, List[Player]]:
+        ''' Returns Player class if name found '''
+
+        if name:
+            playerId = self.player_map.get(name)
+        if playerId is None or isinstance(playerId, str):
+            return None
+        if not isinstance(playerId, list):
+            playerId = [playerId]
+
+        data = self.espn_request.get_player_card(playerId, self.finalScoringPeriod)
+
+        pro_schedule = self._get_all_pro_schedule()
+
+        if len(data['players']) == 1:
+            return Player(data['players'][0], self.year, pro_schedule)
+        if len(data['players']) > 1:
+            return [Player(player, self.year, pro_schedule) for player in data['players']]
