@@ -21,6 +21,16 @@ class LeagueTest(TestCase):
         free_agents = league.free_agents()
 
         self.assertNotEqual(len(free_agents), 0)
+    def test_player_info(self):
+        league = League(411647, 2019)
+        player_id = league.teams[0].roster[0].playerId
+
+        player = league.player_info(playerId=player_id)
+
+        self.assertEqual(player.__repr__(), 'Player(Andre Drummond)')
+        self.assertEqual(player.schedule['2']['team'], 'BKN')
+        self.assertEqual(player.stats['2']['team'], 'BKN')
+        self.assertEqual(player.stats['2']['total']['PTS'], 24.0)
 
     def test_league_box_scores(self):
         league = League(411647, 2019)
