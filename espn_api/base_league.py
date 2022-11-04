@@ -40,7 +40,7 @@ class BaseLeague(ABC):
         self.settings = SettingsClass(data['settings'])
         return data
 
-    def _fetch_teams(self, data, TeamClass):
+    def _fetch_teams(self, data, TeamClass, pro_schedule = None):
         '''Fetch teams in league'''
         self.teams = []
         teams = data['teams']
@@ -61,7 +61,7 @@ class BaseLeague(ABC):
                 elif member['id'] == team['owners'][0]:
                     break
             roster = team_roster[team['id']]
-            self.teams.append(TeamClass(team, roster=roster, member=member, schedule=schedule, year=seasonId))
+            self.teams.append(TeamClass(team, roster=roster, member=member, schedule=schedule, year=seasonId, pro_schedule=pro_schedule))
 
         # sort by team ID
         self.teams = sorted(self.teams, key=lambda x: x.team_id, reverse=False)

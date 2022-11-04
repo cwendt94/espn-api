@@ -5,7 +5,7 @@ from .constant import STATS_MAP
 
 class Team(object):
     '''Teams are part of the league'''
-    def __init__(self, data, member, roster, schedule, year):
+    def __init__(self, data, member, roster, schedule, year, **kwargs):
         self.team_id = data['id']
         self.team_abbrev = data['abbrev']
         self.team_name = "%s %s" % (data['location'], data['nickname'])
@@ -29,20 +29,20 @@ class Team(object):
         if 'logo' in data:    
             self.logo_url = data['logo']
         
-        self._fetch_roster(roster, year)
+        self._fetch_roster(roster, year, kwargs.get('pro_schedule'))
         self._fetch_schedule(schedule)
         
     def __repr__(self):
         return f'Team({self.team_name})'
     
 
-    def _fetch_roster(self, data, year):
+    def _fetch_roster(self, data, year, pro_schedule = None):
         '''Fetch teams roster'''
         self.roster.clear()
         roster = data['entries']
 
         for player in roster:
-            self.roster.append(Player(player, year))
+            self.roster.append(Player(player, year, pro_schedule))
 
 
     def _fetch_schedule(self, data):

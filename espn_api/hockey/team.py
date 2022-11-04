@@ -6,7 +6,7 @@ from .player import Player
 class Team(object):
     '''Teams are part of the league'''
 
-    def __init__(self, data, member, roster, schedule, year):
+    def __init__(self, data, member, roster, schedule, year, **kwargs):
         self.team_id = data['id']
         self.team_abbrev = data['abbrev']
         self.team_name = "%s %s" % (data['location'], data['nickname'])
