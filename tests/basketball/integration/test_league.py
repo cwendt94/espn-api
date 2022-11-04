@@ -8,6 +8,8 @@ class LeagueTest(TestCase):
         league = League(411647, 2019)
 
         self.assertEqual(league.scoringPeriodId, 178)
+        player = league.teams[0].roster[0]
+        self.assertAlmostEqual(player.schedule['2']['team'], 'BKN')
 
     def test_league_scoreboard(self):
         league = League(411647, 2019)

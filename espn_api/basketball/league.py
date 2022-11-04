@@ -44,8 +44,9 @@ class League(BaseLeague):
 
 
     def _fetch_teams(self, data):
-        '''Fetch teams in league'''        
-        super()._fetch_teams(data, TeamClass=Team)
+        '''Fetch teams in league'''
+        pro_schedule = self._get_all_pro_schedule()        
+        super()._fetch_teams(data, TeamClass=Team, pro_schedule=pro_schedule)
 
         # replace opponentIds in schedule with team instances
         for team in self.teams:
