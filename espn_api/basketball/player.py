@@ -45,8 +45,8 @@ class Player(object):
                 else:
                     self.stats[id]['avg'] = None
                     self.stats[id]['total'] = {STATS_MAP[i]: split['stats'][i] for i in split['stats'].keys() if STATS_MAP[i] != ''}
-        self.total_points = self.stats.get(f'{year}', {}).get('applied_total', 0)
-        self.avg_points = self.stats.get(f'{year}', {}).get('applied_avg', 0)
+        self.total_points = self.stats.get(f'{year}_total', {}).get('applied_total', 0)
+        self.avg_points = self.stats.get(f'{year}_total', {}).get('applied_avg', 0)
         self.projected_total_points= self.stats.get(f'{year}_projected', {}).get('applied_total', 0)
         self.projected_avg_points = self.stats.get(f'{year}_projected', {}).get('applied_avg', 0)
             

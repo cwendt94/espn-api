@@ -9,7 +9,9 @@ class LeagueTest(TestCase):
 
         self.assertEqual(league.scoringPeriodId, 178)
         player = league.teams[0].roster[0]
-        self.assertAlmostEqual(player.schedule['2']['team'], 'BKN')
+        self.assertEqual(player.schedule['2']['team'], 'BKN')
+        self.assertEqual(player.total_points, 3583.0)
+        self.assertEqual(player.avg_points, 45.35)
 
     def test_league_scoreboard(self):
         league = League(411647, 2019)
@@ -53,12 +55,12 @@ class LeagueTest(TestCase):
     def test_league_box_scores_category(self):
         league = League(1631984064, 2023)
 
-        score = league.box_scores(scoring_period=15, matchup_total=False)
+        score = league.box_scores(matchup_period=3, scoring_period=21)
 
         self.assertEqual(score[0].__repr__(), 'Box Score(Team(Team McWilliams) at Team(Team Wendt))')
         self.assertEqual(score[0].away_lineup[0].name, 'Stephen Curry')
         # comment for now until matchup week is over
-        # self.assertEqual(score[0].away_stats['PTS'], { 'value': 195.0, 'result': 'LOSS' })
+        self.assertEqual(score[0].away_stats['PTS'], { 'value': 733.0, 'result': 'WIN' })
 
     def test_past_league(self):
         league = League(411647, 2017)
