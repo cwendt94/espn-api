@@ -320,539 +320,164 @@ SETTINGS_SCORING_FORMAT_MAP = {
     48: { 'abbr': 'REY10', 'label': 'Every 10 receiving yards' },
     49: { 'abbr': 'REY20', 'label': 'Every 20 receiving yards' },
     50: { 'abbr': 'REY25', 'label': 'Every 25 receiving yards' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
-    11: { 'abbr': '', 'label': '' },
+    51: { 'abbr': 'REY50', 'label': 'Every 50 receiving yards' },
+    52: { 'abbr': 'RE100', 'label': 'Every 100 receiving yards' },
+    53: { 'abbr': 'REC', 'label': 'Each reception' },
+    54: { 'abbr': 'REC5', 'label': 'Every 5 receptions'},
+    55: { 'abbr': 'REC10', 'label': 'Every 10 receptions' },
+    56: { 'abbr': 'REY100', 'label': '100-199 yard receiving game' },
+    57: { 'abbr': 'REY200', 'label': '200+ yard receiving game' },
+    58: { 'abbr': 'RET', 'label': 'Receiving Target' },
+    59: { 'abbr': 'YAC', 'label': 'Receiving Yards After Catch' },
+    60: { 'abbr': 'YPC', 'label': 'Receiving Yards Per Catch' },
+    61: { 'abbr': 'REYPG', 'label': 'Receiving Yards Per Game' },
+    62: { 'abbr': 'PTL', 'label': 'Total 2pt Conversions' },
+    63: { 'abbr': 'FTD', 'label': 'Fumble Recovered for TD' },
+    64: { 'abbr': 'SKD', 'label': 'Sacked' },
+    65: { 'abbr': 'PFUM', 'label': 'Passing Fumbles' },
+    66: { 'abbr': 'RFUM', 'label': 'Rushing Fumbles' },
+    67: { 'abbr': 'REFUM', 'label': 'Receiving Fumbles' },
+    68: { 'abbr': 'FUM', 'label': 'Total Fumbles' },
+    69: { 'abbr': 'PFUML', 'label': 'Passing Fumbles Lost' },
+    70: { 'abbr': 'RFUML', 'label': 'Rushing Fumbles Lost' },
+    71: { 'abbr': 'REFUML', 'label': 'Receiving Fumbles Lost' },
+    72: { 'abbr': 'FUML', 'label': 'Total Fumbles Lost' },
+    73: { 'abbr': 'TT', 'label': 'Total Turnovers' },
+    74: { 'abbr': 'FG50P', 'label': 'FG Made (50+ yards)' },
+    75: { 'abbr': 'FGA50P', 'label': 'FG Attempted (50+ yards)' },
+    76: { 'abbr': 'FGM50P', 'label': 'FG Missed (50+ yards)' },
+    77: { 'abbr': 'FG40', 'label': 'FG Made (40-49 yards)' },
+    78: { 'abbr': 'FGA40', 'label': 'FG Attempted (40-49 yards)' },
+    79: { 'abbr': 'FGM40', 'label': 'FG Missed (40-49 yards)' },
+    80: { 'abbr': 'FG0', 'label': 'FG Made (0-39 yards)' },
+    81: { 'abbr': 'FGA0', 'label': 'FG Attempted (0-39 yards)' },
+    82: { 'abbr': 'FGM0', 'label': 'FG Missed (0-39 yards)' },
+    83: { 'abbr': 'FG', 'label': 'Total FG Made' },
+    84: { 'abbr': 'FGA', 'label': 'Total FG Attempted' },
+    85: { 'abbr': 'FGM', 'label': 'Total FG Missed' },
+    86: { 'abbr': 'PAT', 'label': 'Each PAT Made' },
+    87: { 'abbr': 'PATA', 'label': 'Each PAT Attempted' },
+    88: { 'abbr': 'PATM', 'label': 'Each PAT Missed' },
+    89: { 'abbr': 'PA0', 'label': '0 points allowed' },
+    90: { 'abbr': 'PA1', 'label': '1-6 points allowed' },
+    91: { 'abbr': 'PA7', 'label': '7-13 points allowed' },
+    92: { 'abbr': 'PA14', 'label': '14-17 points allowed' },
+    93: { 'abbr': 'BLKKRTD', 'label': 'Blocked Punt or FG return for TD' },
+    94: { 'abbr': 'DEFRETTD', 'label': 'Fumble or INT Return for TD' },
+    95: { 'abbr': 'INT', 'label': 'Each Interception' },
+    96: { 'abbr': 'FR', 'label': 'Each Fumble Recovered' },
+    97: { 'abbr': 'BLKK', 'label': 'Blocked Punt, PAT or FG' },
+    98: { 'abbr': 'SF', 'label': 'Each Safety' },
+    99: { 'abbr': 'SK', 'label': 'Each Sack' },
+	100: { 'abbr': 'HALFSK', 'label': '1/2 Sack' },
+	101: { 'abbr': 'KRTD', 'label': 'Kickoff Return TD' },
+	102: { 'abbr': 'PRTD', 'label': 'Punt Return TD' },
+	103: { 'abbr': 'INTTD', 'label': 'Interception Return TD' },
+	104: { 'abbr': 'FRTD', 'label': 'Fumble Return TD' },
+	105: { 'abbr': 'TRTD', 'label': 'Total Return TD' },
+	106: { 'abbr': 'FF', 'label': 'Each Fumble Forced' },
+	107: { 'abbr': 'TKA', 'label': 'Assisted Tackles' },
+	108: { 'abbr': 'TKS', 'label': 'Solo Tackles' },
+	109: { 'abbr': 'TK', 'label': 'Total Tackles' },
+	110: { 'abbr': 'TK3', 'label': 'Every 3 Total Tackles' },
+	111: { 'abbr': 'TK5', 'label': 'Every 5 Total Tackles' },
+	112: { 'abbr': 'STF', 'label': 'Stuffs' },
+	113: { 'abbr': 'PD', 'label': 'Passes Defensed' },
+	114: { 'abbr': 'KR', 'label': 'Kickoff Return Yards' },
+	115: { 'abbr': 'PR', 'label': 'Punt Return Yards' },
+	116: { 'abbr': 'KR10', 'label': 'Every 10 kickoff return yards' },
+	117: { 'abbr': 'KR25', 'label': 'Every 25 kickoff return yards' },
+	118: { 'abbr': 'PR10', 'label': 'Every 10 punt return yards' },
+	119: { 'abbr': 'PR25', 'label': 'Every 25 punt return yards' },
+	120: { 'abbr': 'PTSA', 'label': 'Points Allowed' },
+	121: { 'abbr': 'PA18', 'label': '18-21 points allowed' },
+	122: { 'abbr': 'PA22', 'label': '22-27 points allowed' },
+	123: { 'abbr': 'PA28', 'label': '28-34 points allowed' },
+	124: { 'abbr': 'PA35', 'label': '35-45 points allowed' },
+	125: { 'abbr': 'PA46', 'label': '46+ points allowed' },
+	126: { 'abbr': 'PAPG', 'label': 'Points Allowed Per Game' },
+	127: { 'abbr': 'YA', 'label': 'Yards Allowed' },
+	128: { 'abbr': 'YA100', 'label': 'Less than 100 total yards allowed' },
+	129: { 'abbr': 'YA199', 'label': '100-199 total yards allowed' },
+	130: { 'abbr': 'YA299', 'label': '200-299 total yards allowed' },
+	131: { 'abbr': 'YA349', 'label': '300-349 total yards allowed' },
+	132: { 'abbr': 'YA399', 'label': '350-399 total yards allowed' },
+	133: { 'abbr': 'YA449', 'label': '400-449 total yards allowed' },
+	134: { 'abbr': 'YA499', 'label': '450-499 total yards allowed' },
+	135: { 'abbr': 'YA549', 'label': '500-549 total yards allowed' },
+	136: { 'abbr': 'YA550', 'label': '550+ total yards allowed' },
+	137: { 'abbr': 'YAPG', 'label': 'Yards Allowed Per Game' },
+	138: { 'abbr': 'PT', 'label': 'Net Punts' },
+	139: { 'abbr': 'PTY', 'label': 'Punt Yards' },
+	140: { 'abbr': 'PT10', 'label': 'Punts Inside the 10' },
+	141: { 'abbr': 'PT20', 'label': 'Punts Inside the 20' },
+	142: { 'abbr': 'PTB', 'label': 'Blocked Punts' },
+	143: { 'abbr': 'PTR', 'label': 'Punts Returned' },
+	144: { 'abbr': 'PTRY', 'label': 'Punt Return Yards' },
+	145: { 'abbr': 'PTTB', 'label': 'Touchbacks' },
+	146: { 'abbr': 'PTFC', 'label': 'Fair Catches' },
+	147: { 'abbr': 'PTAVG', 'label': 'Punt Average' },
+	148: { 'abbr': 'PTA44', 'label': 'Punt Average 44.0+' },
+	149: { 'abbr': 'PTA42', 'label': 'Punt Average 42.0-43.9' },
+	150: { 'abbr': 'PTA40', 'label': 'Punt Average 40.0-41.9' },
+	151: { 'abbr': 'PTA38', 'label': 'Punt Average 38.0-39.9' },
+	152: { 'abbr': 'PTA36', 'label': 'Punt Average 36.0-37.9' },
+	153: { 'abbr': 'PTA34', 'label': 'Punt Average 34.0-35.9' },
+	154: { 'abbr': 'PTA33', 'label': 'Punt Average 33.9 or less' },
+	155: { 'abbr': 'TW', 'label': 'Team Win' },
+	156: { 'abbr': 'TL', 'label': 'Team Loss' },
+	157: { 'abbr': 'TIE', 'label': 'Team Tie' },
+	158: { 'abbr': 'PTS', 'label': 'Points Scored' },
+	159: { 'abbr': 'PPG', 'label': 'Points Scored Per Game' },
+	160: { 'abbr': 'MGN', 'label': 'Margin of Victory' },
+	161: { 'abbr': 'WM25', 'label': '25+ point Win Margin' },
+	162: { 'abbr': 'WM20', 'label': '20-24 point Win Margin' },
+	163: { 'abbr': 'WM15', 'label': '15-19 point Win Margin' },
+	164: { 'abbr': 'WM10', 'label': '10-14 point Win Margin' },
+	165: { 'abbr': 'WM5', 'label': '5-9 point Win Margin' },
+	166: { 'abbr': 'WM1', 'label': '1-4 point Win Margin' },
+	167: { 'abbr': 'LM1', 'label': '1-4 point Loss Margin' },
+	168: { 'abbr': 'LM5', 'label': '5-9 point Loss Margin' },
+	169: { 'abbr': 'LM10', 'label': '10-14 point Loss Margin' },
+	170: { 'abbr': 'LM15', 'label': '15-19 point Loss Margin' },
+	171: { 'abbr': '', 'label': '' },
+	172: { 'abbr': '', 'label': '' },
+	173: { 'abbr': '', 'label': '' },
+	174: { 'abbr': '', 'label': '' },
+	175: { 'abbr': '', 'label': '' },
+	176: { 'abbr': '', 'label': '' },
+	177: { 'abbr': '', 'label': '' },
+	178: { 'abbr': '', 'label': '' },
+	179: { 'abbr': '', 'label': '' },
+	180: { 'abbr': '', 'label': '' },
+	181: { 'abbr': '', 'label': '' },
+	182: { 'abbr': '', 'label': '' },
+	183: { 'abbr': '', 'label': '' },
+	184: { 'abbr': '', 'label': '' },
+	185: { 'abbr': '', 'label': '' },
+	186: { 'abbr': '', 'label': '' },
+	187: { 'abbr': '', 'label': '' },
+	188: { 'abbr': '', 'label': '' },
+	189: { 'abbr': '', 'label': '' },
+	190: { 'abbr': '', 'label': '' },
+	191: { 'abbr': '', 'label': '' },
+	192: { 'abbr': '', 'label': '' },
+	193: { 'abbr': '', 'label': '' },
+	194: { 'abbr': '', 'label': '' },
+	195: { 'abbr': '', 'label': '' },
+	196: { 'abbr': '', 'label': '' },
+	197: { 'abbr': '', 'label': '' },
+	198: { 'abbr': '', 'label': '' },
+	199: { 'abbr': '', 'label': '' },
+	200: { 'abbr': '', 'label': '' },
+	201: { 'abbr': '', 'label': '' },
+	202: { 'abbr': '', 'label': '' },
+	203: { 'abbr': '', 'label': '' },
+	11: { 'abbr': '', 'label': '' },
 }
 
 
 [{
-	'id': 51,
-	'abbr': 'REY50',
-	'label': 'Every 50 receiving yards'
-}, {
-	'id': 52,
-	'abbr': 'RE100',
-	'label': 'Every 100 receiving yards'
-}, {
-	'id': 53,
-	'abbr': 'REC',
-	'label': 'Each reception'
-}, {
-	'id': 54,
-	'abbr': 'REC5',
-	'label': 'Every 5 receptions'
-}, {
-	'id': 55,
-	'abbr': 'REC10',
-	'label': 'Every 10 receptions'
-}, {
-	'id': 56,
-	'abbr': 'REY100',
-	'label': '100-199 yard receiving game'
-}, {
-	'id': 57,
-	'abbr': 'REY200',
-	'label': '200+ yard receiving game'
-}, {
-	'id': 58,
-	'abbr': 'RET',
-	'label': 'Receiving Target'
-}, {
-	'id': 59,
-	'abbr': 'YAC',
-	'label': 'Receiving Yards After Catch'
-}, {
-	'id': 60,
-	'abbr': 'YPC',
-	'label': 'Receiving Yards Per Catch'
-}, {
-	'id': 61,
-	'abbr': 'REYPG',
-	'label': 'Receiving Yards Per Game'
-}, {
-	'id': 62,
-	'abbr': 'PTL',
-	'label': 'Total 2pt Conversions'
-}, {
-	'id': 63,
-	'abbr': 'FTD',
-	'label': 'Fumble Recovered for TD'
-}, {
-	'id': 64,
-	'abbr': 'SKD',
-	'label': 'Sacked'
-}, {
-	'id': 65,
-	'abbr': 'PFUM',
-	'label': 'Passing Fumbles'
-}, {
-	'id': 66,
-	'abbr': 'RFUM',
-	'label': 'Rushing Fumbles'
-}, {
-	'id': 67,
-	'abbr': 'REFUM',
-	'label': 'Receiving Fumbles'
-}, {
-	'id': 68,
-	'abbr': 'FUM',
-	'label': 'Total Fumbles'
-}, {
-	'id': 69,
-	'abbr': 'PFUML',
-	'label': 'Passing Fumbles Lost'
-}, {
-	'id': 70,
-	'abbr': 'RFUML',
-	'label': 'Rushing Fumbles Lost'
-}, {
-	'id': 71,
-	'abbr': 'REFUML',
-	'label': 'Receiving Fumbles Lost'
-}, {
-	'id': 72,
-	'abbr': 'FUML',
-	'label': 'Total Fumbles Lost'
-}, {
-	'id': 73,
-	'abbr': 'TT',
-	'label': 'Total Turnovers'
-}, {
-	'id': 74,
-	'abbr': 'FG50P',
-	'label': 'FG Made (50+ yards)'
-}, {
-	'id': 75,
-	'abbr': 'FGA50P',
-	'label': 'FG Attempted (50+ yards)'
-}, {
-	'id': 76,
-	'abbr': 'FGM50P',
-	'label': 'FG Missed (50+ yards)'
-}, {
-	'id': 77,
-	'abbr': 'FG40',
-	'label': 'FG Made (40-49 yards)'
-}, {
-	'id': 78,
-	'abbr': 'FGA40',
-	'label': 'FG Attempted (40-49 yards)'
-}, {
-	'id': 79,
-	'abbr': 'FGM40',
-	'label': 'FG Missed (40-49 yards)'
-}, {
-	'id': 80,
-	'abbr': 'FG0',
-	'label': 'FG Made (0-39 yards)'
-}, {
-	'id': 81,
-	'abbr': 'FGA0',
-	'label': 'FG Attempted (0-39 yards)'
-}, {
-	'id': 82,
-	'abbr': 'FGM0',
-	'label': 'FG Missed (0-39 yards)'
-}, {
-	'id': 83,
-	'abbr': 'FG',
-	'label': 'Total FG Made'
-}, {
-	'id': 84,
-	'abbr': 'FGA',
-	'label': 'Total FG Attempted'
-}, {
-	'id': 85,
-	'abbr': 'FGM',
-	'label': 'Total FG Missed'
-}, {
-	'id': 86,
-	'abbr': 'PAT',
-	'label': 'Each PAT Made'
-}, {
-	'id': 87,
-	'abbr': 'PATA',
-	'label': 'Each PAT Attempted'
-}, {
-	'id': 88,
-	'abbr': 'PATM',
-	'label': 'Each PAT Missed'
-}, {
-	'id': 89,
-	'abbr': 'PA0',
-	'label': '0 points allowed'
-}, {
-	'id': 90,
-	'abbr': 'PA1',
-	'label': '1-6 points allowed'
-}, {
-	'id': 91,
-	'abbr': 'PA7',
-	'label': '7-13 points allowed'
-}, {
-	'id': 92,
-	'abbr': 'PA14',
-	'label': '14-17 points allowed'
-}, {
-	'id': 93,
-	'abbr': 'BLKKRTD',
-	'label': 'Blocked Punt or FG return for TD'
-}, {
-	'id': 94,
-	'abbr': 'DEFRETTD',
-	'label': 'Fumble or INT Return for TD'
-}, {
-	'id': 95,
-	'abbr': 'INT',
-	'label': 'Each Interception'
-}, {
-	'id': 96,
-	'abbr': 'FR',
-	'label': 'Each Fumble Recovered'
-}, {
-	'id': 97,
-	'abbr': 'BLKK',
-	'label': 'Blocked Punt, PAT or FG'
-}, {
-	'id': 98,
-	'abbr': 'SF',
-	'label': 'Each Safety'
-}, {
-	'id': 99,
-	'abbr': 'SK',
-	'label': 'Each Sack'
-}, {
-	'id': 100,
-	'abbr': 'HALFSK',
-	'label': '1/2 Sack'
-}, {
-	'id': 101,
-	'abbr': 'KRTD',
-	'label': 'Kickoff Return TD'
-}, {
-	'id': 102,
-	'abbr': 'PRTD',
-	'label': 'Punt Return TD'
-}, {
-	'id': 103,
-	'abbr': 'INTTD',
-	'label': 'Interception Return TD'
-}, {
-	'id': 104,
-	'abbr': 'FRTD',
-	'label': 'Fumble Return TD'
-}, {
-	'id': 105,
-	'abbr': 'TRTD',
-	'label': 'Total Return TD'
-}, {
-	'id': 106,
-	'abbr': 'FF',
-	'label': 'Each Fumble Forced'
-}, {
-	'id': 107,
-	'abbr': 'TKA',
-	'label': 'Assisted Tackles'
-}, {
-	'id': 108,
-	'abbr': 'TKS',
-	'label': 'Solo Tackles'
-}, {
-	'id': 109,
-	'abbr': 'TK',
-	'label': 'Total Tackles'
-}, {
-	'id': 110,
-	'abbr': 'TK3',
-	'label': 'Every 3 Total Tackles'
-}, {
-	'id': 111,
-	'abbr': 'TK5',
-	'label': 'Every 5 Total Tackles'
-}, {
-	'id': 112,
-	'abbr': 'STF',
-	'label': 'Stuffs'
-}, {
-	'id': 113,
-	'abbr': 'PD',
-	'label': 'Passes Defensed'
-}, {
-	'id': 114,
-	'abbr': 'KR',
-	'label': 'Kickoff Return Yards'
-}, {
-	'id': 115,
-	'abbr': 'PR',
-	'label': 'Punt Return Yards'
-}, {
-	'id': 116,
-	'abbr': 'KR10',
-	'label': 'Every 10 kickoff return yards'
-}, {
-	'id': 117,
-	'abbr': 'KR25',
-	'label': 'Every 25 kickoff return yards'
-}, {
-	'id': 118,
-	'abbr': 'PR10',
-	'label': 'Every 10 punt return yards'
-}, {
-	'id': 119,
-	'abbr': 'PR25',
-	'label': 'Every 25 punt return yards'
-}, {
-	'id': 120,
-	'abbr': 'PTSA',
-	'label': 'Points Allowed'
-}, {
-	'id': 121,
-	'abbr': 'PA18',
-	'label': '18-21 points allowed'
-}, {
-	'id': 122,
-	'abbr': 'PA22',
-	'label': '22-27 points allowed'
-}, {
-	'id': 123,
-	'abbr': 'PA28',
-	'label': '28-34 points allowed'
-}, {
-	'id': 124,
-	'abbr': 'PA35',
-	'label': '35-45 points allowed'
-}, {
-	'id': 125,
-	'abbr': 'PA46',
-	'label': '46+ points allowed'
-}, {
-	'id': 126,
-	'abbr': 'PAPG',
-	'label': 'Points Allowed Per Game'
-}, {
-	'id': 127,
-	'abbr': 'YA',
-	'label': 'Yards Allowed'
-}, {
-	'id': 128,
-	'abbr': 'YA100',
-	'label': 'Less than 100 total yards allowed'
-}, {
-	'id': 129,
-	'abbr': 'YA199',
-	'label': '100-199 total yards allowed'
-}, {
-	'id': 130,
-	'abbr': 'YA299',
-	'label': '200-299 total yards allowed'
-}, {
-	'id': 131,
-	'abbr': 'YA349',
-	'label': '300-349 total yards allowed'
-}, {
-	'id': 132,
-	'abbr': 'YA399',
-	'label': '350-399 total yards allowed'
-}, {
-	'id': 133,
-	'abbr': 'YA449',
-	'label': '400-449 total yards allowed'
-}, {
-	'id': 134,
-	'abbr': 'YA499',
-	'label': '450-499 total yards allowed'
-}, {
-	'id': 135,
-	'abbr': 'YA549',
-	'label': '500-549 total yards allowed'
-}, {
-	'id': 136,
-	'abbr': 'YA550',
-	'label': '550+ total yards allowed'
-}, {
-	'id': 137,
-	'abbr': 'YAPG',
-	'label': 'Yards Allowed Per Game'
-}, {
-	'id': 138,
-	'abbr': 'PT',
-	'label': 'Net Punts'
-}, {
-	'id': 139,
-	'abbr': 'PTY',
-	'label': 'Punt Yards'
-}, {
-	'id': 140,
-	'abbr': 'PT10',
-	'label': 'Punts Inside the 10'
-}, {
-	'id': 141,
-	'abbr': 'PT20',
-	'label': 'Punts Inside the 20'
-}, {
-	'id': 142,
-	'abbr': 'PTB',
-	'label': 'Blocked Punts'
-}, {
-	'id': 143,
-	'abbr': 'PTR',
-	'label': 'Punts Returned'
-}, {
-	'id': 144,
-	'abbr': 'PTRY',
-	'label': 'Punt Return Yards'
-}, {
-	'id': 145,
-	'abbr': 'PTTB',
-	'label': 'Touchbacks'
-}, {
-	'id': 146,
-	'abbr': 'PTFC',
-	'label': 'Fair Catches'
-}, {
-	'id': 147,
-	'abbr': 'PTAVG',
-	'label': 'Punt Average'
-}, {
-	'id': 148,
-	'abbr': 'PTA44',
-	'label': 'Punt Average 44.0+'
-}, {
-	'id': 149,
-	'abbr': 'PTA42',
-	'label': 'Punt Average 42.0-43.9'
-}, {
-	'id': 150,
-	'abbr': 'PTA40',
-	'label': 'Punt Average 40.0-41.9'
-}, {
-	'id': 151,
-	'abbr': 'PTA38',
-	'label': 'Punt Average 38.0-39.9'
-}, {
-	'id': 152,
-	'abbr': 'PTA36',
-	'label': 'Punt Average 36.0-37.9'
-}, {
-	'id': 153,
-	'abbr': 'PTA34',
-	'label': 'Punt Average 34.0-35.9'
-}, {
-	'id': 154,
-	'abbr': 'PTA33',
-	'label': 'Punt Average 33.9 or less'
-}, {
-	'id': 155,
-	'abbr': 'TW',
-	'label': 'Team Win'
-}, {
-	'id': 156,
-	'abbr': 'TL',
-	'label': 'Team Loss'
-}, {
-	'id': 157,
-	'abbr': 'TIE',
-	'label': 'Team Tie'
-}, {
-	'id': 158,
-	'abbr': 'PTS',
-	'label': 'Points Scored'
-}, {
-	'id': 159,
-	'abbr': 'PPG',
-	'label': 'Points Scored Per Game'
-}, {
-	'id': 160,
-	'abbr': 'MGN',
-	'label': 'Margin of Victory'
-}, {
-	'id': 161,
-	'abbr': 'WM25',
-	'label': '25+ point Win Margin'
-}, {
-	'id': 162,
-	'abbr': 'WM20',
-	'label': '20-24 point Win Margin'
-}, {
-	'id': 163,
-	'abbr': 'WM15',
-	'label': '15-19 point Win Margin'
-}, {
-	'id': 164,
-	'abbr': 'WM10',
-	'label': '10-14 point Win Margin'
-}, {
-	'id': 165,
-	'abbr': 'WM5',
-	'label': '5-9 point Win Margin'
-}, {
-	'id': 166,
-	'abbr': 'WM1',
-	'label': '1-4 point Win Margin'
-}, {
-	'id': 167,
-	'abbr': 'LM1',
-	'label': '1-4 point Loss Margin'
-}, {
-	'id': 168,
-	'abbr': 'LM5',
-	'label': '5-9 point Loss Margin'
-}, {
-	'id': 169,
-	'abbr': 'LM10',
-	'label': '10-14 point Loss Margin'
-}, {
-	'id': 170,
-	'abbr': 'LM15',
-	'label': '15-19 point Loss Margin'
-}, {
 	'id': 171,
 	'abbr': 'LM20',
 	'label': '20-24 point Loss Margin'
