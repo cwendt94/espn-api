@@ -13,7 +13,8 @@ class BaseSettings(object):
             self.trade_deadline = data['tradeSettings']['deadlineDate']
         self.name = data['name']
         self.tie_rule = data['scoringSettings']['matchupTieRule']
-        self.playoff_seed_tie_rule = data['scoringSettings']['playoffMatchupTieRule']
+        self.playoff_tie_rule = data['scoringSettings']['playoffMatchupTieRule']
+        self.playoff_seed_tie_rule = data['scheduleSettings']['playoffSeedingRule']
         self.scoring_type = data.get('scoringSettings', {}).get('scoringType')
         self.faab = data['acquisitionSettings']['isUsingAcquisitionBudget']
         divisions = data.get('scheduleSettings', {}).get('divisions', [])
