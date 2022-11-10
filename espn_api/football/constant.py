@@ -440,201 +440,44 @@ SETTINGS_SCORING_FORMAT_MAP = {
 	168: { 'abbr': 'LM5', 'label': '5-9 point Loss Margin' },
 	169: { 'abbr': 'LM10', 'label': '10-14 point Loss Margin' },
 	170: { 'abbr': 'LM15', 'label': '15-19 point Loss Margin' },
-	171: { 'abbr': '', 'label': '' },
-	172: { 'abbr': '', 'label': '' },
-	173: { 'abbr': '', 'label': '' },
-	174: { 'abbr': '', 'label': '' },
-	175: { 'abbr': '', 'label': '' },
-	176: { 'abbr': '', 'label': '' },
-	177: { 'abbr': '', 'label': '' },
-	178: { 'abbr': '', 'label': '' },
-	179: { 'abbr': '', 'label': '' },
-	180: { 'abbr': '', 'label': '' },
-	181: { 'abbr': '', 'label': '' },
-	182: { 'abbr': '', 'label': '' },
-	183: { 'abbr': '', 'label': '' },
-	184: { 'abbr': '', 'label': '' },
-	185: { 'abbr': '', 'label': '' },
-	186: { 'abbr': '', 'label': '' },
-	187: { 'abbr': '', 'label': '' },
-	188: { 'abbr': '', 'label': '' },
-	189: { 'abbr': '', 'label': '' },
-	190: { 'abbr': '', 'label': '' },
-	191: { 'abbr': '', 'label': '' },
-	192: { 'abbr': '', 'label': '' },
-	193: { 'abbr': '', 'label': '' },
-	194: { 'abbr': '', 'label': '' },
-	195: { 'abbr': '', 'label': '' },
-	196: { 'abbr': '', 'label': '' },
-	197: { 'abbr': '', 'label': '' },
-	198: { 'abbr': '', 'label': '' },
-	199: { 'abbr': '', 'label': '' },
-	200: { 'abbr': '', 'label': '' },
-	201: { 'abbr': '', 'label': '' },
-	202: { 'abbr': '', 'label': '' },
-	203: { 'abbr': '', 'label': '' },
-	11: { 'abbr': '', 'label': '' },
+	171: { 'abbr': 'LM20', 'label': '20-24 point Loss Margin' },
+	172: { 'abbr': 'LM25', 'label': '25+ point Loss Margin' },
+	173: { 'abbr': 'MGNPG', 'label': 'Margin of Victory Per Game' },
+	174: { 'abbr': 'WINPCT', 'label': 'Winning Pct' },
+	175: { 'abbr': 'PTD0', 'label': '0-9 yd TD pass bonus' },
+	176: { 'abbr': 'PTD10', 'label': '10-19 yd TD pass bonus' },
+	177: { 'abbr': 'PTD20', 'label': '20-29 yd TD pass bonus' },
+	178: { 'abbr': 'PTD30', 'label': '30-39 yd TD pass bonus' },
+	179: { 'abbr': 'RTD0', 'label': '0-9 yd TD rush bonus' },
+	180: { 'abbr': 'RTD10', 'label': '10-19 yd TD rush bonus' },
+	181: { 'abbr': 'RTD20', 'label': '20-29 yd TD rush bonus' },
+	182: { 'abbr': 'RTD30', 'label': '30-39 yd TD rush bonus' },
+	183: { 'abbr': 'RETD0', 'label': '0-9 yd TD rec bonus' },
+	184: { 'abbr': 'RETD10', 'label': '10-19 yd TD rec bonus' },
+	185: { 'abbr': 'RETD20', 'label': '20-29 yd TD rec bonus' },
+	186: { 'abbr': 'RETD30', 'label': '30-39 yd TD rec bonus' },
+	187: { 'abbr': 'DPTSA', 'label': 'D/ST Points Allowed' },
+	188: { 'abbr': 'DPA0', 'label': 'D/ST 0 points allowed' },
+	189: { 'abbr': 'DPA1', 'label': 'D/ST 1-6 points allowed' },
+	190: { 'abbr': 'DPA7', 'label': 'D/ST 7-13 points allowed' },
+	191: { 'abbr': 'DPA14', 'label': 'D/ST 14-17 points allowed' },
+	192: { 'abbr': 'DPA18', 'label': 'D/ST 18-21 points allowed' },
+	193: { 'abbr': 'DPA22', 'label': 'D/ST 22-27 points allowed' },
+	194: { 'abbr': 'DPA28', 'label': 'D/ST 28-34 points allowed' },
+	195: { 'abbr': 'DPA35', 'label': 'D/ST 35-45 points allowed' },
+	196: { 'abbr': 'DPA46', 'label': 'D/ST 46+ points allowed' },
+	197: { 'abbr': 'DPAPG', 'label': 'D/ST Points Allowed Per Game' },
+	198: { 'abbr': 'FG50', 'label': 'FG Made (50-59 yards)' },
+	199: { 'abbr': 'FGA50', 'label': 'FG Attempted (50-59 yards)' },
+	200: { 'abbr': 'FGM50', 'label': 'FG Missed (50-59 yards)' },
+	201: { 'abbr': 'FG60', 'label': 'FG Made (60+ yards)' },
+	202: { 'abbr': 'FGA60', 'label': 'FG Attempted (60+ yards)' },
+	203: { 'abbr': 'FGM60', 'label': 'FG Missed (60+ yards)' },
+	204: { 'abbr': 'O2PRET', 'label': 'Offensive 2pt Return' },
+    205: { 'abbr': 'D2PRET', 'label': 'Defensive 2pt Return' },
+    206: { 'abbr': '2PRET', 'label': '2pt Return' },
+    207: { 'abbr': 'O1PSF', 'label': 'Offensive 1pt Safety' },
+    208: { 'abbr': 'D1PSF', 'label': 'Defensive 1pt Safety' },
+    209: { 'abbr': '1PSF', 'label': '1pt Safety' },
+    210: { 'abbr': 'GP', 'label': 'Games Played' },
 }
-
-
-[{
-	'id': 171,
-	'abbr': 'LM20',
-	'label': '20-24 point Loss Margin'
-}, {
-	'id': 172,
-	'abbr': 'LM25',
-	'label': '25+ point Loss Margin'
-}, {
-	'id': 173,
-	'abbr': 'MGNPG',
-	'label': 'Margin of Victory Per Game'
-}, {
-	'id': 174,
-	'abbr': 'WINPCT',
-	'label': 'Winning Pct'
-}, {
-	'id': 175,
-	'abbr': 'PTD0',
-	'label': '0-9 yd TD pass bonus'
-}, {
-	'id': 176,
-	'abbr': 'PTD10',
-	'label': '10-19 yd TD pass bonus'
-}, {
-	'id': 177,
-	'abbr': 'PTD20',
-	'label': '20-29 yd TD pass bonus'
-}, {
-	'id': 178,
-	'abbr': 'PTD30',
-	'label': '30-39 yd TD pass bonus'
-}, {
-	'id': 179,
-	'abbr': 'RTD0',
-	'label': '0-9 yd TD rush bonus'
-}, {
-	'id': 180,
-	'abbr': 'RTD10',
-	'label': '10-19 yd TD rush bonus'
-}, {
-	'id': 181,
-	'abbr': 'RTD20',
-	'label': '20-29 yd TD rush bonus'
-}, {
-	'id': 182,
-	'abbr': 'RTD30',
-	'label': '30-39 yd TD rush bonus'
-}, {
-	'id': 183,
-	'abbr': 'RETD0',
-	'label': '0-9 yd TD rec bonus'
-}, {
-	'id': 184,
-	'abbr': 'RETD10',
-	'label': '10-19 yd TD rec bonus'
-}, {
-	'id': 185,
-	'abbr': 'RETD20',
-	'label': '20-29 yd TD rec bonus'
-}, {
-	'id': 186,
-	'abbr': 'RETD30',
-	'label': '30-39 yd TD rec bonus'
-}, {
-	'id': 187,
-	'abbr': 'DPTSA',
-	'label': 'D/ST Points Allowed'
-}, {
-	'id': 188,
-	'abbr': 'DPA0',
-	'label': 'D/ST 0 points allowed'
-}, {
-	'id': 189,
-	'abbr': 'DPA1',
-	'label': 'D/ST 1-6 points allowed'
-}, {
-	'id': 190,
-	'abbr': 'DPA7',
-	'label': 'D/ST 7-13 points allowed'
-}, {
-	'id': 191,
-	'abbr': 'DPA14',
-	'label': 'D/ST 14-17 points allowed'
-}, {
-	'id': 192,
-	'abbr': 'DPA18',
-	'label': 'D/ST 18-21 points allowed'
-}, {
-	'id': 193,
-	'abbr': 'DPA22',
-	'label': 'D/ST 22-27 points allowed'
-}, {
-	'id': 194,
-	'abbr': 'DPA28',
-	'label': 'D/ST 28-34 points allowed'
-}, {
-	'id': 195,
-	'abbr': 'DPA35',
-	'label': 'D/ST 35-45 points allowed'
-}, {
-	'id': 196,
-	'abbr': 'DPA46',
-	'label': 'D/ST 46+ points allowed'
-}, {
-	'id': 197,
-	'abbr': 'DPAPG',
-	'label': 'D/ST Points Allowed Per Game'
-}, {
-	'id': 198,
-	'abbr': 'FG50',
-	'label': 'FG Made (50-59 yards)'
-}, {
-	'id': 199,
-	'abbr': 'FGA50',
-	'label': 'FG Attempted (50-59 yards)'
-}, {
-	'id': 200,
-	'abbr': 'FGM50',
-	'label': 'FG Missed (50-59 yards)'
-}, {
-	'id': 201,
-	'abbr': 'FG60',
-	'label': 'FG Made (60+ yards)'
-}, {
-	'id': 202,
-	'abbr': 'FGA60',
-	'label': 'FG Attempted (60+ yards)'
-}, {
-	'id': 203,
-	'abbr': 'FGM60',
-	'label': 'FG Missed (60+ yards)'
-}, {
-	'id': 204,
-	'abbr': 'O2PRET',
-	'label': 'Offensive 2pt Return'
-}, {
-	'id': 205,
-	'abbr': 'D2PRET',
-	'label': 'Defensive 2pt Return'
-}, {
-	'id': 206,
-	'abbr': '2PRET',
-	'label': '2pt Return'
-}, {
-	'id': 207,
-	'abbr': 'O1PSF',
-	'label': 'Offensive 1pt Safety'
-}, {
-	'id': 208,
-	'abbr': 'D1PSF',
-	'label': 'Defensive 1pt Safety'
-}, {
-	'id': 209,
-	'abbr': '1PSF',
-	'label': '1pt Safety'
-}, {
-	'id': 210,
-	'abbr': 'GP',
-	'label': 'Games Played'
-}]
