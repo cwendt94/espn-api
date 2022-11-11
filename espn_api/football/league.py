@@ -11,6 +11,7 @@ from .box_score import BoxScore
 from .box_player import BoxPlayer
 from .player import Player
 from .activity import Activity
+from .settings import Settings
 from .utils import power_points, two_step_dominance
 from .constant import POSITION_MAP, ACTIVITY_MAP
 
@@ -26,7 +27,7 @@ class League(BaseLeague):
         self._fetch_league()
 
     def _fetch_league(self):
-        data = super()._fetch_league()
+        data = super()._fetch_league(SettingsClass=Settings)
 
         self.nfl_week = data['status']['latestScoringPeriod']
         self._fetch_players()

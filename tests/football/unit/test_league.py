@@ -43,6 +43,7 @@ class LeagueTest(TestCase):
         league = League(self.league_id, self.season)
         self.assertEqual(repr(league), 'League(123, 2018)')
         self.assertEqual(repr(league.settings), 'Settings(FXBG League)')
+        self.assertEqual(league.settings.scoring_format[0]['abbr'], 'BLKKRTD')
         self.assertEqual(league.current_week, 16)
         self.assertEqual(len(league.teams), 10)
 
