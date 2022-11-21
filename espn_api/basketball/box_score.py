@@ -78,5 +78,5 @@ class H2HCategoryBoxScore(BoxScore):
     return (team_wins, team_ties, team_losses, team_stats, lineup)
 
 # helper function to get correct box score class
-ScoringType = {'H2H_POINTS': H2HPointsBoxScore, 'H2H_CATEGORY': H2HCategoryBoxScore}
+ScoringType = {'H2H_POINTS': H2HPointsBoxScore, 'H2H_CATEGORY': H2HCategoryBoxScore, 'H2H_MOST_CATEGORIES': H2HCategoryBoxScore}
 get_box_scoring_type_class = lambda scoring_type: ScoringType.get(scoring_type, H2HPointsBoxScore)
