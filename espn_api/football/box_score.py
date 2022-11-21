@@ -36,7 +36,7 @@ class BoxScore(object):
         team_score = round(data[team]['totalPointsLive'], 2)
         team_projected = round(data[team].get('totalProjectedPointsLive', -1), 2)
       else:
-        team_score = round(data[team]['rosterForCurrentScoringPeriod']['appliedStatTotal'], 2)
+        team_score = round(data[team]['totalPoints'], 2)
       team_roster = data[team]['rosterForCurrentScoringPeriod']['entries']
       team_lineup = [BoxPlayer(player, pro_schedule, positional_rankings, week, year) for player in team_roster]
 
