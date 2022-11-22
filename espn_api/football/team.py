@@ -55,7 +55,9 @@ class Team(object):
 
         for matchup in data:
             if 'away' in matchup.keys():
-                if matchup['away']['teamId'] == self.team_id:
+                if "home" not in matchup.keys():
+                    continue
+                elif matchup['away']['teamId'] == self.team_id:
                     score = matchup['away']['totalPoints']
                     opponentId = matchup['home']['teamId']
                     self.outcomes.append(self._get_winner(matchup['winner'], True))
