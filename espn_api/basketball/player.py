@@ -40,11 +40,11 @@ class Player(object):
             self.stats[id] = dict(applied_total=applied_total, applied_avg=applied_avg, team=game.get('team', None), date=game.get('date', None))
             if split['stats']:
                 if 'averageStats' in split.keys():
-                    self.stats[id]['avg'] = {STATS_MAP[i]: split['averageStats'][i] for i in split['averageStats'].keys() if STATS_MAP[i] != ''}
-                    self.stats[id]['total'] = {STATS_MAP[i]: split['stats'][i] for i in split['stats'].keys() if STATS_MAP[i] != ''}
+                    self.stats[id]['avg'] = {STATS_MAP.get(i, i): split['averageStats'][i] for i in split['averageStats'].keys() if STATS_MAP.get(i) != ''}
+                    self.stats[id]['total'] = {STATS_MAP.get(i, i): split['stats'][i] for i in split['stats'].keys() if STATS_MAP.get(i) != ''}
                 else:
                     self.stats[id]['avg'] = None
-                    self.stats[id]['total'] = {STATS_MAP[i]: split['stats'][i] for i in split['stats'].keys() if STATS_MAP[i] != ''}
+                    self.stats[id]['total'] = {STATS_MAP.get(i, i): split['stats'][i] for i in split['stats'].keys() if STATS_MAP.get(i) != ''}
         self.total_points = self.stats.get(f'{year}_total', {}).get('applied_total', 0)
         self.avg_points = self.stats.get(f'{year}_total', {}).get('applied_avg', 0)
         self.projected_total_points= self.stats.get(f'{year}_projected', {}).get('applied_total', 0)

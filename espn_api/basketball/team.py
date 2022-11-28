@@ -23,7 +23,7 @@ class Team(object):
         self.schedule = []
         
         if 'valuesByStat' in data:
-            self.stats = {STATS_MAP[i]: j for i, j in data['valuesByStat'].items()}
+            self.stats = {STATS_MAP.get(i, i): j for i, j in data['valuesByStat'].items()}
         if member:
             self.owner = f"{member['firstName']} {member['lastName']}"
         if 'logo' in data:    
