@@ -23,7 +23,7 @@ def checkRequestStatus(status: int, cookies=None, league_id=None) -> None:
     if league_id is None:
         league_id = ""
     if status == 401:
-        raise ESPNAccessDenied(f"League {league_id} cannot be accessed with swid={cookies.get('espn_s2')} and swid={cookies.get('SWID')}")
+        raise ESPNAccessDenied(f"League {league_id} cannot be accessed with espn_s2={cookies.get('espn_s2')} and swid={cookies.get('SWID')}")
 
     elif status == 404:
         raise ESPNInvalidLeague(f"League {league_id} does not exist")
