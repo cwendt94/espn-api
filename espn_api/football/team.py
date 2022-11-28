@@ -54,27 +54,21 @@ class Team(object):
         '''Fetch schedule and scores for team'''
 
         for matchup in data:
-            if 'away' in matchup.keys():
-                if "home" not in matchup.keys():
-                    continue
-                elif matchup['away']['teamId'] == self.team_id:
-                    score = matchup['away']['totalPoints']
-                    opponentId = matchup['home']['teamId']
-                    self.outcomes.append(self._get_winner(matchup['winner'], True))
-                    self.scores.append(score)
-                    self.schedule.append(opponentId)
-                elif matchup['home']['teamId'] == self.team_id:
-                    score = matchup['home']['totalPoints']
-                    opponentId = matchup['away']['teamId']
-                    self.outcomes.append(self._get_winner(matchup['winner'], False))
-                    self.scores.append(score)
-                    self.schedule.append(opponentId)
-            elif matchup['home']['teamId'] == self.team_id:
-                score = matchup['home']['totalPoints']
-                opponentId = matchup['home']['teamId']
-                self.outcomes.append(self._get_winner(matchup['winner'], False))
+            home_team = matchup.get('home', {})
+            away_team = matchup.get('away', {})
+            home_id = home_team.get('teamId', -1)
+            away_id = away_team.get('teamId', -1)
+
+            if self.team_id in (home_id, away_id):
+                # find if current team is home or away
+                (current_team, opponent_id, away) = (home_team, away_id, False) if home_id == self.team_id else (away_team, home_id, True)
+                # if bye week set opponent id to self
+                if opponent_id == -1: opponent_id = self.team_id
+
+                score = current_team.get('totalPoints')
+                self.outcomes.append(self._get_winner(matchup['winner'], away))
                 self.scores.append(score)
-                self.schedule.append(opponentId)
+                self.schedule.append(opponent_id)
     
     def _get_winner(self, winner: str, is_away: bool) -> str:
         if winner == 'UNDECIDED':
