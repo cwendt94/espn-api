@@ -36,9 +36,9 @@ class Matchup(object):
             self.away_team_live_score = (data['away']['cumulativeScore']['wins'] +
                                          data['away']['cumulativeScore']['ties']/2)
 
-            self.home_team_cats = { STATS_MAP[i]: {'score': data['home']['cumulativeScore']['scoreByStat'][i]['score'],
+            self.home_team_cats = { STATS_MAP.get(i, i): {'score': data['home']['cumulativeScore']['scoreByStat'][i]['score'],
                                                    'result': data['home']['cumulativeScore']['scoreByStat'][i]['result']} for i in data['home']['cumulativeScore']['scoreByStat'].keys()}
 
-            self.away_team_cats = { STATS_MAP[i]: {'score': data['away']['cumulativeScore']['scoreByStat'][i]['score'],
+            self.away_team_cats = { STATS_MAP.get(i, i): {'score': data['away']['cumulativeScore']['scoreByStat'][i]['score'],
                                                    'result': data['away']['cumulativeScore']['scoreByStat'][i]['result']} for i in data['away']['cumulativeScore']['scoreByStat'].keys()}
 
