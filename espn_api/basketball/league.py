@@ -5,9 +5,10 @@ from ..base_league import BaseLeague
 from .team import Team
 from .player import Player
 from .matchup import Matchup
+from .pick import Pick
 from .box_score import get_box_scoring_type_class, BoxScore
 from .constant import PRO_TEAM_MAP
-from.activity import Activity
+from .activity import Activity
 from .constant import POSITION_MAP, ACTIVITY_MAP
 
 class League(BaseLeague):
@@ -21,6 +22,7 @@ class League(BaseLeague):
     def fetch_league(self):
         data = self._fetch_league()
         self._fetch_teams(data)
+        self._fetch_draft()
 
         self.BoxScoreClass = get_box_scoring_type_class(self.settings.scoring_type)
 
@@ -58,7 +60,27 @@ class League(BaseLeague):
                     if matchup.home_team == opponent.team_id:
                         matchup.home_team = opponent
                         
+    def _fetch_draft(self):
+        '''Creates list of Pick objects from the leagues draft'''
+        data = self.espn_request.get_league_draft()
 
+        # League has not drafted yet
+        if not data['draftDetail']['drafted']:
+            return
+
+        picks = data['draftDetail']['picks']
+        for pick in picks:
+            team = self.get_team_data(pick['teamId'])
+            playerId = pick['playerId']
+            playerName = ''
+            if playerId in self.player_map:
+                playerName = self.player_map[playerId]
+            round_num = pick['roundId']
+            round_pick = pick['roundPickNumber']
+            bid_amount = pick['bidAmount']
+            keeper_status = pick['keeper']
+            nominatingTeam = self.get_team_data(pick['nominatingTeamId'])
+            self.draft.append(Pick(team, playerId, playerName, round_num, round_pick, bid_amount, keeper_status, nominatingTeam))
 
     def standings(self) -> List[Team]:
         standings = sorted(self.teams, key=lambda x: x.final_standing if x.final_standing != 0 else x.standing, reverse=False)
