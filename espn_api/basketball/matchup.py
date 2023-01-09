@@ -1,13 +1,13 @@
-import pdb
-
 from .constant import STATS_MAP
 
 class Matchup(object):
     '''Creates Matchup instance'''
     def __init__(self, data):
-        self.home_team_live_score = None
-        self.away_team_live_score = None
-        self._fetch_matchup_info(data)
+        self.winner = data['winner']
+        (self.home_team, self.home_final_score, self.home_team_cats,
+            self.home_team_live_score) = self._fetch_matchup_info(data, 'home')
+        (self.away_team, self.away_final_score, self.away_team_cats,
+            self.away_team_live_score) = self._fetch_matchup_info(data, 'away')
 
     def __repr__(self):
         # TODO: use final score when that's available?
@@ -18,27 +18,23 @@ class Matchup(object):
         else:
             return f'Matchup({self.home_team} {round(self.home_team_live_score, 1)} - {round(self.away_team_live_score, 1)} {self.away_team})'
 
-    def _fetch_matchup_info(self, data):
+    def _fetch_matchup_info(self, data, team):
         '''Fetch info for matchup'''
-        self.home_team = data['home']['teamId']
-        self.home_final_score = data['home']['totalPoints']
-        self.away_team = data['away']['teamId']
-        self.away_final_score = data['away']['totalPoints']
-        self.winner = data['winner']
-        self.home_team_cats = None
-        self.away_team_cats = None
+        if team not in data:
+            return (0, 0, None, None)
+        team_id = data[team]['teamId']
+        final_score = data[team]['totalPoints']
+        team_cats = None
+        team_live_score = None
 
         # if stats are available
-        if 'cumulativeScore' in data['home'].keys() and data['home']['cumulativeScore']['scoreByStat']:
+        if 'cumulativeScore' in data[team].keys() and data[team]['cumulativeScore']['scoreByStat']:
 
-            self.home_team_live_score = (data['home']['cumulativeScore']['wins'] +
-                                         data['home']['cumulativeScore']['ties']/2)
-            self.away_team_live_score = (data['away']['cumulativeScore']['wins'] +
-                                         data['away']['cumulativeScore']['ties']/2)
+            team_live_score = (data[team]['cumulativeScore']['wins'] +
+                               data[team]['cumulativeScore']['ties']/2)
 
-            self.home_team_cats = { STATS_MAP.get(i, i): {'score': data['home']['cumulativeScore']['scoreByStat'][i]['score'],
-                                                   'result': data['home']['cumulativeScore']['scoreByStat'][i]['result']} for i in data['home']['cumulativeScore']['scoreByStat'].keys()}
+            team_cats = { STATS_MAP.get(i, i): {'score': data[team]['cumulativeScore']['scoreByStat'][i]['score'],
+                                                   'result': data[team]['cumulativeScore']['scoreByStat'][i]['result']} for i in data[team]['cumulativeScore']['scoreByStat'].keys()}
 
-            self.away_team_cats = { STATS_MAP.get(i, i): {'score': data['away']['cumulativeScore']['scoreByStat'][i]['score'],
-                                                   'result': data['away']['cumulativeScore']['scoreByStat'][i]['result']} for i in data['away']['cumulativeScore']['scoreByStat'].keys()}
+        return (team_id, final_score, team_cats, team_live_score)
 
