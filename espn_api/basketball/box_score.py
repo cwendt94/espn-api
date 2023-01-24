@@ -7,10 +7,9 @@ class BoxScore(ABC):
   ''' '''
   def __init__(self, data):
       self.winner = data.get('winner', 'UNDECIDED')
-      self.home_team = data['home']['teamId']
-      self.away_team = 0
-      if 'away' in data:
-        self.away_team = data['away']['teamId']
+      self.home_team = data.get('home', {}).get('teamId', 0)
+      self.away_team = data.get('away', {}).get('teamId', 0)
+
   def __repr__(self):
     away_team = self.away_team or "BYE"
     home_team = self.home_team or "BYE"
