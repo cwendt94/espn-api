@@ -1,11 +1,12 @@
 import logging
 import sys
+import json
 
 class Logger(object):
     def __init__(self, name: str, debug=False):
         level = logging.DEBUG if debug else logging.INFO
         self.logging = logging.getLogger(name)
-        
+
         # if logger already exists don't add handlers
         if len(self.logging.handlers):
             self.logging.handlers[0].setLevel(level)
@@ -18,9 +19,9 @@ class Logger(object):
 
         self.logging.addHandler(handler)
         self.logging.setLevel(level)
-    
+
     def log_request(self, endpoint: str, response: dict, params: dict = None, headers: dict = None):
-        log = f'ESPN API Request: url: {endpoint} params: {params} headers: {headers} \nESPN API Response: {response}'
+        log = f'ESPN API Request: url: {endpoint} params: {params} headers: {headers} \nESPN API Response: {json.dumps(response)}'
         self.logging.debug(log)
 
 
