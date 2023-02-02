@@ -35,7 +35,7 @@ class H2HPointsBoxScore(BoxScore):
       team_projected = round(data[team].get('totalProjectedPointsLive', -1), 2)
     else:
       team_score = round(team_roster.get('appliedStatTotal', 0), 2)
-    lineup = get_player_lineup(team, data, pro_schedule, by_matchup, year)
+    lineup = get_player_lineup(data[team], pro_schedule, by_matchup, year)
 
     return (team_score, team_projected, lineup)
 
@@ -62,7 +62,7 @@ class H2HCategoryBoxScore(BoxScore):
         'result': stat_dict['result']
       }
 
-    lineup = get_player_lineup(team, data, pro_schedule, by_matchup, year)
+    lineup = get_player_lineup(data[team], pro_schedule, by_matchup, year)
 
     return (team_wins, team_ties, team_losses, team_stats, lineup)
 
@@ -85,26 +85,20 @@ class RotoBoxScore():
         'result': stat_dict.get('result'),
         'rank': stat_dict.get('rank')
       }
-
-    roster_key = 'rosterForMatchupPeriod' if by_matchup else 'rosterForCurrentScoringPeriod'
-    roster =  team_data.get(roster_key, {})
-    lineup = [BoxPlayer(player, pro_schedule, year) for player in roster.get('entries', [])]
+    lineup = get_player_lineup(team_data, pro_schedule, by_matchup, year)
 
     return { team, wins, ties, losses, points, stats, lineup  }
 
 
 
-def get_player_lineup(team, data, pro_schedule, by_matchup, year):
+def get_player_lineup(team_data, pro_schedule, by_matchup, year):
   '''Helper function to get teams line up '''
-  if team not in data:
-    return []
-  
   roster_key = 'rosterForMatchupPeriod' if by_matchup else 'rosterForCurrentScoringPeriod'
-  roster =  data[team].get(roster_key, {})
+  roster =  team_data.get(roster_key, {})
   lineup = [BoxPlayer(player, pro_schedule, year) for player in roster.get('entries', [])]
 
   return lineup
 
 # helper function to get correct box score class
-ScoringType = {'H2H_POINTS': H2HPointsBoxScore, 'H2H_CATEGORY': H2HCategoryBoxScore, 'H2H_MOST_CATEGORIES': H2HCategoryBoxScore}
+ScoringType = {'H2H_POINTS': H2HPointsBoxScore, 'H2H_CATEGORY': H2HCategoryBoxScore, 'H2H_MOST_CATEGORIES': H2HCategoryBoxScore, 'ROTO': RotoBoxScore}
 get_box_scoring_type_class = lambda scoring_type: ScoringType.get(scoring_type, H2HPointsBoxScore)

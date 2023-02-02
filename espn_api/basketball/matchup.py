@@ -28,7 +28,7 @@ class Matchup(object):
         team_live_score = None
 
         # if stats are available
-        if 'cumulativeScore' in data[team].keys() and data[team]['cumulativeScore']['scoreByStat']:
+        if 'cumulativeScore' in data[team].keys() and data[team]['cumulativeScore'].get('scoreByStat'):
 
             team_live_score = (data[team]['cumulativeScore']['wins'] +
                                data[team]['cumulativeScore']['ties']/2)
