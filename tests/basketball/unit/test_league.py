@@ -1,5 +1,6 @@
 from unittest import mock, TestCase
 from espn_api.basketball import League
+from espn_api.basketball.box_score import H2HCategoryBoxScore, RotoBoxScore 
 import requests_mock
 import json
 import io
@@ -52,20 +53,54 @@ class LeagueTest(TestCase):
         self.assertEqual(third_pick.round_pick, 3)
         self.assertEqual(third_pick.auction_repr(), 'J G, 4065648, Jayson Tatum, 0, False')
 
-    # TODO need to get data for most recent season
-    # @requests_mock.Mocker()        
-    # def test_box_score(self, m):
-    #     self.mock_setUp(m)
+    @requests_mock.Mocker()        
+    def test_box_score_h2h_points(self, m):
+        self.mock_setUp(m)
 
-    #     league = League(self.league_id, self.season)
+        league = League(self.league_id, self.season)
         
-    #     with open('tests/unit/data/league_boxscore_2018.json') as f:
-    #         data = json.loads(f.read())
-    #     m.get(self.espn_endpoint + '?view=mMatchup&view=mMatchupScore&scoringPeriodId=13', status_code=200, json=data)
-    #     box_scores = league.box_scores(13)
+        with open('tests/basketball/unit/data/league_2023_box_score_h2h_points.json') as f:
+            data = json.loads(f.read())
+        m.get(self.espn_endpoint + '?view=mMatchupScore&view=mScoreboard&scoringPeriodId=109', status_code=200, json=data)
+        box_scores = league.box_scores(matchup_period=16, scoring_period=109)
 
-    #     self.assertEqual(repr(box_scores[0].home_team), 'Team(Rollin\' With Mahomies)')
-    #     self.assertEqual(repr(box_scores[0].home_lineup[1]), 'Player(Christian McCaffrey, points:31, projected:23)')
+        self.assertEqual(repr(box_scores[0].home_team), 'Team(Uptown\'s  F)')
+        self.assertEqual(repr(box_scores[0].home_lineup[1]), 'Player(Alperen Sengun, points:32.0)')
+        self.assertEqual(box_scores[0].away_score, 901.0)
+
+    @requests_mock.Mocker()        
+    def test_box_score_h2h_cat(self, m):
+        self.mock_setUp(m)
+
+        league = League(self.league_id, self.season)
+        league.BoxScoreClass = H2HCategoryBoxScore
+        
+        with open('tests/basketball/unit/data/league_2023_box_score_h2h_cat.json') as f:
+            data = json.loads(f.read())
+        m.get(self.espn_endpoint + '?view=mMatchupScore&view=mScoreboard&scoringPeriodId=109', status_code=200, json=data)
+        box_scores = league.box_scores(matchup_period=16, scoring_period=109)
+
+        self.assertEqual(repr(box_scores[0].home_team), 'Team(Team P)')
+        self.assertEqual(repr(box_scores[0].home_lineup[1]), 'Player(Tyrese Haliburton, points:0)')
+        self.assertEqual(box_scores[0].home_wins, 6)
+        self.assertEqual(box_scores[0].away_stats['PTS']['value'], 263.0)
+
+    @requests_mock.Mocker()        
+    def test_box_score_roto(self, m):
+        self.mock_setUp(m)
+
+        league = League(self.league_id, self.season)
+        league.BoxScoreClass = RotoBoxScore
+        
+        with open('tests/basketball/unit/data/league_2023_box_score_roto.json') as f:
+            data = json.loads(f.read())
+        m.get(self.espn_endpoint + '?view=mMatchupScore&view=mScoreboard&scoringPeriodId=108', status_code=200, json=data)
+        box_scores = league.box_scores(scoring_period=109, matchup_total=False)
+
+        self.assertEqual(len(box_scores[0].teams), 6)
+        self.assertEqual(box_scores[0].teams[0]['points'], 26.0)
+        self.assertEqual(box_scores[0].teams[0]['stats']['BLK']['rank'], 2)
+        self.assertEqual(repr(box_scores[0].teams[0]['lineup'][0]), 'Player(Joel Embiid, points:0)')
 
     
     @requests_mock.Mocker()
@@ -80,7 +115,6 @@ class LeagueTest(TestCase):
 
         player = league.player_info('Jalen Brunson')
         self.assertEqual(player.name, 'Jalen Brunson')
-        print(player.stats)
         self.assertEqual(player.stats['107']['total']['PTS'], 37.0)
         self.assertEqual(player.total_points, 1929.0)
         self.assertEqual(player.avg_points, 39.37)

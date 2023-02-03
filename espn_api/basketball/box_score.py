@@ -76,7 +76,7 @@ class RotoBoxScore():
     wins = cumulative_score.get('wins', 0)
     ties = cumulative_score.get('ties', 0)
     losses = cumulative_score.get('losses', 0)
-    points = team.get('totalPointsLive') if 'totalPointsLive' in team else team.get('totalPoints', 0)
+    points = team_data.get('totalPointsLive') if 'totalPointsLive' in team_data else team_data.get('totalPoints', 0)
 
     stats = {}
     for stat_key, stat_dict in cumulative_score.get('scoreByStat', {}).items():
@@ -87,7 +87,7 @@ class RotoBoxScore():
       }
     lineup = get_player_lineup(team_data, pro_schedule, by_matchup, year)
 
-    return { team, wins, ties, losses, points, stats, lineup  }
+    return { 'team': team, 'wins': wins, 'ties': ties, 'losses': losses, 'points': points, 'stats': stats, 'lineup': lineup  }
 
 
 
