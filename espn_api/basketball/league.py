@@ -194,11 +194,12 @@ class League(BaseLeague):
         pro_schedule = self._get_pro_schedule(scoring_id)
         box_data = [self.BoxScoreClass(matchup, pro_schedule, matchup_total, self.year) for matchup in schedule]
 
+        # TODO add mapping for roto teams
         for team in self.teams:
             for matchup in box_data:
-                if matchup.home_team == team.team_id:
+                if hasattr(matchup, 'home_team') and matchup.home_team == team.team_id:
                     matchup.home_team = team
-                elif matchup.away_team == team.team_id:
+                elif hasattr(matchup, 'away_team') and matchup.away_team == team.team_id:
                     matchup.away_team = team
         return box_data
 

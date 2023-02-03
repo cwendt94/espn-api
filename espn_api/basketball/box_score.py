@@ -14,16 +14,6 @@ class BoxScore(ABC):
     away_team = self.away_team or "BYE"
     home_team = self.home_team or "BYE"
     return f'Box Score({away_team} at {home_team})'
-  
-  def _get_player_lineup(self, team, data, pro_schedule, by_matchup, year):
-    if team not in data:
-      return []
-    
-    roster_key = 'rosterForMatchupPeriod' if by_matchup else 'rosterForCurrentScoringPeriod'
-    roster =  data[team].get(roster_key, {})
-    lineup = [BoxPlayer(player, pro_schedule, year) for player in roster.get('entries', [])]
-
-    return lineup
 
 class H2HPointsBoxScore(BoxScore):
   def __init__(self, data, pro_schedule, by_matchup, year):
@@ -45,7 +35,7 @@ class H2HPointsBoxScore(BoxScore):
       team_projected = round(data[team].get('totalProjectedPointsLive', -1), 2)
     else:
       team_score = round(team_roster.get('appliedStatTotal', 0), 2)
-    lineup = self._get_player_lineup(team, data, pro_schedule, by_matchup, year)
+    lineup = get_player_lineup(data[team], pro_schedule, by_matchup, year)
 
     return (team_score, team_projected, lineup)
 
@@ -72,10 +62,43 @@ class H2HCategoryBoxScore(BoxScore):
         'result': stat_dict['result']
       }
 
-    lineup = self._get_player_lineup(team, data, pro_schedule, by_matchup, year)
+    lineup = get_player_lineup(data[team], pro_schedule, by_matchup, year)
 
     return (team_wins, team_ties, team_losses, team_stats, lineup)
 
+class RotoBoxScore():
+  def __init__(self, data, pro_schedule, by_matchup, year):
+    self.teams = [self._get_team_data(team, pro_schedule, by_matchup, year) for team in data.get('teams', [])]
+  
+  def _get_team_data(self, team_data, pro_schedule, by_matchup, year):
+    team = team_data.get('teamId', 0)
+    cumulative_score = team_data.get('cumulativeScore', {})
+    wins = cumulative_score.get('wins', 0)
+    ties = cumulative_score.get('ties', 0)
+    losses = cumulative_score.get('losses', 0)
+    points = team_data.get('totalPointsLive') if 'totalPointsLive' in team_data else team_data.get('totalPoints', 0)
+
+    stats = {}
+    for stat_key, stat_dict in cumulative_score.get('scoreByStat', {}).items():
+      stats[STATS_MAP.get(stat_key, stat_key)] = {
+        'value': stat_dict.get('score'),
+        'result': stat_dict.get('result'),
+        'rank': stat_dict.get('rank')
+      }
+    lineup = get_player_lineup(team_data, pro_schedule, by_matchup, year)
+
+    return { 'team': team, 'wins': wins, 'ties': ties, 'losses': losses, 'points': points, 'stats': stats, 'lineup': lineup  }
+
+
+
+def get_player_lineup(team_data, pro_schedule, by_matchup, year):
+  '''Helper function to get teams line up '''
+  roster_key = 'rosterForMatchupPeriod' if by_matchup else 'rosterForCurrentScoringPeriod'
+  roster =  team_data.get(roster_key, {})
+  lineup = [BoxPlayer(player, pro_schedule, year) for player in roster.get('entries', [])]
+
+  return lineup
+
 # helper function to get correct box score class
-ScoringType = {'H2H_POINTS': H2HPointsBoxScore, 'H2H_CATEGORY': H2HCategoryBoxScore, 'H2H_MOST_CATEGORIES': H2HCategoryBoxScore}
+ScoringType = {'H2H_POINTS': H2HPointsBoxScore, 'H2H_CATEGORY': H2HCategoryBoxScore, 'H2H_MOST_CATEGORIES': H2HCategoryBoxScore, 'ROTO': RotoBoxScore}
 get_box_scoring_type_class = lambda scoring_type: ScoringType.get(scoring_type, H2HPointsBoxScore)
