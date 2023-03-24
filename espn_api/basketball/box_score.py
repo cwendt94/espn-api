@@ -5,10 +5,11 @@ from .box_player import BoxPlayer
 
 class BoxScore(ABC):
   ''' '''
-  def __init__(self, data):
+  def __init__(self, data, scoring_period):
       self.winner = data.get('winner', 'UNDECIDED')
       self.home_team = data.get('home', {}).get('teamId', 0)
       self.away_team = data.get('away', {}).get('teamId', 0)
+      self.scoring_period = scoring_period
 
   def __repr__(self):
     away_team = self.away_team or "BYE"
@@ -21,13 +22,13 @@ class BoxScore(ABC):
     
     roster_key = 'rosterForMatchupPeriod' if by_matchup else 'rosterForCurrentScoringPeriod'
     roster =  data[team].get(roster_key, {})
-    lineup = [BoxPlayer(player, pro_schedule, year) for player in roster.get('entries', [])]
+    lineup = [BoxPlayer(player, pro_schedule, year, self.scoring_period) for player in roster.get('entries', [])]
 
     return lineup
 
 class H2HPointsBoxScore(BoxScore):
-  def __init__(self, data, pro_schedule, by_matchup, year):
-    super().__init__(data)
+  def __init__(self, data, pro_schedule, by_matchup, year, scoring_period = 0):
+    super().__init__(data, scoring_period)
 
     (self.home_score, self.home_projected, self.home_lineup) = self._get_team_data('home', data, pro_schedule, by_matchup, year)
 
@@ -50,8 +51,8 @@ class H2HPointsBoxScore(BoxScore):
     return (team_score, team_projected, lineup)
 
 class H2HCategoryBoxScore(BoxScore):
-  def __init__(self, data, pro_schedule, by_matchup, year):
-    super().__init__(data)
+  def __init__(self, data, pro_schedule, by_matchup, year, scoring_period = 0):
+    super().__init__(data, scoring_period)
 
     (self.home_wins, self.home_ties, self.home_losses, self.home_stats, self.home_lineup) = self._get_team_data('home', data, pro_schedule, by_matchup, year)
 
