@@ -19,7 +19,6 @@ class BoxPlayer(Player):
         pro_id = player['proTeamId']
         if pro_id in pro_schedule and str(scoring_period) in pro_schedule[pro_id]:
             game = pro_schedule[pro_id][str(scoring_period)][0]
-            print(game)
             opp_id = game['awayProTeamId'] if game['awayProTeamId'] != player['proTeamId'] else game['homeProTeamId']
             self.game_played = 100 if datetime.now() > datetime.fromtimestamp(game['date']/1000.0) + timedelta(hours=3) else 0
             self.pro_opponent = PRO_TEAM_MAP[opp_id]
