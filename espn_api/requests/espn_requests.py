@@ -100,6 +100,25 @@ class EspnFantasyRequests(object):
         }
         data = self.league_get(params=params)
         return data
+
+    def get_league_message_board(self, msg_types = None):
+        '''Gets league message board and can filter by msg types'''
+        params = {
+            'view': 'kona_league_messageboard'
+        }
+        headers = None
+        if msg_types is not None:
+            filters = { "topicsByType": {} }
+            base_filter = {"sortMessageDate":{"sortPriority":1,"sortAsc":False}}
+            for msg_type in msg_types:
+                filters['topicsByType'][msg_type] = base_filter
+            headers = {'x-fantasy-filter': json.dumps(filters)}
+
+        extend = "/segments/0/leagues/" + str(self.league_id) + '/communication'
+
+        data = self.get(params=params, extend=extend, headers=headers)
+        return data
+
     def get_player_card(self, playerIds: List[int], max_scoring_period: int, additional_filters: List = None):
         '''Gets the player card'''
         params = { 'view': 'kona_playercard' }

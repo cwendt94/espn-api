@@ -296,4 +296,16 @@ class League(BaseLeague):
             return Player(data['players'][0], self.year)
         if len(data['players']) > 1:
             return [Player(player, self.year) for player in data['players']]
+    
+    def message_board(self, msg_types: List[str] = None):
+        ''' Returns a list of league messages'''
+        data = self.espn_request.get_league_message_board(msg_types)
+
+        msg_topics = list(data.get('topicsByType', {}).keys())
+        messages = []
+        for topic in msg_topics:
+            msgs = data['topicsByType'][topic]
+            for msg in msgs:
+                messages.append(msg)
+        return messages
 
