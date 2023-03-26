@@ -4,8 +4,8 @@ from datetime import datetime, timedelta
 
 class BoxPlayer(Player):
     '''player with extra data from a matchup'''
-    def __init__(self, data, pro_schedule, year):
-        super(BoxPlayer, self).__init__(data, year)
+    def __init__(self, data, pro_schedule, year, scoring_period):
+        super(BoxPlayer, self).__init__(data, year, pro_schedule)
         self.slot_position = 'FA'
         self.pro_opponent = "None" # professional team playing against
         self.game_played = 100 # 0-100 for percent of game played
@@ -16,9 +16,11 @@ class BoxPlayer(Player):
             self.slot_position = POSITION_MAP[data['lineupSlotId']]
 
         player = data['playerPoolEntry']['player'] if 'playerPoolEntry' in data else data['player']
-        if player['proTeamId'] in pro_schedule:
-            (opp_id, date) = pro_schedule[player['proTeamId']]
-            self.game_played = 100 if datetime.now() > datetime.fromtimestamp(date/1000.0) + timedelta(hours=3) else 0
+        pro_id = player['proTeamId']
+        if pro_id in pro_schedule and str(scoring_period) in pro_schedule[pro_id]:
+            game = pro_schedule[pro_id][str(scoring_period)][0]
+            opp_id = game['awayProTeamId'] if game['awayProTeamId'] != player['proTeamId'] else game['homeProTeamId']
+            self.game_played = 100 if datetime.now() > datetime.fromtimestamp(game['date']/1000.0) + timedelta(hours=3) else 0
             self.pro_opponent = PRO_TEAM_MAP[opp_id]
                 
         player_stats = player.get('stats', [])

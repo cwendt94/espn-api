@@ -191,8 +191,8 @@ class League(BaseLeague):
         data = self.espn_request.league_get(params=params, headers=headers)
 
         schedule = data['schedule']
-        pro_schedule = self._get_pro_schedule(scoring_id)
-        box_data = [self.BoxScoreClass(matchup, pro_schedule, matchup_total, self.year) for matchup in schedule]
+        pro_schedule = self._get_all_pro_schedule()
+        box_data = [self.BoxScoreClass(matchup, pro_schedule, matchup_total, self.year, scoring_id) for matchup in schedule]
 
         for team in self.teams:
             for matchup in box_data:
