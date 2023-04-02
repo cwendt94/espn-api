@@ -5,7 +5,7 @@ from espn_api.basketball import League
 class LeagueTest(TestCase):
     def setUp(self):
         self.league = League(411647, 2019)
-    
+
     def test_league_init(self):
 
         self.assertEqual(self.league.scoringPeriodId, 178)
@@ -27,7 +27,7 @@ class LeagueTest(TestCase):
         self.assertEqual(draft[1].round_num, 1)
         self.assertEqual(draft[2].round_pick, 3)
         self.assertEqual(draft[2].team.team_name, 'Denver  Nuggets ')
-    
+
     def test_league_free_agents(self):
         free_agents = self.league.free_agents()
 
@@ -41,6 +41,19 @@ class LeagueTest(TestCase):
         self.assertEqual(player.schedule['2']['team'], 'BKN')
         self.assertEqual(player.stats['2']['team'], 'BKN')
         self.assertEqual(player.stats['2']['total']['PTS'], 24.0)
+        self.assertEqual(player.nine_cat_averages,
+            {
+                'PTS': 17.3,
+                'BLK': 1.7,
+                'STL': 1.7,
+                'AST': 1.4,
+                'REB': 15.6,
+                'TO': 2.2,
+                '3PTM': 0.1,
+                'FG%': 0.533,
+                'FT%': 0.59
+            }
+        )
 
     def test_league_box_scores(self):
         final_matchup = self.league.box_scores()[0]
@@ -56,7 +69,7 @@ class LeagueTest(TestCase):
 
         self.assertEqual(scoring_period_matchup.home_score, 234.0)
         self.assertEqual(scoring_period_matchup.away_lineup[0].points, 0)
-    
+
     def test_league_box_scores_category(self):
         league = League(1631984064, 2023)
 
@@ -69,7 +82,7 @@ class LeagueTest(TestCase):
 
     def test_past_league(self):
         league = League(411647, 2017)
-        
+
         self.assertEqual(league.scoringPeriodId, 170)
 
     def test_past_league_scoreboard(self):
@@ -78,7 +91,7 @@ class LeagueTest(TestCase):
 
         self.assertTrue(scores[0].home_final_score > 0)
         self.assertTrue(scores[0].away_final_score > 0)
-    
+
     def test_blank_league_init(self):
         blank_league = League(411647, 2019, fetch_league=False)
         self.assertEqual(len(blank_league.teams), 0)
