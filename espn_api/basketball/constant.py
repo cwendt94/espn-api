@@ -135,3 +135,15 @@ ACTIVITY_MAP = {
     'WAIVER': 180,
     'TRADED': 244
 }
+
+NINE_CAT_STATS = {
+    '3PTM',
+    'AST',
+    'BLK',
+    'FG%',
+    'FT%',
+    'PTS',
+    'REB',
+    'STL',
+    'TO'
+}

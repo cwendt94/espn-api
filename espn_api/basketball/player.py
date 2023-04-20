@@ -1,12 +1,14 @@
-from .constant import POSITION_MAP, PRO_TEAM_MAP, STATS_MAP, STAT_ID_MAP
+from .constant import NINE_CAT_STATS, POSITION_MAP, PRO_TEAM_MAP, STATS_MAP, STAT_ID_MAP
 from espn_api.utils.utils import json_parsing
 from datetime import datetime
+from functools import cached_property
 
 class Player(object):
     '''Player are part of team'''
     def __init__(self, data, year, pro_team_schedule = None):
         self.name = json_parsing(data, 'fullName')
         self.playerId = json_parsing(data, 'id')
+        self.year = year
         self.position = POSITION_MAP[json_parsing(data, 'defaultPositionId') - 1]
         self.lineupSlot = POSITION_MAP.get(data.get('lineupSlotId'), '')
         self.eligibleSlots = [POSITION_MAP[pos] for pos in json_parsing(data, 'eligibleSlots')]
@@ -50,10 +52,18 @@ class Player(object):
         self.avg_points = self.stats.get(f'{year}_total', {}).get('applied_avg', 0)
         self.projected_total_points= self.stats.get(f'{year}_projected', {}).get('applied_total', 0)
         self.projected_avg_points = self.stats.get(f'{year}_projected', {}).get('applied_avg', 0)
-            
+
     def __repr__(self):
         return f'Player({self.name})'
-    
+
     def _stat_id_pretty(self, id: str, scoring_period):
         id_type = STAT_ID_MAP.get(id[:2])
         return f'{id[2:]}_{id_type}' if id_type else str(scoring_period)
+
+    @cached_property
+    def nine_cat_averages(self):
+        return {
+            k: round(v, (3 if k in {'FG%', 'FT%'} else 1))
+            for k, v in self.stats.get(f'{self.year}_total', {}).get("avg", {}).items()
+            if k in NINE_CAT_STATS
+        }
