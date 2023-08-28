@@ -91,7 +91,7 @@ class H2HPointsBoxScore(BoxScore):
         team_projected = round(data[team].get('totalProjectedPointsLive', -1), 2)
       else:
         team_score = round(data[team]['totalPoints'], 2)
-      team_roster = data[team]['rosterForCurrentScoringPeriod']['entries']
+      team_roster = data[team].get('rosterForCurrentScoringPeriod', {}).get('entries', [])
       team_lineup = [BoxPlayer(player, pro_schedule, week, year) for player in team_roster]
 
       return (team_id, team_score, team_projected, team_lineup)
