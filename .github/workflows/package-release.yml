@@ -6,17 +6,17 @@ jobs:
   release:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
     - name: Setup Python
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v3
       with:
-        python-version: "3.6"
+        python-version: "3.8"
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         python setup.py install
-        pip install twine==3.8.0
-        pip install wheel==0.37.0
+        pip install twine
+        pip install wheel
 
     - name: Build Python package
       run: python setup.py bdist_wheel
