@@ -16,7 +16,7 @@ jobs:
         python -m pip install --upgrade pip
         python setup.py install
         pip install twine
-        pip install wheel
+        pip install wheel==0.37.0
 
     - name: Build Python package
       run: python setup.py bdist_wheel
