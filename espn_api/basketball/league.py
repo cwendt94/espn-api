@@ -15,7 +15,7 @@ class League(BaseLeague):
     '''Creates a League instance for Public/Private ESPN league'''
     def __init__(self, league_id: int, year: int, espn_s2=None, swid=None, fetch_league=True, debug=False):
         super().__init__(league_id=league_id, year=year, sport='nba', espn_s2=espn_s2, swid=swid, debug=debug)
-        
+
         if fetch_league:
             self.fetch_league()
 
@@ -47,7 +47,7 @@ class League(BaseLeague):
 
     def _fetch_teams(self, data):
         '''Fetch teams in league'''
-        pro_schedule = self._get_all_pro_schedule()        
+        pro_schedule = self._get_all_pro_schedule()
         super()._fetch_teams(data, TeamClass=Team, pro_schedule=pro_schedule)
 
         # replace opponentIds in schedule with team instances
@@ -59,7 +59,7 @@ class League(BaseLeague):
                         matchup.away_team = opponent
                     if matchup.home_team == opponent.team_id:
                         matchup.home_team = opponent
-                        
+
     def _fetch_draft(self):
         '''Creates list of Pick objects from the leagues draft'''
         data = self.espn_request.get_league_draft()
@@ -104,7 +104,7 @@ class League(BaseLeague):
                     matchup.home_team = team
                 elif matchup.away_team == team.team_id:
                     matchup.away_team = team
-        
+
         return matchups
 
     def get_team_data(self, team_id: int) -> Team:
@@ -113,7 +113,7 @@ class League(BaseLeague):
                 return team
         return None
 
-    def recent_activity(self, size: int = 25, msg_type: str = None) -> List[Activity]:
+    def recent_activity(self, size: int = 25, msg_type: str = None, offset: int = 0) -> List[Activity]:
         '''Returns a list of recent league activities (Add, Drop, Trade)'''
         if self.year < 2019:
             raise Exception('Cant use recent activity before 2019')
@@ -125,7 +125,7 @@ class League(BaseLeague):
             'view': 'kona_league_communication'
         }
 
-        filters = {"topics":{"filterType":{"value":["ACTIVITY_TRANSACTIONS"]},"limit":size,"limitPerMessageSet":{"value":25},"offset":0,"sortMessageDate":{"sortPriority":1,"sortAsc":False},"sortFor":{"sortPriority":2,"sortAsc":False},"filterIncludeMessageTypeIds":{"value":msg_types}}}
+        filters = {"topics":{"filterType":{"value":["ACTIVITY_TRANSACTIONS"]},"limit":size,"limitPerMessageSet":{"value":25},"offset":offset,"sortMessageDate":{"sortPriority":1,"sortAsc":False},"sortFor":{"sortPriority":2,"sortAsc":False},"filterIncludeMessageTypeIds":{"value":msg_types}}}
         headers = {'x-fantasy-filter': json.dumps(filters)}
         data = self.espn_request.league_get(extend='/communication/', params=params, headers=headers)
         data = data['topics']
@@ -141,14 +141,14 @@ class League(BaseLeague):
             raise Exception('Cant use free agents before 2019')
         if not week:
             week = self.current_week
-        
+
         slot_filter = []
         if position and position in POSITION_MAP:
             slot_filter = [POSITION_MAP[position]]
         if position_id:
             slot_filter.append(position_id)
 
-        
+
         params = {
             'view': 'kona_player_info',
             'scoringPeriodId': week,

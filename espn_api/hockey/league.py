@@ -90,7 +90,7 @@ class League(BaseLeague):
                 return team
         return None
 
-    def recent_activity(self, size: int = 25, msg_type: str = None) -> List[Activity]:
+    def recent_activity(self, size: int = 25, msg_type: str = None, offset: int = 0) -> List[Activity]:
         '''Returns a list of recent league activities (Add, Drop, Trade)'''
         if self.year < 2019:
             raise Exception('Cant use recent activity before 2019')
@@ -103,7 +103,7 @@ class League(BaseLeague):
         }
 
         filters = {"topics": {"filterType": {"value": ["ACTIVITY_TRANSACTIONS"]}, "limit": size,
-                              "limitPerMessageSet": {"value": 25}, "offset": 0,
+                              "limitPerMessageSet": {"value": 25}, "offset": offset,
                               "sortMessageDate": {"sortPriority": 1, "sortAsc": False},
                               "sortFor": {"sortPriority": 2, "sortAsc": False},
                               "filterIncludeMessageTypeIds": {"value": msg_types}}}

@@ -19,7 +19,7 @@ class League(BaseLeague):
     '''Creates a League instance for Public/Private ESPN league'''
     def __init__(self, league_id: int, year: int, espn_s2=None, swid=None, fetch_league=True, debug=False):
         super().__init__(league_id=league_id, year=year, sport='nfl', espn_s2=espn_s2, swid=swid, debug=debug)
-        
+
         if fetch_league:
             self.fetch_league()
 
@@ -150,7 +150,7 @@ class League(BaseLeague):
                 return team
         return None
 
-    def recent_activity(self, size: int = 25, msg_type: str = None) -> List[Activity]:
+    def recent_activity(self, size: int = 25, msg_type: str = None, offset: int = 0) -> List[Activity]:
         '''Returns a list of recent league activities (Add, Drop, Trade)'''
         if self.year < 2019:
             raise Exception('Cant use recent activity before 2019')
@@ -162,7 +162,7 @@ class League(BaseLeague):
             'view': 'kona_league_communication'
         }
 
-        filters = {"topics":{"filterType":{"value":["ACTIVITY_TRANSACTIONS"]},"limit":size,"limitPerMessageSet":{"value":25},"offset":0,"sortMessageDate":{"sortPriority":1,"sortAsc":False},"sortFor":{"sortPriority":2,"sortAsc":False},"filterIncludeMessageTypeIds":{"value":msg_types}}}
+        filters = {"topics":{"filterType":{"value":["ACTIVITY_TRANSACTIONS"]},"limit":size,"limitPerMessageSet":{"value":25},"offset":offset,"sortMessageDate":{"sortPriority":1,"sortAsc":False},"sortFor":{"sortPriority":2,"sortAsc":False},"filterIncludeMessageTypeIds":{"value":msg_types}}}
         headers = {'x-fantasy-filter': json.dumps(filters)}
         data = self.espn_request.league_get(extend='/communication/', params=params, headers=headers)
         data = data['topics']
@@ -296,7 +296,7 @@ class League(BaseLeague):
             return Player(data['players'][0], self.year)
         if len(data['players']) > 1:
             return [Player(player, self.year) for player in data['players']]
-    
+
     def message_board(self, msg_types: List[str] = None):
         ''' Returns a list of league messages'''
         data = self.espn_request.get_league_message_board(msg_types)
