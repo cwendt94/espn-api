@@ -19,7 +19,7 @@ class League(BaseLeague):
     '''Creates a League instance for Public/Private ESPN league'''
     def __init__(self, league_id: int, year: int, espn_s2=None, swid=None, fetch_league=True, debug=False):
         super().__init__(league_id=league_id, year=year, sport='nfl', espn_s2=espn_s2, swid=swid, debug=debug)
-        
+
         if fetch_league:
             self.fetch_league()
 
@@ -185,9 +185,9 @@ class League(BaseLeague):
 
         for team in self.teams:
             for matchup in matchups:
-                if matchup.home_team == team.team_id:
+                if matchup._home_team_id == team.team_id:
                     matchup.home_team = team
-                elif matchup.away_team == team.team_id:
+                elif matchup._away_team_id == team.team_id:
                     matchup.away_team = team
 
         return matchups
@@ -296,7 +296,7 @@ class League(BaseLeague):
             return Player(data['players'][0], self.year)
         if len(data['players']) > 1:
             return [Player(player, self.year) for player in data['players']]
-    
+
     def message_board(self, msg_types: List[str] = None):
         ''' Returns a list of league messages'''
         data = self.espn_request.get_league_message_board(msg_types)
