@@ -5,8 +5,8 @@ class Matchup(object):
     def __init__(self, data):
         self.matchup_type = data.get('playoffTierType', 'NONE')
         self.is_playoff = self.matchup_type != 'NONE'
-        (self._home_team_id: int, self.home_score: float) = self._fetch_matchup_info(data, 'home')
-        (self._away_team_id: int, self.away_score: float) = self._fetch_matchup_info(data, 'away')
+        (self._home_team_id, self.home_score) = self._fetch_matchup_info(data, 'home')
+        (self._away_team_id, self.away_score) = self._fetch_matchup_info(data, 'away')
         self.home_team: Team
         self.away_team: Team
 
