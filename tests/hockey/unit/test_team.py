@@ -17,11 +17,11 @@ class TestHockeyTeam(TestCase):
             self.team_roster = self.team['roster']
 
     def test_team(self):
-        team = Team(self.team, roster= self.team_roster, member= None, schedule= self.schedule, year= self.year)
+        team = Team(self.team, roster= self.team_roster, schedule= self.schedule, year= self.year)
         self.assertEqual(team.team_abbrev, 'ESPC')
 
     def test_team_roster_df(self):
-        team = Team(self.team, roster= self.team_roster, member= None, schedule= self.schedule, year= self.year)
+        team = Team(self.team, roster= self.team_roster, schedule= self.schedule, year= self.year)
 
         self.assertEqual(len(team.roster), 25)
         self.assertEqual(team.roster[0].name, 'Thomas Chabot')
