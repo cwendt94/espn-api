@@ -14,6 +14,7 @@ class BaseSettings(object):
         self.name = data['name']
         self.tie_rule = data['scoringSettings']['matchupTieRule']
         self.playoff_tie_rule = data['scoringSettings']['playoffMatchupTieRule']
+        self.playoff_matchup_period_length = data.get('scheduleSettings', {}).get('playoffMatchupPeriodLength', 0)
         self.playoff_seed_tie_rule = data['scheduleSettings']['playoffSeedingRule']
         self.scoring_type = data.get('scoringSettings', {}).get('scoringType')
         self.faab = data['acquisitionSettings']['isUsingAcquisitionBudget']
