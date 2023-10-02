@@ -11,7 +11,7 @@ class TestHockeyTeam(TestCase):
             self.teams = self.data['teams']
             self.schedule = self.data['schedule']
             self.seasonId = self.data['seasonId']
-            self.year = '2020'
+            self.year = 2020
 
             self.team = self.data['teams'][3]
             self.team_roster = self.team['roster']

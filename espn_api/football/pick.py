@@ -15,4 +15,4 @@ class Pick(object):
         return 'Pick(%s, %s)' % (self.playerName, self.team)
 
     def auction_repr(self):
-        return ', '.join(map(str, [self.team.owner, self.playerId, self.playerName, self.bid_amount, self.keeper_status]))
+        return ', '.join(map(str, [self.team, self.playerId, self.playerName, self.bid_amount, self.keeper_status]))
