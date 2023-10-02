@@ -185,9 +185,9 @@ class League(BaseLeague):
 
         for team in self.teams:
             for matchup in matchups:
-                if matchup.home_team == team.team_id:
+                if matchup._home_team_id == team.team_id:
                     matchup.home_team = team
-                elif matchup.away_team == team.team_id:
+                elif matchup._away_team_id == team.team_id:
                     matchup.away_team = team
 
         return matchups
