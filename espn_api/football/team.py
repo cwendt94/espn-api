@@ -2,13 +2,13 @@ from .player import Player
 
 class Team(object):
     '''Teams are part of the league'''
-    def __init__(self, data, roster, member, schedule, year, **kwargs):
+    def __init__(self, data, roster, schedule, year, **kwargs):
         self.team_id = data['id']
         self.team_abbrev = data['abbrev']
         if year < 2023:
-            self.team_name = "%s %s" % (data['location'], data['nickname'])
+            self.team_name = "%s %s" % (data.get('location', 'Unknown'), data.get('nickname', 'Unknown'))
         else:
-            self.team_name = data['name']
+            self.team_name = data.get('name', 'Unknown')
         self.division_id = data['divisionId']
         self.division_name = '' # set by caller
         self.wins = data['record']['overall']['wins']
@@ -22,10 +22,6 @@ class Team(object):
         self.trades = data.get('transactionCounter', {}).get('trades', 0)
         self.playoff_pct = data.get('currentSimulationResults', {}).get('playoffPct', 0) * 100
         self.draft_projected_rank = data.get('draftDayProjectedRank', 0)
-        self.owner = 'None'
-        if member:
-            self.owner = "%s %s" % (member['firstName'],
-                                    member['lastName'])
         self.streak_length = data['record']['overall']['streakLength']
         self.streak_type = data['record']['overall']['streakType']
         self.standing = data['playoffSeed']
