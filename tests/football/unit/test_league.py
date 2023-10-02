@@ -178,7 +178,7 @@ class LeagueTest(TestCase):
         self.assertEqual(repr(first_pick), 'Pick(Le\'Veon Bell, Team(Rollin\' With Mahomies))')
         self.assertEqual(third_pick.round_num, 1)
         self.assertEqual(third_pick.round_pick, 3)
-        self.assertEqual(third_pick.auction_repr(), 'T M, 13934, Antonio Brown, 0, False')
+        self.assertEqual(third_pick.auction_repr(), 'Team(Goin\' HAM Newton), 13934, Antonio Brown, 0, False')
 
     # TODO need to get data for most recent season
     # @requests_mock.Mocker()        
