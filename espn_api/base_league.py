@@ -12,6 +12,7 @@ class BaseLeague(ABC):
         self.league_id = league_id
         self.year = year
         self.teams = []
+        self.members = []
         self.draft = []
         self.player_map = {}
 
@@ -38,6 +39,7 @@ class BaseLeague(ABC):
         else:
             self.current_week = self.scoringPeriodId if self.scoringPeriodId <= data['status']['finalScoringPeriod'] else data['status']['finalScoringPeriod']
         self.settings = SettingsClass(data['settings'])
+        self.members = data['members']
         return data
 
     def _fetch_teams(self, data, TeamClass, pro_schedule = None):
@@ -51,9 +53,12 @@ class BaseLeague(ABC):
         for team in data['teams']:
             team_roster[team['id']] = team.get('roster', {})
 
+        team_owners = self._get_team_owners(data)
+
         for team in teams:
             roster = team_roster[team['id']]
-            self.teams.append(TeamClass(team, roster=roster, schedule=schedule, year=seasonId, pro_schedule=pro_schedule))
+            owners = team_owners[team['id']]
+            self.teams.append(TeamClass(team, roster=roster, schedule=schedule, year=seasonId, pro_schedule=pro_schedule, owners=owners))
 
         # sort by team ID
         self.teams = sorted(self.teams, key=lambda x: x.team_id, reverse=False)
@@ -91,6 +96,17 @@ class BaseLeague(ABC):
             pro_game = team.get('proGamesByScoringPeriod', {})
             pro_team_schedule[team['id']] = pro_game
         return pro_team_schedule
+
+    def _get_team_owners(self, data) -> dict:  
+        team_owners = {}
+        for team in data['teams']:
+            team_owners[team['id']] = []
+            for member in self.members:
+                for owner in team['owners']:
+                    if owner == member['id']:
+                        team_owners[team['id']].append(member)
+
+        return team_owners
 
     def standings(self) -> List:
         standings = sorted(self.teams, key=lambda x: x.final_standing if x.final_standing != 0 else x.standing, reverse=False)

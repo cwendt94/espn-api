@@ -4,7 +4,7 @@ from .constant import STATS_MAP
 
 class Team(object):
     '''Teams are part of the league'''
-    def __init__(self, data, roster, schedule, year, **kwargs):
+    def __init__(self, data, roster, schedule, year, owners, **kwargs):
         self.team_id = data['id']
         self.team_abbrev = data['abbrev']
         if year < 2023:
@@ -30,6 +30,7 @@ class Team(object):
         
         self._fetch_roster(roster, year, kwargs.get('pro_schedule'))
         self._fetch_schedule(schedule)
+        self.owners = owners
         
     def __repr__(self):
         return f'Team({self.team_name})'

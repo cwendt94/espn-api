@@ -6,7 +6,7 @@ from .player import Player
 class Team(object):
     '''Teams are part of the league'''
 
-    def __init__(self, data, roster, schedule, year, **kwargs):
+    def __init__(self, data, roster, schedule, year, owners, **kwargs):
         self.team_id = data['id']
         self.team_abbrev = data['abbrev']
         if year < 2023:
@@ -34,6 +34,7 @@ class Team(object):
 
         self._fetch_roster(roster)
         self._fetch_schedule(schedule)
+        self.owners = owners
 
     def __repr__(self):
         return 'Team(%s)' % (self.team_name,)
