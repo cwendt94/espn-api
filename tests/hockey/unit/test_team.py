@@ -15,13 +15,14 @@ class TestHockeyTeam(TestCase):
 
             self.team = self.data['teams'][3]
             self.team_roster = self.team['roster']
+            self.owners = self.team['owners']
 
     def test_team(self):
-        team = Team(self.team, roster= self.team_roster, schedule= self.schedule, year= self.year)
+        team = Team(self.team, roster= self.team_roster, schedule= self.schedule, year= self.year, owners=self.owners)
         self.assertEqual(team.team_abbrev, 'ESPC')
 
     def test_team_roster_df(self):
-        team = Team(self.team, roster= self.team_roster, schedule= self.schedule, year= self.year)
+        team = Team(self.team, roster= self.team_roster, schedule= self.schedule, year= self.year, owners=self.owners)
 
         self.assertEqual(len(team.roster), 25)
         self.assertEqual(team.roster[0].name, 'Thomas Chabot')
