@@ -50,10 +50,10 @@ class BaseLeague(ABC):
         seasonId = data['seasonId']
 
         team_roster = {}
+        team_owners = {}
         for team in data['teams']:
             team_roster[team['id']] = team.get('roster', {})
-
-        team_owners = self._get_team_owners(data)
+            team_owners[team['id']] = team.get('owners', [])
 
         for team in teams:
             roster = team_roster[team['id']]
@@ -96,17 +96,6 @@ class BaseLeague(ABC):
             pro_game = team.get('proGamesByScoringPeriod', {})
             pro_team_schedule[team['id']] = pro_game
         return pro_team_schedule
-
-    def _get_team_owners(self, data) -> dict:  
-        team_owners = {}
-        for team in data['teams']:
-            team_owners[team['id']] = []
-            for member in self.members:
-                for owner in team['owners']:
-                    if owner == member['id']:
-                        team_owners[team['id']].append(member)
-
-        return team_owners
 
     def standings(self) -> List:
         standings = sorted(self.teams, key=lambda x: x.final_standing if x.final_standing != 0 else x.standing, reverse=False)
