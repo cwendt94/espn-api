@@ -15,6 +15,7 @@ class Player(object):
         self.acquisitionType = json_parsing(data, 'acquisitionType')
         self.proTeam = PRO_TEAM_MAP[json_parsing(data, 'proTeamId')]
         self.injuryStatus = json_parsing(data, 'injuryStatus')
+        self.posRank = json_parsing(data, 'positionalRanking')
         self.stats = {}
         self.schedule = {}
 
