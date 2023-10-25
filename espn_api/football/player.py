@@ -34,16 +34,20 @@ class Player(object):
             stats_breakdown = stats.get('stats') or stats.get('appliedStats', {})
             breakdown = {PLAYER_STATS_MAP.get(int(k), k):v for (k,v) in stats_breakdown.items()}
             points = round(stats.get('appliedTotal', 0), 2)
+            avg_points =  round(stats.get('appliedAverage', 0), 2)
             scoring_period = stats.get('scoringPeriodId')
             stat_source = stats.get('statSourceId')
-            (points_type, breakdown_type) = ('points', 'breakdown') if stat_source == 0 else ('projected_points', 'projected_breakdown')
+            (points_type, breakdown_type, avg_type) = ('points', 'breakdown', 'avg_points') if stat_source == 0 else ('projected_points', 'projected_breakdown', 'projected_avg_points')
             if self.stats.get(scoring_period):
                 self.stats[scoring_period][points_type] = points
                 self.stats[scoring_period][breakdown_type] = breakdown
+                self.stats[scoring_period][avg_type] = avg_points
             else:
-                self.stats[scoring_period] = {points_type: points, breakdown_type: breakdown}
+                self.stats[scoring_period] = {points_type: points, breakdown_type: breakdown, avg_type: avg_points}
         self.total_points = self.stats.get(0, {}).get('points', 0)
         self.projected_total_points = self.stats.get(0, {}).get('projected_points', 0)
+        self.avg_points = self.stats.get(0, {}).get('avg_points', 0)
+        self.projected_avg_points = self.stats.get(0, {}).get('projected_avg_points', 0)
 
     def __repr__(self):
         return f'Player({self.name})'
