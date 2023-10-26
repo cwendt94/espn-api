@@ -5,10 +5,7 @@ class Team(object):
     def __init__(self, data, roster, schedule, year, **kwargs):
         self.team_id = data['id']
         self.team_abbrev = data['abbrev']
-        if year < 2023:
-            self.team_name = "%s %s" % (data.get('location', 'Unknown'), data.get('nickname', 'Unknown'))
-        else:
-            self.team_name = data.get('name', 'Unknown')
+        self.team_name = data.get('name', 'Unknown')
         self.division_id = data['divisionId']
         self.division_name = '' # set by caller
         self.wins = data['record']['overall']['wins']
