@@ -50,15 +50,12 @@ class BaseLeague(ABC):
         seasonId = data['seasonId']
 
         team_roster = {}
-        team_owners = {}
         for team in data['teams']:
             team_roster[team['id']] = team.get('roster', {})
-            team_owners[team['id']] = team.get('owners', [])
 
         for team in teams:
             roster = team_roster[team['id']]
-            owners = team_owners[team['id']]
-            self.teams.append(TeamClass(team, roster=roster, schedule=schedule, year=seasonId, pro_schedule=pro_schedule, owners=owners))
+            self.teams.append(TeamClass(team, roster=roster, schedule=schedule, year=seasonId, pro_schedule=pro_schedule))
 
         # sort by team ID
         self.teams = sorted(self.teams, key=lambda x: x.team_id, reverse=False)
