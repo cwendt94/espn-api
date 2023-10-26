@@ -39,7 +39,7 @@ class BaseLeague(ABC):
         else:
             self.current_week = self.scoringPeriodId if self.scoringPeriodId <= data['status']['finalScoringPeriod'] else data['status']['finalScoringPeriod']
         self.settings = SettingsClass(data['settings'])
-        self.members = data['members']
+        self.members = data.get('members', [])
         return data
 
     def _fetch_teams(self, data, TeamClass, pro_schedule = None):
