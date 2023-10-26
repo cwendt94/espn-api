@@ -6,6 +6,8 @@ class Team(object):
         self.team_id = data['id']
         self.team_abbrev = data['abbrev']
         self.team_name = data.get('name', 'Unknown')
+        if self.team_name == 'Unknown':
+            self.team_name = "%s %s" % (data.get('location', 'Unknown'), data.get('nickname', 'Unknown'))
         self.division_id = data['divisionId']
         self.division_name = '' # set by caller
         self.wins = data['record']['overall']['wins']
