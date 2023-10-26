@@ -36,6 +36,7 @@ class Team(object):
         self.mov = []
         self._fetch_schedule(schedule)
         self._fetch_roster(roster, year)
+        self.owners = data.get('owners', [])
 
     def __repr__(self):
         return 'Team(%s)' % (self.team_name, )

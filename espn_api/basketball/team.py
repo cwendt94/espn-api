@@ -29,6 +29,7 @@ class Team(object):
         
         self._fetch_roster(roster, year, kwargs.get('pro_schedule'))
         self._fetch_schedule(schedule)
+        self.owners = data.get('owners', [])
         
     def __repr__(self):
         return f'Team({self.team_name})'
