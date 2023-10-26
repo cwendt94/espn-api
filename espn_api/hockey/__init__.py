@@ -8,6 +8,7 @@ __all__ = ['League',
            ]
 
 from .league import League
+from .member import Member
 from .player import Player
 from .record import Record
 from .team import Team

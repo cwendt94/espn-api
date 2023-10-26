@@ -6,7 +6,7 @@ from .player import Player
 class Team(object):
     '''Teams are part of the league'''
 
-    def __init__(self, data, roster, schedule, year, **kwargs):
+    def __init__(self, data, member, roster, schedule, year, **kwargs):
         self.team_id = data['id']
         self.team_abbrev = data['abbrev']
         if year < 2023:
@@ -29,6 +29,9 @@ class Team(object):
 
         if 'valuesByStat' in data:
             self.stats = {STATS_MAP[i]: j for i, j in data['valuesByStat'].items()}
+        if member:
+            self.owner = "%s %s" % (member['firstName'],
+                                    member['lastName'])
         if 'logo' in data:
             self.logo_url = data['logo']
 

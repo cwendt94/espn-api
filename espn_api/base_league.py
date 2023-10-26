@@ -44,6 +44,7 @@ class BaseLeague(ABC):
         '''Fetch teams in league'''
         self.teams = []
         teams = data['teams']
+        members = data['members']
         schedule = data['schedule']
         seasonId = data['seasonId']
 
@@ -53,7 +54,14 @@ class BaseLeague(ABC):
 
         for team in teams:
             roster = team_roster[team['id']]
-            self.teams.append(TeamClass(team, roster=roster, schedule=schedule, year=seasonId, pro_schedule=pro_schedule))
+            for member in members:
+                # For league that is not full the team will not have a owner field
+                if 'owners' not in team or not team['owners']:
+                    member = None
+                    break
+                elif member['id'] == team['owners'][0]:
+                    break
+            self.teams.append(TeamClass(team, roster=roster, member=member, schedule=schedule, year=seasonId, pro_schedule=pro_schedule))
 
         # sort by team ID
         self.teams = sorted(self.teams, key=lambda x: x.team_id, reverse=False)
