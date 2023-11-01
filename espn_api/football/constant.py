@@ -57,7 +57,7 @@ PRO_TEAM_MAP = {
     10: 'TEN',
     11: 'IND',
     12: 'KC',
-    13: 'OAK',
+    13: 'LV',
     14: 'LAR',
     15: 'MIA',
     16: 'MIN',
