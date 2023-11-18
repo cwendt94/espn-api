@@ -49,13 +49,11 @@ class Player(object):
         self.projected_total_points = self.stats.get(0, {}).get('projected_points', 0)
         self.avg_points = self.stats.get(0, {}).get('avg_points', 0)
         self.projected_avg_points = self.stats.get(0, {}).get('projected_avg_points', 0)
-
             if not stat_source:
                 if not self.stats[scoring_period][breakdown_type]:
                     self.active_status = 'inactive'
                 else:
                     self.active_status = 'active'
-
 
     def __repr__(self):
         return f'Player({self.name})'
