@@ -8,10 +8,10 @@ class Player(object):
         self.name = json_parsing(data, 'fullName')
         self.playerId = json_parsing(data, 'id')
         self.position = POSITION_MAP.get(json_parsing(data, 'defaultPositionId') 
-                                        if json_parsing(data, 'defaultPositionId')>3 
+                                        if json_parsing(data, 'defaultPositionId') and json_parsing(data, 'defaultPositionId') > 3
                                         else json_parsing(data, 'defaultPositionId')-1, '')
         self.lineupSlot = POSITION_MAP.get(data.get('lineupSlotId') 
-                                           if data.get('lineupSlotId')>3 
+                                           if data.get('lineupSlotId') and data.get('lineupSlotId') > 3 
                                            else data.get('lineupSlotId')-1, '')
         self.eligibleSlots = [POSITION_MAP.get(pos, '') for pos in json_parsing(data, 'eligibleSlots')]
         self.acquisitionType = json_parsing(data, 'acquisitionType')
