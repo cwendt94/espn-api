@@ -7,7 +7,9 @@ class Player(object):
     def __init__(self, data):
         self.name = json_parsing(data, 'fullName')
         self.playerId = json_parsing(data, 'id')
-        self.position = POSITION_MAP.get(json_parsing(data, 'defaultPositionId'), '')
+        self.position = POSITION_MAP.get(json_parsing(data, 'defaultPositionId') - 1
+                                         if json_parsing(data, 'defaultPositionId') and json_parsing(data, 'defaultPositionId') <= 3 
+                                         else json_parsing(data, 'defaultPositionId'), '')
         self.lineupSlot = POSITION_MAP.get(data.get('lineupSlotId'), '')
         self.eligibleSlots = [POSITION_MAP.get(pos, '') for pos in json_parsing(data, 'eligibleSlots')]
         self.acquisitionType = json_parsing(data, 'acquisitionType')

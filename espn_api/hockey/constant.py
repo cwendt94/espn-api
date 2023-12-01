@@ -1,20 +1,23 @@
 #Constants
 POSITION_MAP = {
-    # Remaining: F, IR, Util
-    0 : '0' # IR?
-    , 1 : 'Center'
-    , 2 : 'Left Wing'
-    , 3 : 'Right Wing'
+    0 : 'Center'
+    , 1 : 'Left Wing'
+    , 2 : 'Right Wing'
+    , 3 : 'Forward'
     , 4 : 'Defense'
     , 5 : 'Goalie'
-    , 6 : '6' # Forward ?
-    , 7 : '7' # Goalie, F (Goalie Bench?)
-    , 8 : '8' # Goalie, F
-    , 'Center': 1
-    , 'Left Wing' : 2
-    , 'Right Wing' : 3
+    , 6 : 'Util'
+    , 7 : 'Bench'
+    , 8 : 'IR'
+    , 'Center': 0
+    , 'Left Wing' : 1
+    , 'Right Wing' : 2
+    , 'Forward' : 3
     , 'Defense' : 4
     , 'Goalie' : 5
+    , 'Util' : 6
+    , 'Bench' : 7
+    , 'IR' : 8
 }
 
 STATS_IDENTIFIER = {
