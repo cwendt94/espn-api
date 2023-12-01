@@ -27,6 +27,7 @@ class Player(object):
         self.percent_owned = round(player.get('ownership', {}).get('percentOwned', -1), 2)
         self.percent_started = round(player.get('ownership', {}).get('percentStarted', -1), 2)
 
+        self.active_status = 'bye'
         player_stats = player.get('stats', [])
         for stats in player_stats:
             if stats.get('seasonId') != year:
@@ -44,6 +45,11 @@ class Player(object):
                 self.stats[scoring_period][avg_type] = avg_points
             else:
                 self.stats[scoring_period] = {points_type: points, breakdown_type: breakdown, avg_type: avg_points}
+            if not stat_source:
+                if not self.stats[scoring_period][breakdown_type]:
+                    self.active_status = 'inactive'
+                else:
+                    self.active_status = 'active'
         self.total_points = self.stats.get(0, {}).get('points', 0)
         self.projected_total_points = self.stats.get(0, {}).get('projected_points', 0)
         self.avg_points = self.stats.get(0, {}).get('avg_points', 0)
