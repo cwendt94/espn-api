@@ -37,7 +37,6 @@ class Team(object):
         self._fetch_schedule(schedule)
         self._fetch_roster(roster, year)
         self.owners = kwargs.get('owners', [])
-        print(self.owners)
 
     def __repr__(self):
         return 'Team(%s)' % (self.team_name, )
