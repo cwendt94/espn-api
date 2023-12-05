@@ -34,6 +34,9 @@ class BaseLeague(ABC):
         self.scoringPeriodId = data['scoringPeriodId']
         self.firstScoringPeriod = data['status']['firstScoringPeriod']
         self.finalScoringPeriod = data['status']['finalScoringPeriod']
+        self.previousSeasons = [
+            year for year in data["status"]["previousSeasons"] if year < self.year
+        ]
         if self.year < 2018:
             self.current_week = data['scoringPeriodId']
         else:
