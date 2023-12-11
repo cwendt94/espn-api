@@ -115,6 +115,41 @@ class League(BaseLeague):
     def standings(self) -> List[Team]:
         standings = sorted(self.teams, key=lambda x: x.final_standing if x.final_standing != 0 else x.standing, reverse=False)
         return standings
+    
+    def standings_weekly(self, week: int = None) -> List[Team]:
+        """
+        Returns league standings for the end of a particular week by calculating
+        wins, losses, points for and points against from week 1 to the week provided.
+        
+        Args:
+            week (int, optional): Week to return standings. Defaults to None.
+
+        Returns:
+            List[Team]: List of ESPN FF team objects in order of standing.
+        """
+        if not week or week <= 0 or week > self.current_week:
+            week = self.current_week
+
+        # Initialize a dictionary to hold team records
+        team_records = {team.team_id: {'wins': 0, 'losses': 0, 'points_for': 0, 'points_against': 0} for team in self.teams}
+
+        # Calculate wins, losses, points for, and points against for each team
+        for team in self.teams:
+            for i in range(week):
+                opponent = team.schedule[i]
+                team_points = team.scores[i]
+                opponent_points = opponent.scores[i]
+                if team_points > opponent_points:
+                    team_records[team.team_id]['wins'] += 1
+                else:
+                    team_records[team.team_id]['losses'] += 1
+                team_records[team.team_id]['points_for'] += team_points
+                team_records[team.team_id]['points_against'] += opponent_points
+
+        # Sort teams based on wins, then points for, and then points against
+        sorted_teams = sorted(self.teams, key=lambda x: (team_records[x.team_id]['wins'], team_records[x.team_id]['losses'], team_records[x.team_id]['points_for'], -team_records[x.team_id]['points_against']), reverse=True)
+
+        return sorted_teams
 
     def top_scorer(self) -> Team:
         most_pf = sorted(self.teams, key=lambda x: x.points_for, reverse=True)

@@ -211,6 +211,24 @@ class LeagueTest(TestCase):
         valid_week = league.power_rankings(13)
         self.assertEqual(valid_week[0][0], '71.15')
         self.assertEqual(repr(valid_week[0][1]), 'Team(Perscription Mixon)')
+        
+    @requests_mock.Mocker()
+    def test_standings_weekly(self, m):
+        self.mock_setUp(m)
+
+        league = League(self.league_id, self.season)
+
+        invalid_week = league.standings_weekly(0)
+        current_week = league.standings_weekly(league.current_week)
+        self.assertEqual(invalid_week, current_week)
+
+        empty_week = league.standings_weekly()
+        self.assertEqual(empty_week, current_week)
+
+        valid_week = league.standings_weekly(13)
+        self.assertEqual(valid_week[0].standing, 1)
+        #self.assertEqual(valid_week[0][0], '71.15')
+        #self.assertEqual(repr(valid_week[0][1]), 'Team(Perscription Mixon)')
 
     @requests_mock.Mocker()
     @mock.patch.object(League, '_get_pro_schedule')   
