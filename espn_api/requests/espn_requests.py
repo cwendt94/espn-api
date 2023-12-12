@@ -44,7 +44,7 @@ class EspnFantasyRequests(object):
 
         self.LEAGUE_ENDPOINT = FANTASY_BASE_ENDPOINT + FANTASY_SPORTS[sport]
         # older season data is stored at a different endpoint
-        if year < 2018:
+        if year <= 2018:
             self.LEAGUE_ENDPOINT += "/leagueHistory/" + str(league_id) + "?seasonId=" + str(year)
         else:
             self.LEAGUE_ENDPOINT += "/seasons/" + str(year) + "/segments/0/leagues/" + str(league_id)
