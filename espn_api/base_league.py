@@ -28,7 +28,10 @@ class BaseLeague(ABC):
         return 'League(%s, %s)' % (self.league_id, self.year, )
 
     def _fetch_league(self, SettingsClass = BaseSettings):
-        data = self.espn_request.get_league()
+        if self.year == 2018:
+            data = self.espn_request.get_league()[0]
+        else:
+            data = self.espn_request.get_league()
 
         self.currentMatchupPeriod = data['status']['currentMatchupPeriod']
         self.scoringPeriodId = data['scoringPeriodId']
