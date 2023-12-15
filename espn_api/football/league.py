@@ -182,7 +182,11 @@ class League(BaseLeague):
         params = {
             'view': 'mMatchupScore',
         }
-        data = self.espn_request.league_get(params=params)
+        if self.year == 2018:
+            data = self.espn_request.league_get(params=params)[0]
+        else:
+             data = self.espn_request.league_get(params=params)
+            
 
         schedule = data['schedule']
         matchups = [Matchup(matchup) for matchup in schedule if matchup['matchupPeriodId'] == week]
