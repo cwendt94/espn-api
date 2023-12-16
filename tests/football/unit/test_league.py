@@ -81,7 +81,16 @@ class LeagueTest(TestCase):
         standings = league.standings()
         self.assertEqual(standings[0].final_standing, 1)
 
-    @requests_mock.Mocker()        
+    @requests_mock.Mocker()
+    def test_standings_weekly(self, m):
+        self.mock_setUp(m)
+
+        league = League(self.league_id, self.season)
+
+        valid_week = league.standings_weekly(1)
+        self.assertEqual(valid_week[0].wins > valid_week[-1].wins, True)
+
+    @requests_mock.Mocker()
     def test_top_scorer(self, m):
         self.mock_setUp(m)
 
