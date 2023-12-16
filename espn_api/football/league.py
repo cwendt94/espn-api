@@ -116,7 +116,7 @@ class League(BaseLeague):
         standings = sorted(self.teams, key=lambda x: x.final_standing if x.final_standing != 0 else x.standing, reverse=False)
         return standings
 
-    def standings_weekly(self, week: int) -> pd.DataFrame:
+    def standings_weekly(self, week: int) -> List[Dict]:
         """This is the main function to get the standings for a given week.
 
         It controls the tiebreaker hierarchy and calls the recursive League()._sort_team_data_list function.
@@ -133,7 +133,7 @@ class League(BaseLeague):
             week (int): Week to get the standings for
 
         Returns:
-            pd.DataFrame: Sorted standings list
+            List[Dict]: Sorted standings list
         """
         # Get standings data for each team up to the given week
         list_of_team_data = []
@@ -157,6 +157,7 @@ class League(BaseLeague):
             )
             list_of_team_data.append(team_data)
 
+        # Identify the proper tiebreaker hierarchy
         if self.settings.playoff_seed_tie_rule == "TOTAL_POINTS_SCORED":
             tiebreaker_hierarchy = [
                 (self._sort_by_win_pct, "win_pct"),
