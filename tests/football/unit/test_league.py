@@ -87,15 +87,17 @@ class LeagueTest(TestCase):
 
         league = League(self.league_id, self.season)
 
-        week = 1
-        standings = league.standings_weekly(1)
-        best_team_after_week = sum(
-            [1 for outcome in standings[0].outcomes[:week] if outcome == "W"]
-        )
-        worst_team_after_week = sum(
-            [1 for outcome in standings[-1].outcomes[:week] if outcome == "W"]
-        )
-        self.assertEqual(best_team_after_week >= worst_team_after_week, True)
+        # Test various weeks
+        week1_standings = [team.team_id for team in league.standings_weekly(1)]
+        self.assertEqual(week1_standings, [3, 11, 2, 10, 7, 8, 4, 5, 9, 1])
+
+        week4_standings = [team.team_id for team in league.standings_weekly(4)]
+        self.assertEqual(week4_standings, [2, 7, 11, 4, 3, 9, 1, 8, 5, 10])
+
+        # # Does not work with the playoffs
+        # week13_standings = [team.team_id for team in league.standings_weekly(13)]
+        # final_standings = [team.team_id for team in league.standings()]
+        # self.assertEqual(week13_standings, final_standings)
 
     @requests_mock.Mocker()
     def test_top_scorer(self, m):
