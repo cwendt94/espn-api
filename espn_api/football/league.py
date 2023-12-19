@@ -13,6 +13,15 @@ from .activity import Activity
 from .settings import Settings
 from .utils import power_points, two_step_dominance
 from .constant import POSITION_MAP, ACTIVITY_MAP
+from .helper import (
+    sort_by_coin_flip,
+    sort_by_division_record,
+    sort_by_head_to_head,
+    sort_by_points_against,
+    sort_by_points_for,
+    sort_by_win_pct,
+    sort_team_data_list,
+)
 
 
 class League(BaseLeague):
@@ -116,7 +125,7 @@ class League(BaseLeague):
         standings = sorted(self.teams, key=lambda x: x.final_standing if x.final_standing != 0 else x.standing, reverse=False)
         return standings
 
-    def standings_weekly(self, week: int) -> List[Dict]:
+    def standings_weekly(self, week: int) -> List[Team]:
         """This is the main function to get the standings for a given week.
 
         It controls the tiebreaker hierarchy and calls the recursive League()._sort_team_data_list function.
@@ -151,6 +160,7 @@ class League(BaseLeague):
                 "points_against": sum(
                     [team.schedule[w].scores[w] for w in range(week)]
                 ),
+                "schedule": team.schedule[:week],
             }
             team_data["win_pct"] = (team_data["wins"] + team_data["ties"] / 2) / sum(
                 [1 for outcome in team.outcomes[:week] if outcome in ["W", "T", "L"]]
@@ -160,21 +170,21 @@ class League(BaseLeague):
         # Identify the proper tiebreaker hierarchy
         if self.settings.playoff_seed_tie_rule == "TOTAL_POINTS_SCORED":
             tiebreaker_hierarchy = [
-                (self._sort_by_win_pct, "win_pct"),
-                (self._sort_by_points_for, "points_for"),
-                (self._sort_by_head_to_head, "h2h_wins"),
-                (self._sort_by_division_record, "division_record"),
-                (self._sort_by_points_against, "points_against"),
-                (self._sort_by_coin_flip, "coin_flip"),
+                (sort_by_win_pct, "win_pct"),
+                (sort_by_points_for, "points_for"),
+                (sort_by_head_to_head, "h2h_wins"),
+                (sort_by_division_record, "division_record"),
+                (sort_by_points_against, "points_against"),
+                (sort_by_coin_flip, "coin_flip"),
             ]
         elif self.settings.playoff_seed_tie_rule == "H2H_RECORD":
             tiebreaker_hierarchy = [
-                (self._sort_by_win_pct, "win_pct"),
-                (self._sort_by_head_to_head, "h2h_wins"),
-                (self._sort_by_points_for, "points_for"),
-                (self._sort_by_division_record, "division_record"),
-                (self._sort_by_points_against, "points_against"),
-                (self._sort_by_coin_flip, "coin_flip"),
+                (sort_by_win_pct, "win_pct"),
+                (sort_by_head_to_head, "h2h_wins"),
+                (sort_by_points_for, "points_for"),
+                (sort_by_division_record, "division_record"),
+                (sort_by_points_against, "points_against"),
+                (sort_by_coin_flip, "coin_flip"),
             ]
         else:
             raise ValueError(
@@ -189,19 +199,19 @@ class League(BaseLeague):
                 for team_data in list_of_team_data
                 if team_data["division_id"] == division_id
             ]
-            division_winner = self._sort_team_data_list(
-                division_teams, tiebreaker_hierarchy
-            )[0]
+            division_winner = sort_team_data_list(division_teams, tiebreaker_hierarchy)[
+                0
+            ]
             division_winners.append(division_winner)
             list_of_team_data.remove(division_winner)
 
         # Sort the division winners
-        sorted_division_winners = self._sort_team_data_list(
+        sorted_division_winners = sort_team_data_list(
             division_winners, tiebreaker_hierarchy
         )
 
         # Then sort the rest of the teams
-        sorted_rest_of_field = self._sort_team_data_list(
+        sorted_rest_of_field = sort_team_data_list(
             list_of_team_data, tiebreaker_hierarchy
         )
 
@@ -402,186 +412,3 @@ class League(BaseLeague):
             for msg in msgs:
                 messages.append(msg)
         return messages
-
-    def _build_division_record_dict(self) -> Dict:
-        """Create a DataFrame with each team's divisional record."""
-        # Get the list of teams
-        team_ids = [team.team_id for team in self.teams]
-
-        # Create a dictionary with each team's divisional record
-        div_outcomes = {
-            team.team_id: {"wins": 0, "divisional_games": 0} for team in self.teams
-        }
-
-        # Loop through each team's schedule and outcomes and build the dictionary
-        for team in self.teams:
-            for opp, outcome in zip(team.schedule[:week], team.outcomes[:week]):
-                if team.division_id == opp.division_id:
-                    if outcome == "W":
-                        div_outcomes[team.team_id]["wins"] += 1
-                    if outcome == "T":
-                        div_outcomes[team.team_id]["wins"] += 0.5
-
-                    div_outcomes[team.team_id]["divisional_games"] += 1
-
-        # Calculate the divisional record
-        div_record = {
-            team_id: (
-                div_outcomes[team_id]["wins"]
-                / max(div_outcomes[team_id]["divisional_games"], 1)
-            )
-            for team_id in team_ids
-        }
-
-        return div_record
-
-    def _build_h2h_dict(teams: List[Team]) -> Dict:
-        """Create a dictionary with each team's divisional record."""
-
-        # Get the list of teams
-        team_ids = [team.team_id for team in teams]
-
-        # Create a dictionary with each team's head to head record
-        h2h_outcomes = {
-            team.team_id: {opp.team_id: {"wins": 0, "h2h_games": 0} for opp in teams}
-            for team in teams
-        }
-
-        # Loop through each team's schedule and outcomes and build the dictionary
-        for team in teams:
-            for opp, outcome in zip(team.schedule[:week], team.outcomes[:week]):
-                if outcome == "W":
-                    h2h_outcomes[team.team_id][opp.team_id]["wins"] += 1
-                if outcome == "T":
-                    h2h_outcomes[team.team_id][opp.team_id]["wins"] += 0.5
-
-                h2h_outcomes[team.team_id][opp.team_id]["h2h_games"] += 1
-
-        # Calculate the head to head record
-        h2h_record = {
-            team_id: {
-                opp_id: (
-                    h2h_outcomes[team_id][opp_id]["wins"]
-                    / max(h2h_outcomes[team_id][opp_id]["h2h_games"], 1)
-                )
-                for opp_id in team_ids
-            }
-            for team_id in team_ids
-        }
-
-        return h2h_record
-
-    def _sort_by_win_pct(self, team_data_list: List[Dict]) -> List[Dict]:
-        """Take a list of team standings data and sort it using the TOTAL_POINTS_SCORED tiebreaker"""
-        return sorted(team_data_list, key=lambda x: x["win_pct"], reverse=True)
-
-    def _sort_by_points_for(self, team_data_list: List[Dict]) -> List[Dict]:
-        """Take a list of team standings data and sort it using the TOTAL_POINTS_SCORED tiebreaker"""
-        return sorted(team_data_list, key=lambda x: x["points_for"], reverse=True)
-
-    def _sort_by_division_record(self, team_data_list: List[Dict]) -> List[Dict]:
-        """Take a list of team standings data and sort it using the 3rd level tiebreaker"""
-        division_records = self._build_division_record_dict(self)
-        for team_data in team_data_list:
-            team_data["division_record"] = division_records[team_data["team_id"]]
-        return sorted(team_data_list, key=lambda x: x["division_record"], reverse=True)
-
-    def _sort_by_points_against(self, team_data_list: List[Dict]) -> List[Dict]:
-        """Take a list of team standings data and sort it using the 4th level tiebreaker"""
-        return sorted(team_data_list, key=lambda x: x["points_against"], reverse=True)
-
-    def _sort_by_coin_flip(self, team_data_list: List[Dict]) -> List[Dict]:
-        """Take a list of team standings data and sort it using the 5th level tiebreaker"""
-        for team_data in team_data_list:
-            team_data["coin_flip"] = random.random()
-        return sorted(team_data_list, key=lambda x: x["coin_flip"], reverse=True)
-
-    def _sort_by_head_to_head(
-        self,
-        team_data_list: List[Dict],
-    ) -> List[Dict]:
-        """Take a list of team standings data and sort it using the H2H_RECORD tiebreaker"""
-        # If there is only one team, return the dataframe as-is
-        if len(team_data_list) == 1:
-            return team_data_list
-
-        # Filter the H2H DataFrame to only include the teams in question
-        h2h_dict = self._build_h2h_dict(teams)
-
-        # If there are only two teams, sort descending by H2H wins
-        if len(h2h_dict) == 2:
-            for team_data in team_data_list:
-                team_data["h2h_wins"] = h2h_dict[team_data["team_id"]]["h2h_wins"]
-            return sorted(team_data_list, key=lambda x: x["h2h_wins"], reverse=True)
-
-        # If there are more than two teams...
-        if len(h2h_dict) > 2:
-            # Check if the teams have all played each other an equal number of times
-            matchup_counts = [
-                h2h_dict[opp]["h2h_games"]
-                for opp in h2h_dict[team].keys()
-                for team in h2h_dict.keys()
-            ]
-            if len(set(matchup_counts)) == 1:
-                # All teams have played each other an equal number of times
-                # Sort the teams by total H2H wins against each other
-                for team_data in team_data_list:
-                    team_data["h2h_wins"] = h2h_dict[team_data["team_id"]]["h2h_wins"]
-                return sorted(team_data_list, key=lambda x: x["h2h_wins"], reverse=True)
-            else:
-                # All teams have not played each other an equal number of times
-                # This tiebreaker is invalid
-                for team_data in team_data_list:
-                    team_data["h2h_wins"] = 0
-                return team_data_list
-
-    def _sort_team_data_list(
-        self,
-        team_data_list: List[Dict],
-        tiebreaker_hierarchy: List[Tuple[Callable, str]],
-    ) -> List[Dict]:
-        """This recursive function sorts a list of team standings data by the tiebreaker hierarchy.
-        It iterates through each tiebreaker, sorting any remaning ties by the next tiebreaker.
-
-        Args:
-            team_data_list (List[Dict]): List of team data dictionaries
-            tiebreaker_hierarchy (List[Tuple[Callable, str]]): List of tiebreaker functions and columns to sort by
-
-        Returns:
-            List[Dict]: Sorted list of team data dictionaries
-        """
-        # If there are no more tiebreakers, return the standings list as-is
-        if not tiebreaker_hierarchy:
-            return team_data_list
-
-        # If there is only one team to sort, return the standings list as-is
-        if len(team_data_list) == 1:
-            return team_data_list
-
-        # Get the tiebreaker function and column name to group by
-        tiebreaker_function = tiebreaker_hierarchy[0][0]
-        tiebreaker_col = tiebreaker_hierarchy[0][1]
-
-        # Apply the tiebreaker function to the standings list
-        team_data_list = tiebreaker_function(team_data_list)
-
-        # Loop through each remaining unique tiebreaker value to see if ties remain
-        sorted_team_data_list = []
-        for val in sorted(
-            set([team_data[tiebreaker_col] for team_data in team_data_list]),
-            reverse=True,
-        ):
-            # Filter the standings list to only include the teams with the current tiebreaker value
-            team_data_subset = [
-                team_data
-                for team_data in team_data_list
-                if team_data[tiebreaker_col] == val
-            ]
-
-            # Append the sorted subset to the final sorted standings list
-            sorted_team_data_list = sorted_team_data_list + self._sort_team_data_list(
-                team_data_subset,
-                tiebreaker_hierarchy[1:],
-            )
-
-        return sorted_team_data_list
