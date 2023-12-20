@@ -110,6 +110,11 @@ class LeagueTest(TestCase):
         # final_standings = [team.team_id for team in league.standings()]
         # self.assertEqual(week13_standings, final_standings)
 
+        # Test invalid playoff seeding rule
+        with self.assertRaises(Exception):
+            league.settings.playoff_seed_tie_rule = "NOT_A_REAL_RULE"
+            league.standings(week=1)
+
     def get_list_of_team_data(self, league: League, week: int):
         list_of_team_data = []
         for team in league.teams:
@@ -233,10 +238,8 @@ class LeagueTest(TestCase):
 
         league = League(self.league_id, self.season)
 
+        week1_teams_data = self.get_list_of_team_data(league, 1)
         week10_teams_data = self.get_list_of_team_data(league, 10)
-        list_of_team_data = [
-            team for team in week10_teams_data if team["team_id"] in (1, 2)
-        ]
         division_record_dict = build_division_record_dict(week10_teams_data)
 
         # Assert that sort_by_win_pct is correct
@@ -255,20 +258,31 @@ class LeagueTest(TestCase):
                 sorted_list_of_team_data[i + 1]["points_for"],
             )
 
+        # Assert that sort_by_head_to_head is correct - 1 team
+        sorted_list_of_team_data = sort_by_head_to_head(week10_teams_data[:1].copy())
+        self.assertEqual(sorted_list_of_team_data == week10_teams_data[:1], True)
+
         # Assert that sort_by_head_to_head is correct - 2 teams
         sorted_list_of_team_data = sort_by_head_to_head(
             [team for team in week10_teams_data if team["team_id"] in (1, 2)]
         )
         self.assertEqual(sorted_list_of_team_data[0]["team_id"], 1)
 
-        # Assert that sort_by_head_to_head is correct - 3 teams
+        # Assert that sort_by_head_to_head is correct - 3 teams, valid
         sorted_list_of_team_data = sort_by_head_to_head(
             [team for team in week10_teams_data if team["team_id"] in (1, 2, 3)]
         )
-        # Team 1 is undefeated vs team 2
         self.assertEqual(sorted_list_of_team_data[0]["team_id"], 1)
         self.assertEqual(sorted_list_of_team_data[1]["team_id"], 3)
         self.assertEqual(sorted_list_of_team_data[2]["team_id"], 2)
+
+        # Assert that sort_by_head_to_head is correct - 3 teams, invalid
+        sorted_list_of_team_data = sort_by_head_to_head(
+            [team for team in week1_teams_data if team["team_id"] in (1, 2, 3)]
+        )
+        self.assertEqual(sorted_list_of_team_data[0]["h2h_wins"], 0)
+        self.assertEqual(sorted_list_of_team_data[1]["h2h_wins"], 0)
+        self.assertEqual(sorted_list_of_team_data[2]["h2h_wins"], 0)
 
         # Assert that sort_by_division_record is correct
         sorted_list_of_team_data = sort_by_division_record(week10_teams_data)
