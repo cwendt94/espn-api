@@ -39,7 +39,9 @@ def build_h2h_dict(team_data_list: List[Dict]) -> Dict:
     # Create a dictionary with each team's head to head record
     h2h_outcomes = {
         team_data["team_id"]: {
-            opp["team_id"]: {"h2h_wins": 0, "h2h_games": 0} for opp in team_data_list
+            opp["team_id"]: {"h2h_wins": 0, "h2h_games": 0}
+            for opp in team_data_list
+            if opp["team_id"] != team_data["team_id"]
         }
         for team_data in team_data_list
     }
@@ -126,7 +128,7 @@ def sort_by_head_to_head(
         for team_data in team_data_list:
             team_data["h2h_wins"] = sum(
                 h2h_dict[team_data["team_id"]][opp_id]["h2h_wins"]
-                for opp_id in h2h_dict.keys()
+                for opp_id in h2h_dict[team_data["team_id"]].keys()
             )
         return sorted(team_data_list, key=lambda x: x["h2h_wins"], reverse=True)
 
@@ -137,9 +139,9 @@ def sort_by_head_to_head(
 
         # Check if the teams have all played each other an equal number of times
         matchup_counts = [
-            h2h_dict[opp]["h2h_games"]
-            for opp in h2h_dict[team_id].keys()
+            h2h_dict[team_id][opp_id]["h2h_games"]
             for team_id in h2h_dict.keys()
+            for opp_id in h2h_dict[team_id].keys()
         ]
         if len(set(matchup_counts)) == 1:
             # All teams have played each other an equal number of times
@@ -147,7 +149,7 @@ def sort_by_head_to_head(
             for team_data in team_data_list:
                 team_data["h2h_wins"] = sum(
                     h2h_dict[team_data["team_id"]][opp_id]["h2h_wins"]
-                    for opp_id in h2h_dict.keys()
+                    for opp_id in h2h_dict[team_data["team_id"]].keys()
                 )
             return sorted(team_data_list, key=lambda x: x["h2h_wins"], reverse=True)
         else:

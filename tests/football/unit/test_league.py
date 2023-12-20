@@ -255,12 +255,20 @@ class LeagueTest(TestCase):
                 sorted_list_of_team_data[i + 1]["points_for"],
             )
 
-        # Assert that sort_by_head_to_head is correct
+        # Assert that sort_by_head_to_head is correct - 2 teams
         sorted_list_of_team_data = sort_by_head_to_head(
-            [team for team in list_of_team_data if team["team_id"] in (1, 2)]
+            [team for team in week10_teams_data if team["team_id"] in (1, 2)]
+        )
+        self.assertEqual(sorted_list_of_team_data[0]["team_id"], 1)
+
+        # Assert that sort_by_head_to_head is correct - 3 teams
+        sorted_list_of_team_data = sort_by_head_to_head(
+            [team for team in week10_teams_data if team["team_id"] in (1, 2, 3)]
         )
         # Team 1 is undefeated vs team 2
         self.assertEqual(sorted_list_of_team_data[0]["team_id"], 1)
+        self.assertEqual(sorted_list_of_team_data[1]["team_id"], 3)
+        self.assertEqual(sorted_list_of_team_data[2]["team_id"], 2)
 
         # Assert that sort_by_division_record is correct
         sorted_list_of_team_data = sort_by_division_record(week10_teams_data)
