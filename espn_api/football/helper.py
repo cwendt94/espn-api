@@ -39,7 +39,7 @@ def build_h2h_dict(team_data_list: List[Dict]) -> Dict:
     # Create a dictionary with each team's head to head record
     h2h_outcomes = {
         team_data["team_id"]: {
-            opp["team_id"]: {"wins": 0, "h2h_games": 0} for opp in team_data_list
+            opp["team_id"]: {"h2h_wins": 0, "h2h_games": 0} for opp in team_data_list
         }
         for team_data in team_data_list
     }
@@ -54,30 +54,26 @@ def build_h2h_dict(team_data_list: List[Dict]) -> Dict:
 
             # Add the outcome to the dictionary
             if outcome == "W":
-                h2h_outcomes[team.team_id][opp.team_id]["wins"] += 1
+                h2h_outcomes[team.team_id][opp.team_id]["h2h_wins"] += 1
             if outcome == "T":
-                h2h_outcomes[team.team_id][opp.team_id]["wins"] += 0.5
+                h2h_outcomes[team.team_id][opp.team_id]["h2h_wins"] += 0.5
 
             h2h_outcomes[team.team_id][opp.team_id]["h2h_games"] += 1
 
-    # Calculate the head to head record
-    h2h_record = {
-        team_data["team_id"]: {
-            opp_data["team_id"]: (
-                h2h_outcomes[team_data["team_id"]][opp_data["team_id"]]["wins"]
-                / max(
-                    h2h_outcomes[team_data["team_id"]][opp_data["team_id"]][
-                        "h2h_games"
-                    ],
-                    1,
-                )
-            )
-            for opp_data in team_data_list
-        }
-        for team_data in team_data_list
-    }
+    # # Calculate the head to head record
+    # for team_data in team_data_list:
+    #     for opp_data in team_data_list:
+    #         h2h_outcomes[team_data["team_id"]][opp_data["team_id"]]["h2h_record"] = (
+    #             h2h_outcomes[team_data["team_id"]][opp_data["team_id"]]["h2h_wins"]
+    #             / max(
+    #                 h2h_outcomes[team_data["team_id"]][opp_data["team_id"]][
+    #                     "h2h_games"
+    #                 ],
+    #                 1,
+    #             )
+    #         )
 
-    return h2h_record
+    return h2h_outcomes
 
 
 def sort_by_win_pct(team_data_list: List[Dict]) -> List[Dict]:
@@ -126,8 +122,12 @@ def sort_by_head_to_head(
         # Filter the H2H DataFrame to only include the teams in question
         h2h_dict = build_h2h_dict(team_data_list)
 
+        # Sum the H2H wins against all tied opponents
         for team_data in team_data_list:
-            team_data["h2h_wins"] = h2h_dict[team_data["team_id"]]["h2h_wins"]
+            team_data["h2h_wins"] = sum(
+                h2h_dict[team_data["team_id"]][opp_id]["h2h_wins"]
+                for opp_id in h2h_dict.keys()
+            )
         return sorted(team_data_list, key=lambda x: x["h2h_wins"], reverse=True)
 
     # If there are more than two teams...
@@ -145,7 +145,10 @@ def sort_by_head_to_head(
             # All teams have played each other an equal number of times
             # Sort the teams by total H2H wins against each other
             for team_data in team_data_list:
-                team_data["h2h_wins"] = h2h_dict[team_data["team_id"]]["h2h_wins"]
+                team_data["h2h_wins"] = sum(
+                    h2h_dict[team_data["team_id"]][opp_id]["h2h_wins"]
+                    for opp_id in h2h_dict.keys()
+                )
             return sorted(team_data_list, key=lambda x: x["h2h_wins"], reverse=True)
         else:
             # All teams have not played each other an equal number of times

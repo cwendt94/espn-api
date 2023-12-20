@@ -111,57 +111,70 @@ class LeagueTest(TestCase):
         # self.assertEqual(week13_standings, final_standings)
 
     @requests_mock.Mocker()
-    def test_standings_helpers(self, m):
+    def test_build_h2h_dict(self, m):
         self.mock_setUp(m)
 
         league = League(self.league_id, self.season)
 
-        def get_list_of_team_data(league, week):
-            list_of_team_data = []
-            for team in league.teams:
-                team_data = {
-                    "team": team,
-                    "team_id": team.team_id,
-                    "division_id": team.division_id,
-                    "wins": sum(
-                        [1 for outcome in team.outcomes[:week] if outcome == "W"]
-                    ),
-                    "ties": sum(
-                        [1 for outcome in team.outcomes[:week] if outcome == "T"]
-                    ),
-                    "losses": sum(
-                        [1 for outcome in team.outcomes[:week] if outcome == "L"]
-                    ),
-                    "points_for": sum(team.scores[:week]),
-                    "points_against": sum(
-                        [team.schedule[w].scores[w] for w in range(week)]
-                    ),
-                    "schedule": team.schedule[:week],
-                    "outcomes": team.outcomes[:week],
-                }
-                team_data["win_pct"] = (
-                    team_data["wins"] + team_data["ties"] / 2
-                ) / sum(
-                    [
-                        1
-                        for outcome in team.outcomes[:week]
-                        if outcome in ["W", "T", "L"]
-                    ]
-                )
-                list_of_team_data.append(team_data)
-            return list_of_team_data
-
         # Test build_h2h_dict and build_division_record_dict
-        # Week 1 - get data for teams 1 and 7
-        week1_teams_data = get_list_of_team_data(league, 1)
+        # Week 1
+        ## Get data for teams 1 and 7
+        week1_teams_data = self.get_list_of_team_data(league, 1)
         list_of_team_data = [
             team for team in week1_teams_data if team["team_id"] in (1, 7)
         ]
         h2h_dict = build_h2h_dict(list_of_team_data)
+
+        self.assertEqual(h2h_dict[1][7]["h2h_wins"], 0)  # Team 1 is 0/1 vs Team 7
+        self.assertEqual(h2h_dict[7][1]["h2h_wins"], 1)  # Team 7 is 1/1 vs Team 1
+        self.assertEqual(h2h_dict[1][7]["h2h_games"], 1)  # Team 1 is 0/1 vs Team 7
+        self.assertEqual(h2h_dict[7][1]["h2h_games"], 1)  # Team 7 is 1/1 vs Team 1
+
+        ## Test 3 teams head-to-head
+        list_of_team_data = [
+            team for team in week1_teams_data if team["team_id"] in (1, 2, 3)
+        ]
+        h2h_dict = build_h2h_dict(list_of_team_data)
+        self.assertEqual(h2h_dict[1][2]["h2h_games"], 0)  # Teams have not played
+        self.assertEqual(h2h_dict[1][3]["h2h_games"], 0)  # Teams have not played
+        self.assertEqual(h2h_dict[2][3]["h2h_games"], 0)  # Teams have not played
+
+        # Week 10
+        ## Get data for teams 1 and 7
+        week10_teams_data = self.get_list_of_team_data(league, 10)
+        list_of_team_data = [
+            team for team in week10_teams_data if team["team_id"] in (1, 7)
+        ]
+        h2h_dict = build_h2h_dict(list_of_team_data)
+
+        self.assertEqual(h2h_dict[1][7]["h2h_wins"], 1)  # Team 1 is 1/2 vs Team 7
+        self.assertEqual(h2h_dict[7][1]["h2h_wins"], 1)  # Team 7 is 1/2 vs Team 1
+        self.assertEqual(h2h_dict[1][7]["h2h_games"], 2)  # Team 1 is 0/1 vs Team 7
+        self.assertEqual(h2h_dict[7][1]["h2h_games"], 2)  # Team 7 is 1/1 vs Team 1
+
+        # Test 3 teams head-to-head
+        list_of_team_data = [
+            team for team in week10_teams_data if team["team_id"] in (1, 2, 3)
+        ]
+        h2h_dict = build_h2h_dict(list_of_team_data)
+        self.assertEqual(h2h_dict[1][2]["h2h_games"], 1)  # Teams have played 1x
+        self.assertEqual(h2h_dict[1][3]["h2h_games"], 1)  # Teams have played 1x
+        self.assertEqual(h2h_dict[2][3]["h2h_games"], 1)  # Teams have played 1x
+
+    @requests_mock.Mocker()
+    def test_build_division_records_dict(self, m):
+        self.mock_setUp(m)
+
+        league = League(self.league_id, self.season)
+
+        # Test build_h2h_dict and build_division_record_dict
+        # Week 1 - get data for teams 1 and 7
+        week1_teams_data = self.get_list_of_team_data(league, 1)
+        list_of_team_data = [
+            team for team in week1_teams_data if team["team_id"] in (1, 7)
+        ]
         division_record_dict = build_division_record_dict(list_of_team_data)
 
-        self.assertEqual(h2h_dict[1][7], 0)  # Team 1 has 0 wins out of 1 against Team 7
-        self.assertEqual(h2h_dict[7][1], 1)  # Team 7 has 1 win out of 1 against Team 1
         self.assertEqual(division_record_dict[1], 0)
         self.assertEqual(
             division_record_dict[7],
@@ -173,19 +186,12 @@ class LeagueTest(TestCase):
         )
 
         # Week 10 - get data for teams 1 and 7
-        week10_teams_data = get_list_of_team_data(league, 10)
+        week10_teams_data = self.get_list_of_team_data(league, 10)
         list_of_team_data = [
             team for team in week10_teams_data if team["team_id"] in (1, 7)
         ]
-        h2h_dict = build_h2h_dict(list_of_team_data)
         division_record_dict = build_division_record_dict(week10_teams_data)
 
-        self.assertEqual(
-            h2h_dict[1][7], 0.5
-        )  # Team 1 has 1 win out of 2 against Team 7
-        self.assertEqual(
-            h2h_dict[7][1], 0.5
-        )  # Team 7 has 1 win out of 2 against Team 1
         self.assertEqual(division_record_dict[1], 0.6)
         self.assertEqual(
             division_record_dict[7],
@@ -196,7 +202,18 @@ class LeagueTest(TestCase):
             ][0],
         )
 
-        # Test sorting functions
+    @requests_mock.Mocker()
+    def test_sort_functions(self, m):
+        self.mock_setUp(m)
+
+        league = League(self.league_id, self.season)
+
+        week10_teams_data = self.get_list_of_team_data(league, 10)
+        list_of_team_data = [
+            team for team in week10_teams_data if team["team_id"] in (1, 2)
+        ]
+        division_record_dict = build_division_record_dict(week10_teams_data)
+
         # Assert that sort_by_win_pct is correct
         sorted_list_of_team_data = sort_by_win_pct(week10_teams_data)
         for i in range(len(sorted_list_of_team_data) - 1):
