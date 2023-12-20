@@ -110,6 +110,31 @@ class LeagueTest(TestCase):
         # final_standings = [team.team_id for team in league.standings()]
         # self.assertEqual(week13_standings, final_standings)
 
+    def get_list_of_team_data(self, league: League, week: int):
+        list_of_team_data = []
+        for team in league.teams:
+            team_data = {
+                "team": team,
+                "team_id": team.team_id,
+                "division_id": team.division_id,
+                "wins": sum([1 for outcome in team.outcomes[:week] if outcome == "W"]),
+                "ties": sum([1 for outcome in team.outcomes[:week] if outcome == "T"]),
+                "losses": sum(
+                    [1 for outcome in team.outcomes[:week] if outcome == "L"]
+                ),
+                "points_for": sum(team.scores[:week]),
+                "points_against": sum(
+                    [team.schedule[w].scores[w] for w in range(week)]
+                ),
+                "schedule": team.schedule[:week],
+                "outcomes": team.outcomes[:week],
+            }
+            team_data["win_pct"] = (team_data["wins"] + team_data["ties"] / 2) / sum(
+                [1 for outcome in team.outcomes[:week] if outcome in ["W", "T", "L"]]
+            )
+            list_of_team_data.append(team_data)
+        return list_of_team_data
+
     @requests_mock.Mocker()
     def test_build_h2h_dict(self, m):
         self.mock_setUp(m)
