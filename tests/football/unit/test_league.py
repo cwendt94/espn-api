@@ -1,8 +1,19 @@
 from unittest import mock, TestCase
 from espn_api.football import League, BoxPlayer
+from espn_api.football.helper import (
+    build_division_record_dict,
+    build_h2h_dict,
+    sort_by_coin_flip,
+    sort_by_division_record,
+    sort_by_head_to_head,
+    sort_by_points_against,
+    sort_by_points_for,
+    sort_by_win_pct,
+)
 import requests_mock
 import json
 import io
+
 
 class LeagueTest(TestCase):
     def setUp(self):
@@ -98,6 +109,141 @@ class LeagueTest(TestCase):
         # week13_standings = [team.team_id for team in league.standings_weekly(13)]
         # final_standings = [team.team_id for team in league.standings()]
         # self.assertEqual(week13_standings, final_standings)
+
+    @requests_mock.Mocker()
+    def test_standings_helpers(self, m):
+        self.mock_setUp(m)
+
+        league = League(self.league_id, self.season)
+
+        def get_list_of_team_data(league, week):
+            list_of_team_data = []
+            for team in league.teams:
+                team_data = {
+                    "team": team,
+                    "team_id": team.team_id,
+                    "division_id": team.division_id,
+                    "wins": sum(
+                        [1 for outcome in team.outcomes[:week] if outcome == "W"]
+                    ),
+                    "ties": sum(
+                        [1 for outcome in team.outcomes[:week] if outcome == "T"]
+                    ),
+                    "losses": sum(
+                        [1 for outcome in team.outcomes[:week] if outcome == "L"]
+                    ),
+                    "points_for": sum(team.scores[:week]),
+                    "points_against": sum(
+                        [team.schedule[w].scores[w] for w in range(week)]
+                    ),
+                    "schedule": team.schedule[:week],
+                    "outcomes": team.outcomes[:week],
+                }
+                team_data["win_pct"] = (
+                    team_data["wins"] + team_data["ties"] / 2
+                ) / sum(
+                    [
+                        1
+                        for outcome in team.outcomes[:week]
+                        if outcome in ["W", "T", "L"]
+                    ]
+                )
+                list_of_team_data.append(team_data)
+            return list_of_team_data
+
+        # Test build_h2h_dict and build_division_record_dict
+        # Week 1 - get data for teams 1 and 7
+        week1_teams_data = get_list_of_team_data(league, 1)
+        list_of_team_data = [
+            team for team in week1_teams_data if team["team_id"] in (1, 7)
+        ]
+        h2h_dict = build_h2h_dict(list_of_team_data)
+        division_record_dict = build_division_record_dict(list_of_team_data)
+
+        self.assertEqual(h2h_dict[1][7], 0)  # Team 1 has 0 wins out of 1 against Team 7
+        self.assertEqual(h2h_dict[7][1], 1)  # Team 7 has 1 win out of 1 against Team 1
+        self.assertEqual(division_record_dict[1], 0)
+        self.assertEqual(
+            division_record_dict[7],
+            [
+                team_data["win_pct"]
+                for team_data in list_of_team_data
+                if team_data["team_id"] == 7
+            ][0],
+        )
+
+        # Week 10 - get data for teams 1 and 7
+        week10_teams_data = get_list_of_team_data(league, 10)
+        list_of_team_data = [
+            team for team in week10_teams_data if team["team_id"] in (1, 7)
+        ]
+        h2h_dict = build_h2h_dict(list_of_team_data)
+        division_record_dict = build_division_record_dict(week10_teams_data)
+
+        self.assertEqual(
+            h2h_dict[1][7], 0.5
+        )  # Team 1 has 1 win out of 2 against Team 7
+        self.assertEqual(
+            h2h_dict[7][1], 0.5
+        )  # Team 7 has 1 win out of 2 against Team 1
+        self.assertEqual(division_record_dict[1], 0.6)
+        self.assertEqual(
+            division_record_dict[7],
+            [
+                team_data["win_pct"]
+                for team_data in list_of_team_data
+                if team_data["team_id"] == 7
+            ][0],
+        )
+
+        # Test sorting functions
+        # Assert that sort_by_win_pct is correct
+        sorted_list_of_team_data = sort_by_win_pct(week10_teams_data)
+        for i in range(len(sorted_list_of_team_data) - 1):
+            self.assertGreaterEqual(
+                sorted_list_of_team_data[i]["win_pct"],
+                sorted_list_of_team_data[i + 1]["win_pct"],
+            )
+
+        # Assert that sort_by_points_for is correct
+        sorted_list_of_team_data = sort_by_points_for(week10_teams_data)
+        for i in range(len(sorted_list_of_team_data) - 1):
+            self.assertGreaterEqual(
+                sorted_list_of_team_data[i]["points_for"],
+                sorted_list_of_team_data[i + 1]["points_for"],
+            )
+
+        # Assert that sort_by_head_to_head is correct
+        sorted_list_of_team_data = sort_by_head_to_head(
+            [team for team in list_of_team_data if team["team_id"] in (1, 2)]
+        )
+        # Team 1 is undefeated vs team 2
+        self.assertEqual(sorted_list_of_team_data[0]["team_id"], 1)
+
+        # Assert that sort_by_division_record is correct
+        sorted_list_of_team_data = sort_by_division_record(week10_teams_data)
+        for i in range(len(sorted_list_of_team_data) - 1):
+            self.assertGreaterEqual(
+                division_record_dict[sorted_list_of_team_data[i]["team_id"]],
+                division_record_dict[sorted_list_of_team_data[i + 1]["team_id"]],
+            )
+
+        # Assert that sort_by_points_against is correct
+        sorted_list_of_team_data = sort_by_points_against(week10_teams_data)
+        for i in range(len(sorted_list_of_team_data) - 1):
+            self.assertGreaterEqual(
+                sorted_list_of_team_data[i]["points_against"],
+                sorted_list_of_team_data[i + 1]["points_against"],
+            )
+
+        # Assert that sort_by_coin_flip is not deterministic
+        standings_list = []
+        for i in range(5):
+            sorted_list_of_team_data = sort_by_coin_flip(week10_teams_data)
+            standings_list.append(
+                (team["team_id"] for team in sorted_list_of_team_data)
+            )
+        self.assertGreater(len(set(standings_list)), 1)
 
     @requests_mock.Mocker()
     def test_top_scorer(self, m):

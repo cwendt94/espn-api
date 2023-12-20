@@ -161,6 +161,7 @@ class League(BaseLeague):
                     [team.schedule[w].scores[w] for w in range(week)]
                 ),
                 "schedule": team.schedule[:week],
+                "outcomes": team.outcomes[:week],
             }
             team_data["win_pct"] = (team_data["wins"] + team_data["ties"] / 2) / sum(
                 [1 for outcome in team.outcomes[:week] if outcome in ["W", "T", "L"]]

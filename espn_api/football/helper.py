@@ -13,8 +13,8 @@ def build_division_record_dict(team_data_list: List[Dict]) -> Dict:
     # Loop through each team's schedule and outcomes and build the dictionary
     for team_data in team_data_list:
         team = team_data["team"]
-        for opp, outcome in zip(team.schedule, team.outcomes):
-            if team.division_id == opp.division_id:
+        for opp, outcome in zip(team_data["schedule"], team_data["outcomes"]):
+            if team_data["division_id"] == opp.division_id:
                 if outcome == "W":
                     div_outcomes[team_data["team_id"]]["wins"] += 1
                 if outcome == "T":
@@ -48,6 +48,11 @@ def build_h2h_dict(team_data_list: List[Dict]) -> Dict:
     for team_data in team_data_list:
         team = team_data["team"]
         for opp, outcome in zip(team_data["schedule"], team_data["outcomes"]):
+            # Ignore teams that are not part of this tiebreaker
+            if opp.team_id not in h2h_outcomes[team.team_id].keys():
+                continue
+
+            # Add the outcome to the dictionary
             if outcome == "W":
                 h2h_outcomes[team.team_id][opp.team_id]["wins"] += 1
             if outcome == "T":
@@ -109,6 +114,9 @@ def sort_by_head_to_head(
     team_data_list: List[Dict],
 ) -> List[Dict]:
     """Take a list of team standings data and sort it using the H2H_RECORD tiebreaker"""
+    # Create a dictionary with each team's head to head record
+    h2h_dict = build_h2h_dict(team_data_list)
+
     # If there is only one team, return the dataframe as-is
     if len(team_data_list) < 2:
         return team_data_list
