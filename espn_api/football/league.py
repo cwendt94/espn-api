@@ -1,7 +1,6 @@
-import datetime
-import time
 import json
-from typing import List, Tuple, Union
+import random
+from typing import Callable, Dict, List, Tuple, Union
 
 from ..base_league import BaseLeague
 from .team import Team
@@ -14,6 +13,16 @@ from .activity import Activity
 from .settings import Settings
 from .utils import power_points, two_step_dominance
 from .constant import POSITION_MAP, ACTIVITY_MAP
+from .helper import (
+    sort_by_coin_flip,
+    sort_by_division_record,
+    sort_by_head_to_head,
+    sort_by_points_against,
+    sort_by_points_for,
+    sort_by_win_pct,
+    sort_team_data_list,
+)
+
 
 class League(BaseLeague):
     '''Creates a League instance for Public/Private ESPN league'''
@@ -115,6 +124,102 @@ class League(BaseLeague):
     def standings(self) -> List[Team]:
         standings = sorted(self.teams, key=lambda x: x.final_standing if x.final_standing != 0 else x.standing, reverse=False)
         return standings
+
+    def standings_weekly(self, week: int) -> List[Team]:
+        """This is the main function to get the standings for a given week.
+
+        It controls the tiebreaker hierarchy and calls the recursive League()._sort_team_data_list function.
+        First, the division winners must be determined. Then, the rest of the teams are sorted.
+
+        The standard tiebreaker hierarchy is:
+            1. Head-to-head record among the tied teams
+            2. Total points scored for the season
+            3. Division record (if all tied teams are in the same division)
+            4. Total points scored against for the season
+            5. Coin flip
+
+        Args:
+            week (int): Week to get the standings for
+
+        Returns:
+            List[Dict]: Sorted standings list
+        """
+        # Get standings data for each team up to the given week
+        list_of_team_data = []
+        for team in self.teams:
+            team_data = {
+                "team": team,
+                "team_id": team.team_id,
+                "division_id": team.division_id,
+                "wins": sum([1 for outcome in team.outcomes[:week] if outcome == "W"]),
+                "ties": sum([1 for outcome in team.outcomes[:week] if outcome == "T"]),
+                "losses": sum(
+                    [1 for outcome in team.outcomes[:week] if outcome == "L"]
+                ),
+                "points_for": sum(team.scores[:week]),
+                "points_against": sum(
+                    [team.schedule[w].scores[w] for w in range(week)]
+                ),
+                "schedule": team.schedule[:week],
+                "outcomes": team.outcomes[:week],
+            }
+            team_data["win_pct"] = (team_data["wins"] + team_data["ties"] / 2) / sum(
+                [1 for outcome in team.outcomes[:week] if outcome in ["W", "T", "L"]]
+            )
+            list_of_team_data.append(team_data)
+
+        # Identify the proper tiebreaker hierarchy
+        if self.settings.playoff_seed_tie_rule == "TOTAL_POINTS_SCORED":
+            tiebreaker_hierarchy = [
+                (sort_by_win_pct, "win_pct"),
+                (sort_by_points_for, "points_for"),
+                (sort_by_head_to_head, "h2h_wins"),
+                (sort_by_division_record, "division_record"),
+                (sort_by_points_against, "points_against"),
+                (sort_by_coin_flip, "coin_flip"),
+            ]
+        elif self.settings.playoff_seed_tie_rule == "H2H_RECORD":
+            tiebreaker_hierarchy = [
+                (sort_by_win_pct, "win_pct"),
+                (sort_by_head_to_head, "h2h_wins"),
+                (sort_by_points_for, "points_for"),
+                (sort_by_division_record, "division_record"),
+                (sort_by_points_against, "points_against"),
+                (sort_by_coin_flip, "coin_flip"),
+            ]
+        else:
+            raise ValueError(
+                "Unkown tiebreaker_method: Must be either 'TOTAL_POINTS_SCORED' or 'H2H_RECORD'"
+            )
+
+        # First assign the division winners
+        division_winners = []
+        for division_id in list(self.settings.division_map.keys()):
+            division_teams = [
+                team_data
+                for team_data in list_of_team_data
+                if team_data["division_id"] == division_id
+            ]
+            division_winner = sort_team_data_list(division_teams, tiebreaker_hierarchy)[
+                0
+            ]
+            division_winners.append(division_winner)
+            list_of_team_data.remove(division_winner)
+
+        # Sort the division winners
+        sorted_division_winners = sort_team_data_list(
+            division_winners, tiebreaker_hierarchy
+        )
+
+        # Then sort the rest of the teams
+        sorted_rest_of_field = sort_team_data_list(
+            list_of_team_data, tiebreaker_hierarchy
+        )
+
+        # Combine all teams
+        sorted_team_data = sorted_division_winners + sorted_rest_of_field
+
+        return [team_data["team"] for team_data in sorted_team_data]
 
     def top_scorer(self) -> Team:
         most_pf = sorted(self.teams, key=lambda x: x.points_for, reverse=True)
@@ -308,4 +413,3 @@ class League(BaseLeague):
             for msg in msgs:
                 messages.append(msg)
         return messages
-
