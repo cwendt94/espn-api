@@ -5,6 +5,11 @@ on:
 jobs:
   release:
     runs-on: ubuntu-20.04
+    environment:
+      name: pypi
+      url: https://pypi.org/p/espn-api
+    permissions:
+      id-token: write
     steps:
     - uses: actions/checkout@v3
     - name: Setup Python
@@ -25,4 +30,4 @@ jobs:
       run: twine check dist/*
     
     - name: Publish to PyPI
-      run: twine upload dist/* -u ${{ secrets.PYPI_USER }} -p ${{ secrets.PYPI_PASSWORD }}
+      uses: pypa/gh-action-pypi-publish@release/v1
