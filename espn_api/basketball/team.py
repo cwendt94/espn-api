@@ -48,11 +48,11 @@ class Team(object):
         '''Fetch schedule and scores for team'''
         for match in data:
             if 'away' in match.keys():
-                if match['away']['teamId'] == self.team_id:
+                if match.get('away', {}).get('teamId', -1) == self.team_id:
                     new_match = Matchup(match)
                     setattr(new_match, 'away_team', self)
                     self.schedule.append(new_match)
-                elif match['home']['teamId'] == self.team_id:
+                elif match.get('home', {}).get('teamId', -1) == self.team_id:
                     new_match = Matchup(match)
                     setattr(new_match, 'home_team', self)
                     self.schedule.append(new_match)
