@@ -39,6 +39,7 @@ class League(BaseLeague):
         self.scoring_type = data['settings']['scoringSettings']['scoringType']
         self._fetch_teams(data)
         self._box_score_class = self._set_scoring_class(self.scoring_type)
+        super()._fetch_draft()
 
     def _fetch_league(self):
         data = super()._fetch_league()
@@ -83,12 +84,6 @@ class League(BaseLeague):
                     matchup.away_team = team
 
         return matchups
-
-    def get_team_data(self, team_id: int) -> Team:
-        for team in self.teams:
-            if team_id == team.team_id:
-                return team
-        return None
 
     def recent_activity(self, size: int = 25, msg_type: str = None, offset: int = 0) -> List[Activity]:
         '''Returns a list of recent league activities (Add, Drop, Trade)'''

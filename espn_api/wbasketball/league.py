@@ -24,6 +24,7 @@ class League(BaseLeague):
     def fetch_league(self):
         data = self._fetch_league()
         self._fetch_teams(data)
+        super()._fetch_draft()
 
     def _fetch_league(self):
         data = super()._fetch_league()
@@ -84,11 +85,6 @@ class League(BaseLeague):
 
         return matchups
 
-    def get_team_data(self, team_id: int) -> Team:
-        for team in self.teams:
-            if team_id == team.team_id:
-                return team
-        return None
 
     def recent_activity(self, size: int = 25, msg_type: str = None, offset: int = 0) -> List[Activity]:
         '''Returns a list of recent league activities (Add, Drop, Trade)'''

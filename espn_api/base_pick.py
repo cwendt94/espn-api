@@ -1,5 +1,5 @@
 
-class Pick(object):
+class BasePick(object):
     ''' Pick represents a pick in draft '''
     def __init__(self, team, playerId, playerName, round_num, round_pick, bid_amount, keeper_status, nominatingTeam):
         self.team = team
