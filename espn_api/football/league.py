@@ -38,7 +38,7 @@ class League(BaseLeague):
     def _fetch_league(self):
         data = super()._fetch_league(SettingsClass=Settings)
 
-        self.nfl_week = data['status']['latestScoringPeriod']
+        self.nfl_week = data[0]['status']['latestScoringPeriod']
         self._fetch_players()
         self._fetch_teams(data)
         self._fetch_draft()
@@ -63,7 +63,11 @@ class League(BaseLeague):
 
     def _fetch_draft(self):
         '''Creates list of Pick objects from the leagues draft'''
-        data = self.espn_request.get_league_draft()
+
+        if self.year == 2018:
+            data = self.espn_request.get_league_draft()[0]
+        else:
+            data = self.espn_request.get_league_draft()
 
         # League has not drafted yet
         if not data['draftDetail']['drafted']:
@@ -283,7 +287,11 @@ class League(BaseLeague):
         params = {
             'view': 'mMatchupScore',
         }
-        data = self.espn_request.league_get(params=params)
+        if self.year == 2018:
+            data = self.espn_request.league_get(params=params)[0]
+        else:
+             data = self.espn_request.league_get(params=params)
+            
 
         schedule = data['schedule']
         matchups = [Matchup(matchup) for matchup in schedule if matchup['matchupPeriodId'] == week]
