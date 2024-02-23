@@ -136,7 +136,7 @@ class League(BaseLeague):
         data = self.espn_request.league_get(params=params, headers=headers)
         players = data['players']
 
-        return [Player(player) for player in players]
+        return [Player(player, self.year) for player in players]
 
     def box_scores(self, matchup_period: int = None, scoring_period: int = None) -> List[Union[BoxScore, H2HCategoryBoxScore]]:
         '''Returns list of box score for a given matchup or scoring period'''
@@ -159,9 +159,10 @@ class League(BaseLeague):
         filters = {"schedule":{"filterMatchupPeriodIds":{"value":[matchup_id]}}}
         headers = {'x-fantasy-filter': json.dumps(filters)}
         data = self.espn_request.league_get(params=params, headers=headers)
+        pro_schedule = self._get_pro_schedule(scoring_id)
 
         schedule = data['schedule']
-        box_data = [self._box_score_class(matchup) for matchup in schedule]
+        box_data = [self._box_score_class(matchup, pro_schedule, self.year, scoring_id) for matchup in schedule]
 
         for team in self.teams:
             for matchup in box_data:

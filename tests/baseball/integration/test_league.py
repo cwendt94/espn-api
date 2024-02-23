@@ -23,7 +23,7 @@ class LeagueTest(TestCase):
         self.assertNotEqual(len(free_agents), 0)
     
     def test_league_box_scores(self):
-        box_scores = self.league.box_scores(1)
+        box_scores = self.league.box_scores(0)
 
         self.assertNotEqual(len(box_scores), 0)
 
