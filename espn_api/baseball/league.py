@@ -27,10 +27,7 @@ class League(BaseLeague):
         self._box_score_class = None
 
         if fetch_league:
-            data = self._fetch_league()
-            self.scoring_type = data['settings']['scoringSettings']['scoringType']
-            self._fetch_teams(data)
-
+            self.fetch_league()
         if self._box_score_class is None:
             self._box_score_class = self._set_scoring_class(self.scoring_type)
 
