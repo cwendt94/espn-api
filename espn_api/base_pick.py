@@ -15,4 +15,4 @@ class BasePick(object):
         return 'Pick(R:%s P:%s, %s, %s)' % (self.round_num, self.round_pick, self.playerName, self.team)
 
     def auction_repr(self):
-        return ', '.join(map(str, [self.team.owner, self.playerId, self.playerName, self.bid_amount, self.keeper_status]))
+        return ', '.join(map(str, [self.team, self.playerId, self.playerName, self.bid_amount, self.keeper_status]))
