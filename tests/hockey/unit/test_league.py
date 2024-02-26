@@ -79,9 +79,11 @@ class HockeyLeagueTest(BaseLeagueTest):
     def setUp(self):
         super().setUp()
 
+    @mock.patch.object(EspnFantasyRequests, 'get_league_draft')
     @mock.patch.object(EspnFantasyRequests, 'get_league')
-    def test_league(self, mock_league_request):
+    def test_league(self, mock_league_request, mock_league_draft):
         mock_league_request.return_value = self.league_data
+        mock_league_draft.return_value = {}
 
         league = HockeyLeague(self.league_id, self.season)
         self.assertEqual(league.scoringPeriodId, 265)
@@ -90,8 +92,10 @@ class HockeyLeagueTest(BaseLeagueTest):
         self.assertEqual(league.year, self.season)
         mock_league_request.assert_called_once()
 
+    @mock.patch.object(EspnFantasyRequests, 'get_league_draft')
     @mock.patch.object(EspnFantasyRequests, 'get_league')
-    def test_league_teams(self, mock_league_request):
+    def test_league_teams(self, mock_league_request, mock_league_draft):
+        mock_league_draft.return_value = {}
         mock_league_request.return_value = self.league_data
         expected_teams = set(["Team(Barkko Ruutu)",
                               "Team(2 Minutes for.. Rooping?)",
@@ -109,13 +113,15 @@ class HockeyLeagueTest(BaseLeagueTest):
 
         for actual_team in actual_teams:
             self.assertIn(repr(actual_team), expected_teams)
-        mock_league_request.assert_called_once()\
+        mock_league_request.assert_called_once()
 
+    @mock.patch.object(EspnFantasyRequests, 'get_league_draft')
     @mock.patch.object(EspnFantasyRequests, 'league_get')
     @mock.patch.object(EspnFantasyRequests, 'get_league')
-    def test_league_scoreboard(self, mock_get_league_request, mock_league_get_request):
+    def test_league_scoreboard(self, mock_get_league_request, mock_league_get_request, mock_league_draft):
         with open('tests/hockey/unit/data/matchup_data.json') as file:
             matchup_data = json.loads(file.read())
+        mock_league_draft.return_value = {}
         mock_get_league_request.return_value = self.league_data
         mock_league_get_request.return_value = matchup_data
         league = HockeyLeague(self.league_id, self.season)
@@ -129,8 +135,10 @@ class HockeyLeagueTest(BaseLeagueTest):
         mock_get_league_request.assert_called_once()
         mock_league_get_request.assert_called_once()
 
+    @mock.patch.object(EspnFantasyRequests, 'get_league_draft')
     @mock.patch.object(EspnFantasyRequests, 'get_league')
-    def test_league_get_team_data(self, mock_get_league_request):
+    def test_league_get_team_data(self, mock_get_league_request, mock_league_draft):
+        mock_league_draft.return_value = {}
         mock_get_league_request.return_value = self.league_data
         league = HockeyLeague(self.league_id, self.season)
 
@@ -141,11 +149,13 @@ class HockeyLeagueTest(BaseLeagueTest):
 
         mock_get_league_request.assert_called_once()
 
+    @mock.patch.object(EspnFantasyRequests, 'get_league_draft')
     @mock.patch.object(EspnFantasyRequests, 'league_get')
     @mock.patch.object(EspnFantasyRequests, 'get_league')
-    def test_league_free_agency(self, mock_get_league_request, mock_league_get_request):
+    def test_league_free_agency(self, mock_get_league_request, mock_league_get_request, mock_league_draft):
         with open('tests/hockey/unit/data/free_agent_data.json') as file:
             free_agents_data = json.loads(file.read())
+        mock_league_draft.return_value = {}
         mock_get_league_request.return_value = self.league_data
         mock_league_get_request.return_value = free_agents_data
         league = HockeyLeague(self.league_id, self.season)
@@ -159,11 +169,13 @@ class HockeyLeagueTest(BaseLeagueTest):
         mock_get_league_request.assert_called_once()
         mock_league_get_request.assert_called_once()
 
+    @mock.patch.object(EspnFantasyRequests, 'get_league_draft')
     @mock.patch.object(EspnFantasyRequests, 'league_get')
     @mock.patch.object(EspnFantasyRequests, 'get_league')
-    def test_league_recent_activity(self, mock_get_league_request, mock_league_get_request):
+    def test_league_recent_activity(self, mock_get_league_request, mock_league_get_request, mock_league_draft):
         with open('tests/hockey/unit/data/recent_activity_data.json') as file:
             activity_data = json.loads(file.read())
+        mock_league_draft.return_value = {}
         mock_get_league_request.return_value = self.league_data
         mock_league_get_request.return_value = activity_data
         league = HockeyLeague(self.league_id, self.season)
@@ -177,9 +189,11 @@ class HockeyLeagueTest(BaseLeagueTest):
         mock_get_league_request.assert_called_once()
         mock_league_get_request.assert_called_once()
 
+    @mock.patch.object(EspnFantasyRequests, 'get_league_draft')
     @mock.patch.object(EspnFantasyRequests, 'league_get')
     @mock.patch.object(EspnFantasyRequests, 'get_league')
-    def test_league_box_scores(self, mock_get_league_request, mock_league_get_request):
+    def test_league_box_scores(self, mock_get_league_request, mock_league_get_request, mock_league_draft):
+        mock_league_draft.return_value = {}
         with open('tests/hockey/unit/data/box_score_data.json') as file:
             box_score_data = json.loads(file.read())
         mock_get_league_request.return_value = self.league_data

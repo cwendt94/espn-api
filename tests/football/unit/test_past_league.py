@@ -57,7 +57,7 @@ class LeaguePastTest(TestCase):
 
         first_pick = league.draft[0]
         third_pick = league.draft[2]
-        self.assertEqual(repr(first_pick), 'Pick(Eddie Lacy, Team(Show Me Your TD\'s))')
+        self.assertEqual(repr(first_pick), 'Pick(R:1 P:1, Eddie Lacy, Team(Show Me Your TD\'s))')
         self.assertEqual(third_pick.round_num, 1)
         self.assertEqual(third_pick.round_pick, 3)
     
