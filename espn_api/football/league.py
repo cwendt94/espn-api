@@ -82,6 +82,14 @@ class League(BaseLeague):
 
         self.nfl_week = data['status']['latestScoringPeriod']
         self._fetch_teams(data)
+
+    def refresh_draft(self, refresh_players=False, refresh__teams=False):
+        super()._fetch_draft()
+        if refresh_players:
+            self._fetch_players()
+        if refresh__teams:
+            self._fetch_teams(data)
+    
     def load_roster_week(self, week: int) -> None:
         '''Sets Teams Roster for a Certain Week'''
         params = {
