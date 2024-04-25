@@ -1,5 +1,6 @@
 from unittest import mock, TestCase
 from espn_api.football import League, BoxPlayer
+from espn_api.requests.constant import FANTASY_BASE_ENDPOINT
 from espn_api.football.helper import (
     build_division_record_dict,
     build_h2h_dict,
@@ -19,8 +20,8 @@ class LeagueTest(TestCase):
     def setUp(self):
         self.league_id = 123
         self.season = 2018
-        self.espn_endpoint = "https://fantasy.espn.com/apis/v3/games/FFL/seasons/" + str(self.season) + "/segments/0/leagues/" + str(self.league_id)
-        self.players_endpoint = 'https://fantasy.espn.com/apis/v3/games/ffl/seasons/' + str(self.season) + '/players?view=players_wl'
+        self.espn_endpoint = FANTASY_BASE_ENDPOINT + 'FFL/seasons/' + str(self.season) + '/segments/0/leagues/' + str(self.league_id)
+        self.players_endpoint = FANTASY_BASE_ENDPOINT + 'ffl/seasons/' + str(self.season) + '/players?view=players_wl'
         with open('tests/football/unit/data/league_2018_data.json') as data:
             self.league_data = json.loads(data.read())
         with open('tests/football/unit/data/league_draft_2018.json') as data:
@@ -462,7 +463,7 @@ class LeagueTest(TestCase):
         
         # TODO hack until I get all mock data for 2019
         league.year = 2019 
-        self.espn_endpoint = "https://fantasy.espn.com/apis/v3/games/ffl/seasons/" + str(2019) + "/segments/0/leagues/" + str(self.league_id)
+        self.espn_endpoint = FANTASY_BASE_ENDPOINT + 'ffl/seasons/' + str(2019) + '/segments/0/leagues/' + str(self.league_id)
         league.espn_request.LEAGUE_ENDPOINT = self.espn_endpoint
 
         with open('tests/football/unit/data/league_recent_activity_2019.json') as f:

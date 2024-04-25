@@ -1,5 +1,6 @@
 from unittest import mock, TestCase
 from espn_api.football import League
+from espn_api.requests.constant import FANTASY_BASE_ENDPOINT
 import requests_mock
 import json
 
@@ -9,8 +10,8 @@ class LeaguePastTest(TestCase):
     def setUp(self):
         self.league_id = 123
         self.season = 2015
-        self.espn_endpoint = "https://fantasy.espn.com/apis/v3/games/ffl/leagueHistory/" + str(self.league_id) + "?seasonId=2015"
-        self.players_endpoint = 'https://fantasy.espn.com/apis/v3/games/ffl/seasons/' + str(self.season) + '/players?view=players_wl'
+        self.espn_endpoint =  FANTASY_BASE_ENDPOINT + 'ffl/leagueHistory/' + str(self.league_id) + '?seasonId=2015'
+        self.players_endpoint = FANTASY_BASE_ENDPOINT + 'ffl/seasons/' + str(self.season) + '/players?view=players_wl'
         with open('tests/football/unit/data/league_2015_data.json') as data:
             self.league_data = json.loads(data.read())
         with open('tests/football/unit/data/league_draft_2015.json') as data:
