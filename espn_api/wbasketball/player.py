@@ -6,7 +6,7 @@ class Player(object):
     def __init__(self, data, year):
         self.name = json_parsing(data, 'fullName')
         self.playerId = json_parsing(data, 'id')
-        self.position = POSITION_MAP[json_parsing(data, 'defaultPositionId') - 1]
+        self.position = POSITION_MAP[json_parsing(data, 'defaultPositionId')]
         self.lineupSlot = POSITION_MAP.get(data.get('lineupSlotId'), '')
         self.eligibleSlots = [POSITION_MAP[pos] for pos in json_parsing(data, 'eligibleSlots')]
         self.acquisitionType = json_parsing(data, 'acquisitionType')
@@ -20,12 +20,12 @@ class Player(object):
         self.injuryStatus = player.get('injuryStatus', self.injuryStatus)
         self.injured = player.get('injured', False)
 
-        for split in  player.get('stats', []):
+        for split in player.get('stats', []):
             id = self._stat_id_pretty(split['id'])
             applied_total = split.get('appliedTotal', 0)
             applied_avg =  round(split.get('appliedAverage', 0), 2)
             self.stats[id] = dict(applied_total=applied_total, applied_avg=applied_avg)
-            if split['stats']:
+            if 'stats' in split:
                 if 'averageStats' in split.keys():
                     self.stats[id]['avg'] = {STATS_MAP[i]: split['averageStats'][i] for i in split['averageStats'].keys() if STATS_MAP[i] != ''}
                     self.stats[id]['total'] = {STATS_MAP[i]: split['stats'][i] for i in split['stats'].keys() if STATS_MAP[i] != ''}

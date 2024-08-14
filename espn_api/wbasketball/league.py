@@ -19,7 +19,7 @@ class League(BaseLeague):
         super().__init__(league_id=league_id, year=year, sport='wnba', espn_s2=espn_s2, swid=swid, debug=debug)
 
         if fetch_league:
-            self._fetch_league()
+            self.fetch_league()
 
     def fetch_league(self):
         data = self._fetch_league()
