@@ -278,7 +278,7 @@ class League(BaseLeague):
 
         return matchups
 
-    @functools.cache
+    @functools.lru_cache
     def box_scores(self, week: int = None) -> List[BoxScore]:
         '''Returns list of box score for a given week\n
         Should only be used with most recent season'''
