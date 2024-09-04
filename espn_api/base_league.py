@@ -82,7 +82,7 @@ class BaseLeague(ABC):
 
         for team in teams:
             roster = team_roster[team['id']]
-            owners = [member for member in members if member.get('id') == (team.get('owners') or [''])[0]]
+            owners = [member for member in members if member.get('id') in team.get('owners', [])]
             self.teams.append(TeamClass(team, roster=roster, schedule=schedule, year=seasonId, owners=owners, pro_schedule=pro_schedule))
 
         # sort by team ID
