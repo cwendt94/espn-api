@@ -2,6 +2,7 @@ from abc import ABC
 from typing import List, Tuple
 
 from .base_settings import BaseSettings
+from .base_pick import BasePick
 from .utils.logger import Logger
 from .requests.espn_requests import EspnFantasyRequests
 
@@ -45,6 +46,28 @@ class BaseLeague(ABC):
         self.members = data.get('members', [])
         return data
 
+    def _fetch_draft(self):
+        '''Creates list of Pick objects from the leagues draft'''
+        data = self.espn_request.get_league_draft()
+
+        # League has not drafted yet
+        if not data.get('draftDetail', {}).get('drafted'):
+            return
+
+        picks = data.get('draftDetail', {}).get('picks', [])
+        for pick in picks:
+            team = self.get_team_data(pick.get('teamId'))
+            playerId = pick.get('playerId')
+            playerName = ''
+            if playerId in self.player_map:
+                playerName = self.player_map[playerId]
+            round_num = pick.get('roundId')
+            round_pick = pick.get('roundPickNumber')
+            bid_amount = pick.get('bidAmount')
+            keeper_status = pick.get('keeper')
+            nominatingTeam = self.get_team_data(pick.get('nominatingTeamId'))
+            self.draft.append(BasePick(team, playerId, playerName, round_num, round_pick, bid_amount, keeper_status, nominatingTeam))
+
     def _fetch_teams(self, data, TeamClass, pro_schedule = None):
         '''Fetch teams in league'''
         self.teams = []
@@ -59,7 +82,7 @@ class BaseLeague(ABC):
 
         for team in teams:
             roster = team_roster[team['id']]
-            owners = [member for member in members if member.get('id') == (team.get('owners') or [''])[0]]
+            owners = [member for member in members if member.get('id') in team.get('owners', [])]
             self.teams.append(TeamClass(team, roster=roster, schedule=schedule, year=seasonId, owners=owners, pro_schedule=pro_schedule))
 
         # sort by team ID
@@ -102,3 +125,9 @@ class BaseLeague(ABC):
     def standings(self) -> List:
         standings = sorted(self.teams, key=lambda x: x.final_standing if x.final_standing != 0 else x.standing, reverse=False)
         return standings
+
+    def get_team_data(self, team_id: int) -> List:
+        for team in self.teams:
+            if team_id == team.team_id:
+                return team
+        return None

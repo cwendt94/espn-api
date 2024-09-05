@@ -1,5 +1,6 @@
 from unittest import mock, TestCase
 from espn_api.football import League
+from espn_api.requests.constant import FANTASY_BASE_ENDPOINT
 import requests_mock
 import json
 
@@ -9,8 +10,8 @@ class LeaguePastTest(TestCase):
     def setUp(self):
         self.league_id = 123
         self.season = 2015
-        self.espn_endpoint = "https://fantasy.espn.com/apis/v3/games/ffl/leagueHistory/" + str(self.league_id) + "?seasonId=2015"
-        self.players_endpoint = 'https://fantasy.espn.com/apis/v3/games/ffl/seasons/' + str(self.season) + '/players?view=players_wl'
+        self.espn_endpoint =  FANTASY_BASE_ENDPOINT + 'ffl/leagueHistory/' + str(self.league_id) + '?seasonId=2015'
+        self.players_endpoint = FANTASY_BASE_ENDPOINT + 'ffl/seasons/' + str(self.season) + '/players?view=players_wl'
         with open('tests/football/unit/data/league_2015_data.json') as data:
             self.league_data = json.loads(data.read())
         with open('tests/football/unit/data/league_draft_2015.json') as data:
@@ -57,7 +58,7 @@ class LeaguePastTest(TestCase):
 
         first_pick = league.draft[0]
         third_pick = league.draft[2]
-        self.assertEqual(repr(first_pick), 'Pick(Eddie Lacy, Team(Show Me Your TD\'s))')
+        self.assertEqual(repr(first_pick), 'Pick(R:1 P:1, Eddie Lacy, Team(Show Me Your TD\'s))')
         self.assertEqual(third_pick.round_num, 1)
         self.assertEqual(third_pick.round_pick, 3)
     

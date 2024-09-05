@@ -24,7 +24,7 @@ class Team(object):
         if 'logo' in data:    
             self.logo_url = data['logo']
         
-        self._fetch_roster(roster)
+        self._fetch_roster(roster, year)
         self._fetch_schedule(schedule)
         self.owners = kwargs.get('owners', [])
         
@@ -32,13 +32,13 @@ class Team(object):
         return f'Team({self.team_name})'
     
 
-    def _fetch_roster(self, data):
+    def _fetch_roster(self, data, year):
         '''Fetch teams roster'''
         self.roster.clear()
         roster = data['entries']
 
         for player in roster:
-            self.roster.append(Player(player))
+            self.roster.append(Player(player, year))
 
 
     def _fetch_schedule(self, data):

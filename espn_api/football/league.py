@@ -5,7 +5,6 @@ from typing import Callable, Dict, List, Tuple, Union
 from ..base_league import BaseLeague
 from .team import Team
 from .matchup import Matchup
-from .pick import Pick
 from .box_score import BoxScore
 from .box_player import BoxPlayer
 from .player import Player
@@ -41,7 +40,7 @@ class League(BaseLeague):
         self.nfl_week = data['status']['latestScoringPeriod']
         self._fetch_players()
         self._fetch_teams(data)
-        self._fetch_draft()
+        super()._fetch_draft()
 
     def _fetch_teams(self, data):
         '''Fetch teams in league'''
@@ -60,28 +59,6 @@ class League(BaseLeague):
             for week, opponent in enumerate(team.schedule):
                 mov = team.scores[week] - opponent.scores[week]
                 team.mov.append(mov)
-
-    def _fetch_draft(self):
-        '''Creates list of Pick objects from the leagues draft'''
-        data = self.espn_request.get_league_draft()
-
-        # League has not drafted yet
-        if not data['draftDetail']['drafted']:
-            return
-
-        picks = data['draftDetail']['picks']
-        for pick in picks:
-            team = self.get_team_data(pick['teamId'])
-            playerId = pick['playerId']
-            playerName = ''
-            if playerId in self.player_map:
-                playerName = self.player_map[playerId]
-            round_num = pick['roundId']
-            round_pick = pick['roundPickNumber']
-            bid_amount = pick['bidAmount']
-            keeper_status = pick['keeper']
-            nominatingTeam = self.get_team_data(pick['nominatingTeamId'])
-            self.draft.append(Pick(team, playerId, playerName, round_num, round_pick, bid_amount, keeper_status, nominatingTeam))
 
     def _get_positional_ratings(self, week: int):
         params = {
@@ -105,6 +82,14 @@ class League(BaseLeague):
 
         self.nfl_week = data['status']['latestScoringPeriod']
         self._fetch_teams(data)
+
+    def refresh_draft(self, refresh_players=False, refresh__teams=False):
+        super()._fetch_draft()
+        if refresh_players:
+            self._fetch_players()
+        if refresh__teams:
+            self._fetch_teams(data)
+    
     def load_roster_week(self, week: int) -> None:
         '''Sets Teams Roster for a Certain Week'''
         params = {
@@ -249,11 +234,6 @@ class League(BaseLeague):
         least_tup = sorted(least_scored_tup, key=lambda tup: int(tup[1]), reverse=False)
         return least_tup[0]
 
-    def get_team_data(self, team_id: int) -> Team:
-        for team in self.teams:
-            if team_id == team.team_id:
-                return team
-        return None
 
     def recent_activity(self, size: int = 25, msg_type: str = None, offset: int = 0) -> List[Activity]:
         '''Returns a list of recent league activities (Add, Drop, Trade)'''

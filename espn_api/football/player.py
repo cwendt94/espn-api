@@ -12,6 +12,7 @@ class Player(object):
         self.proTeam = PRO_TEAM_MAP[json_parsing(data, 'proTeamId')]
         self.injuryStatus = json_parsing(data, 'injuryStatus')
         self.onTeamId = json_parsing(data, 'onTeamId')
+        self.lineupSlot = POSITION_MAP.get(data.get('lineupSlotId'), '')
         self.stats = {}
 
         # Get players main position
