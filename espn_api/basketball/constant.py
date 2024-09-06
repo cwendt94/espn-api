@@ -137,13 +137,13 @@ ACTIVITY_MAP = {
 }
 
 NINE_CAT_STATS = {
-    '3PTM', 
-    'AST', 
-    'BLK', 
-    'FG%', 
-    'FT%', 
-    'PTS', 
-    'REB', 
-    'STL', 
+    '3PTM',
+    'AST',
+    'BLK',
+    'FG%',
+    'FT%',
+    'PTS',
+    'REB',
+    'STL',
     'TO',
 }

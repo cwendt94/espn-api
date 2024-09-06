@@ -42,8 +42,7 @@ class LeagueTest(TestCase):
         self.assertEqual(player.schedule['2']['team'], 'BKN')
         self.assertEqual(player.stats['2']['team'], 'BKN')
         self.assertEqual(player.stats['2']['total']['PTS'], 24.0)
-        self.assertEqual(
-            player.nine_cat_averages,
+        self.assertEqual(player.nine_cat_averages,
             {
                 'PTS': 17.3,
                 'BLK': 1.7,
@@ -61,9 +60,7 @@ class LeagueTest(TestCase):
         final_matchup = self.league.box_scores()[0]
         middle_matchup = self.league.box_scores(matchup_period=7)[0]
         # same matchup period but single scoring period
-        scoring_period_matchup = self.league.box_scores(
-            scoring_period=48, matchup_total=False
-        )[0]
+        scoring_period_matchup = self.league.box_scores(scoring_period=48, matchup_total=False)[0]
 
         self.assertEqual(final_matchup.home_score, 4240.0)
         self.assertEqual(final_matchup.away_lineup[0].points, 156.0)
@@ -79,12 +76,10 @@ class LeagueTest(TestCase):
 
         score = league.box_scores(matchup_period=3, scoring_period=21)
 
-        self.assertEqual(
-            score[0].__repr__(), 'Box Score(Team(Team McWilliams) at Team(Team Wendt))'
-        )
+        self.assertEqual(score[0].__repr__(), 'Box Score(Team(Team McWilliams) at Team(Team Wendt))')
         self.assertEqual(score[0].away_lineup[0].name, 'Stephen Curry')
         # comment for now until matchup week is over
-        self.assertEqual(score[0].away_stats['PTS'], {'value': 733.0, 'result': 'WIN'})
+        self.assertEqual(score[0].away_stats['PTS'], { 'value': 733.0, 'result': 'WIN' })
 
     def test_past_league(self):
         league = League(411647, 2017)
