@@ -72,8 +72,6 @@ class Team(object):
     def _get_winner(self, winner: str, is_away: bool) -> str:
         if winner == 'UNDECIDED':
             return 'U'
-        elif winner == 'TIE':
-            return 'T'
         elif (is_away and winner == 'AWAY') or (not is_away and winner == 'HOME'):
             return 'W'
         else:
