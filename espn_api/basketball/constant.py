@@ -137,7 +137,7 @@ ACTIVITY_MAP = {
 }
 
 NINE_CAT_STATS = {
-    '3PTM',
+    '3PM',
     'AST',
     'BLK',
     'FG%',
