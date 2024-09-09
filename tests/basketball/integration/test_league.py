@@ -1,13 +1,13 @@
 from unittest import TestCase
 from espn_api.basketball import League
 
+
 # Integration test to make sure ESPN's API didn't change
 class LeagueTest(TestCase):
     def setUp(self):
         self.league = League(411647, 2019)
 
     def test_league_init(self):
-
         self.assertEqual(self.league.scoringPeriodId, 178)
         player = self.league.teams[0].roster[0]
         self.assertEqual(player.schedule['2']['team'], 'BKN')
@@ -32,6 +32,7 @@ class LeagueTest(TestCase):
         free_agents = self.league.free_agents()
 
         self.assertNotEqual(len(free_agents), 0)
+
     def test_player_info(self):
         player_id = self.league.teams[0].roster[0].playerId
 
@@ -49,10 +50,10 @@ class LeagueTest(TestCase):
                 'AST': 1.4,
                 'REB': 15.6,
                 'TO': 2.2,
-                '3PTM': 0.1,
+                '3PM': 0.1,
                 'FG%': 0.533,
-                'FT%': 0.59
-            }
+                'FT%': 0.59,
+            },
         )
 
     def test_league_box_scores(self):
