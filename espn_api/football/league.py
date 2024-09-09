@@ -129,6 +129,10 @@ class League(BaseLeague):
         Returns:
             List[Dict]: Sorted standings list
         """
+        # Return empty standings if no matchup periods have completed yet
+        if self.currentMatchupPeriod <= 1:
+            return self.standings()
+
         # Get standings data for each team up to the given week
         list_of_team_data = []
         for team in self.teams:
