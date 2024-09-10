@@ -227,7 +227,7 @@ class League(BaseLeague):
         for team in self.teams:
             top_week_points.append(max(team.scores[:self.current_week]))
         top_scored_tup = [(i, j) for (i, j) in zip(self.teams, top_week_points)]
-        top_tup = sorted(top_scored_tup, key=lambda tup: int(tup[1]), reverse=True)
+        top_tup = sorted(top_scored_tup, key=lambda tup: float(tup[1]), reverse=True)
         return top_tup[0]
 
     def least_scored_week(self) -> Tuple[Team, int]:
@@ -235,7 +235,7 @@ class League(BaseLeague):
         for team in self.teams:
             least_week_points.append(min(team.scores[:self.current_week]))
         least_scored_tup = [(i, j) for (i, j) in zip(self.teams, least_week_points)]
-        least_tup = sorted(least_scored_tup, key=lambda tup: int(tup[1]), reverse=False)
+        least_tup = sorted(least_scored_tup, key=lambda tup: float(tup[1]), reverse=False)
         return least_tup[0]
 
 
