@@ -31,7 +31,7 @@ class Player(object):
         self.active_status = 'bye'
         player_stats = player.get('stats', [])
         for stats in player_stats:
-            if stats.get('seasonId') != year:
+            if stats.get('seasonId') != year or stats.get('statSplitTypeId') == 2:
                 continue
             stats_breakdown = stats.get('stats') or stats.get('appliedStats', {})
             breakdown = {PLAYER_STATS_MAP.get(int(k), k):v for (k,v) in stats_breakdown.items()}
