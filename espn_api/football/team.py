@@ -35,19 +35,19 @@ class Team(object):
         self.outcomes = []
         self.mov = []
         self._fetch_schedule(schedule)
-        self._fetch_roster(roster, year)
+        self._fetch_roster(roster, year, kwargs.get('pro_schedule'))
         self.owners = kwargs.get('owners', [])
 
     def __repr__(self):
         return 'Team(%s)' % (self.team_name, )
     
-    def _fetch_roster(self, data, year):
+    def _fetch_roster(self, data, year, pro_schedule):
         '''Fetch teams roster'''
         self.roster.clear()
         roster = data.get('entries', [])
 
         for player in roster:
-            self.roster.append(Player(player, year))
+            self.roster.append(Player(player, year, pro_schedule))
 
     def _fetch_schedule(self, data):
         '''Fetch schedule and scores for team'''
