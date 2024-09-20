@@ -14,6 +14,10 @@ class Player(object):
         self.onTeamId = json_parsing(data, 'onTeamId')
         self.lineupSlot = POSITION_MAP.get(data.get('lineupSlotId'), '')
         self.stats = {}
+        self.transactions = []
+
+        if 'transactions' in data:
+            self._set_transaction_data(data)
 
         # Get players main position
         for pos in json_parsing(data, 'eligibleSlots'):
@@ -58,3 +62,13 @@ class Player(object):
 
     def __repr__(self):
         return f'Player({self.name})'
+    
+    def _set_transaction_data(self, data):
+        transactions = data.get('transactions', [])
+        for transaction in transactions:
+            bid_amount = transaction.get('bidAmount', 0)
+            type = transaction.get('type', '')
+            team = transaction.get('teamId', 0)
+            date = transaction.get('proposedDate')
+            items = transaction.get('items', [])
+            self.transactions.append({'bid_amount': bid_amount, 'type': type, 'team': team, 'date': date, 'items': items})
