@@ -25,6 +25,7 @@ class Team(object):
         self.streak_type = data['record']['overall']['streakType']
         self.standing = data['playoffSeed']
         self.final_standing = data['rankCalculatedFinal']
+        self.waiver_rank = data.get('waiverRank', 0)
         if 'logo' in data:    
             self.logo_url = data['logo']
         else:
