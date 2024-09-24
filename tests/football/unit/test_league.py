@@ -22,6 +22,7 @@ class LeagueTest(TestCase):
         self.season = 2018
         self.espn_endpoint = FANTASY_BASE_ENDPOINT + 'FFL/seasons/' + str(self.season) + '/segments/0/leagues/' + str(self.league_id)
         self.players_endpoint = FANTASY_BASE_ENDPOINT + 'ffl/seasons/' + str(self.season) + '/players?view=players_wl'
+        self.base_endpoint = FANTASY_BASE_ENDPOINT + 'ffl/seasons/' + str(self.season)
         with open('tests/football/unit/data/league_2018_data.json') as data:
             self.league_data = json.loads(data.read())
         with open('tests/football/unit/data/league_draft_2018.json') as data:
@@ -30,12 +31,14 @@ class LeagueTest(TestCase):
             self.players_data = json.loads(data.read())
         with open('tests/football/unit/data/league_2019_playerCard.json') as data:
             self.player_card_data = json.loads(data.read())
+        with open('tests/football/unit/data/pro_schedule_2024.json') as data:
+            self.pro_schedule_data = json.loads(data.read())
     
     def mock_setUp(self, m):
         m.get(self.espn_endpoint + '?view=mTeam&view=mRoster&view=mMatchup&view=mSettings', status_code=200, json=self.league_data)
         m.get(self.espn_endpoint + '?view=mDraftDetail', status_code=200, json=self.draft_data)
         m.get(self.players_endpoint, status_code=200, json=self.players_data)
-        m.get(self.espn_endpoint + '?view=proTeamSchedules_wl', status_code=200, json={})
+        m.get(self.base_endpoint + '?view=proTeamSchedules_wl', status_code=200, json=self.pro_schedule_data)
 
     @requests_mock.Mocker()        
     def test_error_status(self, m):
@@ -394,6 +397,7 @@ class LeagueTest(TestCase):
 
         team = league.teams[2]
         self.assertEqual(repr(team.roster[0]), 'Player(Drew Brees)')
+        self.assertEqual(team.roster[0].schedule['1']['team'], 'CAR')
         self.assertEqual(team.get_player_name(2521161), 'Zach Zenner')
         self.assertEqual(team.get_player_name(0), '')
     

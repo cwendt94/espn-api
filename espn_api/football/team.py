@@ -41,7 +41,7 @@ class Team(object):
     def __repr__(self):
         return 'Team(%s)' % (self.team_name, )
     
-    def _fetch_roster(self, data, year, pro_schedule):
+    def _fetch_roster(self, data, year, pro_schedule = None):
         '''Fetch teams roster'''
         self.roster.clear()
         roster = data.get('entries', [])
