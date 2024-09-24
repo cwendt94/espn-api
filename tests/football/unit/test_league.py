@@ -35,6 +35,7 @@ class LeagueTest(TestCase):
         m.get(self.espn_endpoint + '?view=mTeam&view=mRoster&view=mMatchup&view=mSettings', status_code=200, json=self.league_data)
         m.get(self.espn_endpoint + '?view=mDraftDetail', status_code=200, json=self.draft_data)
         m.get(self.players_endpoint, status_code=200, json=self.players_data)
+        m.get(self.espn_endpoint + '?view=proTeamSchedules_wl', status_code=200, json={})
 
     @requests_mock.Mocker()        
     def test_error_status(self, m):
