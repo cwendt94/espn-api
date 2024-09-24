@@ -44,7 +44,8 @@ class League(BaseLeague):
 
     def _fetch_teams(self, data):
         '''Fetch teams in league'''
-        super()._fetch_teams(data, TeamClass=Team)
+        pro_schedule = self._get_all_pro_schedule()
+        super()._fetch_teams(data, TeamClass=Team, pro_schedule=pro_schedule)
 
         # replace opponentIds in schedule with team instances
         for team in self.teams:
@@ -380,11 +381,11 @@ class League(BaseLeague):
             playerId = [playerId]
 
         data = self.espn_request.get_player_card(playerId, self.finalScoringPeriod)
-
+        pro_schedule = self._get_all_pro_schedule()
         if len(data['players']) == 1:
-            return Player(data['players'][0], self.year)
+            return Player(data['players'][0], self.year, pro_schedule)
         if len(data['players']) > 1:
-            return [Player(player, self.year) for player in data['players']]
+            return [Player(player, self.year, pro_schedule) for player in data['players']]
 
     def message_board(self, msg_types: List[str] = None):
         ''' Returns a list of league messages'''

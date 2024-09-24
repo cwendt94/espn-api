@@ -114,7 +114,7 @@ class BaseLeague(ABC):
     def _get_all_pro_schedule(self):
         data = self.espn_request.get_pro_schedule()
 
-        pro_teams = data['settings']['proTeams']
+        pro_teams = data.get('settings', {}).get('proTeams', {})
         pro_team_schedule = {}
 
         for team in pro_teams:

@@ -1,9 +1,10 @@
 from .constant import POSITION_MAP, PRO_TEAM_MAP, PLAYER_STATS_MAP
 from .utils import json_parsing
+from datetime import datetime
 
 class Player(object):
     '''Player are part of team'''
-    def __init__(self, data, year):
+    def __init__(self, data, year, pro_team_schedule = None):
         self.name = json_parsing(data, 'fullName')
         self.playerId = json_parsing(data, 'id')
         self.posRank = json_parsing(data, 'positionalRanking')
@@ -14,12 +15,21 @@ class Player(object):
         self.onTeamId = json_parsing(data, 'onTeamId')
         self.lineupSlot = POSITION_MAP.get(data.get('lineupSlotId'), '')
         self.stats = {}
+        self.schedule = {}
 
         # Get players main position
         for pos in json_parsing(data, 'eligibleSlots'):
             if (pos != 25 and '/' not in POSITION_MAP[pos]) or '/' in self.name:
                 self.position = POSITION_MAP[pos]
                 break
+
+        if pro_team_schedule:
+            pro_team_id = json_parsing(data, 'proTeamId')
+            pro_team = pro_team_schedule.get(pro_team_id, {})
+            for key in pro_team:
+                game = pro_team[key][0]
+                team = game['awayProTeamId'] if game['awayProTeamId'] != pro_team_id else game['homeProTeamId']
+                self.schedule[key] = { 'team': PRO_TEAM_MAP[team], 'date': datetime.fromtimestamp(game['date']/1000.0) }
 
         # set each scoring period stat
         player = data['playerPoolEntry']['player'] if 'playerPoolEntry' in data else data['player']
