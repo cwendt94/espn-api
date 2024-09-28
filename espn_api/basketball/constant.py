@@ -129,6 +129,7 @@ ACTIVITY_MAP = {
     180: 'WAIVER ADDED',
     179: 'DROPPED',
     181: 'DROPPED',
+    188: 'MOVED',
     239: 'DROPPED',
     244: 'TRADED',
     'FA': 178,
