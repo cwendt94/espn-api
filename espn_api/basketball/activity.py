@@ -14,18 +14,15 @@ class Activity(object):
                 team = get_team_data(msg['from'])
             elif msg_id == 239:
                 team = get_team_data(msg['for'])
-            elif msg_id == 188:
-                if include_moved:
-                    if msg['to'] in POSITION_MAP:
-                        position = POSITION_MAP[msg['to']]
+            elif msg_id == 188 and include_moved and msg['to'] in POSITION_MAP:
+                position = POSITION_MAP[msg['to']]
             else:
                 team = get_team_data(msg['to'])
             if msg_id in ACTIVITY_MAP:
                 if include_moved:
                     action = ACTIVITY_MAP[msg_id]
-                else:
-                    if msg_id != 188:
-                        action = ACTIVITY_MAP[msg_id]
+                elif msg_id != 188:
+                    action = ACTIVITY_MAP[msg_id]
             if msg['targetId'] in player_map:
                 player = player_map[msg['targetId']]
             if action != 'UNKNOWN':

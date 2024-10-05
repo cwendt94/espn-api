@@ -100,7 +100,7 @@ class League(BaseLeague):
         headers = {'x-fantasy-filter': json.dumps(filters)}
         data = self.espn_request.league_get(extend='/communication/', params=params, headers=headers)
         data = data['topics']
-        activity = [act for act in (Activity(topic, self.player_map, self.get_team_data, include_moved=include_moved) for topic in data)if act and str(act).strip()]
+        activity = [Activity(topic, self.player_map, self.get_team_data, include_moved=include_moved) for topic in data]
 
         return activity
 
