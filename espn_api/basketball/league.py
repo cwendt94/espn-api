@@ -84,12 +84,12 @@ class League(BaseLeague):
 
         return matchups
 
-    def recent_activity(self, size: int = 25, msg_type: str = None, offset: int = 0) -> List[Activity]:
+    def recent_activity(self, size: int = 25, msg_type: str = None, offset: int = 0, include_moved=False) -> List[Activity]:
         '''Returns a list of recent league activities (Add, Drop, Trade)'''
         if self.year < 2019:
             raise Exception('Cant use recent activity before 2019')
 
-        msg_types = [178,180,179,239,181,244]
+        msg_types = [178,180,179,239,181,244,188]
         if msg_type in ACTIVITY_MAP:
             msg_types = [ACTIVITY_MAP[msg_type]]
         params = {
@@ -100,7 +100,7 @@ class League(BaseLeague):
         headers = {'x-fantasy-filter': json.dumps(filters)}
         data = self.espn_request.league_get(extend='/communication/', params=params, headers=headers)
         data = data['topics']
-        activity = [Activity(topic, self.player_map, self.get_team_data) for topic in data]
+        activity = [Activity(topic, self.player_map, self.get_team_data, include_moved=include_moved) for topic in data]
 
         return activity
 
