@@ -18,16 +18,27 @@ def printAwards(awards):
 
 # Compute highest value for given position(s)
 def computeHigh(pos, players, award_string):
-	fellas = [x for x in players if x.lineupSlot in pos]
-	fellas_dict = {}
-	for team in league.teams:
-		fellas_dict[team.team_name] = sum(player.points for player in fellas if player.onTeamId == team.team_id)
-	fella_team = max(fellas_dict, key=fellas_dict.get)
-	award_string = award_string + ' ' + str(fellas_dict[fella_team]) + ')'
-	award(fella_team, award_string)
 
-league_id = 306883
-league = League(league_id, 2024)
+	# Compile list of players at position(s) pos
+	filtered_players = [x for x in players if x.lineupSlot in pos]
+	filtered_dict = {}
+
+	# Make a dictionary of team_name -> sum of players at that position
+	for team in league.teams:
+		filtered_dict[team.team_name] = sum(player.points for player in filtered_players if player.onTeamId == team.team_id)
+	
+	# Compute team with highest value
+	top_team = max(filtered_dict, key=filtered_dict.get)
+	award_string = award_string + ' ' + str(filtered_dict[top_team]) + ')'
+	award(top_team, award_string)
+
+# Get team name for a team_id
+def getTeamName(id):
+	return next((y.team_name for y in league.teams if y.team_id == id), None)
+
+LEAGUE_ID = 306883
+YEAR = 2024
+league = League(LEAGUE_ID, YEAR)
 awards = {}
 players = []
 
@@ -38,8 +49,10 @@ week_high = 0
 week_high_team = ''
 week_low = 200
 week_low_team = ''
-week_diff = 0
-diff_team= ''
+week_high_diff = 0
+week_low_diff = 200
+diff_high_team = ''
+diff_low_team = ''
 winners = {}
 losers = {}
 
@@ -57,15 +70,25 @@ for matchup in box_scores:
 		winners[matchup.home_team.team_name] = matchup.home_score
 		losers[matchup.away_team.team_name] = matchup.away_score
 
+	if matchup.away_score < 100:
+		award(matchup.away_team.team_name, 'SUB-100 CLUB')
+	if matchup.home_score < 100:
+		award(matchup.home_team.team_name, 'SUB-100 CLUB')
+
 	# Compute difference between scores
-	temp_week_diff = round(abs(matchup.away_score - matchup.home_score))
+	temp_week_high_diff = round(abs(matchup.away_score - matchup.home_score))
+	temp_week_low_diff = round(abs(matchup.away_score - matchup.home_score))
 
 	# Computer who won by the most points
-	if temp_week_diff > week_diff:
-		week_diff = temp_week_diff
-		diff_team = matchup.away_team.team_name if matchup.away_score > matchup.home_score else matchup.home_team.team_name
-		loss_team = matchup.away_team.team_name if matchup.away_score < matchup.home_score else matchup.home_team.team_name
-	
+	if temp_week_high_diff > week_high_diff:
+		week_high_diff = temp_week_high_diff
+		diff_high_team = matchup.away_team.team_name if matchup.away_score > matchup.home_score else matchup.home_team.team_name
+		loss_high_team = matchup.away_team.team_name if matchup.away_score < matchup.home_score else matchup.home_team.team_name
+	if temp_week_low_diff < week_low_diff:
+		week_low_diff = temp_week_low_diff
+		diff_low_team = matchup.away_team.team_name if matchup.away_score > matchup.home_score else matchup.home_team.team_name
+		loss_low_team = matchup.away_team.team_name if matchup.away_score < matchup.home_score else matchup.home_team.team_name
+
 	# Computer who had the highest score of the week
 	if matchup.home_score > week_high:
 		week_high = matchup.home_score
@@ -88,13 +111,16 @@ fort_son = min(winners, key=winners.get)
 # Compute highest scoring loser
 tough_luck = max(losers, key=losers.get)
 
-award(fort_son, 'FORTUNATE SON: Lowest scoring winner (' + str(winners[fort_son]) + ')')
-award(tough_luck, 'TOUGH LUCK: Highest scoring loser (' + str(losers[tough_luck]) + ')')
-award(week_high_team, 'BOOM GOES THE DYNAMITE: Highest weekly score (' + str(week_high) + ')')
-award(week_low_team, 'ASSUME THE POSITION: Lowest weekly score (' + str(week_low) + ')')
-award(diff_team, 'TOTAL DOMINATION: Beat opponent by largest margin (' + loss_team + ' by ' + str(week_diff) + ')')
+award(fort_son, 'FORTUNATE SON - Lowest scoring winner (' + str(winners[fort_son]) + ')')
+award(tough_luck, 'TOUGH LUCK - Highest scoring loser (' + str(losers[tough_luck]) + ')')
 
-computeHigh('QB', players, 'PLAY CALLER BALLER: QB high ():')
+award(week_high_team, 'BOOM GOES THE DYNAMITE - Highest weekly score (' + str(week_high) + ')')
+award(week_low_team, 'ASSUME THE POSITION - Lowest weekly score (' + str(week_low) + ')')
+award(diff_high_team, 'TOTAL DOMINATION - Beat opponent by largest margin (' + loss_high_team + ' by ' + str(week_high_diff) + ')')
+award(loss_low_team, 'SECOND BANANA - Beaten by slimmest margin (' + diff_low_team + ' by ' + str(week_low_diff) + ')')
+award(diff_low_team, 'GEEKED FOR THE EKE - Beat opponent by slimmest margin (' + loss_low_team + ' by ' + str(week_low_diff) + ')')
+
+computeHigh('QB', players, 'PLAY CALLER BALLER: QB high (')
 
 qbs = [x for x in players if x.lineupSlot == 'QB']
 
@@ -103,7 +129,7 @@ for qb in qbs:
 	ints = 0 if qb.stats[week]['breakdown'].get('passingInterceptions') == None else qb.stats[week]['breakdown']['passingInterceptions']
 	tds = 0 if qb.stats[week]['breakdown'].get('passingTouchdowns') == None else qb.stats[week]['breakdown']['passingTouchdowns']
 	if ints != 0 and tds == ints:
-		award(next((x.team_name for x in league.teams if x.team_id == qb.onTeamId), None), 'PERFECTLY BALANCED - ' + qb.name + ' threw equal number of TDs and INTs') 
+		award(getTeamName(qb.onTeamId), 'PERFECTLY BALANCED - ' + qb.name + ' threw ' + str(tds) + ' TDs and ' + str(ints) + ' INTs') 
 
 # Compute TE high
 computeHigh(['TE'], players, 'TIGHTEST END - TE high (', )
@@ -120,11 +146,10 @@ computeHigh(['WR', 'WR/TE'], players, 'DEEP THREAT - WR corps high (')
 # Compute RB corps high
 computeHigh(['RB'], players, 'PUT THE TEAM ON HIS BACKS - RB corps high (')
 
-# Filter for even numbers
+# Compute players who scored 2x projected
 daily_doubles = filter(lambda x: x.lineupSlot not in ['IR', 'BE', 'D/ST'] and x.points >= 2 * x.projected_points, players)
 for player in daily_doubles:
-	dbl_team = next((y.team_name for y in league.teams if y.team_id == player.onTeamId), None)
 	dbl_award_string = 'DAILY DOUBLE - ' + player.name + ' scored >2x projected (' + str(player.points) + ', ' + str(player.projected_points) + ' projected)'
-	award(dbl_team, dbl_award_string)
+	award(getTeamName(player.onTeamId), dbl_award_string)
 
 printAwards(awards)
