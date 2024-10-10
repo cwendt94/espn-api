@@ -144,7 +144,9 @@ for qb in qbs:
 	ints = 0 if qb.stats[week]['breakdown'].get('passingInterceptions') == None else qb.stats[week]['breakdown']['passingInterceptions']
 	tds = 0 if qb.stats[week]['breakdown'].get('passingTouchdowns') == None else qb.stats[week]['breakdown']['passingTouchdowns']
 	if ints != 0 and tds == ints:
-		award(getTeamName(qb.onTeamId), 'PERFECTLY BALANCED - ' + qb.name + ' threw ' + str(int(tds)) + ' TD(s) and ' + str(int(ints)) + ' INT(s)') 
+		plural = 's' if tds > 1 else ''
+		award_string = 'PERFECTLY BALANCED - ' + qb.name + ' threw ' + str(int(tds)) + ' TD' + plural + ' and ' + str(int(ints)) + ' INT' + plural
+		award(getTeamName(qb.onTeamId), award_string) 
 
 # Compute TE high
 computeHigh(['TE'], players, 'TIGHTEST END - TE high (', )
