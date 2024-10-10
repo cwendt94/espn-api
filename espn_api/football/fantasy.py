@@ -39,7 +39,7 @@ def whoWasThat(team_name, score, players):
 	for player in players:
 		# print(player.points)
 		if player.points == score and player.onTeamId == team.team_id:
-			return player.name + ', '
+			return player.name.rsplit(' ', 1)[1] + ', '
 	return ''
 
 # Get team name for a team_id
