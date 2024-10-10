@@ -29,12 +29,25 @@ def computeHigh(pos, players, award_string):
 	
 	# Compute team with highest value
 	top_team = max(filtered_dict, key=filtered_dict.get)
-	award_string = award_string + ' ' + str(filtered_dict[top_team]) + ')'
+	player_myst = whoWasThat(top_team, filtered_dict[top_team], filtered_players)
+	award_string = award_string + player_myst + str(filtered_dict[top_team]) + ')'
 	award(top_team, award_string)
+
+# Attempt to match what player did the thing 
+def whoWasThat(team_name, score, players):
+	team = getTeam(team_name)
+	for player in players:
+		# print(player.points)
+		if player.points == score and player.onTeamId == team.team_id:
+			return player.name + ', '
+	return ''
 
 # Get team name for a team_id
 def getTeamName(id):
 	return next((y.team_name for y in league.teams if y.team_id == id), None)
+
+def getTeam(name):
+	return next((y for y in league.teams if y.team_name == name), None)
 
 LEAGUE_ID = 306883
 YEAR = 2024
@@ -62,7 +75,7 @@ for matchup in box_scores:
 	# Make pile of all players to iterate over 
 	players += matchup.away_lineup + matchup.home_lineup
 
-	# If away team won, add them to winners, else to losers
+	# If away team won, add the team to winners, else to losers
 	if matchup.away_score > matchup.home_score:
 		winners[matchup.away_team.team_name] = matchup.away_score
 		losers[matchup.home_team.team_name] = matchup.home_score
@@ -84,12 +97,14 @@ for matchup in box_scores:
 		week_high_diff = temp_week_high_diff
 		diff_high_team = matchup.away_team.team_name if matchup.away_score > matchup.home_score else matchup.home_team.team_name
 		loss_high_team = matchup.away_team.team_name if matchup.away_score < matchup.home_score else matchup.home_team.team_name
+	
+	# Compute who won by the fewest points
 	if temp_week_low_diff < week_low_diff:
 		week_low_diff = temp_week_low_diff
 		diff_low_team = matchup.away_team.team_name if matchup.away_score > matchup.home_score else matchup.home_team.team_name
 		loss_low_team = matchup.away_team.team_name if matchup.away_score < matchup.home_score else matchup.home_team.team_name
 
-	# Computer who had the highest score of the week
+	# Compute who had the highest score of the week
 	if matchup.home_score > week_high:
 		week_high = matchup.home_score
 		week_high_team = matchup.home_team.team_name
@@ -129,7 +144,7 @@ for qb in qbs:
 	ints = 0 if qb.stats[week]['breakdown'].get('passingInterceptions') == None else qb.stats[week]['breakdown']['passingInterceptions']
 	tds = 0 if qb.stats[week]['breakdown'].get('passingTouchdowns') == None else qb.stats[week]['breakdown']['passingTouchdowns']
 	if ints != 0 and tds == ints:
-		award(getTeamName(qb.onTeamId), 'PERFECTLY BALANCED - ' + qb.name + ' threw ' + str(tds) + ' TDs and ' + str(ints) + ' INTs') 
+		award(getTeamName(qb.onTeamId), 'PERFECTLY BALANCED - ' + qb.name + ' threw ' + str(int(tds)) + ' TD(s) and ' + str(int(ints)) + ' INT(s)') 
 
 # Compute TE high
 computeHigh(['TE'], players, 'TIGHTEST END - TE high (', )
