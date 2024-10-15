@@ -32,7 +32,7 @@ class Player(object):
         self.injured = player.get('injured', False)
 
         for split in player.get('stats', []):
-            if split['stats']:
+            if split.get('stats'):
                 id = split['id']
                 stat_key = get_stat_key(id)
 
