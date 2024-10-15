@@ -2,12 +2,20 @@ from espn_api.football import League
 from operator import attrgetter
 from collections import defaultdict
 
+class Score:
+	def __init__(self, home_team, home_score, away_team, away_score):
+		self.winning_score = home_score if home_score > away_score else away_score
+		self.losing_score = away_score if home_score > away_score else home_score
+		self.winning_team = home_team if self.winning_score == home_score else away_team
+		self.losing_team = away_team if self.winning_score == away_score else home_team
+
 class FantasyService:
 	def __init__(self):
 		self.league = League(306883, 2024)
 		self.awards = defaultdict(list)
 		self.players = []
 		self.teams = self.league.teams
+		self.scores = []
 
 	def generateAwards(self):
 		week_high = 0
@@ -18,8 +26,6 @@ class FantasyService:
 		week_low_diff = 200
 		diff_high_team = ''
 		diff_low_team = ''
-		winners = {}
-		losers = {}
 		week = 6
 
 		# Iterating over matchups
@@ -28,58 +34,52 @@ class FantasyService:
 			# Make pile of all players to iterate over 
 			self.players += matchup.away_lineup + matchup.home_lineup
 
-			# If away team won, add the team to winners, else to losers
-			if matchup.away_score > matchup.home_score:
-				winners[matchup.away_team.team_name] = matchup.away_score
-				losers[matchup.home_team.team_name] = matchup.home_score
-			else:
-				winners[matchup.home_team.team_name] = matchup.home_score
-				losers[matchup.away_team.team_name] = matchup.away_score
+			# Make new list of matchups to iterate over
+			self.scores.append(Score(matchup.home_team, matchup.home_score, matchup.away_team, matchup.away_score))
 
-			if matchup.away_score < 100:
-				self.award(matchup.away_team.team_name, 'SUB-100 CLUB')
-			if matchup.home_score < 100:
-				self.award(matchup.home_team.team_name, 'SUB-100 CLUB')
+		# Compute highest score of the week
+		highest = max(self.scores, key=attrgetter('winning_score'))
+		self.award(highest.winning_team, 'BOOM GOES THE DYNAMITE - Highest weekly score (' + str(week_high) + ')')
 
+		# Compute lowest score of the week 
+		lowest = min(self.scores, key=attrgetter('losing_score'))
+		self.award(lowest.losing_team, 'ASSUME THE POSITION - Lowest weekly score (' + str(week_low) + ')')
+		
+		# Compute lowest scoring winner
+		fort_son = min(self.scores, key=attrgetter('winning_score'))
+		self.award(fort_son.winning_team, 'FORTUNATE SON - Lowest scoring winner (' + str(fort_son.winning_score) + ')')
+
+		# Compute highest scoring loser
+		tough_luck = max(self.scores, key=attrgetter('losing_score'))
+		self.award(tough_luck.losing_team, 'TOUGH LUCK - Highest scoring loser (' + str(tough_luck.losing_score) + ')')
+
+		for score in self.scores:
+				
 			# Compute difference between scores
-			temp_week_high_diff = round(abs(matchup.away_score - matchup.home_score))
-			temp_week_low_diff = round(abs(matchup.away_score - matchup.home_score))
+			temp_week_high_diff = round(score.winning_score - score.losing_score)
+			temp_week_low_diff = temp_week_high_diff
 
-			# Computer who won by the most points
+			# Award teams who didn't make it to 100 points
+			if score.losing_score < 100:
+				self.award(score.losing_team, 'SUB-100 CLUB')
+			if score.winning_score < 100:
+				self.award(score.winning_team, 'SUB-100 CLUB')
+
+			# Compute who won by the most points
 			if temp_week_high_diff > week_high_diff:
 				week_high_diff = temp_week_high_diff
-				diff_high_team = matchup.away_team.team_name if matchup.away_score > matchup.home_score else matchup.home_team.team_name
-				loss_high_team = matchup.away_team.team_name if matchup.away_score < matchup.home_score else matchup.home_team.team_name
+				diff_high_team = score.winning_team
+				loss_high_team = score.losing_team
 	
 			# Compute who won by the fewest points
 			if temp_week_low_diff < week_low_diff:
 				week_low_diff = temp_week_low_diff
-				diff_low_team = matchup.away_team.team_name if matchup.away_score > matchup.home_score else matchup.home_team.team_name
-				loss_low_team = matchup.away_team.team_name if matchup.away_score < matchup.home_score else matchup.home_team.team_name
+				diff_low_team = score.winning_team
+				loss_low_team = score.losing_team
 
-		# Compute lowest scoring winner
-		fort_son = min(winners, key=winners.get)
-
-		# Compute highest scoring loser
-		tough_luck = max(losers, key=losers.get)
-
-		# Compute who had the lowest score of the week  
-		week_low_team = min(losers, key=losers.get)
-		week_low = self.getTeamFromName(week_low_team)
-
-		# Compute who had the highest score of the week
-		week_high_team = max(winners, key=winners.get)
-		week_high = self.getTeamFromName(week_high_team)
-
-
-		self.award(fort_son, 'FORTUNATE SON - Lowest scoring winner (' + str(winners[fort_son]) + ')')
-		self.award(tough_luck, 'TOUGH LUCK - Highest scoring loser (' + str(losers[tough_luck]) + ')')
-
-		self.award(week_high_team, 'BOOM GOES THE DYNAMITE - Highest weekly score (' + str(week_high) + ')')
-		self.award(week_low_team, 'ASSUME THE POSITION - Lowest weekly score (' + str(week_low) + ')')
-		self.award(diff_high_team, 'TOTAL DOMINATION - Beat opponent by largest margin (' + loss_high_team + ' by ' + str(week_high_diff) + ')')
-		self.award(loss_low_team, 'SECOND BANANA - Beaten by slimmest margin (' + diff_low_team + ' by ' + str(week_low_diff) + ')')
-		self.award(diff_low_team, 'GEEKED FOR THE EKE - Beat opponent by slimmest margin (' + loss_low_team + ' by ' + str(week_low_diff) + ')')
+		self.award(diff_high_team, 'TOTAL DOMINATION - Beat opponent by largest margin (' + loss_high_team.team_name + ' by ' + str(week_high_diff) + ')')
+		self.award(loss_low_team, 'SECOND BANANA - Beaten by slimmest margin (' + diff_low_team.team_name + ' by ' + str(week_low_diff) + ')')
+		self.award(diff_low_team, 'GEEKED FOR THE EKE - Beat opponent by slimmest margin (' + loss_low_team.team_name + ' by ' + str(week_low_diff) + ')')
 
 		qbs = [x for x in self.players if x.lineupSlot == 'QB']
 
@@ -164,5 +164,4 @@ class FantasyService:
 	def getTeamFromName(self, name):
 		return next((y for y in self.teams if y.team_name == name), None)
 
-fantasy_service = FantasyService()
-fantasy_service.generateAwards()
+FantasyService().generateAwards()
