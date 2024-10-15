@@ -1,10 +1,11 @@
 from espn_api.football import League
 from operator import attrgetter
+from collections import defaultdict
 
 class FantasyService:
 	def __init__(self):
 		self.league = League(306883, 2024)
-		self.awards = {}
+		self.awards = defaultdict(list)
 		self.players = []
 		self.teams = self.league.teams
 
@@ -56,27 +57,20 @@ class FantasyService:
 				diff_low_team = matchup.away_team.team_name if matchup.away_score > matchup.home_score else matchup.home_team.team_name
 				loss_low_team = matchup.away_team.team_name if matchup.away_score < matchup.home_score else matchup.home_team.team_name
 
-			# Compute who had the highest score of the week
-			if matchup.home_score > week_high:
-				week_high = matchup.home_score
-				week_high_team = matchup.home_team.team_name
-			if matchup.away_score > week_high:
-				week_high = matchup.away_score
-				week_high_team = matchup.away_team.team_name
-
-			# Compute who had the lowest score of the week  	
-			if matchup.home_score < week_low:
-				week_low = matchup.home_score
-				week_low_team = matchup.home_team.team_name
-			if matchup.away_score < week_low:
-				week_low = matchup.away_score
-				week_low_team = matchup.away_team.team_name
-
 		# Compute lowest scoring winner
 		fort_son = min(winners, key=winners.get)
 
 		# Compute highest scoring loser
 		tough_luck = max(losers, key=losers.get)
+
+		# Compute who had the lowest score of the week  
+		week_low_team = min(losers, key=losers.get)
+		week_low = self.getTeamFromName(week_low_team)
+
+		# Compute who had the highest score of the week
+		week_high_team = max(winners, key=winners.get)
+		week_high = self.getTeamFromName(week_high_team)
+
 
 		self.award(fort_son, 'FORTUNATE SON - Lowest scoring winner (' + str(winners[fort_son]) + ')')
 		self.award(tough_luck, 'TOUGH LUCK - Highest scoring loser (' + str(losers[tough_luck]) + ')')
@@ -87,8 +81,6 @@ class FantasyService:
 		self.award(loss_low_team, 'SECOND BANANA - Beaten by slimmest margin (' + diff_low_team + ' by ' + str(week_low_diff) + ')')
 		self.award(diff_low_team, 'GEEKED FOR THE EKE - Beat opponent by slimmest margin (' + loss_low_team + ' by ' + str(week_low_diff) + ')')
 
-		# computeHigh('QB', players, 'PLAY CALLER BALLER: QB high (')
-
 		qbs = [x for x in self.players if x.lineupSlot == 'QB']
 
 		# Compute if any QBs had equal num of TDs and INTs
@@ -98,7 +90,10 @@ class FantasyService:
 			if ints != 0 and tds == ints:
 				plural = 's' if tds > 1 else ''
 				award_string = 'PERFECTLY BALANCED - ' + qb.name + ' threw ' + str(int(tds)) + ' TD' + plural + ' and ' + str(int(ints)) + ' INT' + plural
-				self.award(self.getTeamName(qb.onTeamId), award_string) 
+				self.award(self.getTeamName(qb.onTeamId), award_string)
+
+		# Compute QB high
+		self.computeHigh('QB', 'PLAY CALLER BALLER: QB high (')
 
 		# Compute TE high
 		self.computeHigh(['TE'], 'TIGHTEST END - TE high (', )
@@ -125,10 +120,7 @@ class FantasyService:
 
 	# Add award to dict of teams
 	def award(self, team_name, award_string):
-		if self.awards.get(team_name) != None:
-			self.awards[team_name].append(award_string)
-		else: 
-			self.awards[team_name] = [award_string]
+		self.awards[team_name].append(award_string)
 
 	# Print all awards for each team
 	def printAwards(self):
