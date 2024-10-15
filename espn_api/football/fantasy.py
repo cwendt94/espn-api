@@ -39,19 +39,19 @@ class FantasyService:
 
 		# Compute highest score of the week
 		highest = max(self.scores, key=attrgetter('winning_score'))
-		self.award(highest.winning_team, 'BOOM GOES THE DYNAMITE - Highest weekly score (' + str(week_high) + ')')
+		self.award(highest.winning_team.team_name, 'BOOM GOES THE DYNAMITE - Highest weekly score (' + str(week_high) + ')')
 
 		# Compute lowest score of the week 
 		lowest = min(self.scores, key=attrgetter('losing_score'))
-		self.award(lowest.losing_team, 'ASSUME THE POSITION - Lowest weekly score (' + str(week_low) + ')')
+		self.award(lowest.losing_team.team_name, 'ASSUME THE POSITION - Lowest weekly score (' + str(week_low) + ')')
 		
 		# Compute lowest scoring winner
 		fort_son = min(self.scores, key=attrgetter('winning_score'))
-		self.award(fort_son.winning_team, 'FORTUNATE SON - Lowest scoring winner (' + str(fort_son.winning_score) + ')')
+		self.award(fort_son.winning_team.team_name, 'FORTUNATE SON - Lowest scoring winner (' + str(fort_son.winning_score) + ')')
 
 		# Compute highest scoring loser
 		tough_luck = max(self.scores, key=attrgetter('losing_score'))
-		self.award(tough_luck.losing_team, 'TOUGH LUCK - Highest scoring loser (' + str(tough_luck.losing_score) + ')')
+		self.award(tough_luck.losing_team.team_name, 'TOUGH LUCK - Highest scoring loser (' + str(tough_luck.losing_score) + ')')
 
 		for score in self.scores:
 				
@@ -61,9 +61,9 @@ class FantasyService:
 
 			# Award teams who didn't make it to 100 points
 			if score.losing_score < 100:
-				self.award(score.losing_team, 'SUB-100 CLUB')
+				self.award(score.losing_team.team_name, 'SUB-100 CLUB')
 			if score.winning_score < 100:
-				self.award(score.winning_team, 'SUB-100 CLUB')
+				self.award(score.winning_team.team_name, 'SUB-100 CLUB')
 
 			# Compute who won by the most points
 			if temp_week_high_diff > week_high_diff:
@@ -77,9 +77,9 @@ class FantasyService:
 				diff_low_team = score.winning_team
 				loss_low_team = score.losing_team
 
-		self.award(diff_high_team, 'TOTAL DOMINATION - Beat opponent by largest margin (' + loss_high_team.team_name + ' by ' + str(week_high_diff) + ')')
-		self.award(loss_low_team, 'SECOND BANANA - Beaten by slimmest margin (' + diff_low_team.team_name + ' by ' + str(week_low_diff) + ')')
-		self.award(diff_low_team, 'GEEKED FOR THE EKE - Beat opponent by slimmest margin (' + loss_low_team.team_name + ' by ' + str(week_low_diff) + ')')
+		self.award(diff_high_team.team_name, 'TOTAL DOMINATION - Beat opponent by largest margin (' + loss_high_team.team_name + ' by ' + str(week_high_diff) + ')')
+		self.award(loss_low_team.team_name, 'SECOND BANANA - Beaten by slimmest margin (' + diff_low_team.team_name + ' by ' + str(week_low_diff) + ')')
+		self.award(diff_low_team.team_name, 'GEEKED FOR THE EKE - Beat opponent by slimmest margin (' + loss_low_team.team_name + ' by ' + str(week_low_diff) + ')')
 
 		qbs = [x for x in self.players if x.lineupSlot == 'QB']
 
@@ -96,7 +96,7 @@ class FantasyService:
 		self.computeHigh('QB', 'PLAY CALLER BALLER: QB high (')
 
 		# Compute TE high
-		self.computeHigh(['TE'], 'TIGHTEST END - TE high (', )
+		self.computeHigh(['TE'], 'TIGHTEST END - TE high (')
 
 		# Compute D/ST high
 		self.computeHigh(['D/ST'], 'FORT KNOX - D/ST high (')
