@@ -306,6 +306,7 @@ class League(BaseLeague):
         data = self.espn_request.league_get(params=params, headers=headers)
 
         schedule = data['schedule']
+        print(schedule)
         pro_schedule = self._get_pro_schedule(scoring_period)
         positional_rankings = self._get_positional_ratings(scoring_period)
         box_data = [BoxScore(matchup, pro_schedule, positional_rankings, scoring_period, self.year) for matchup in schedule]

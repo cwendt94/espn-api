@@ -5,6 +5,7 @@ class BoxScore(object):
     def __init__(self, data, pro_schedule, positional_rankings, week, year):
         self.matchup_type = data.get('playoffTierType', 'NONE') 
         self.is_playoff = self.matchup_type != 'NONE'
+        self.data = data
         
         (self.home_team, self.home_score, self.home_projected, self.home_lineup) = self._get_team_data('home', data, pro_schedule, positional_rankings, week, year)
         self.home_projected = self._get_projected_score(self.home_projected, self.home_lineup)
@@ -37,6 +38,7 @@ class BoxScore(object):
         team_projected = round(data[team].get('totalProjectedPointsLive', -1), 2)
       else:
         team_score = round(data[team]['totalPoints'], 2)
+      print(data[team])
       team_roster = data[team]['rosterForCurrentScoringPeriod']['entries']
       team_lineup = [BoxPlayer(player, pro_schedule, positional_rankings, week, year) for player in team_roster]
 

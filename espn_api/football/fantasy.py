@@ -11,6 +11,7 @@ class Score:
 		self.diff = point_differential
 		self.vs = vs_team_name
 		self.vs_owner = vs_owner
+		# self.potential = potential
 
 class Top_Scorer:
 	def __init__(self, name, team_name, score, pos):
@@ -33,11 +34,13 @@ class Fantasy_Service:
 		for matchup in self.league.box_scores(week=self.week):
 
 			# Make pile of all players to iterate over 
-			self.players += matchup.away_lineup + matchup.home_lineup
+			self.players += matchup.home_lineup + matchup.away_lineup
+			# print(matchup.data)
 
 			diff = max([matchup.home_score, matchup.away_score]) - min([matchup.home_score, matchup.away_score])
 			
 			# Make new list of matchups to iterate over
+			# , self.compute_potential(matchup.home_team, matchup.home_score)
 			self.scores.append(Score(matchup.home_team.team_name, matchup.home_team.owners[0]['firstName'], matchup.home_score, diff, matchup.away_team.team_name, matchup.away_team.owners[0]['firstName']))
 			self.scores.append(Score(matchup.away_team.team_name, matchup.away_team.owners[0]['firstName'], matchup.away_score, (0-diff), matchup.home_team.team_name, matchup.home_team.owners[0]['firstName']))
 
@@ -123,6 +126,8 @@ class Fantasy_Service:
 			dbl_award_string = f'DAILY DOUBLE - {dbl_player.name} scored >2x projected ({dbl_player.points}, {dbl_player.projected_points} projected)'
 			self.award(self.get_team_name_from_id(dbl_player.onTeamId), dbl_award_string)
 
+		# potential_high = max(self.scores, key=attrgetter('potential_high'))
+		# self.award(potential_high.team_name, f'BEST MANAGER - Scored {potential_high.potential} of possible points')
 		self.print_awards()
 
 	# Add award to dict of teams
@@ -153,6 +158,23 @@ class Fantasy_Service:
 		team_name = max(filtered_dict, key=filtered_dict.get)
 		player_name = self.get_player_name_from_score(team_name, filtered_dict[team_name], filtered_players) if seek_player else ''
 		return Top_Scorer(player_name, team_name, filtered_dict[team_name], pos)
+
+	def compute_potential(self, team, score):
+		roster = []
+		for player in team.roster:
+			player_points = next((y for y in self.players if y.name == player.name), None)
+			roster.append(player_points)
+			print(player.name + ' ' + player.position)
+			print(player_points.name + ' ' + player_points.position + ' ' + str(player_points.points))
+		max_qb = max([x for x in roster if x.position == 'QB'], key=attrgetter('points')).points
+		max_te = max([x for x in roster if x.position == 'TE'], key=attrgetter('points')).points
+		mas_d_st = max([x for x in roster if x.position == 'D/ST'], key=attrgetter('points')).points
+		max_k = max([x for x in roster if x.position == 'K'], key=attrgetter('points')).points
+		max_rbs = max([x for x in roster if x.position == 'RB'], key=attrgetter('points')).points + sorted(set([x.points for x in roster if x.position == 'RB']))[-2]
+		second_wr = sorted(set([x.points for x in roster if x.position in ['WR', 'WR/TE']]))
+		max_wrs = max([x for x in roster if x.position in ['WR', 'WR/TE']], key=attrgetter('points')).points + second_wr[-2] + second_wr[-3]
+		used_potential = (score / (max_qb + max_te + mas_d_st + max_k + max_rbs + max_wrs))
+		return '{:,.2%}'.format(used_potential)
 
 	# Attempt to match what player did the thing 
 	def get_player_name_from_score(self, team_name, score, filtered_players):
