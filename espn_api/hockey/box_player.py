@@ -21,7 +21,7 @@ class BoxPlayer(Player):
         if player['proTeamId'] in pro_schedule:
             (opp_id, date) = pro_schedule[player['proTeamId']]
             self.game_played = 100 if datetime.now() > datetime.fromtimestamp(date / 1000.0) + timedelta(hours=3) else 0
-            self.pro_opponent = PRO_TEAM_MAP[opp_id]
+            self.pro_opponent = PRO_TEAM_MAP.get(opp_id, 'Unknown Team')
 
         player_stats = player.get('stats', [])
         for stats in player_stats:
