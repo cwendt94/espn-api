@@ -4,11 +4,13 @@ from collections import defaultdict
 
 # Flatten list of team scores as they come in box_score format
 class Score:
-	def __init__(self, team_name, score, point_differential, vs_team_name):
+	def __init__(self, team_name, owner, score, point_differential, vs_team_name, vs_owner):
 		self.team_name = team_name
+		self.owner = owner
 		self.score = score
 		self.diff = point_differential
 		self.vs = vs_team_name
+		self.vs_owner = vs_owner
 
 class Fantasy_Service:
 	def __init__(self):
@@ -21,7 +23,7 @@ class Fantasy_Service:
 
 	def generateAwards(self):
 		# Iterating over matchups
-		for matchup in self.league.box_scores(week=week):
+		for matchup in self.league.box_scores(week=self.week):
 
 			# Make pile of all players to iterate over 
 			self.players += matchup.away_lineup + matchup.home_lineup
@@ -29,8 +31,8 @@ class Fantasy_Service:
 			diff = max([matchup.home_score, matchup.away_score]) - min([matchup.home_score, matchup.away_score])
 			
 			# Make new list of matchups to iterate over
-			self.scores.append(Score(matchup.home_team.team_name, matchup.home_score, diff, matchup.away_team.team_name))
-			self.scores.append(Score(matchup.away_team.team_name, matchup.away_score, (0-diff), matchup.home_team.team_name))
+			self.scores.append(Score(matchup.home_team.team_name, matchup.home_team.owners[0]['firstName'], matchup.home_score, diff, matchup.away_team.team_name, matchup.away_team.owners[0]['firstName']))
+			self.scores.append(Score(matchup.away_team.team_name, matchup.away_team.owners[0]['firstName'], matchup.away_score, (0-diff), matchup.home_team.team_name, matchup.home_team.owners[0]['firstName']))
 
 		# Compute highest score of the week
 		highest = max(self.scores, key=attrgetter('score'))
@@ -50,12 +52,12 @@ class Fantasy_Service:
 
 		# Compute largest margin of victory
 		big_margin = max(self.scores, key=attrgetter('diff'))
-		self.award(big_margin.team_name, 'TOTAL DOMINATION - Beat opponent by largest margin (' + big_margin.vs + ' by ' + str(round(big_margin.diff, 2)) + ')')
+		self.award(big_margin.team_name, 'TOTAL DOMINATION - Beat opponent by largest margin (' + big_margin.vs_owner + ' by ' + str(round(big_margin.diff, 2)) + ')')
 
 		# Compute smallest margin of victory
 		small_margin = min([x for x in self.scores if x.diff > 0], key=attrgetter('diff'))
-		self.award(small_margin.vs, 'SECOND BANANA - Beaten by slimmest margin (' + small_margin.team_name + ' by ' + str(round(small_margin.diff, 2)) + ')')
-		self.award(small_margin.team_name, 'GEEKED FOR THE EKE - Beat opponent by slimmest margin (' + small_margin.vs + ' by ' + str(round(small_margin.diff, 2)) + ')')
+		self.award(small_margin.vs, 'SECOND BANANA - Beaten by slimmest margin (' + small_margin.owner + ' by ' + str(round(small_margin.diff, 2)) + ')')
+		self.award(small_margin.team_name, 'GEEKED FOR THE EKE - Beat opponent by slimmest margin (' + small_margin.vs_owner + ' by ' + str(round(small_margin.diff, 2)) + ')')
 
 		for team in self.scores:
 			# Award teams who didn't make it to 100 points
@@ -64,8 +66,8 @@ class Fantasy_Service:
 
 		# Compute if any QBs had equal num of TDs and INTs
 		for qb in [x for x in self.players if x.lineupSlot == 'QB']:
-			ints = 0 if qb.stats[week]['breakdown'].get('passingInterceptions') == None else qb.stats[week]['breakdown']['passingInterceptions']
-			tds = 0 if qb.stats[week]['breakdown'].get('passingTouchdowns') == None else qb.stats[week]['breakdown']['passingTouchdowns']
+			ints = 0 if qb.stats[self.week]['breakdown'].get('passingInterceptions') == None else qb.stats[self.week]['breakdown']['passingInterceptions']
+			tds = 0 if qb.stats[self.week]['breakdown'].get('passingTouchdowns') == None else qb.stats[self.week]['breakdown']['passingTouchdowns']
 			if ints != 0 and tds == ints:
 				plural = 's' if tds > 1 else ''
 				award_string = 'PERFECTLY BALANCED - ' + qb.name + ' threw ' + str(int(tds)) + ' TD' + plural + ' and ' + str(int(ints)) + ' INT' + plural
