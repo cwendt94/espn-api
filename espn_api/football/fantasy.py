@@ -83,27 +83,27 @@ class Fantasy_Service:
 				self.award(self.get_team_name_from_id(qb.onTeamId), award_string)
 
 		# 10) Compute QB high
-		qb_high = self.compute_high('QB', True)
+		qb_high = self.compute_top_scorer('QB', True)
 		self.award(qb_high.team_name, f'PLAY CALLER BALLER: QB high ({qb_high.name.split()[1]}, {qb_high.score})')
 
 		# 11) Compute TE high
-		te_high = self.compute_high(['TE'], True)
+		te_high = self.compute_top_scorer(['TE'], True)
 		self.award(te_high.team_name, f'TIGHTEST END - TE high ({te_high.name.split()[1]}, {te_high.score})')
 
 		# 12) Compute D/ST high
-		d_st_high = self.compute_high(['D/ST'], True)
+		d_st_high = self.compute_top_scorer(['D/ST'], True)
 		self.award(d_st_high.team_name, f'FORT KNOX - D/ST high ({d_st_high.name}, {d_st_high.score})')
 
 		# 13) Compute kicker high
-		k_high = self.compute_high(['K'], True)
+		k_high = self.compute_top_scorer(['K'], True)
 		self.award(k_high.team_name, f'KICK FAST, EAT ASS - Kicker high ({k_high.name.split()[1]}, {k_high.score})')
 
 		# 14) Compute WR corps high
-		wr_high = self.compute_high(['WR', 'WR/TE'])
+		wr_high = self.compute_top_scorer(['WR', 'WR/TE'])
 		self.award(wr_high.team_name, f'DEEP THREAT - WR corps high ({wr_high.score})')
 
 		# 15) Compute RB corps high
-		rb_high = self.compute_high(['RB'])
+		rb_high = self.compute_top_scorer(['RB'])
 		self.award(rb_high.team_name, f'PUT THE TEAM ON HIS BACKS - RB corps high ({rb_high.score})')
 
 		# 16) Award defenses who went negative
@@ -119,9 +119,9 @@ class Fantasy_Service:
 
 		# 18) Compute players who scored 2x projected
 		daily_doubles = filter(lambda x: x.lineupSlot not in ['IR', 'BE', 'D/ST', 'K'] and x.points >= 2 * x.projected_points, self.players)
-		for player in daily_doubles:
-			dbl_award_string = f'DAILY DOUBLE - {player.name} scored >2x projected ({player.points}, {player.projected_points} projected)'
-			self.award(self.get_team_name_from_id(player.onTeamId), dbl_award_string)
+		for dbl_player in daily_doubles:
+			dbl_award_string = f'DAILY DOUBLE - {dbl_player.name} scored >2x projected ({dbl_player.points}, {dbl_player.projected_points} projected)'
+			self.award(self.get_team_name_from_id(dbl_player.onTeamId), dbl_award_string)
 
 		self.print_awards()
 
@@ -138,7 +138,7 @@ class Fantasy_Service:
 			print()
 
 	# Compute highest value for given position(s)
-	def compute_high(self, pos, seek_player=False):
+	def compute_top_scorer(self, pos, seek_player=False):
 
 		# Compile list of players at position(s) pos
 		filtered_players = [x for x in self.players if x.lineupSlot in pos]
