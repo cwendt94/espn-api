@@ -2,6 +2,7 @@ from espn_api.football import League
 from operator import attrgetter
 from collections import defaultdict
 
+# Flatten list of team scores as they come in box_score format
 class Score:
 	def __init__(self, team_name, score, point_differential, vs_team_name):
 		self.team_name = team_name
@@ -11,10 +12,10 @@ class Score:
 
 class Fantasy_Service:
 	def __init__(self):
+		# Hardcode league ID and year
 		self.league = League(306883, 2024)
 		self.awards = defaultdict(list)
 		self.players = []
-		self.teams = self.league.teams
 		self.scores = []
 
 	def generateAwards(self):
@@ -132,14 +133,14 @@ class Fantasy_Service:
 		filtered_dict = {}
 
 		# Make a dictionary of team_name -> sum of players at that position
-		for team in self.teams:
+		for team in self.league.teams:
 			total = sum(player.points for player in filtered_players if player.onTeamId == team.team_id)
 			filtered_dict[team.team_name] = total
 		
 		# Compute team with highest value
 		top_team = max(filtered_dict, key=filtered_dict.get)
-		player_myst = self.get_player_name_from_score(top_team, filtered_dict[top_team], filtered_players) if seek_player else ''
-		award_string = award_string + player_myst + str(filtered_dict[top_team]) + ')'
+		myst_player = self.get_player_name_from_score(top_team, filtered_dict[top_team], filtered_players) if seek_player else ''
+		award_string = award_string + myst_player + str(filtered_dict[top_team]) + ')'
 		self.award(top_team, award_string)
 
 	# Attempt to match what player did the thing 
@@ -154,10 +155,10 @@ class Fantasy_Service:
 		return ''
 
 	# Get team name for a team_id
-	def get_team_name(self, id):
-		return next((y.team_name for y in self.teams if y.team_id == id), None)
+	def get_team_name(self, team_id):
+		return next((y.team_name for y in self.league.teams if y.team_id == team_id), None)
 
-	def get_team_from_name(self, name):
-		return next((y for y in self.teams if y.team_name == name), None)
+	def get_team_from_name(self, team_name):
+		return next((y for y in self.league.teams if y.team_name == team_name), None)
 
 Fantasy_Service().generateAwards()
