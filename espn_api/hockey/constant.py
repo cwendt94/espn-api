@@ -62,6 +62,7 @@ PRO_TEAM_MAP = {
     , 30: 'Minnesota Wild'
     , 37: 'Vegas Golden Knights'
     , 124292: 'Seattle Kraken'
+    , 129764: 'Utah Hockey Club'
 }
 
 STATS_MAP = {
