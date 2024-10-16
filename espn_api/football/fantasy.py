@@ -34,37 +34,38 @@ class Fantasy_Service:
 			self.scores.append(Score(matchup.home_team.team_name, matchup.home_team.owners[0]['firstName'], matchup.home_score, diff, matchup.away_team.team_name, matchup.away_team.owners[0]['firstName']))
 			self.scores.append(Score(matchup.away_team.team_name, matchup.away_team.owners[0]['firstName'], matchup.away_score, (0-diff), matchup.home_team.team_name, matchup.home_team.owners[0]['firstName']))
 
-		# Compute highest score of the week
+		# 1) Compute highest score of the week
 		highest = max(self.scores, key=attrgetter('score'))
 		self.award(highest.team_name, 'BOOM GOES THE DYNAMITE - Highest weekly score (' + str(highest.score) + ')')
 
-		# Compute lowest score of the week 
+		# 2) Compute lowest score of the week 
 		lowest = min(self.scores, key=attrgetter('score'))
 		self.award(lowest.team_name, 'ASSUME THE POSITION - Lowest weekly score (' + str(lowest.score) + ')')
 	
-		# Compute lowest scoring winner
+		# 3) Compute lowest scoring winner
 		fort_son = min([x for x in self.scores if x.diff > 0], key=attrgetter('score'))
 		self.award(fort_son.team_name, 'FORTUNATE SON - Lowest scoring winner (' + str(fort_son.score) + ')')
 
-		# Compute highest scoring loser
+		# 4) Compute highest scoring loser
 		tough_luck = max([x for x in self.scores if x.diff < 0], key=attrgetter('score'))
 		self.award(tough_luck.team_name, 'TOUGH LUCK - Highest scoring loser (' + str(tough_luck.score) + ')')
 
-		# Compute largest margin of victory
+		# 5) Compute largest margin of victory
 		big_margin = max(self.scores, key=attrgetter('diff'))
 		self.award(big_margin.team_name, 'TOTAL DOMINATION - Beat opponent by largest margin (' + big_margin.vs_owner + ' by ' + str(round(big_margin.diff, 2)) + ')')
 
-		# Compute smallest margin of victory
+		# 6) Compute team that lost with smallest margin of victory
 		small_margin = min([x for x in self.scores if x.diff > 0], key=attrgetter('diff'))
 		self.award(small_margin.vs, 'SECOND BANANA - Beaten by slimmest margin (' + small_margin.owner + ' by ' + str(round(small_margin.diff, 2)) + ')')
+		# 7) Compute team that won with smallest margin of victory
 		self.award(small_margin.team_name, 'GEEKED FOR THE EKE - Beat opponent by slimmest margin (' + small_margin.vs_owner + ' by ' + str(round(small_margin.diff, 2)) + ')')
 
 		for team in self.scores:
-			# Award teams who didn't make it to 100 points
+			# 8) Award teams who didn't make it to 100 points
 			if team.score < 100:
 				self.award(team.team_name, 'SUB-100 CLUB')
 
-		# Compute if any QBs had equal num of TDs and INTs
+		# 9) Compute if any QBs had equal num of TDs and INTs
 		for qb in [x for x in self.players if x.lineupSlot == 'QB']:
 			ints = 0 if qb.stats[self.week]['breakdown'].get('passingInterceptions') == None else qb.stats[self.week]['breakdown']['passingInterceptions']
 			tds = 0 if qb.stats[self.week]['breakdown'].get('passingTouchdowns') == None else qb.stats[self.week]['breakdown']['passingTouchdowns']
@@ -73,31 +74,36 @@ class Fantasy_Service:
 				award_string = 'PERFECTLY BALANCED - ' + qb.name + ' threw ' + str(int(tds)) + ' TD' + plural + ' and ' + str(int(ints)) + ' INT' + plural
 				self.award(self.get_team_name_from_id(qb.onTeamId), award_string)
 
-		# Compute QB high
+		# 10) Compute QB high
 		self.compute_high('QB', 'PLAY CALLER BALLER: QB high (', True)
 
-		# Compute TE high
+		# 11) Compute TE high
 		self.compute_high(['TE'], 'TIGHTEST END - TE high (', True)
 
-		# Compute D/ST high
+		# 12) Compute D/ST high
 		self.compute_high(['D/ST'], 'FORT KNOX - D/ST high (', True)
 
-		# Compute kicker high
+		# 13) Compute kicker high
 		self.compute_high(['K'], 'KICK FAST, EAT ASS - Kicker high (', True)
 
-		# Compute WR corps high
+		# 14) Compute WR corps high
 		self.compute_high(['WR', 'WR/TE'], 'DEEP THREAT - WR corps high (')
 
-		# Compute RB corps high
+		# 15) Compute RB corps high
 		self.compute_high(['RB'], 'PUT THE TEAM ON HIS BACKS - RB corps high (')
 
-		# Award defenses who went negative
+		# 16) Award defenses who went negative
 		defenses = [x for x in self.players if x.lineupSlot == 'D/ST']
 		for defense in defenses:
 			if defense.points < 0:
 				self.award(self.get_team_name_from_id(defense.onTeamId), 'THE BEST DEFENSE IS A GOOD OFFENSE - (' + defense.name + ', ' + str(defense.points))
 
-		# Compute players who scored 2x projected
+		# 17) Award players who didn't get hurt but scored nothing
+		for player in self.players:
+			if player.lineupSlot not in ['IR', 'BE', 'D/ST'] and player.injuryStatus == 'ACTIVE' and player.points == 0:
+				self.award(self.get_team_name_from_id(player.onTeamId), 'OUT OF OFFICE - (' + player.name + ', 0)')
+
+		# 18) Compute players who scored 2x projected
 		daily_doubles = filter(lambda x: x.lineupSlot not in ['IR', 'BE', 'D/ST', 'K'] and x.points >= 2 * x.projected_points, self.players)
 		for player in daily_doubles:
 			dbl_award_string = 'DAILY DOUBLE - ' + player.name + ' scored >2x projected (' + str(player.points) + ', ' + str(player.projected_points) + ' projected)'
