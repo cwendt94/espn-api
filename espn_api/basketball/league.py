@@ -8,6 +8,7 @@ from .matchup import Matchup
 from .box_score import get_box_scoring_type_class, BoxScore
 from .constant import PRO_TEAM_MAP
 from .activity import Activity
+from .transaction import Transaction
 from .constant import POSITION_MAP, ACTIVITY_MAP
 
 class League(BaseLeague):
@@ -103,6 +104,21 @@ class League(BaseLeague):
         activity = [Activity(topic, self.player_map, self.get_team_data, include_moved=include_moved) for topic in data]
 
         return activity
+
+    def transactions(self, scoring_period: int = None) -> List[Transaction]:
+        '''Returns a list of recent transactions'''
+        params = {
+            'view': 'mTransactions2',
+            'scoringPeriodId': scoring_period,
+        }
+
+        filters = {"transactions":{"filterType":{"value":["FREEAGENT","WAIVER","WAIVER_ERROR"]}}}
+        headers = {'x-fantasy-filter': json.dumps(filters)}
+
+        data = self.espn_request.league_get(params=params, headers=headers)
+        transactions = data['transactions']
+
+        return [Transaction(transaction, self.player_map, self.get_team_data) for transaction in transactions]
 
     def free_agents(self, week: int=None, size: int=50, position: str=None, position_id: int=None) -> List[Player]:
         '''Returns a List of Free Agents for a Given Week\n
