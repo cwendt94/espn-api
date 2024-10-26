@@ -4,21 +4,26 @@ from collections import defaultdict
 
 # Flatten list of team scores as they come in box_score format
 class Score:
-	def __init__(self, team_name, owner, score, point_differential, vs_team_name, vs_owner):
+	def __init__(self, team_name, owner, score, point_differential, vs_team_name, vs_owner, potential):
 		self.team_name = team_name
 		self.owner = owner
 		self.score = score
 		self.diff = point_differential
 		self.vs = vs_team_name
 		self.vs_owner = vs_owner
-		# self.potential = potential
+		self.potential = potential
+		self.potential_used = self.score / self.potential
 
 class Top_Scorer:
-	def __init__(self, name, team_name, score, pos):
+	def __init__(self, name, team_name, score, position, lineup_slot, injury_status=None, projected_points=None, stats=None):
 		self.name = name
 		self.team_name = team_name
 		self.score = score
-		self.pos = pos
+		self.position = position
+		self.lineup_slot = lineup_slot
+		self.injury_status = injury_status
+		self.projected_points = projected_points
+		self.stats = stats
 
 class Fantasy_Service:
 	def __init__(self):
@@ -27,23 +32,40 @@ class Fantasy_Service:
 		self.awards = defaultdict(list)
 		self.players = []
 		self.scores = []
-		self.week = 6
+		self.week = 7
 
 	def generateAwards(self):
 		# Iterating over matchups
 		for matchup in self.league.box_scores(week=self.week):
 
+			lost_in_the_sauce = True
+
 			# Make pile of all players to iterate over 
-			self.players += matchup.home_lineup + matchup.away_lineup
-			# print(matchup.data)
+			for player in matchup.home_lineup:
+				if player.lineupSlot not in ['K', 'BE', 'D/ST'] and player.points > player.projected_points + 4:
+					lost_in_the_sauce = False
+				self.players.append(Top_Scorer(player.name, self.get_team_name_from_id(player.onTeamId), player.points, player.position, player.lineupSlot, player.injuryStatus, player.projected_points, player.stats))
+			if lost_in_the_sauce:
+				self.award(matchup.home_team.team_name, 'LOST IN THE SAUCE: No player scored 3+ more than projected')
+
+			for player in matchup.away_lineup:
+				if player.lineupSlot not in ['K', 'BE', 'D/ST'] and player.points > player.projected_points + 4:
+					lost_in_the_sauce = False
+				self.players.append(Top_Scorer(player.name, self.get_team_name_from_id(player.onTeamId), player.points, player.position, player.lineupSlot, player.injuryStatus, player.projected_points, player.stats))
+			if lost_in_the_sauce:
+				self.award(matchup.away_team.team_name, 'LOST IN THE SAUCE: No player scored 3+ more than projected')
 
 			diff = max([matchup.home_score, matchup.away_score]) - min([matchup.home_score, matchup.away_score])
-			
-			# Make new list of matchups to iterate over
-			# , self.compute_potential(matchup.home_team, matchup.home_score)
-			self.scores.append(Score(matchup.home_team.team_name, matchup.home_team.owners[0]['firstName'], matchup.home_score, diff, matchup.away_team.team_name, matchup.away_team.owners[0]['firstName']))
-			self.scores.append(Score(matchup.away_team.team_name, matchup.away_team.owners[0]['firstName'], matchup.away_score, (0-diff), matchup.home_team.team_name, matchup.home_team.owners[0]['firstName']))
 
+			if matchup.home_score < matchup.away_score:
+				diff = 0-diff
+
+			# Make new list of matchups to iterate over
+			home_potential = self.compute_potential(matchup.home_team, matchup.home_score)
+			away_potential = self.compute_potential(matchup.away_team, matchup.away_score)
+			self.scores.append(Score(matchup.home_team.team_name, matchup.home_team.owners[0]['firstName'], matchup.home_score, diff, matchup.away_team.team_name, matchup.away_team.owners[0]['firstName'], home_potential))
+			self.scores.append(Score(matchup.away_team.team_name, matchup.away_team.owners[0]['firstName'], matchup.away_score, (0-diff), matchup.home_team.team_name, matchup.home_team.owners[0]['firstName'], away_potential))
+			
 		# 1) Compute highest score of the week
 		highest = max(self.scores, key=attrgetter('score'))
 		self.award(highest.team_name, f'BOOM GOES THE DYNAMITE - Highest weekly score ({highest.score})')
@@ -77,7 +99,7 @@ class Fantasy_Service:
 				self.award(team.team_name, 'SUB-100 CLUB')
 
 		# 9) Compute if any QBs had equal num of TDs and INTs
-		for qb in [x for x in self.players if x.lineupSlot == 'QB']:
+		for qb in [x for x in self.players if x.lineup_slot == 'QB']:
 			ints = 0 if qb.stats[self.week]['breakdown'].get('passingInterceptions') == None else qb.stats[self.week]['breakdown']['passingInterceptions']
 			tds = 0 if qb.stats[self.week]['breakdown'].get('passingTouchdowns') == None else qb.stats[self.week]['breakdown']['passingTouchdowns']
 			if ints != 0 and tds == ints:
@@ -107,27 +129,33 @@ class Fantasy_Service:
 
 		# 15) Compute RB corps high
 		rb_high = self.compute_top_scorer(['RB'])
-		self.award(rb_high.team_name, f'PUT THE TEAM ON HIS BACKS - RB corps high ({rb_high.score})')
+		self.award(rb_high.team_name, f'PUT THE TEAM ON HIS BACKS - RB corps high ({round(rb_high.score, 2)})')
 
 		# 16) Award defenses who went negative
-		defenses = [x for x in self.players if x.lineupSlot == 'D/ST']
+		defenses = [x for x in self.players if x.lineup_slot == 'D/ST']
 		for defense in defenses:
-			if defense.points < 0:
-				self.award(self.get_team_name_from_id(defense.onTeamId), f'THE BEST DEFENSE IS A GOOD OFFENSE - ({defense.name}, {defense.points}')
+			if defense.score < 0:
+				self.award(defense.team_name, f'THE BEST DEFENSE IS A GOOD OFFENSE - ({defense.name}, {defense.score}')
 
 		# 17) Award players who didn't get hurt but scored nothing
 		for player in self.players:
-			if player.lineupSlot not in ['IR', 'BE', 'D/ST'] and player.injuryStatus == 'ACTIVE' and player.points == 0:
-				self.award(self.get_team_name_from_id(player.onTeamId), f'OUT OF OFFICE - ({player.name}, 0)')
+			if player.lineup_slot not in ['IR', 'BE', 'D/ST'] and player.injury_status == 'ACTIVE' and player.score == 0:
+				self.award(player.team_name, f'OUT OF OFFICE - ({player.name}, 0)')
 
 		# 18) Compute players who scored 2x projected
-		daily_doubles = filter(lambda x: x.lineupSlot not in ['IR', 'BE', 'D/ST', 'K'] and x.points >= 2 * x.projected_points, self.players)
+		daily_doubles = filter(lambda x: x.lineup_slot not in ['IR', 'BE', 'D/ST', 'K'] and x.score >= 2 * x.projected_points, self.players)
 		for dbl_player in daily_doubles:
-			dbl_award_string = f'DAILY DOUBLE - {dbl_player.name} scored >2x projected ({dbl_player.points}, {dbl_player.projected_points} projected)'
-			self.award(self.get_team_name_from_id(dbl_player.onTeamId), dbl_award_string)
+			dbl_award_string = f'DAILY DOUBLE - {dbl_player.name} scored >2x projected ({dbl_player.score}, {dbl_player.projected_points} projected)'
+			self.award(dbl_player.team_name, dbl_award_string)
 
-		# potential_high = max(self.scores, key=attrgetter('potential_high'))
-		# self.award(potential_high.team_name, f'BEST MANAGER - Scored {potential_high.potential} of possible points')
+		# 19) Compute best manager who scored most of available points from roster
+		potential_high = max(self.scores, key=attrgetter('potential_used'))
+		self.award(potential_high.team_name, f'MINORITY REPORT - Scored highest percentage of possible points from roster ({'{:,.2%}'.format(potential_high.potential_used)} of {potential_high.potential})')
+		
+		# 20) Compute worst manager who scored least of available points from roster
+		potential_low = min(self.scores, key=attrgetter('potential_used'))
+		self.award(potential_low.team_name, f'GOT BALLS BUT NONE ARE CRYSTAL - Scored lowest percentage of possible points from roster ({'{:,.2%}'.format(potential_low.potential_used)} of {potential_low.potential})')
+		
 		self.print_awards()
 
 	# Add award to dict of teams
@@ -146,43 +174,49 @@ class Fantasy_Service:
 	def compute_top_scorer(self, pos, seek_player=False):
 
 		# Compile list of players at position(s) pos
-		filtered_players = [x for x in self.players if x.lineupSlot in pos]
+		filtered_players = [x for x in self.players if x.lineup_slot in pos]
 		filtered_dict = {}
 
-		# Make a dictionary of team_name -> sum of players at that position
+		# Make a dictionary of team_name -> sum of scores from starting players at that position
 		for team in self.league.teams:
-			total = sum(player.points for player in filtered_players if player.onTeamId == team.team_id)
+			total = sum(player.score for player in filtered_players if player.team_name == team.team_name)
 			filtered_dict[team.team_name] = total
 		
 		# Compute team with highest score
 		team_name = max(filtered_dict, key=filtered_dict.get)
-		player_name = self.get_player_name_from_score(team_name, filtered_dict[team_name], filtered_players) if seek_player else ''
-		return Top_Scorer(player_name, team_name, filtered_dict[team_name], pos)
-
+		high_score = filtered_dict[team_name]
+		return self.get_player_from_score(team_name, high_score, filtered_players) if seek_player else Top_Scorer('', team_name, high_score, pos, pos)
+			
 	def compute_potential(self, team, score):
 		roster = []
 		for player in team.roster:
 			player_points = next((y for y in self.players if y.name == player.name), None)
+			if player_points == None:
+				player_points = Top_Scorer(player.name, team.team_name, player.stats[self.week]['points'], player.position, player.lineupSlot)
 			roster.append(player_points)
-			print(player.name + ' ' + player.position)
-			print(player_points.name + ' ' + player_points.position + ' ' + str(player_points.points))
-		max_qb = max([x for x in roster if x.position == 'QB'], key=attrgetter('points')).points
-		max_te = max([x for x in roster if x.position == 'TE'], key=attrgetter('points')).points
-		mas_d_st = max([x for x in roster if x.position == 'D/ST'], key=attrgetter('points')).points
-		max_k = max([x for x in roster if x.position == 'K'], key=attrgetter('points')).points
-		max_rbs = max([x for x in roster if x.position == 'RB'], key=attrgetter('points')).points + sorted(set([x.points for x in roster if x.position == 'RB']))[-2]
-		second_wr = sorted(set([x.points for x in roster if x.position in ['WR', 'WR/TE']]))
-		max_wrs = max([x for x in roster if x.position in ['WR', 'WR/TE']], key=attrgetter('points')).points + second_wr[-2] + second_wr[-3]
-		used_potential = (score / (max_qb + max_te + mas_d_st + max_k + max_rbs + max_wrs))
-		return '{:,.2%}'.format(used_potential)
+			# print(team.team_name + ' ' + player_points.name + ' ' + player_points.position + ' ' + str(player_points.score))
+		max_qb = max([x for x in roster if x.position == 'QB'], key=attrgetter('score')).score
+		# print(team.team_name + ' Max QB: ' + str(max_qb))
+		max_te = max([x for x in roster if x.position == 'TE'], key=attrgetter('score')).score
+		# print(team.team_name + ' Max TE: ' + str(max_te))
+		max_d_st = max([x for x in roster if x.position == 'D/ST'], key=attrgetter('score')).score
+		# print(team.team_name + ' Max d_st: ' + str(max_d_st))
+		max_k = max([x for x in roster if x.position == 'K'], key=attrgetter('score')).score
+		# print(team.team_name + ' Max K: ' + str(max_k))
+		max_rbs = max([x for x in roster if x.position == 'RB'], key=attrgetter('score')).score + sorted(set([x.score for x in roster if x.position == 'RB']))[-2]
+		# print(team.team_name + ' Max RBs: ' + str(max_rbs))
+		second_wr = sorted(set([x.score for x in roster if x.position in ['WR', 'WR/TE']]))
+		max_wrs = max([x for x in roster if x.position in ['WR', 'WR/TE']], key=attrgetter('score')).score + second_wr[-2] + second_wr[-3]
+		# print(team.team_name + ' Max WRs: ' + str(max_wrs))
+		# print(used_potential)
+		return round(max_qb + max_te + max_d_st + max_k + max_rbs + max_wrs, 2)
 
 	# Attempt to match what player did the thing 
-	def get_player_name_from_score(self, team_name, score, filtered_players):
-		team = self.get_team_from_name(team_name)
+	def get_player_from_score(self, team_name, sum_of_scores, filtered_players):
 		for player in filtered_players:
-			if player.points == score and player.onTeamId == team.team_id:
-				return player.name
-		return ''
+			if player.score == sum_of_scores and player.team_name == team_name:
+				return player
+		return None
 
 	# Get team name from team_id
 	def get_team_name_from_id(self, team_id):
