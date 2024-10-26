@@ -15,6 +15,10 @@ class Team(object):
         self.wins = data['record']['overall']['wins']
         self.losses = data['record']['overall']['losses']
         self.ties = data['record']['overall']['ties']
+        self.acquisitions = data.get('transactionCounter', {}).get('acquisitions', 0)
+        self.acquisition_budget_spent = data.get('transactionCounter', {}).get('acquisitionBudgetSpent', 0)
+        self.drops = data.get('transactionCounter', {}).get('drops', 0)
+        self.trades = data.get('transactionCounter', {}).get('trades', 0)
         self.logo_url = ''
         self.stats = None
         self.standing = data['playoffSeed']
