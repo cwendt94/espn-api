@@ -161,7 +161,7 @@ class Fantasy_Service:
 
 		# +++ AWARD QB high
 		qb_high = self.compute_top_scorer(self.qbs)
-		self.awards[qb_high.team_name].append(f'PLAY CALLER BALLER: QB high ({qb_high.get_last_name()}, {qb_high.score})')
+		self.awards[qb_high.team_name].append(f'PLAY CALLER BALLER - QB high ({qb_high.get_last_name()}, {qb_high.score})')
 
 		# +++ AWARD TE high
 		te_high = self.compute_top_scorer(self.tes)
@@ -215,7 +215,7 @@ class Fantasy_Service:
 		# Make a dictionary of team_name -> sum of scores from starters
 		for team in self.league.teams:
 			total = 0
-			winner = self.compute_max_score([player for player in players if player.team_name == team.team_name])
+			winner = max([player for player in players if player.team_name == team.team_name], key=attrgetter('score'))
 			filtered_dict[team.team_name] = winner
 			if grouped_stat:
 				# Add up the scores of like positions
@@ -224,10 +224,6 @@ class Fantasy_Service:
 		
 		# Return player(s) with highest score
 		return max(filtered_dict.values(), key=attrgetter('score'))
-	
-	# Return the max score of a given list of players
-	def compute_max_score(self, players):
-		return max(players, key=attrgetter('score'))
 
 	# Compute a team's potential highest score given perfect start/sit decisions
 	def compute_potential(self, lineup, team_name, diff):
@@ -239,21 +235,26 @@ class Fantasy_Service:
 			new_total = self.compute_start_sit(roster, [pos], team_name, diff)
 			total_potential += new_total.points
 
+		# Best tight end needs to be removed so as to not interefere with the flex position
 		te_high = self.compute_start_sit(roster, ['TE'], team_name, diff)
 		total_potential += te_high.points
 		roster.remove(te_high)
 
+		# Totalling up best 2 RBs
 		max_rb = self.compute_start_sit(roster, ['RB'], team_name, diff)
 		roster.remove(max_rb)
 		second_rb = self.compute_start_sit(roster, ['RB'], team_name, diff)
 		total_potential += max_rb.points + second_rb.points
 
+		# Totalling up best 3 WRs (or TE if he's higher than a WR)
+		# Only one TE can be used for flex position
 		flex_used = False
 		max_wr = self.compute_start_sit(roster, ['WR', 'TE', 'WR/TE'], team_name, diff)
 		if max_wr.position == 'TE':
 			flex_used = True
 		roster.remove(max_wr)
 
+		# Once a TE has been used for flex spot, only look at WRs
 		positions = ['WR'] if flex_used else ['WR', 'TE', 'WR/TE'] 
 		second_wr = self.compute_start_sit(roster, positions, team_name, diff)
 
@@ -270,6 +271,7 @@ class Fantasy_Service:
 		starter = max([x for x in roster if x.lineupSlot in pos], key=attrgetter('points'))
 		top_scorer = max([x for x in roster if x.position in pos], key=attrgetter('points'))
 
+		# If team lost and the significantly best scorer at a given position was on the bench or IR
 		if diff < 0 and top_scorer.lineupSlot in ['BE', 'IR'] and top_scorer.points >= starter.points * 2 and top_scorer.points >= starter.points + 5:
 			if top_scorer.points >= abs(diff) + starter.points:
 				# +++ AWARD team that could have won with one different starter
