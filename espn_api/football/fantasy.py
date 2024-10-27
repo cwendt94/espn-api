@@ -15,7 +15,7 @@ class Fantasy_Team_Performance:
 
 	def set_potential(self, potential):
 		self.potential = potential
-		self.potential_used = self.score / self.potential
+		self.potential_used = '{:,.2%}'.format(self.score / self.potential)
 
 class Fantasy_Player:
 	def __init__(self, name, team_name, score, position, lineup_slot, injury_status=None, projected_points=None, stats=None):
@@ -162,11 +162,11 @@ class Fantasy_Service:
 
 		# 16) Compute QB high
 		qb_high = self.compute_top_scorer(self.get_starters_at_pos(['QB']))
-		self.award(qb_high.team_name, f'PLAY CALLER BALLER: QB high ({qb_high.name.split(None, 1)[1]}, {qb_high.score})')
+		self.award(qb_high.team_name, f'PLAY CALLER BALLER: QB high ({qb_high.last_name}, {qb_high.score})')
 
 		# 17) Compute TE high
 		te_high = self.compute_top_scorer(self.get_starters_at_pos(['TE']))
-		self.award(te_high.team_name, f'TIGHTEST END - TE high ({te_high.name.split(None, 1)[1]}, {te_high.score})')
+		self.award(te_high.team_name, f'TIGHTEST END - TE high ({te_high.last_name}, {te_high.score})')
 
 		# 18) Compute D/ST high
 		d_st_high = self.compute_top_scorer(self.get_starters_at_pos(['D/ST']))
@@ -174,21 +174,21 @@ class Fantasy_Service:
 
 		# 19) Compute kicker high
 		k_high = self.compute_top_scorer(self.get_starters_at_pos(['K']))
-		self.award(k_high.team_name, f'KICK FAST, EAT ASS - Kicker high ({k_high.name.split(None, 1)[1]}, {k_high.score})')
+		self.award(k_high.team_name, f'KICK FAST, EAT ASS - Kicker high ({k_high.last_name}, {k_high.score})')
 
 		# 20) Compute individual RB high
 		rbs = self.get_starters_at_pos(['RB'])
 		rb_high = self.compute_top_scorer(rbs)
-		self.award(rb_high.team_name, f'SHINING STAR - RB high ({rb_high.name.split(None, 1)[1]}, {round(rb_high.score, 2)})')
+		self.award(rb_high.team_name, f'SHINING STAR - RB high ({rb_high.last_name}, {round(rb_high.score, 2)})')
 
 		# 21) Compute individual WR high
 		wrs = self.get_starters_at_pos(['WR', 'WR/TE'])
 		wr_high = self.compute_top_scorer(wrs)
-		self.award(wr_high.team_name, f'SHINING STAR - WR high ({wr_high.name.split(None, 1)[1]}, {round(wr_high.score, 2)})')
+		self.award(wr_high.team_name, f'SHINING STAR - WR high ({wr_high.last_name}, {round(wr_high.score, 2)})')
 
 		# 22) Compute WR corps high
 		wr_total_high = self.compute_top_scorer(wrs, True)
-		self.award(wr_total_high.team_name, f'DEEP THREAT - WR corps high ({wr_total_high.score})')
+		self.award(wr_total_high.team_name, f'DEEP THREAT - WR corps high ({round(wr_total_high.score, 2)})')
 
 		# 23) Compute RB corps high
 		rb_total_high = self.compute_top_scorer(rbs, True)
@@ -196,11 +196,11 @@ class Fantasy_Service:
 
 		# 24) Compute best manager who scored most of available points from roster
 		potential_high = max(self.scores, key=attrgetter('potential_used'))
-		self.award(potential_high.team_name, f'MINORITY REPORT - Scored highest percentage of possible points from roster ({'{:,.2%}'.format(potential_high.potential_used)} of {potential_high.potential})')
+		self.award(potential_high.team_name, f'MINORITY REPORT - Scored highest percentage of possible points from roster ({potential_high.potential_used} of {potential_high.potential})')
 		
 		# 25) Compute worst manager who scored least of available points from roster
 		potential_low = min(self.scores, key=attrgetter('potential_used'))
-		self.award(potential_low.team_name, f'GOT BALLS - NONE CRYSTAL - Scored lowest percentage of possible points from roster ({'{:,.2%}'.format(potential_low.potential_used)} of {potential_low.potential})')
+		self.award(potential_low.team_name, f'GOT BALLS - NONE CRYSTAL - Scored lowest percentage of possible points from roster ({potential_high.potential_used} of {potential_low.potential})')
 		
 		self.print_awards()
 
@@ -232,7 +232,11 @@ class Fantasy_Service:
 			if grouped_stat:
 				# Add up the scores of like positions
 				total = sum(player.score for player in players if player.team_name == team.team_name)
-				filtered_dict[team.team_name] = Fantasy_Player(winner.name, winner.team_name, total, winner.lineup_slot, winner.position)
+				filtered_dict[team.team_name] = Fantasy_Player(winner.name, 
+																winner.team_name, 
+																total, 
+																winner.lineup_slot, 
+																winner.position)
 		
 		# Return player(s) with highest score
 		return max(filtered_dict.values(), key=attrgetter('score'))
@@ -251,9 +255,14 @@ class Fantasy_Service:
 			player_with_points = next((player for player in self.players if basic_player.name == player.name), None)
 			if basic_player.lineupSlot != 'IR' and basic_player.stats[self.week].get('points') != None:
 				if player_with_points == None:
-					player_with_points = Fantasy_Player(basic_player.name, team.team_name, basic_player.stats[self.week]['points'], basic_player.position, basic_player.lineupSlot)
+					player_with_points = Fantasy_Player(basic_player.name, 
+														team.team_name, 
+														basic_player.stats[self.week]['points'], 
+														basic_player.position, 
+														basic_player.lineupSlot)
 				roster.append(player_with_points)
 		
+		# Add individual contributors that don't need to be removed
 		for pos in ['QB', 'K', 'D/ST']:
 			total_potential += self.compute_start_sit(roster, [pos], lost_the_game).score
 
