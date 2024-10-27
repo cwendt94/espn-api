@@ -68,36 +68,36 @@ class Fantasy_Service:
 														matchup.home_team.owners[0]['firstName'], 
 														matchup.away_lineup))
 			
-		# 3) Compute highest score of the week
+		# 1) Compute highest score of the week
 		highest = max(self.scores, key=attrgetter('score'))
 		self.award(highest.team_name, f'BOOM GOES THE DYNAMITE - Highest weekly score ({highest.score})')
 
-		# 4) Compute lowest score of the week 
+		# 2) Compute lowest score of the week 
 		lowest = min(self.scores, key=attrgetter('score'))
 		self.award(lowest.team_name, f'ASSUME THE POSITION - Lowest weekly score ({lowest.score})')
 	
-		# 5) Compute lowest scoring winner
+		# 3) Compute lowest scoring winner
 		fort_son = min([x for x in self.scores if x.diff > 0], key=attrgetter('score'))
 		self.award(fort_son.team_name, f'FORTUNATE SON - Lowest scoring winner ({fort_son.score})')
 
-		# 6) Compute highest scoring loser
+		# 4) Compute highest scoring loser
 		tough_luck = max([x for x in self.scores if x.diff < 0], key=attrgetter('score'))
 		self.award(tough_luck.team_name, f'TOUGH LUCK - Highest scoring loser ({tough_luck.score})')
 
-		# 7) Compute largest margin of victory
+		# 5) Compute largest margin of victory
 		big_margin = max(self.scores, key=attrgetter('diff'))
 		self.award(big_margin.team_name, f'TOTAL DOMINATION - Beat opponent by largest margin ({big_margin.vs_owner} by {round(big_margin.diff, 2)})')
 
-		# 8) Compute team that lost with smallest margin of victory
+		# 6) Compute team that lost with smallest margin of victory
 		small_margin = min([x for x in self.scores if x.diff > 0], key=attrgetter('diff'))
 		self.award(small_margin.vs, f'SECOND BANANA - Beaten by slimmest margin ({small_margin.owner} by {round(small_margin.diff, 2)})')
 		
-		# 9) Compute team that won with smallest margin of victory
+		# 7) Compute team that won with smallest margin of victory
 		self.award(small_margin.team_name, f'GEEKED FOR THE EKE - Beat opponent by slimmest margin ({small_margin.vs_owner} by {round(small_margin.diff, 2)})')
 
 		for score in self.scores:
 			score.set_potential(self.compute_potential(score.lineup, diff < 0, score.team_name))
-			# 10) Award teams who didn't make it to 100 points
+			# 8) Award teams who didn't make it to 100 points
 			if score.score < 100:
 				self.award(score.team_name, 'SUB-100 CLUB')
 
@@ -106,69 +106,69 @@ class Fantasy_Service:
 				ints = 0 if player.stats[self.week]['breakdown'].get('passingInterceptions') == None else player.stats[self.week]['breakdown']['passingInterceptions']
 				tds = 0 if player.stats[self.week]['breakdown'].get('passingTouchdowns') == None else player.stats[self.week]['breakdown']['passingTouchdowns']
 				
-				# 11) Compute if any starting QBs had equal num of TDs and INTs
+				# 9) Compute if any starting QBs had equal num of TDs and INTs
 				if ints != 0 and tds == ints:
 					plural = 's' if tds > 1 else ''
 					self.award(player.team_name, f'PERFECTLY BALANCED - {player.name} threw {int(tds)} TD{plural} and {int(ints)} INT{plural}')
 
-			# 12) Award defenses who sucked
+			# 10) Award defenses who sucked
 			elif player.lineup_slot == 'D/ST':
 				if player.score < 2:
 					self.award(player.team_name, f'THE BEST DEFENSE IS A GOOD OFFENSE - ({player.name}, {player.score})')
 
-			# 13) Compute players who scored 2x projected
+			# 11) Compute players who scored 2x projected
 			if player.lineup_slot not in ['IR', 'BE', 'D/ST', 'K'] and player.score >= 2 * player.projected_points:
 				self.award(player.team_name, f'DAILY DOUBLE - {player.name} scored >2x projected ({player.score}, {player.projected_points} projected)')
 
-			# 14) Award players who didn't get hurt but scored nothing
+			# 12) Award players who didn't get hurt but scored nothing
 			if player.lineup_slot not in ['IR', 'BE', 'D/ST', 'K'] and player.injury_status == 'ACTIVE' and player.score == 0:
 				self.award(player.team_name, f'OUT OF OFFICE - ({player.name}, 0)')
 			
-			# 15) Award kickers who somehow didn't score any points
+			# 13) Award kickers who somehow didn't score any points
 			elif player.lineup_slot == 'K' and player.injury_status == 'ACTIVE' and player.score == 0:
 				self.award(player.team_name, f'GO KICK ROCKS - Kicker scored 0')
 
-		# 16) Compute QB high
+		# 14) Compute QB high
 		qb_high = self.compute_top_scorer(self.get_starters_at_pos(['QB']))
 		self.award(qb_high.team_name, f'PLAY CALLER BALLER: QB high ({qb_high.get_last_name()}, {qb_high.score})')
 
-		# 17) Compute TE high
+		# 15) Compute TE high
 		te_high = self.compute_top_scorer(self.get_starters_at_pos(['TE']))
 		self.award(te_high.team_name, f'TIGHTEST END - TE high ({te_high.get_last_name()}, {te_high.score})')
 
-		# 18) Compute D/ST high
+		# 16) Compute D/ST high
 		d_st_high = self.compute_top_scorer(self.get_starters_at_pos(['D/ST']))
 		self.award(d_st_high.team_name, f'FORT KNOX - D/ST high ({d_st_high.name}, {d_st_high.score})')
 
-		# 19) Compute kicker high
+		# 17) Compute kicker high
 		k_high = self.compute_top_scorer(self.get_starters_at_pos(['K']))
 		self.award(k_high.team_name, f'KICK FAST, EAT ASS - Kicker high ({k_high.get_last_name()}, {k_high.score})')
 
-		# 20) Compute individual RB high
+		# 18) Compute individual RB high
 		rbs = self.get_starters_at_pos(['RB'])
 		rb_high = self.compute_top_scorer(rbs)
 		self.award(rb_high.team_name, f'SHINING STAR - RB high ({rb_high.get_last_name()}, {round(rb_high.score, 2)})')
 
-		# 21) Compute individual WR high
+		# 19) Compute individual WR high
 		wrs = self.get_starters_at_pos(['WR', 'WR/TE'])
 		wr_high = self.compute_top_scorer(wrs)
 		self.award(wr_high.team_name, f'SHINING STAR - WR high ({wr_high.get_last_name()}, {round(wr_high.score, 2)})')
 
-		# 22) Compute WR corps high
+		# 20) Compute WR corps high
 		wr_total_high = self.compute_top_scorer(wrs, True)
 		self.award(wr_total_high.team_name, f'DEEP THREAT - WR corps high ({round(wr_total_high.score, 2)})')
 
-		# 23) Compute RB corps high
+		# 21) Compute RB corps high
 		rb_total_high = self.compute_top_scorer(rbs, True)
 		self.award(rb_total_high.team_name, f'PUT THE TEAM ON HIS BACKS - RB corps high ({round(rb_total_high.score, 2)})')
 
-		# 24) Compute best manager who scored most of available points from roster
+		# 22) Compute best manager who scored most of available points from roster
 		potential_high = max(self.scores, key=attrgetter('potential_used'))
 		self.award(potential_high.team_name, f'MINORITY REPORT - Scored highest percentage of possible points from roster ({potential_high.potential_used} of {potential_high.potential_high})')
 		
-		# 25) Compute worst manager who scored least of available points from roster
+		# 23) Compute worst manager who scored least of available points from roster
 		potential_low = min(self.scores, key=attrgetter('potential_used'))
-		self.award(potential_low.team_name, f'GOT BALLS - NONE CRYSTAL - Scored lowest percentage of possible points from roster ({potential_high.potential_used} of {potential_low.potential_high})')
+		self.award(potential_low.team_name, f'GOT BALLS - NONE CRYSTAL - Scored lowest percentage of possible points from roster ({potential_low.potential_used} of {potential_low.potential_high})')
 		
 		self.print_awards()
 
@@ -177,7 +177,7 @@ class Fantasy_Service:
 		lost_in_the_sauce = True
 		for player in lineup:
 			# If any players scored 3+ more than projected, the team is not lost in the sauce
-			if player.lineupSlot not in ['K', 'BE', 'D/ST'] and player.points >= player.projected_points + 3:
+			if player.lineupSlot not in ['K', 'BE', 'D/ST', 'IR'] and player.points >= player.projected_points + 3:
 				lost_in_the_sauce = False
 
 			# Make pile of all players to iterate over 	
@@ -190,7 +190,7 @@ class Fantasy_Service:
 				player.projected_points, 
 				player.stats))
 
-		# 1) Compute if any players on the home lineup exceeded their projected amount by 3+
+		# 24) Compute if any players on the home lineup exceeded their projected amount by 3+
 		if lost_in_the_sauce: 
 			self.award(team_name, 'LOST IN THE SAUCE: No player scored 3+ more than projected')
 
@@ -201,10 +201,9 @@ class Fantasy_Service:
 	# Print all awards for each team
 	def print_awards(self):
 		for team_name in self.awards:
-			print(team_name)
+			print('\n' + team_name)
 			for award in self.awards[team_name]:
 				print(award)
-			print()
 
 	def get_starters_at_pos(self, pos):
 		# Compile list of players at position(s) pos
