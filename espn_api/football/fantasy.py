@@ -31,14 +31,8 @@ class Fantasy_Service:
 		# Hardcode league ID and year
 		self.league = League(306883, 2024)
 		self.awards = defaultdict(list)
-		self.scores = []
+		self.scores, self.qbs, self.tes, self.ks, self.wrs, self.rbs, self.dsts = [], [], [], [], [], [], []
 		self.week = 7
-		self.qbs = []
-		self.tes = []
-		self.ks = []
-		self.wrs = []
-		self.rbs = []
-		self.dsts = []
 
 	# Process team performances to be more iterable
 	def process_matchup(self, lineup, team_name, score, owner_name, diff, vs_team_name, vs_owner):
@@ -46,7 +40,7 @@ class Fantasy_Service:
 
 		# +++ AWARD teams who didn't make it to 100 points
 		if score < 100:
-			self.awards[team_name].append('SUB-100 CLUB')
+			self.awards[team_name].append(f'SUB-100 CLUB ({score})')
 
 		new_performance = Fantasy_Team_Performance(team_name, owner_name, score, diff, vs_team_name, vs_owner, lineup)
 		self.scores.append(new_performance)
@@ -59,7 +53,6 @@ class Fantasy_Service:
 				player.points)
 
 			if player.lineupSlot not in ['K', 'BE', 'D/ST', 'IR']:
-				
 				# If any players scored 3+ more than projected, the team is not lost in the sauce
 				if player.points >= player.projected_points + 3:
 					lost_in_the_sauce = False
@@ -104,7 +97,7 @@ class Fantasy_Service:
 		
 		# +++ AWARD team whose players didn't exceed projected amount by 3+
 		if lost_in_the_sauce: 
-			self.awards[team_name].append('LOST IN THE SAUCE: No player scored 3+ more than projected')
+			self.awards[team_name].append('LOST IN THE SAUCE: No non-special-teams player scored 3+ more than projected')
 
 	def generateAwards(self):
 		# Iterating over matchups
@@ -116,22 +109,13 @@ class Fantasy_Service:
 			# Winning team gets a positive diff, losing team gets a negative diff
 			if matchup.home_score < matchup.away_score:
 				diff = 0-diff
+			home = matchup.home_team
+			away = matchup.away_team
 
-			self.process_matchup(matchup.home_lineup, 
-				matchup.home_team.team_name, 
-				matchup.home_score,
-				matchup.home_team.owners[0]['firstName'],
-				diff, 
-				matchup.away_team.team_name,
-				matchup.away_team.owners[0]['firstName'])
-			self.process_matchup(matchup.away_lineup, 
-				matchup.away_team.team_name, 
-				matchup.away_score,
-				matchup.away_team.owners[0]['firstName'],
-				(0-diff),
-				matchup.home_team.team_name, 
-				matchup.home_team.owners[0]['firstName'])
+			self.process_matchup(matchup.home_lineup, home.team_name, matchup.home_score, home.owners[0]['firstName'], diff, away.team_name, away.owners[0]['firstName'])
+			self.process_matchup(matchup.away_lineup, away.team_name, matchup.away_score, away.owners[0]['firstName'], (0-diff), home.team_name, home.owners[0]['firstName'])
 			
+		# Score-based awards
 		# +++ AWARD highest score of the week
 		highest = max(self.scores, key=attrgetter('score'))
 		self.awards[highest.team_name].append(f'BOOM GOES THE DYNAMITE - Highest weekly score ({highest.score})')
@@ -159,6 +143,15 @@ class Fantasy_Service:
 		# +++ AWARD team that won with smallest margin of victory
 		self.awards[small_margin.team_name].append(f'GEEKED FOR THE EKE - Beat opponent by slimmest margin ({small_margin.vs_owner} by {round(small_margin.diff, 2)})')
 
+		# +++ AWARD best manager who scored most of available points from roster
+		potential_high = max(self.scores, key=attrgetter('potential_used'))
+		self.awards[potential_high.team_name].append(f'MINORITY REPORT - Scored highest percentage of possible points from roster ({potential_high.potential_used} of {potential_high.potential_high})')
+		
+		# +++ AWARD worst manager who scored least of available points from roster
+		potential_low = min(self.scores, key=attrgetter('potential_used'))
+		self.awards[potential_low.team_name].append(f'GOT BALLS - NONE CRYSTAL - Scored lowest percentage of possible points from roster ({potential_low.potential_used} of {potential_low.potential_high})')
+		
+		# Individual player awards
 		# +++ AWARD QB high
 		qb_high = self.compute_top_scorer(self.qbs)
 		self.awards[qb_high.team_name].append(f'PLAY CALLER BALLER - QB high ({qb_high.get_last_name()}, {qb_high.score})')
@@ -191,22 +184,11 @@ class Fantasy_Service:
 		rb_total_high = self.compute_top_scorer(self.rbs, True)
 		self.awards[rb_total_high.team_name].append(f'PUT THE TEAM ON HIS BACKS - RB corps high ({round(rb_total_high.score, 2)})')
 
-		# +++ AWARD best manager who scored most of available points from roster
-		potential_high = max(self.scores, key=attrgetter('potential_used'))
-		self.awards[potential_high.team_name].append(f'MINORITY REPORT - Scored highest percentage of possible points from roster ({potential_high.potential_used} of {potential_high.potential_high})')
-		
-		# +++ AWARD worst manager who scored least of available points from roster
-		potential_low = min(self.scores, key=attrgetter('potential_used'))
-		self.awards[potential_low.team_name].append(f'GOT BALLS - NONE CRYSTAL - Scored lowest percentage of possible points from roster ({potential_low.potential_used} of {potential_low.potential_high})')
-		
-		self.print_awards()
-
-	# Print all awards for each team
-	def print_awards(self):
 		for team_name in self.awards:
-			print('\n' + team_name)
+			print(team_name)
 			for award in self.awards[team_name]:
 				print(award)
+			print()
 
 	# Compute highest value for given position(s)
 	def compute_top_scorer(self, players, grouped_stat=False):
@@ -235,7 +217,7 @@ class Fantasy_Service:
 			new_total = self.compute_start_sit(roster, [pos], team_name, diff)
 			total_potential += new_total.points
 
-		# Best tight end needs to be removed so as to not interefere with the flex position
+		# Best TE needs to be removed so as to not interfere with the flex position
 		te_high = self.compute_start_sit(roster, ['TE'], team_name, diff)
 		total_potential += te_high.points
 		roster.remove(te_high)
@@ -250,16 +232,12 @@ class Fantasy_Service:
 		# Only one TE can be used for flex position
 		flex_used = False
 		max_wr = self.compute_start_sit(roster, ['WR', 'TE', 'WR/TE'], team_name, diff)
-		if max_wr.position == 'TE':
-			flex_used = True
+		flex_used = True if max_wr.position == 'TE' else False
 		roster.remove(max_wr)
-
 		# Once a TE has been used for flex spot, only look at WRs
 		positions = ['WR'] if flex_used else ['WR', 'TE', 'WR/TE'] 
 		second_wr = self.compute_start_sit(roster, positions, team_name, diff)
-
-		if flex_used == False and second_wr.position == 'TE':
-			flex_used = True
+		flex_used = True if flex_used == False and second_wr.position == 'TE' else False
 		roster.remove(second_wr)
 		positions = ['WR'] if flex_used else ['WR', 'TE', 'WR/TE'] 
 		third_wr = self.compute_start_sit(roster, positions, team_name, diff)
