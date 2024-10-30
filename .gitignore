@@ -13,3 +13,5 @@ build
 dist
 env
 coverage*
+*.json
+*.DS_Store
