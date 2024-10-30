@@ -39,6 +39,16 @@ class Team(object):
         self._fetch_roster(roster, year, kwargs.get('pro_schedule'))
         self.owners = kwargs.get('owners', [])
 
+        # added by Brogan
+        self.simulated_wins = 0
+        self.simulated_losses = 0
+        self.simulated_ties = 0
+        self.simulated_record = ''
+        self.simulated_points = 0
+        self.previous_simulated_points = 0
+        self.previous_power_rank = 0
+        self.weekly_records = []
+
     def __repr__(self):
         return 'Team(%s)' % (self.team_name, )
     
