@@ -1,5 +1,6 @@
 import json
-from typing import Dict, List, Tuple, Union
+import random
+from typing import Callable, Dict, List, Tuple, Union
 
 from ..base_league import BaseLeague
 from .team import Team
