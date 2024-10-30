@@ -15,3 +15,4 @@ env
 coverage*
 *.json
 *.DS_Store
+*.idea
