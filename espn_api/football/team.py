@@ -1,7 +1,9 @@
 from .player import Player
 
+
 class Team(object):
     '''Teams are part of the league'''
+
     def __init__(self, data, roster, schedule, year, **kwargs):
         self.team_id = data['id']
         self.team_abbrev = data['abbrev']
@@ -9,7 +11,7 @@ class Team(object):
         if self.team_name == 'Unknown':
             self.team_name = "%s %s" % (data.get('location', 'Unknown'), data.get('nickname', 'Unknown'))
         self.division_id = data['divisionId']
-        self.division_name = '' # set by caller
+        self.division_name = ''  # set by caller
         self.wins = data['record']['overall']['wins']
         self.losses = data['record']['overall']['losses']
         self.ties = data['record']['overall']['ties']
@@ -26,7 +28,7 @@ class Team(object):
         self.standing = data['playoffSeed']
         self.final_standing = data['rankCalculatedFinal']
         self.waiver_rank = data.get('waiverRank', 0)
-        if 'logo' in data:    
+        if 'logo' in data:
             self.logo_url = data['logo']
         else:
             self.logo_url = ''
@@ -50,9 +52,9 @@ class Team(object):
         self.weekly_records = []
 
     def __repr__(self):
-        return 'Team(%s)' % (self.team_name, )
-    
-    def _fetch_roster(self, data, year, pro_schedule = None):
+        return 'Team(%s)' % (self.team_name,)
+
+    def _fetch_roster(self, data, year, pro_schedule=None):
         '''Fetch teams roster'''
         self.roster.clear()
         roster = data.get('entries', [])
@@ -71,7 +73,8 @@ class Team(object):
 
             if self.team_id in (home_id, away_id):
                 # find if current team is home or away
-                (current_team, opponent_id, away) = (home_team, away_id, False) if home_id == self.team_id else (away_team, home_id, True)
+                (current_team, opponent_id, away) = (home_team, away_id, False) if home_id == self.team_id else (
+                away_team, home_id, True)
                 # if bye week set opponent id to self
                 if opponent_id == -1: opponent_id = self.team_id
 
@@ -79,7 +82,7 @@ class Team(object):
                 self.outcomes.append(self._get_winner(matchup['winner'], away))
                 self.scores.append(score)
                 self.schedule.append(opponent_id)
-    
+
     def _get_winner(self, winner: str, is_away: bool) -> str:
         if winner == 'UNDECIDED':
             return 'U'

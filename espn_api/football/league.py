@@ -24,6 +24,7 @@ from .helper import (
 
 class League(BaseLeague):
     '''Creates a League instance for Public/Private ESPN league'''
+
     def __init__(self, league_id: int, year: int, espn_s2=None, swid=None, fetch_league=True, debug=False):
         super().__init__(league_id=league_id, year=year, sport='nfl', espn_s2=espn_s2, swid=swid, debug=debug)
 
@@ -89,7 +90,7 @@ class League(BaseLeague):
             self._fetch_players()
         if refresh__teams:
             self._fetch_teams(data)
-    
+
     def load_roster_week(self, week: int) -> None:
         '''Sets Teams Roster for a Certain Week'''
         params = {
@@ -107,7 +108,8 @@ class League(BaseLeague):
             team._fetch_roster(roster, self.year)
 
     def standings(self) -> List[Team]:
-        standings = sorted(self.teams, key=lambda x: x.final_standing if x.final_standing != 0 else x.standing, reverse=False)
+        standings = sorted(self.teams, key=lambda x: x.final_standing if x.final_standing != 0 else x.standing,
+                           reverse=False)
         return standings
 
     def standings_weekly(self, week: int) -> List[Team]:
@@ -238,20 +240,23 @@ class League(BaseLeague):
         least_tup = sorted(least_scored_tup, key=lambda tup: float(tup[1]), reverse=False)
         return least_tup[0]
 
-
     def recent_activity(self, size: int = 25, msg_type: str = None, offset: int = 0) -> List[Activity]:
         '''Returns a list of recent league activities (Add, Drop, Trade)'''
         if self.year < 2019:
             raise Exception('Cant use recent activity before 2019')
 
-        msg_types = [178,180,179,239,181,244]
+        msg_types = [178, 180, 179, 239, 181, 244]
         if msg_type in ACTIVITY_MAP:
             msg_types = [ACTIVITY_MAP[msg_type]]
         params = {
             'view': 'kona_league_communication'
         }
 
-        filters = {"topics":{"filterType":{"value":["ACTIVITY_TRANSACTIONS"]},"limit":size,"limitPerMessageSet":{"value":25},"offset":offset,"sortMessageDate":{"sortPriority":1,"sortAsc":False},"sortFor":{"sortPriority":2,"sortAsc":False},"filterIncludeMessageTypeIds":{"value":msg_types}}}
+        filters = {"topics": {"filterType": {"value": ["ACTIVITY_TRANSACTIONS"]}, "limit": size,
+                              "limitPerMessageSet": {"value": 25}, "offset": offset,
+                              "sortMessageDate": {"sortPriority": 1, "sortAsc": False},
+                              "sortFor": {"sortPriority": 2, "sortAsc": False},
+                              "filterIncludeMessageTypeIds": {"value": msg_types}}}
         headers = {'x-fantasy-filter': json.dumps(filters)}
         data = self.espn_request.league_get(extend='/communication/', params=params, headers=headers)
         data = data['topics']
@@ -291,23 +296,24 @@ class League(BaseLeague):
         if week and week <= self.current_week:
             scoring_period = week
             for matchup_id in self.settings.matchup_periods:
-              if week in self.settings.matchup_periods[matchup_id]:
-                matchup_period = matchup_id
-                break
+                if week in self.settings.matchup_periods[matchup_id]:
+                    matchup_period = matchup_id
+                    break
 
         params = {
             'view': ['mMatchupScore', 'mScoreboard'],
             'scoringPeriodId': scoring_period,
         }
 
-        filters = {"schedule":{"filterMatchupPeriodIds":{"value":[matchup_period]}}}
+        filters = {"schedule": {"filterMatchupPeriodIds": {"value": [matchup_period]}}}
         headers = {'x-fantasy-filter': json.dumps(filters)}
         data = self.espn_request.league_get(params=params, headers=headers)
 
         schedule = data['schedule']
         pro_schedule = self._get_pro_schedule(scoring_period)
         positional_rankings = self._get_positional_ratings(scoring_period)
-        box_data = [BoxScore(matchup, pro_schedule, positional_rankings, scoring_period, self.year) for matchup in schedule]
+        box_data = [BoxScore(matchup, pro_schedule, positional_rankings, scoring_period, self.year) for matchup in
+                    schedule]
 
         for team in self.teams:
             for matchup in box_data:
@@ -317,7 +323,7 @@ class League(BaseLeague):
                     matchup.away_team = team
         return box_data
 
-    def power_rankings(self, week: int=None):
+    def power_rankings(self, week: int = None):
         '''Return power rankings for any week'''
 
         if not week or week <= 0 or week > self.current_week:
@@ -328,7 +334,7 @@ class League(BaseLeague):
                               reverse=False)
 
         for team in teams_sorted:
-            wins = [0]*len(teams_sorted)
+            wins = [0] * len(teams_sorted)
             for mov, opponent in zip(team.mov[:week], team.schedule[:week]):
                 opp = teams_sorted.index(opponent)
                 if mov > 0:
@@ -338,7 +344,8 @@ class League(BaseLeague):
         power_rank = power_points(dominance_matrix, teams_sorted, week)
         return power_rank
 
-    def free_agents(self, week: int=None, size: int=50, position: str=None, position_id: int=None) -> List[Player]:
+    def free_agents(self, week: int = None, size: int = 50, position: str = None, position_id: int = None) -> List[
+        Player]:
         '''Returns a List of Free Agents for a Given Week\n
         Should only be used with most recent season'''
 
@@ -353,12 +360,14 @@ class League(BaseLeague):
         if position_id:
             slot_filter.append(position_id)
 
-
         params = {
             'view': 'kona_player_info',
             'scoringPeriodId': week,
         }
-        filters = {"players":{"filterStatus":{"value":["FREEAGENT","WAIVERS"]},"filterSlotIds":{"value":slot_filter},"limit":size,"sortPercOwned":{"sortPriority":1,"sortAsc":False},"sortDraftRanks":{"sortPriority":100,"sortAsc":True,"value":"STANDARD"}}}
+        filters = {
+            "players": {"filterStatus": {"value": ["FREEAGENT", "WAIVERS"]}, "filterSlotIds": {"value": slot_filter},
+                        "limit": size, "sortPercOwned": {"sortPriority": 1, "sortAsc": False},
+                        "sortDraftRanks": {"sortPriority": 100, "sortAsc": True, "value": "STANDARD"}}}
         headers = {'x-fantasy-filter': json.dumps(filters)}
 
         data = self.espn_request.league_get(params=params, headers=headers)
