@@ -42,7 +42,7 @@ class Player(object):
                 applied_avg =  round(split.get('appliedAverage', 0), 2)
                 game = self.schedule.get(id, {})
                 self.stats[id] = dict(applied_total=applied_total, applied_avg=applied_avg, team=game.get('team', None), date=game.get('date', None))
-                if split['stats']:
+                if split.get('stats'):
                     if 'averageStats' in split.keys():
                         self.stats[id]['avg'] = {STATS_MAP.get(i, i): split['averageStats'][i] for i in split['averageStats'].keys() if STATS_MAP.get(i) != ''}
                         self.stats[id]['total'] = {STATS_MAP.get(i, i): split['stats'][i] for i in split['stats'].keys() if STATS_MAP.get(i) != ''}
