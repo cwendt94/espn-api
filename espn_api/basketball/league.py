@@ -1,5 +1,5 @@
 import json
-from typing import List, Tuple, Union
+from typing import List, Set, Union
 
 from ..base_league import BaseLeague
 from .team import Team
@@ -104,7 +104,7 @@ class League(BaseLeague):
 
         return activity
 
-    def transactions(self, scoring_period: int = None, types: set[str] = {"FREEAGENT","WAIVER","WAIVER_ERROR"}) -> List[Transaction]:
+    def transactions(self, scoring_period: int = None, types: Set[str] = {"FREEAGENT","WAIVER","WAIVER_ERROR"}) -> List[Transaction]:
         '''Returns a list of recent transactions'''
         if not scoring_period:
             scoring_period = self.scoringPeriodId
