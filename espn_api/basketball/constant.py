@@ -137,6 +137,22 @@ ACTIVITY_MAP = {
     'TRADED': 244,
 }
 
+TRANSACTION_TYPES = {
+    'DRAFT',
+    'TRADE_ACCEPT',
+    'WAIVER',
+    'TRADE_VETO',
+    'FUTURE_ROSTER',
+    'ROSTER',
+    'RETRO_ROSTER',
+    'TRADE_PROPOSAL',
+    'TRADE_UPHOLD',
+    'FREEAGENT',
+    'TRADE_DECLINE',
+    'WAIVER_ERROR',
+    'TRADE_ERROR'
+}
+
 NINE_CAT_STATS = {
     '3PM',
     'AST',

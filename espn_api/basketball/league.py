@@ -6,10 +6,9 @@ from .team import Team
 from .player import Player
 from .matchup import Matchup
 from .box_score import get_box_scoring_type_class, BoxScore
-from .constant import PRO_TEAM_MAP
 from .activity import Activity
 from .transaction import Transaction
-from .constant import POSITION_MAP, ACTIVITY_MAP
+from .constant import POSITION_MAP, ACTIVITY_MAP, TRANSACTION_TYPES
 
 class League(BaseLeague):
     '''Creates a League instance for Public/Private ESPN league'''
@@ -105,14 +104,20 @@ class League(BaseLeague):
 
         return activity
 
-    def transactions(self, scoring_period: int = None) -> List[Transaction]:
+    def transactions(self, scoring_period: int = None, types: set[str] = {"FREEAGENT","WAIVER","WAIVER_ERROR"}) -> List[Transaction]:
         '''Returns a list of recent transactions'''
+        if not scoring_period:
+            scoring_period = self.scoringPeriodId
+
+        if types > TRANSACTION_TYPES:
+            raise Exception('Invalid transaction type')
+
         params = {
             'view': 'mTransactions2',
             'scoringPeriodId': scoring_period,
         }
 
-        filters = {"transactions":{"filterType":{"value":["FREEAGENT","WAIVER","WAIVER_ERROR"]}}}
+        filters = {"transactions":{"filterType":{"value":list(types)}}}
         headers = {'x-fantasy-filter': json.dumps(filters)}
 
         data = self.espn_request.league_get(params=params, headers=headers)
