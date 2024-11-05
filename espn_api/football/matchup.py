@@ -11,7 +11,11 @@ class Matchup(object):
         self.away_team: Team
 
     def __repr__(self):
-        return f'Matchup({self.home_team}, {self.away_team})'
+        if hasattr(self, 'away_team'):
+            return f'Matchup({self.home_team}, {self.away_team})'
+        else:
+            return f'Matchup({self.home_team}, N/A)'
+            
 
     def _fetch_matchup_info(self, data, team):
         '''Fetch info for matchup'''
