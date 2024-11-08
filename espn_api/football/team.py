@@ -1,4 +1,5 @@
 from .player import Player
+from .constant import PLAYER_STATS_MAP
 
 class Team(object):
     '''Teams are part of the league'''
@@ -38,6 +39,7 @@ class Team(object):
         self._fetch_schedule(schedule)
         self._fetch_roster(roster, year, kwargs.get('pro_schedule'))
         self.owners = kwargs.get('owners', [])
+        self.stats = {PLAYER_STATS_MAP.get(int(i), i): j for i, j in data.get('valuesByStat', {}).items()}
 
     def __repr__(self):
         return 'Team(%s)' % (self.team_name, )
