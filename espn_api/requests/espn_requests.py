@@ -75,6 +75,10 @@ class EspnFantasyRequests(object):
             'view': ['mTeam', 'mRoster', 'mMatchup', 'mSettings', 'mStandings']
         }
         data = self.league_get(params=params)
+        # Check if the data is a list (which happens when year is 2018 or earlier)
+        if isinstance(data, list):
+            # If it's a list, we assume the relevant data is at index 0
+            data = data[0]
         return data
 
     def get_pro_schedule(self):
@@ -101,6 +105,10 @@ class EspnFantasyRequests(object):
             'view': 'mDraftDetail',
         }
         data = self.league_get(params=params)
+        # Check if the data is a list (which happens when year is 2018 in some leagues)
+        if isinstance(data, list):
+            # If it's a list, we assume the relevant data is at index 0
+            data = data[0]
         return data
 
     def get_league_message_board(self, msg_types = None):
@@ -132,8 +140,13 @@ class EspnFantasyRequests(object):
         headers = {'x-fantasy-filter': json.dumps(filters)}
 
         data = self.league_get(params=params, headers=headers)
-        return data
         
+        # Check if the data is a list (which happens when year is 2018 or earlier)
+        if isinstance(data, list):
+            # If it's a list, we assume the relevant data is at index 0
+            data = data[0]
+        return data
+
     def check_league_endpoint(self):
         # First, try the current LEAGUE_ENDPOINT
         r = requests.get(self.LEAGUE_ENDPOINT, cookies=self.cookies)
