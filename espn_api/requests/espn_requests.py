@@ -48,7 +48,9 @@ class EspnFantasyRequests(object):
             self.LEAGUE_ENDPOINT += "/leagueHistory/" + str(league_id) + "?seasonId=" + str(year)
         else:
             self.LEAGUE_ENDPOINT += "/seasons/" + str(year) + "/segments/0/leagues/" + str(league_id)
-
+        
+        # Try the first endpoint and fall back to the second if the first fails
+        self.check_league_endpoint()
     def league_get(self, params: dict = None, headers: dict = None, extend: str = ''):
         endpoint = self.LEAGUE_ENDPOINT + extend
         r = requests.get(endpoint, params=params, headers=headers, cookies=self.cookies)
@@ -131,6 +133,33 @@ class EspnFantasyRequests(object):
 
         data = self.league_get(params=params, headers=headers)
         return data
+        
+    def check_league_endpoint(self):
+        # First, try the current LEAGUE_ENDPOINT
+        r = requests.get(self.LEAGUE_ENDPOINT, cookies=self.cookies)
+
+        # If the response is 401 Unauthorized, switch to the other endpoint
+        if r.status_code == 401:
+            # If the current LEAGUE_ENDPOINT was using the /leagueHistory/ endpoint, switch to the /seasons/{year}/segments/0 endpoint
+            if "/leagueHistory/" in self.LEAGUE_ENDPOINT:
+                alternate_endpoint = self.LEAGUE_ENDPOINT.replace("/leagueHistory/", "/seasons/" + str(self.year) + "/segments/0/leagues/")
+            else:
+                # Otherwise, switch to the /leagueHistory/{league_id}?seasonId={year} endpoint
+                alternate_endpoint = self.LEAGUE_ENDPOINT.replace("/seasons/" + str(self.year) + "/segments/0/leagues/", "/leagueHistory/") + "?seasonId=" + str(self.year)
+
+            # Try the alternate endpoint
+            r = requests.get(alternate_endpoint, cookies=self.cookies)
+            
+            # If the alternate endpoint works (status 200), update the LEAGUE_ENDPOINT
+            if r.status_code == 200:
+                self.LEAGUE_ENDPOINT = alternate_endpoint
+                if self.logger:
+                    self.logger.logging.info(f"Switched to alternate endpoint: {self.LEAGUE_ENDPOINT}")
+            else:
+                # If both endpoints fail, log the error and raise an exception
+                if self.logger:
+                    self.logger.logging.error(f"Both endpoints failed with status: {r.status_code}")
+                raise Exception(f"Both endpoints for league {self.league_id} failed with status {r.status_code}")
 
     # Username and password no longer works using their API without using google recaptcha
     # Possibly revisit in future if anything changes
