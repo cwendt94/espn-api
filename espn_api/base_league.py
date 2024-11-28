@@ -31,6 +31,12 @@ class BaseLeague(ABC):
     def _fetch_league(self, SettingsClass = BaseSettings):
         data = self.espn_request.get_league()
 
+        # Check if the data is a list (which happens when year is 2018 for some leagues)
+        if isinstance(data, list):
+            # If it's a list, we assume the relevant data is at index 0
+            data = data[0]
+
+
         self.currentMatchupPeriod = data['status']['currentMatchupPeriod']
         self.scoringPeriodId = data['scoringPeriodId']
         self.firstScoringPeriod = data['status']['firstScoringPeriod']
