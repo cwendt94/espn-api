@@ -1,3 +1,5 @@
+from typing import List
+
 from .player import Player
 from .matchup import Matchup
 from .constant import STATS_MAP
@@ -23,7 +25,7 @@ class Team(object):
         self.stats = None
         self.standing = data['playoffSeed']
         self.final_standing = data['rankCalculatedFinal']
-        self.roster: list[Player] = []
+        self.roster: List[Player] = []
         self.schedule = []
         
         if 'valuesByStat' in data:
