@@ -11,6 +11,7 @@ from .transaction import Transaction
 from .constant import POSITION_MAP, ACTIVITY_MAP, TRANSACTION_TYPES
 
 class League(BaseLeague):
+    teams: Team
     '''Creates a League instance for Public/Private ESPN league'''
     def __init__(self, league_id: int, year: int, espn_s2=None, swid=None, fetch_league=True, debug=False):
         super().__init__(league_id=league_id, year=year, sport='nba', espn_s2=espn_s2, swid=swid, debug=debug)

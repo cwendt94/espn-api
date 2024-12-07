@@ -23,7 +23,7 @@ class Team(object):
         self.stats = None
         self.standing = data['playoffSeed']
         self.final_standing = data['rankCalculatedFinal']
-        self.roster = []
+        self.roster: list[Player] = []
         self.schedule = []
         
         if 'valuesByStat' in data:
