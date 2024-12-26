@@ -58,7 +58,14 @@ class EspnFantasyRequests(object):
 
         if self.logger:
             self.logger.log_request(endpoint=endpoint, params=params, headers=headers, response=r.json())
-        return r.json() if self.year > 2017 else r.json()[0]
+
+        data = r.json()
+        # Check if the data is a list
+        if isinstance(data, list):
+            # If it's a list, assume the relevant data is at index 0
+            data = data[0]
+
+        return data
 
     def get(self, params: dict = None, headers: dict = None, extend: str = ''):
         endpoint = self.ENDPOINT + extend
@@ -74,12 +81,7 @@ class EspnFantasyRequests(object):
         params = {
             'view': ['mTeam', 'mRoster', 'mMatchup', 'mSettings', 'mStandings']
         }
-        data = self.league_get(params=params)
-        # Check if the data is a list (which happens when year is 2018 or earlier)
-        if isinstance(data, list):
-            # If it's a list, we assume the relevant data is at index 0
-            data = data[0]
-        return data
+        data = self.league_get(params=params)        
 
     def get_pro_schedule(self):
         '''Gets the current sports professional team schedules'''
@@ -105,11 +107,6 @@ class EspnFantasyRequests(object):
             'view': 'mDraftDetail',
         }
         data = self.league_get(params=params)
-        # Check if the data is a list (which happens when year is 2018 in some leagues)
-        if isinstance(data, list):
-            # If it's a list, we assume the relevant data is at index 0
-            data = data[0]
-        return data
 
     def get_league_message_board(self, msg_types = None):
         '''Gets league message board and can filter by msg types'''
@@ -140,12 +137,6 @@ class EspnFantasyRequests(object):
         headers = {'x-fantasy-filter': json.dumps(filters)}
 
         data = self.league_get(params=params, headers=headers)
-        
-        # Check if the data is a list (which happens when year is 2018 or earlier)
-        if isinstance(data, list):
-            # If it's a list, we assume the relevant data is at index 0
-            data = data[0]
-        return data
 
     def check_league_endpoint(self):
         # First, try the current LEAGUE_ENDPOINT
