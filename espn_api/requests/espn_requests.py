@@ -58,14 +58,8 @@ class EspnFantasyRequests(object):
 
         if self.logger:
             self.logger.log_request(endpoint=endpoint, params=params, headers=headers, response=r.json())
-
-        data = r.json()
-        # Check if the data is a list
-        if isinstance(data, list):
-            # If it's a list, assume the relevant data is at index 0
-            data = data[0]
-
-        return data
+        response = r.json()
+        return response[0] if isinstance(response, list) else response
 
     def get(self, params: dict = None, headers: dict = None, extend: str = ''):
         endpoint = self.ENDPOINT + extend
@@ -81,7 +75,8 @@ class EspnFantasyRequests(object):
         params = {
             'view': ['mTeam', 'mRoster', 'mMatchup', 'mSettings', 'mStandings']
         }
-        data = self.league_get(params=params)        
+        data = self.league_get(params=params)
+        return data        
 
     def get_pro_schedule(self):
         '''Gets the current sports professional team schedules'''
@@ -107,6 +102,7 @@ class EspnFantasyRequests(object):
             'view': 'mDraftDetail',
         }
         data = self.league_get(params=params)
+        return data
 
     def get_league_message_board(self, msg_types = None):
         '''Gets league message board and can filter by msg types'''
@@ -137,6 +133,7 @@ class EspnFantasyRequests(object):
         headers = {'x-fantasy-filter': json.dumps(filters)}
 
         data = self.league_get(params=params, headers=headers)
+        return data
 
     def check_league_endpoint(self):
         # First, try the current LEAGUE_ENDPOINT
