@@ -15,6 +15,8 @@ class Team(object):
         self.wins = data['record']['overall']['wins']
         self.losses = data['record']['overall']['losses']
         self.ties = data['record']['overall']['ties']
+        self.points_for = data['record']['overall']['pointsFor']
+        self.points_against = round(data['record']['overall']['pointsAgainst'], 2)
         self.acquisitions = data.get('transactionCounter', {}).get('acquisitions', 0)
         self.acquisition_budget_spent = data.get('transactionCounter', {}).get('acquisitionBudgetSpent', 0)
         self.drops = data.get('transactionCounter', {}).get('drops', 0)
