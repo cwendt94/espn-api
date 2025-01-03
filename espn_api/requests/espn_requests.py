@@ -17,51 +17,6 @@ class ESPNUnknownError(Exception):
     pass
 
 
-def checkRequestStatus(status: int, cookies=None, league_id=None, league_endpoint=None, year=None, extend="", params=None, headers=None) -> tuple:
-    if cookies is None:
-        cookies = {}
-    if league_id is None:
-        league_id = "" 
-    if status == 401:
-        if league_endpoint and year:
-            # If the current LEAGUE_ENDPOINT was using the /leagueHistory/ endpoint
-            if "/leagueHistory/" in league_endpoint:
-                alternate_endpoint = league_endpoint.replace(
-                    "/leagueHistory/", 
-                    f"/seasons/{year}/segments/0/leagues/"
-                )
-            else:
-                # Switch to the /leagueHistory/{league_id}?seasonId={year} endpoint
-                base_endpoint = league_endpoint.replace(
-                    f"/seasons/{year}/segments/0/leagues/", 
-                    "/leagueHistory/"
-                )
-                alternate_endpoint = f"{base_endpoint}?seasonId={year}"
-
-            endpoint = alternate_endpoint + extend
-            #try alternate endpoint
-            r = requests.get(endpoint, params=params, headers=headers, cookies=cookies)
-            
-            if r.status_code == 200:
-                # Return the updated league endpoint if alternate works & the response
-                return alternate_endpoint, r.json()
-            else:
-                # If alternate fails, raise the corresponding error
-                raise ESPNAccessDenied(f"League {league_id} cannot be accessed with espn_s2={cookies.get('espn_s2')} and swid={cookies.get('SWID')}")
-        else:
-            # If no league endpoint or year info provided, raise the error directly
-            raise ESPNAccessDenied(f"League {league_id} cannot be accessed with espn_s2={cookies.get('espn_s2')} and swid={cookies.get('SWID')}")
-
-    elif status == 404:
-        raise ESPNInvalidLeague(f"League {league_id} does not exist")
-
-    elif status != 200:
-        raise ESPNUnknownError(f"ESPN returned an HTTP {status}")
-    
-    # If no issues with the status code, return None, None (unchanged endpoint)
-    return None, None
-
-
 class EspnFantasyRequests(object):
     def __init__(self, sport: str, year: int, league_id: int, cookies: dict = None, logger: Logger = None):
         if sport not in FANTASY_SPORTS:
@@ -78,28 +33,55 @@ class EspnFantasyRequests(object):
             self.LEAGUE_ENDPOINT += "/leagueHistory/" + str(league_id) + "?seasonId=" + str(year)
         else:
             self.LEAGUE_ENDPOINT += "/seasons/" + str(year) + "/segments/0/leagues/" + str(league_id)
+
+    def checkRequestStatus(self, status: int, extend: str = "", params: dict = None, headers: dict = None) -> dict:
+        '''Handles ESPN API response status codes and endpoint format switching'''
+        if status == 401:
+            # If the current LEAGUE_ENDPOINT was using the /leagueHistory/ endpoint, switch to "/seasons/" endpoint
+            if "/leagueHistory/" in self.LEAGUE_ENDPOINT:
+                base_endpoint = self.LEAGUE_ENDPOINT.split("/leagueHistory/")[0]
+                self.LEAGUE_ENDPOINT = f"{base_endpoint}/seasons/{self.year}/segments/0/leagues/{self.league_id}"
+            else:
+                # If the current LEAGUE_ENDPOINT was using /seasons, switch to the "/leagueHistory/" endpoint
+                base_endpoint = self.LEAGUE_ENDPOINT.split(f"/seasons/")[0]
+                self.LEAGUE_ENDPOINT = f"{base_endpoint}/leagueHistory/{self.league_id}?seasonId={self.year}"
+
+            #try the alternate endpoint
+            r = requests.get(self.LEAGUE_ENDPOINT + extend, params=params, headers=headers, cookies=self.cookies)
+            
+            if r.status_code == 200:
+                # Return the updated response if alternate works
+                return r.json()
+                
+            # If all endpoints failed, raise the corresponding error
+            raise ESPNAccessDenied(f"League {self.league_id} cannot be accessed with espn_s2={self.cookies.get('espn_s2')} and swid={self.cookies.get('SWID')}")
+
+        elif status == 404:
+            raise ESPNInvalidLeague(f"League {self.league_id} does not exist")
+
+        elif status != 200:
+            raise ESPNUnknownError(f"ESPN returned an HTTP {status}")
+        
+        # If no issues with the status code, return None
+        return None
         
     def league_get(self, params: dict = None, headers: dict = None, extend: str = ''):
         endpoint = self.LEAGUE_ENDPOINT + extend
         r = requests.get(endpoint, params=params, headers=headers, cookies=self.cookies)
-        alternate_endpoint, alternate_response = checkRequestStatus(r.status_code, cookies=self.cookies, league_id=self.league_id, league_endpoint=self.LEAGUE_ENDPOINT, year=self.year, extend=extend, params=params, headers=headers)
+        alternate_response = self.checkRequestStatus(r.status_code, extend=extend, params=params, headers=headers)
 
-        if alternate_endpoint:
-            self.LEAGUE_ENDPOINT = alternate_endpoint
-            endpoint = alternate_endpoint + extend
-            response = alternate_response
-        else:
-            response = r.json()
+        
+        response = alternate_response if alternate_response else r.json()
 
         if self.logger:
-            self.logger.log_request(endpoint=endpoint, params=params, headers=headers, response=response)
+            self.logger.log_request(endpoint=self.LEAGUE_ENDPOINT + extend, params=params, headers=headers, response=response)
 
         return response[0] if isinstance(response, list) else response
 
     def get(self, params: dict = None, headers: dict = None, extend: str = ''):
         endpoint = self.ENDPOINT + extend
         r = requests.get(endpoint, params=params, headers=headers, cookies=self.cookies)
-        checkRequestStatus(r.status_code)
+        self.checkRequestStatus(r.status_code)
 
         if self.logger:
             self.logger.log_request(endpoint=endpoint, params=params, headers=headers, response=r.json())
