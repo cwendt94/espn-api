@@ -17,7 +17,7 @@ class ESPNUnknownError(Exception):
     pass
 
 
-def checkRequestStatus(status: int, cookies=None, league_id=None, league_endpoint=None, year=None, extend="") -> tuple:
+def checkRequestStatus(status: int, cookies=None, league_id=None, league_endpoint=None, year=None, extend="", params=None, headers=None) -> tuple:
     if cookies is None:
         cookies = {}
     if league_id is None:
@@ -40,7 +40,7 @@ def checkRequestStatus(status: int, cookies=None, league_id=None, league_endpoin
 
             endpoint = alternate_endpoint + extend
             #try alternate endpoint
-            r = requests.get(endpoint, cookies=cookies)
+            r = requests.get(endpoint, params=params, headers=headers, cookies=cookies)
             
             if r.status_code == 200:
                 # Return the updated league endpoint if alternate works & the response
@@ -82,7 +82,7 @@ class EspnFantasyRequests(object):
     def league_get(self, params: dict = None, headers: dict = None, extend: str = ''):
         endpoint = self.LEAGUE_ENDPOINT + extend
         r = requests.get(endpoint, params=params, headers=headers, cookies=self.cookies)
-        alternate_endpoint, alternate_response = checkRequestStatus(r.status_code, cookies=self.cookies, league_id=self.league_id, league_endpoint=self.LEAGUE_ENDPOINT, year=self.year, extend=extend)
+        alternate_endpoint, alternate_response = checkRequestStatus(r.status_code, cookies=self.cookies, league_id=self.league_id, league_endpoint=self.LEAGUE_ENDPOINT, year=self.year, extend=extend, params=params, headers=headers)
 
         if alternate_endpoint:
             self.LEAGUE_ENDPOINT = alternate_endpoint
