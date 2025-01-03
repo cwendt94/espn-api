@@ -17,19 +17,49 @@ class ESPNUnknownError(Exception):
     pass
 
 
-def checkRequestStatus(status: int, cookies=None, league_id=None) -> None:
+def checkRequestStatus(status: int, cookies=None, league_id=None, league_endpoint=None, year=None, extend="") -> tuple:
     if cookies is None:
         cookies = {}
     if league_id is None:
-        league_id = ""
+        league_id = "" 
     if status == 401:
-        raise ESPNAccessDenied(f"League {league_id} cannot be accessed with espn_s2={cookies.get('espn_s2')} and swid={cookies.get('SWID')}")
+        if league_endpoint and year:
+            # If the current LEAGUE_ENDPOINT was using the /leagueHistory/ endpoint
+            if "/leagueHistory/" in league_endpoint:
+                alternate_endpoint = league_endpoint.replace(
+                    "/leagueHistory/", 
+                    f"/seasons/{year}/segments/0/leagues/"
+                )
+            else:
+                # Switch to the /leagueHistory/{league_id}?seasonId={year} endpoint
+                base_endpoint = league_endpoint.replace(
+                    f"/seasons/{year}/segments/0/leagues/", 
+                    "/leagueHistory/"
+                )
+                alternate_endpoint = f"{base_endpoint}?seasonId={year}"
+
+            endpoint = alternate_endpoint + extend
+            #try alternate endpoint
+            r = requests.get(endpoint, cookies=cookies)
+            
+            if r.status_code == 200:
+                # Return the updated league endpoint if alternate works & the response
+                return alternate_endpoint, r.json()
+            else:
+                # If alternate fails, raise the corresponding error
+                raise ESPNAccessDenied(f"League {league_id} cannot be accessed with espn_s2={cookies.get('espn_s2')} and swid={cookies.get('SWID')}")
+        else:
+            # If no league endpoint or year info provided, raise the error directly
+            raise ESPNAccessDenied(f"League {league_id} cannot be accessed with espn_s2={cookies.get('espn_s2')} and swid={cookies.get('SWID')}")
 
     elif status == 404:
         raise ESPNInvalidLeague(f"League {league_id} does not exist")
 
     elif status != 200:
         raise ESPNUnknownError(f"ESPN returned an HTTP {status}")
+    
+    # If no issues with the status code, return None, None (unchanged endpoint)
+    return None, None
 
 
 class EspnFantasyRequests(object):
@@ -49,16 +79,21 @@ class EspnFantasyRequests(object):
         else:
             self.LEAGUE_ENDPOINT += "/seasons/" + str(year) + "/segments/0/leagues/" + str(league_id)
         
-        # Try the first endpoint and fall back to the second if the first fails
-        self.check_league_endpoint()
     def league_get(self, params: dict = None, headers: dict = None, extend: str = ''):
         endpoint = self.LEAGUE_ENDPOINT + extend
         r = requests.get(endpoint, params=params, headers=headers, cookies=self.cookies)
-        checkRequestStatus(r.status_code, cookies=self.cookies, league_id=self.league_id)
+        alternate_endpoint, alternate_response = checkRequestStatus(r.status_code, cookies=self.cookies, league_id=self.league_id, league_endpoint=self.LEAGUE_ENDPOINT, year=self.year, extend=extend)
+
+        if alternate_endpoint:
+            self.LEAGUE_ENDPOINT = alternate_endpoint
+            endpoint = alternate_endpoint + extend
+            response = alternate_response
+        else:
+            response = r.json()
 
         if self.logger:
-            self.logger.log_request(endpoint=endpoint, params=params, headers=headers, response=r.json())
-        response = r.json()
+            self.logger.log_request(endpoint=endpoint, params=params, headers=headers, response=response)
+
         return response[0] if isinstance(response, list) else response
 
     def get(self, params: dict = None, headers: dict = None, extend: str = ''):
@@ -134,53 +169,6 @@ class EspnFantasyRequests(object):
 
         data = self.league_get(params=params, headers=headers)
         return data
-
-    def check_league_endpoint(self):
-        r = requests.get(self.LEAGUE_ENDPOINT, cookies=self.cookies)
-        
-        if self.logger:
-            self.logger.log_request(
-                endpoint=self.LEAGUE_ENDPOINT,
-                params={},
-                headers={},
-                response=r.json()
-            )
-        
-        # If the response is 401 or 404, try alternate endpoint
-        if r.status_code in [401, 404]:
-            # If the current LEAGUE_ENDPOINT was using the /leagueHistory/ endpoint
-            if "/leagueHistory/" in self.LEAGUE_ENDPOINT:
-                alternate_endpoint = self.LEAGUE_ENDPOINT.replace(
-                    "/leagueHistory/", 
-                    f"/seasons/{self.year}/segments/0/leagues/"
-                )
-            else:
-                # Switch to the /leagueHistory/{league_id}?seasonId={year} endpoint
-                base_endpoint = self.LEAGUE_ENDPOINT.replace(
-                    f"/seasons/{self.year}/segments/0/leagues/", 
-                    "/leagueHistory/"
-                )
-                alternate_endpoint = f"{base_endpoint}?seasonId={self.year}"
-            
-            # Try the alternate endpoint
-            r = requests.get(alternate_endpoint, cookies=self.cookies)
-            
-            if self.logger:
-                self.logger.log_request(
-                    endpoint=alternate_endpoint,
-                    params={},
-                    headers={},
-                    response=r.json()
-                )
-            
-            # If the alternate endpoint works, update the LEAGUE_ENDPOINT
-            if r.status_code == 200:
-                self.LEAGUE_ENDPOINT = alternate_endpoint
-            else:
-                checkRequestStatus(r.status_code, self.cookies, self.league_id)
-        else:
-            # Check status of initial request if it wasn't 401/404
-            checkRequestStatus(r.status_code, self.cookies, self.league_id)
 
     # Username and password no longer works using their API without using google recaptcha
     # Possibly revisit in future if anything changes
