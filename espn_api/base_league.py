@@ -30,7 +30,6 @@ class BaseLeague(ABC):
 
     def _fetch_league(self, SettingsClass = BaseSettings):
         data = self.espn_request.get_league()
-
         self.currentMatchupPeriod = data['status']['currentMatchupPeriod']
         self.scoringPeriodId = data['scoringPeriodId']
         self.firstScoringPeriod = data['status']['firstScoringPeriod']
@@ -49,7 +48,6 @@ class BaseLeague(ABC):
     def _fetch_draft(self):
         '''Creates list of Pick objects from the leagues draft'''
         data = self.espn_request.get_league_draft()
-
         # League has not drafted yet
         if not data.get('draftDetail', {}).get('drafted'):
             return
