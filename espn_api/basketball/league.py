@@ -47,8 +47,8 @@ class League(BaseLeague):
 
     def _fetch_teams(self, data):
         '''Fetch teams in league'''
-        pro_schedule = self._get_all_pro_schedule()
-        super()._fetch_teams(data, TeamClass=Team, pro_schedule=pro_schedule)
+        self.pro_schedule = self._get_all_pro_schedule()
+        super()._fetch_teams(data, TeamClass=Team, pro_schedule=self.pro_schedule)
 
         # replace opponentIds in schedule with team instances
         for team in self.teams:
@@ -184,8 +184,7 @@ class League(BaseLeague):
         data = self.espn_request.league_get(params=params, headers=headers)
 
         schedule = data['schedule']
-        pro_schedule = self._get_all_pro_schedule()
-        box_data = [self.BoxScoreClass(matchup, pro_schedule, matchup_total, self.year, scoring_id) for matchup in schedule]
+        box_data = [self.BoxScoreClass(matchup, self.pro_schedule, matchup_total, self.year, scoring_id) for matchup in schedule]
 
         for team in self.teams:
             for matchup in box_data:
@@ -207,9 +206,7 @@ class League(BaseLeague):
 
         data = self.espn_request.get_player_card(playerId, self.finalScoringPeriod)
 
-        pro_schedule = self._get_all_pro_schedule()
-
         if len(data['players']) == 1:
-            return Player(data['players'][0], self.year, pro_schedule)
+            return Player(data['players'][0], self.year, self.pro_schedule)
         if len(data['players']) > 1:
-            return [Player(player, self.year, pro_schedule) for player in data['players']]
+            return [Player(player, self.year, self.pro_schedule) for player in data['players']]
