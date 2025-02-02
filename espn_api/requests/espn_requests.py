@@ -1,6 +1,6 @@
 import requests
 import json
-from .constant import FANTASY_BASE_ENDPOINT, FANTASY_SPORTS
+from .constant import FANTASY_BASE_ENDPOINT, NEWS_BASE_ENDPOINT, FANTASY_SPORTS
 from ..utils.logger import Logger
 from typing import List
 
@@ -24,6 +24,7 @@ class EspnFantasyRequests(object):
         self.year = year
         self.league_id = league_id
         self.ENDPOINT = FANTASY_BASE_ENDPOINT + FANTASY_SPORTS[sport] + '/seasons/' + str(self.year)
+        self.NEWS_ENDPOINT = NEWS_BASE_ENDPOINT + FANTASY_SPORTS[sport] + '/news/' + 'players'
         self.cookies = cookies
         self.logger = logger
 
@@ -82,6 +83,14 @@ class EspnFantasyRequests(object):
         endpoint = self.ENDPOINT + extend
         r = requests.get(endpoint, params=params, headers=headers, cookies=self.cookies)
         self.checkRequestStatus(r.status_code)
+
+        if self.logger:
+            self.logger.log_request(endpoint=endpoint, params=params, headers=headers, response=r.json())
+        return r.json()
+        
+    def news_get(self, params: dict = None, headers: dict = None, extend: str = ''):
+        endpoint = self.NEWS_ENDPOINT + extend
+        r = requests.get(endpoint, params=params, headers=headers, cookies=self.cookies)
 
         if self.logger:
             self.logger.log_request(endpoint=endpoint, params=params, headers=headers, response=r.json())
@@ -150,6 +159,12 @@ class EspnFantasyRequests(object):
         headers = {'x-fantasy-filter': json.dumps(filters)}
 
         data = self.league_get(params=params, headers=headers)
+        return data
+
+    def get_player_news(self, playerId):
+        '''Gets the player news'''
+        params = {'playerId': playerId}
+        data = self.news_get(params=params)
         return data
 
     # Username and password no longer works using their API without using google recaptcha
