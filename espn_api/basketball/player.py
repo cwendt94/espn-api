@@ -5,7 +5,7 @@ from functools import cached_property
 
 class Player(object):
     '''Player are part of team'''
-    def __init__(self, data, year, pro_team_schedule = None):
+    def __init__(self, data, year, pro_team_schedule = None, news = None):
         self.name = json_parsing(data, 'fullName')
         self.playerId = json_parsing(data, 'id')
         self.year = year
@@ -18,6 +18,7 @@ class Player(object):
         self.posRank = json_parsing(data, 'positionalRanking')
         self.stats = {}
         self.schedule = {}
+        self.news = {}
         expected_return_date = json_parsing(data, 'expectedReturnDate')
         self.expected_return_date = datetime(*expected_return_date).date() if expected_return_date else None
 
@@ -29,7 +30,16 @@ class Player(object):
                 team = game['awayProTeamId'] if game['awayProTeamId'] != pro_team_id else game['homeProTeamId']
                 self.schedule[key] = { 'team': PRO_TEAM_MAP[team], 'date': datetime.fromtimestamp(game['date']/1000.0) }
 
-
+        if news:
+            news_feed = news.get("news", {}).get("feed", [])
+            self.news = [
+                {
+                    "published": item.get("published", ""),
+                    "headline": item.get("headline", ""),
+                    "story": item.get("story", "")
+                }
+                for item in news_feed
+            ]
 
         # add available stats
 

@@ -195,7 +195,7 @@ class League(BaseLeague):
                     matchup.away_team = team
         return box_data
 
-    def player_info(self, name: str = None, playerId: Union[int, list] = None) -> Union[Player, List[Player]]:
+    def player_info(self, name: str = None, playerId: Union[int, list] = None, include_news = False) -> Union[Player, List[Player]]:
         ''' Returns Player class if name found '''
 
         if name:
@@ -209,7 +209,12 @@ class League(BaseLeague):
 
         pro_schedule = self._get_all_pro_schedule()
 
+        if include_news:
+            news = {}
+            for id in playerId:
+                news[id] = self.espn_request.get_player_news(id)
+
         if len(data['players']) == 1:
-            return Player(data['players'][0], self.year, pro_schedule)
+            return Player(data['players'][0], self.year, pro_schedule, news=news.get(playerId[0], []) if include_news else None)
         if len(data['players']) > 1:
-            return [Player(player, self.year, pro_schedule) for player in data['players']]
+            return [Player(player, self.year, pro_schedule, news=news.get(player['id'], []) if include_news else None) for player in data['players']]
