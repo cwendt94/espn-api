@@ -19,6 +19,8 @@ class Player(object):
         self.stats = {}
         self.schedule = {}
         self.news = {}
+        expected_return_date = json_parsing(data, 'expectedReturnDate')
+        self.expected_return_date = datetime(*expected_return_date).date() if expected_return_date else None
 
         if pro_team_schedule:
             pro_team_id = json_parsing(data, 'proTeamId')
