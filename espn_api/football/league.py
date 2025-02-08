@@ -1,3 +1,4 @@
+from collections import defaultdict
 import json
 import random
 from typing import Callable, Dict, List, Tuple, Union
@@ -398,3 +399,63 @@ class League(BaseLeague):
             for msg in msgs:
                 messages.append(msg)
         return messages
+    
+
+    
+    def draft_evaluation(self):
+        #Calculating draft quality score based on projected score vs actual score for each pick
+        draftData = self.draft
+        #Process of removing any duplicates from draft data for accuracy
+        duplicates = set()
+        duplicates_removed = []
+        for pick in draftData:
+            pick_id = (pick.round_num, pick.round_pick)
+            if pick_id not in duplicates:
+                duplicates_removed.append(pick)
+                duplicates.add(pick_id)
+
+        #Adding drafted players to each team
+        hashmap = defaultdict(list)
+        for pick in duplicates_removed:
+            team = pick.team
+            hashmap[team.team_name].append(pick.playerName)  
+
+        realScores = []
+        
+        #Calculating scores
+        for team_name, players in hashmap.items():
+            print(f"Processing Team: {team_name}")
+            projectedsum = 0
+            actualsum = 0
+            avg_projectedsum = 0
+            avg_actualsum = 0
+            for player in players:
+                playerData = self.player_info(name=player)
+                if not playerData:
+                    print(f"Warning: No data found for player '{player}' in team '{team_name}'. Skipping.")
+                    continue  
+                
+                print(f"Player Data: {playerData}")
+                projectedsum += playerData.projected_total_points
+                actualsum += playerData.total_points
+                avg_projectedsum += playerData.projected_avg_points
+                avg_actualsum += playerData.avg_points
+            
+            draftscore = actualsum - projectedsum
+            avgdraftscore = avg_actualsum - avg_projectedsum
+
+            #Weighting average points vs total points 
+            real_score = 0.2 * draftscore + 0.8 * avgdraftscore
+            
+            realScores.append({
+                "Name": team_name,
+                "Score": real_score
+            })
+
+        #Scaling scores for more intuitive results
+        for item in realScores:
+            item["Score"] = (item["Score"] / 100) + 10
+
+        realScores.sort(key=lambda x: x["Score"], reverse=True)
+
+        return realScores
