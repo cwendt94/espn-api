@@ -98,9 +98,12 @@ class League(BaseLeague):
         headers = {'x-fantasy-filter': json.dumps(filters)}
         data = self.espn_request.league_get(extend='/communication/', params=params, headers=headers)
         data = data['topics']
-        activity = [Activity(topic, self.player_map, self.get_team_data) for topic in data]
+        
+        # Pass self.player_info to the Activity constructor
+        activity = [Activity(topic, self.player_map, self.get_team_data, self.player_info) for topic in data]
 
         return activity
+
 
     def free_agents(self, week: int=None, size: int=50, position: str=None, position_id: int=None) -> List[Player]:
         '''Returns a List of Free Agents for a Given Week\n
@@ -163,3 +166,22 @@ class League(BaseLeague):
                 elif matchup.away_team == team.team_id:
                     matchup.away_team = team
         return box_data
+    
+    def player_info(self, name: str = None, playerId: Union[int, list] = None) -> Union[Player, List[Player]]:
+        '''Returns Player class if name found'''
+
+        if name:
+            playerId = self.player_map.get(name)
+        if playerId is None or isinstance(playerId, str):
+            return None
+        if not isinstance(playerId, list):
+            playerId = [playerId]
+
+        data = self.espn_request.get_player_card(playerId, self.finalScoringPeriod)
+        pro_schedule = self._get_all_pro_schedule()
+
+        # Adjust the Player constructor call here
+        if len(data['players']) == 1:
+            return Player(data['players'][0], self.year)  # Remove pro_schedule here
+        if len(data['players']) > 1:
+            return [Player(player, self.year) for player in data['players']]  # Remove pro_schedule here
