@@ -505,3 +505,19 @@ SETTINGS_SCORING_FORMAT_MAP = {
     233: { 'abbr': 'FGAY50', 'label': 'Every 50 FG Attempt yards' },
     234: { 'abbr': 'FGAY100', 'label': 'Every 100 FG Attempt yards' }
 }
+
+TRANSACTION_TYPES = {
+    'DRAFT',
+    'TRADE_ACCEPT',
+    'WAIVER',
+    'TRADE_VETO',
+    'FUTURE_ROSTER',
+    'ROSTER',
+    'RETRO_ROSTER',
+    'TRADE_PROPOSAL',
+    'TRADE_UPHOLD',
+    'FREEAGENT',
+    'TRADE_DECLINE',
+    'WAIVER_ERROR',
+    'TRADE_ERROR'
+}
