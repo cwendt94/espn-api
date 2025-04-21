@@ -1,6 +1,6 @@
 import json
 import random
-from typing import Callable, Dict, List, Tuple, Union
+from typing import Callable, Dict, List, Set, Tuple, Union
 
 from ..base_league import BaseLeague
 from .team import Team
@@ -11,7 +11,8 @@ from .player import Player
 from .activity import Activity
 from .settings import Settings
 from .utils import power_points, two_step_dominance
-from .constant import POSITION_MAP, ACTIVITY_MAP
+from .constant import POSITION_MAP, ACTIVITY_MAP, TRANSACTION_TYPES
+from .transaction import Transaction
 from .helper import (
     sort_by_coin_flip,
     sort_by_division_record,
@@ -90,7 +91,7 @@ class League(BaseLeague):
             self._fetch_players()
         if refresh__teams:
             self._fetch_teams(data)
-    
+
     def load_roster_week(self, week: int) -> None:
         '''Sets Teams Roster for a Certain Week'''
         params = {
@@ -398,3 +399,26 @@ class League(BaseLeague):
             for msg in msgs:
                 messages.append(msg)
         return messages
+
+    def transactions(self, scoring_period: int = None, types: Set[str] = {"FREEAGENT","WAIVER","WAIVER_ERROR"}) -> List[Transaction]:
+        '''Returns a list of recent transactions'''
+        if not scoring_period:
+            scoring_period = self.scoringPeriodId
+
+        if types > TRANSACTION_TYPES:
+            raise Exception('Invalid transaction type')
+
+        params = {
+            'view': 'mTransactions2',
+            'scoringPeriodId': scoring_period,
+        }
+
+        filters = {"transactions":{"filterType":{"value":list(types)}}}
+        headers = {'x-fantasy-filter': json.dumps(filters)}
+
+        data = self.espn_request.league_get(params=params, headers=headers)
+        if 'transactions' not in data:
+            raise Exception('No transactions found')
+        transactions = data['transactions']
+
+        return [Transaction(transaction, self.player_map, self.get_team_data) for transaction in transactions]
