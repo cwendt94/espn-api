@@ -13,11 +13,14 @@ class Player(object):
         self.acquisitionType = json_parsing(data, 'acquisitionType')
         self.proTeam = PRO_TEAM_MAP.get(json_parsing(data, 'proTeamId'), json_parsing(data, 'proTeamId'))
         self.injuryStatus = json_parsing(data, 'injuryStatus')
+        self.status = json_parsing(data, 'status')
         self.stats = {}
 
         player = data.get('playerPoolEntry', {}).get('player') or data['player']
         self.injuryStatus = player.get('injuryStatus', self.injuryStatus)
         self.injured = player.get('injured', False)
+        self.percent_owned = round(player.get('ownership', {}).get('percentOwned', -1), 2)
+        self.percent_started = round(player.get('ownership', {}).get('percentStarted', -1), 2)
 
         # add available stats
         player_stats = player.get('stats', [])
