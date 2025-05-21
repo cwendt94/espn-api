@@ -33,6 +33,7 @@ PRO_TEAM_MAP = {
     18: 'Conn',
     19: 'Chi',
     20: 'Atl',
+    129689: 'GSV',
 }
 
 STATS_MAP = {
