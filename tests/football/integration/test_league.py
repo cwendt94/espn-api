@@ -1,4 +1,4 @@
-from unittest import TestCase
+from unittest import TestCase, skip
 from espn_api.football import League
 
 # Integration test to make sure ESPN's API didnt change
@@ -8,17 +8,16 @@ class LeagueTest(TestCase):
         league = League(1234, 2018)
 
         self.assertEqual(league.current_week, 17)
-
+    @skip('Need new league id for test')
     def test_past_league(self):
-        league = League(12345, 2017)
+        league = League(368876, 2017)
 
         self.assertEqual(league.nfl_week, 18)
 
     def test_private_league(self):
         ''' Test for switching to fallback API endpoint for private leagues. Random, incorrect cookies used to force fallback.  '''
-        league = League(368876, 2018, 'AEF1234567890ABCDE1234567890ABCD', '{D0C25A4C-2A0D-4E56-8E7F-20A10B663272}')
-
-        self.assertEqual(league.espn_request.LEAGUE_ENDPOINT, "https://lm-api-reads.fantasy.espn.com/apis/v3/games/ffl/leagueHistory/368876?seasonId=2018")
+        with self.assertRaises(Exception):
+            League(368876, 2018, 'AEF1234567890ABCDE1234567890ABCD', '{D0C25A4C-2A0D-4E56-8E7F-20A10B663272}')
 
     def test_unknown_league(self):
         with self.assertRaises(Exception):

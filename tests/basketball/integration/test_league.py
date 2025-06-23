@@ -1,8 +1,9 @@
-from unittest import TestCase
+from unittest import TestCase, skip
 from espn_api.basketball import League
 
 
 # Integration test to make sure ESPN's API didn't change
+@skip("Need a new public league for testing integration")
 class LeagueTest(TestCase):
     def setUp(self):
         self.league = League(411647, 2019)
