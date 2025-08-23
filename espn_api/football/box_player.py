@@ -1,4 +1,4 @@
-from .constant import POSITION_MAP, PRO_TEAM_MAP, PLAYER_STATS_MAP
+from .constant import POSITION_MAP, PRO_TEAM_MAP
 from .player import Player
 from datetime import datetime, timedelta
 
@@ -33,6 +33,19 @@ class BoxPlayer(Player):
         self.points_breakdown = stats.get('breakdown', 0)
         self.projected_points = stats.get('projected_points', 0)
         self.projected_breakdown = stats.get('projected_breakdown', 0)
+
+        # Backup projected_points extraction from raw data if not available from stats
+        if self.projected_points == 0:
+            try:
+                player_pool_entry = data.get('playerPoolEntry', {})
+                player_stats = player_pool_entry.get('stats', [])
+                if len(player_stats) > 1:
+                    projected_stat = player_stats[1]
+                    backup_projected = projected_stat.get('appliedTotal', 0)
+                    if backup_projected > 0:
+                        self.projected_points = backup_projected
+            except (KeyError, IndexError, AttributeError):
+                pass
 
     def __repr__(self):
         return f'Player({self.name}, points:{self.points}, projected:{self.projected_points})'
