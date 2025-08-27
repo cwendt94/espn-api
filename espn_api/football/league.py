@@ -9,6 +9,7 @@ from .box_score import BoxScore
 from .box_player import BoxPlayer
 from .player import Player
 from .activity import Activity
+from .offer import Offer
 from .settings import Settings
 from .utils import power_points, two_step_dominance
 from .constant import POSITION_MAP, ACTIVITY_MAP, TRANSACTION_TYPES
@@ -422,3 +423,56 @@ class League(BaseLeague):
         transactions = data['transactions']
 
         return [Transaction(transaction, self.player_map, self.get_team_data) for transaction in transactions]
+
+    def offers_report(self, week: int = None) -> List[Offer]:
+        '''Returns a list of all waiver/free agent auction offers sorted by timestamp and bid amount'''
+
+        data = self._get_offers(week)
+        bids = [Offer(bid, self.player_map, self.get_team_data) for bid in data]
+        
+        if len(bids) == 0:
+            return []
+
+        # Process bids to fix missing timestamps
+        # For any bid without a timestamp, search for another bid for the same player 
+        # from the same team that has a timestamp and use that timestamp
+        for bid in bids:
+            if bid.result != 'Canceled' and bid.time is None:
+                for other_bid in bids:
+                    if bid.id != other_bid.id and other_bid.time is not None:
+                        if other_bid.player == bid.player and other_bid.teamId == bid.teamId:
+                            bid.time = other_bid.time
+                            break
+
+        # Group bids by report_time
+        reports = {}
+        for bid in bids:
+            if bid.time not in reports:
+                reports[bid.time] = []
+            reports[bid.time].append(bid)
+        
+        # Sort report times
+        sorted_report_times = sorted([t for t in reports.keys() if t is not None])
+        
+        # Create a sorted list of offers, with the highest bid for each player first
+        sorted_offers = []
+        for report_time in sorted_report_times:
+            report = reports[report_time]
+            # Sort by bid amount (highest first)
+            report.sort(reverse=True)
+            
+            # Process the bids in order
+            processed_players = set()
+            for bid in report:
+                # If this player hasn't been processed yet, add all related bids
+                if bid.player not in processed_players:
+                    sorted_offers.append(bid)
+                    processed_players.add(bid.player)
+                    
+                    # Find and add all other bids for the same player
+                    for other_bid in report:
+                        if other_bid.id != bid.id and other_bid.player == bid.player:
+                            sorted_offers.append(other_bid)
+
+        return sorted_offers
+
