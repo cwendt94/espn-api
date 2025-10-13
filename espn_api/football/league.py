@@ -126,7 +126,7 @@ class League(BaseLeague):
             5. Coin flip
 
         Args:
-            week (int): Week to get the standings for
+            week (int): Week to get the standings for (where `week` is actually the matchup period)
 
         Returns:
             List[Dict]: Sorted standings list
@@ -154,8 +154,15 @@ class League(BaseLeague):
                 "schedule": team.schedule[:week],
                 "outcomes": team.outcomes[:week],
             }
-            team_data["win_pct"] = (team_data["wins"] + team_data["ties"] / 2) / sum(
-                [1 for outcome in team.outcomes[:week] if outcome in ["W", "T", "L"]]
+            team_data["win_pct"] = (team_data["wins"] + team_data["ties"] / 2) / max(
+                sum(
+                    [
+                        1
+                        for outcome in team.outcomes[:week]
+                        if outcome in ["W", "T", "L"]
+                    ]
+                ),
+                1,
             )
             list_of_team_data.append(team_data)
 
@@ -249,7 +256,6 @@ class League(BaseLeague):
         least_tup = sorted(least_scored_tup, key=lambda tup: float(tup[1]), reverse=False)
         return least_tup[0]
 
-
     def recent_activity(self, size: int = 25, msg_type: str = None, offset: int = 0) -> List[Activity]:
         '''Returns a list of recent league activities (Add, Drop, Trade)'''
         if self.year < 2019:
@@ -302,9 +308,9 @@ class League(BaseLeague):
         if week and week <= self.current_week:
             scoring_period = week
             for matchup_id in self.settings.matchup_periods:
-              if week in self.settings.matchup_periods[matchup_id]:
-                matchup_period = matchup_id
-                break
+                if week in self.settings.matchup_periods[matchup_id]:
+                    matchup_period = matchup_id
+                    break
 
         params = {
             'view': ['mMatchupScore', 'mScoreboard'],
@@ -363,7 +369,6 @@ class League(BaseLeague):
             slot_filter = [POSITION_MAP[position]]
         if position_id:
             slot_filter.append(position_id)
-
 
         params = {
             'view': 'kona_player_info',
