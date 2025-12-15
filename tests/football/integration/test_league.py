@@ -45,6 +45,21 @@ class LeagueTest(TestCase):
         self.assertEqual(repr(box_scores[1]), 'Box Score(Team(TEAM BERRY) at Team(TEAM HOLLAND))')
         self.assertEqual(box_scores[0].is_playoff, False)
 
+        player = box_scores[1].away_lineup[1]
+        self.assertTrue(hasattr(player, 'breakdown'))
+        self.assertTrue(hasattr(player, 'points_breakdown'))
+        self.assertNotEqual(player.breakdown, {})
+        self.assertNotEqual(player.points_breakdown, {})
+
+        self.assertEqual(player.breakdown['receivingTouchdowns'], 1.0)
+        self.assertEqual(player.points_breakdown['receivingTouchdowns'], 6.0)
+        self.assertEqual(player.projected_breakdown['receivingTouchdowns'], 0.637185906)
+        self.assertEqual(player.projected_points_breakdown['receivingTouchdowns'], 3.823115436)
+
+
+
+
+
         box_scores = league.box_scores()
         self.assertEqual(box_scores[0].is_playoff, True)
 

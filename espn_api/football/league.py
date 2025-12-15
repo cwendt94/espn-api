@@ -178,9 +178,18 @@ class League(BaseLeague):
                 (sort_by_points_against, "points_against"),
                 (sort_by_coin_flip, "coin_flip"),
             ]
+        elif self.settings.playoff_seed_tie_rule == "INTRA_DIVISION_RECORD":
+            tiebreaker_hierarchy = [
+                (sort_by_division_record, "division_record"),
+                (sort_by_head_to_head, "h2h_wins"),
+                (sort_by_win_pct, "win_pct"),
+                (sort_by_points_for, "points_for"),
+                (sort_by_points_against, "points_against"),
+                (sort_by_coin_flip, "coin_flip"),
+            ]
         else:
             raise ValueError(
-                "Unkown tiebreaker_method: Must be either 'TOTAL_POINTS_SCORED' or 'H2H_RECORD'"
+                "Unkown tiebreaker_method: Must be either 'TOTAL_POINTS_SCORED', 'H2H_RECORD', or 'INTRA_DIVISION_RECORD'"
             )
 
         # First assign the division winners

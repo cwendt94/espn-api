@@ -11,6 +11,7 @@ class Player(object):
         self.eligibleSlots = [POSITION_MAP[pos] for pos in json_parsing(data, 'eligibleSlots')]
         self.acquisitionType = json_parsing(data, 'acquisitionType')
         self.proTeam = PRO_TEAM_MAP[json_parsing(data, 'proTeamId')]
+        self.jersey = json_parsing(data, 'jersey')
         self.injuryStatus = json_parsing(data, 'injuryStatus')
         self.onTeamId = json_parsing(data, 'onTeamId')
         self.lineupSlot = POSITION_MAP.get(data.get('lineupSlotId'), '')
@@ -43,19 +44,26 @@ class Player(object):
         for stats in player_stats:
             if stats.get('seasonId') != year or stats.get('statSplitTypeId') == 2:
                 continue
-            stats_breakdown = stats.get('stats') or stats.get('appliedStats', {})
+
+            # real game stats (number of yards, number of passes, etc)- PLAYER_MAP may not be quite correct
+            stats_breakdown = stats.get('stats', {})
             breakdown = {PLAYER_STATS_MAP.get(int(k), k):v for (k,v) in stats_breakdown.items()}
+            # fantasy stats (points per td, ppr, points per yard bucket)
+            applied_stats = stats.get('appliedStats', {})
+            points_breakdown = {PLAYER_STATS_MAP.get(int(k), k):v for (k,v) in applied_stats.items()}
+
             points = round(stats.get('appliedTotal', 0), 2)
-            avg_points =  round(stats.get('appliedAverage', 0), 2)
+            avg_points = round(stats.get('appliedAverage', 0), 2)
             scoring_period = stats.get('scoringPeriodId')
             stat_source = stats.get('statSourceId')
-            (points_type, breakdown_type, avg_type) = ('points', 'breakdown', 'avg_points') if stat_source == 0 else ('projected_points', 'projected_breakdown', 'projected_avg_points')
+            (points_type, breakdown_type, points_breakdown_type, avg_type) = ('points', 'breakdown', 'points_breakdown', 'avg_points') if stat_source == 0 else ('projected_points', 'projected_breakdown', 'projected_points_breakdown', 'projected_avg_points')
             if self.stats.get(scoring_period):
                 self.stats[scoring_period][points_type] = points
                 self.stats[scoring_period][breakdown_type] = breakdown
+                self.stats[scoring_period][points_breakdown_type] = points_breakdown
                 self.stats[scoring_period][avg_type] = avg_points
             else:
-                self.stats[scoring_period] = {points_type: points, breakdown_type: breakdown, avg_type: avg_points}
+                self.stats[scoring_period] = {points_type: points, breakdown_type: breakdown, points_breakdown_type: points_breakdown, avg_type: avg_points}
             if not stat_source:
                 if not self.stats[scoring_period][breakdown_type]:
                     self.active_status = 'inactive'

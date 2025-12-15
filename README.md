@@ -9,16 +9,44 @@ Please feel free to make suggestions, bug reports, and pull request for features
 This package was inspired and based off of [rbarton65/espnff](https://github.com/rbarton65/espnff).
 
 ## Installing
-With Git:
+### Note
+The difference in setup.py and requirements is in the test packages. If you are in python version >=3.9 then please use the requirements and pytest as nosetests is deprecated.
+
+With Git & Setup.py (Not recommended for Python >=3.9):
 ```
 git clone https://github.com/cwendt94/espn-api
 cd espn-api
 python3 setup.py install
 ```
+
+with Git and Requirements.txt (Recommended for python >=3.9)
+```
+git clone https://github.com/cwendt94/espn-api
+cd espn-api
+python -m venv myenv
+myenv\Scripts\activate.bat
+pip install -r requirementsV2.txt
+```
+
 With pip:
 ```
 pip install espn_api
 ```
+
+
+### Run Tests
+with nosetests (Not recommended for Python >=3.9):
+```
+python3 setup.py nosetests
+```
+
+with pytest (Recommended for Python >=3.9)
+```
+pytest
+```
+
+
+
 
 ## Usage
 ### [For Getting Started and API details head over to the Wiki!](https://github.com/cwendt94/espn-api/wiki)
@@ -35,10 +63,7 @@ from espn_api.baseball import League
 league = League(league_id=222, year=2019)
 ```
 
-### Run Tests
-```
-python3 setup.py nosetests
-```
+
 ## [Discussions](https://github.com/cwendt94/espn-api/discussions) (new)
 If you have any questions about the package, ESPN API data, or want to talk about a feature please start a [discussion](https://github.com/cwendt94/espn-api/discussions)! 
 

@@ -5,6 +5,8 @@ class Transaction(object):
         self.status = data['status']
         self.scoring_period = data['scoringPeriodId']
         self.date = data.get('processDate')
+        if not self.date:
+            self.date = data.get('proposedDate')
         self.bid_amount = data.get('bidAmount')
         self.items = []
         for item in data['items']:
