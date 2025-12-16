@@ -36,5 +36,16 @@ class BoxPlayer(Player):
         self.projected_breakdown = stats.get('projected_breakdown', {})
         self.projected_points_breakdown = stats.get('projected_points_breakdown', {})
 
+        # Backup projected_points extraction from raw data if not available from stats
+        if self.projected_points == 0:
+            player_pool_entry = data.get('playerPoolEntry', {})
+            player_stats = player_pool_entry.get('stats', [])
+            for stats in player_stats:
+                if stats.get('seasonId') != year or stats.get('statSplitTypeId') == 2:
+                    continue
+                if stats.get('statSourceId') == 0:
+                    self.projected_points = stats.get('appliedTotal', 0)
+                    break
+
     def __repr__(self):
         return f'Player({self.name}, points:{self.points}, projected:{self.projected_points})'
