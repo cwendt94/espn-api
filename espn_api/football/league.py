@@ -437,19 +437,19 @@ class League(BaseLeague):
         # For any bid without a timestamp, search for another bid for the same player 
         # from the same team that has a timestamp and use that timestamp
         for bid in bids:
-            if bid.result != 'Canceled' and bid.time is None:
+            if bid.result != 'Canceled' and bid.dateTime is None:
                 for other_bid in bids:
-                    if bid.id != other_bid.id and other_bid.time is not None:
+                    if bid.id != other_bid.id and other_bid.dateTime is not None:
                         if other_bid.player == bid.player and other_bid.teamId == bid.teamId:
-                            bid.time = other_bid.time
+                            bid.dateTime = other_bid.dateTime
                             break
 
         # Group bids by report_time
         reports = {}
         for bid in bids:
-            if bid.time not in reports:
-                reports[bid.time] = []
-            reports[bid.time].append(bid)
+            if bid.dateTime not in reports:
+                reports[bid.dateTime] = []
+            reports[bid.dateTime].append(bid)
         
         # Sort report times
         sorted_report_times = sorted([t for t in reports.keys() if t is not None])

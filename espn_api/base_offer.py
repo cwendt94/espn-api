@@ -5,7 +5,7 @@ class Offer(object):
     def __init__(self, data, player_map, get_team_data):
         status = data['status']
         self.id = data['id']
-        self.time = None
+        self.dateTime = None
         if status == 'CANCELED':
             self.result = 'Canceled'
         else:
@@ -25,15 +25,15 @@ class Offer(object):
                 self.result = status
             # fixes bug with unprocessed waivers stuck on "PENDING" status
             if 'processDate' in data:
-                self.time = datetime.fromtimestamp(int(data['processDate'] / 1000))  # convert from milliseconds to seconds
+                self.dateTime = datetime.fromtimestamp(int(data['processDate'] / 1000))  # convert from milliseconds to seconds
             self.amount = data['bidAmount']
             self.teamId = data['teamId']
-            self.dropped_player = None
+            self.droppedPlayer = None
             for item in data['items']:
                 if item['type'] == 'ADD':
                     self.player = item['playerId']
                 elif item['type'] == 'DROP' and self.result == 'Processed':
-                    self.dropped_player = item['playerId']
+                    self.droppedPlayer = item['playerId']
 
     def __lt__(self, other):
         # sort by status, then bid amount
