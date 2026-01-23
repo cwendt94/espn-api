@@ -151,6 +151,19 @@ class EspnFantasyRequests(object):
         data = self.get(params=params, extend=extend, headers=headers)
         return data
 
+    def get_league_offers(self, week: int):
+        '''Gets the league offers reports'''
+        params = {
+            'scoringPeriodId': week,
+            'view': 'mTransactions2'
+        }
+
+        filters = {"transactions": {"filterType": {"value": ["WAIVER", "WAIVER_ERROR"]}}}
+        headers = {'x-fantasy-filter': json.dumps(filters)}
+
+        data = self.league_get(params=params, headers=headers)
+        return data
+    
     def get_player_card(self, playerIds: List[int], max_scoring_period: int, additional_filters: List = None):
         '''Gets the player card'''
         params = { 'view': 'kona_playercard' }
