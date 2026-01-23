@@ -55,10 +55,10 @@ class Offer(object):
         if self.result == 'Canceled':
             return 'Canceled bid'
         else:
-            ret_string = 'Offer(Date:{0}, Player:{1}, Team:{2}, Result:{3}, Bid:{4}'.format(self.time, self.player, self.teamId,
+            ret_string = 'Offer(Date:{0}, Player:{1}, Team:{2}, Result:{3}, Bid:{4}'.format(self.dateTime, self.player, self.teamId,
                                                                                 self.result, self.amount)
-            if self.dropped_player:
-                ret_string += ', Dropped:{0})'.format(self.dropped_player)
+            if self.droppedPlayer:
+                ret_string += ', Dropped:{0})'.format(self.droppedPlayer)
             else:
                 ret_string += ')'
             return ret_string
