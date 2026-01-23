@@ -124,7 +124,7 @@ class BaseLeague(ABC):
         '''Returns a list of free agent auction bids'''
         if week is None:
             bids = []
-            for week in range(0, 18):
+            for week in range(0, self.finalScoringPeriod):
                 data = self.espn_request.get_league_offers(week=week)
                 transactions = data.get('transactions', [])
                 if transactions:  # Only append non-empty transaction lists
@@ -133,7 +133,6 @@ class BaseLeague(ABC):
         else:
             data = self.espn_request.get_league_offers(week=week)
             bids = data.get('transactions', [])
-            print(bids)
 
         return bids
 

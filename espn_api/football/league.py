@@ -9,7 +9,7 @@ from .box_score import BoxScore
 from .box_player import BoxPlayer
 from .player import Player
 from .activity import Activity
-from .offer import Offer
+from ..base_offer import Offer
 from .settings import Settings
 from .utils import power_points, two_step_dominance
 from .constant import POSITION_MAP, ACTIVITY_MAP, TRANSACTION_TYPES
