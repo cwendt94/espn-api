@@ -15,6 +15,7 @@ class Player(object):
         self.injuryStatus = json_parsing(data, 'injuryStatus')
         self.onTeamId = json_parsing(data, 'onTeamId')
         self.lineupSlot = POSITION_MAP.get(data.get('lineupSlotId'), '')
+        self.position = ''
         self.stats = {}
         self.schedule = {}
 

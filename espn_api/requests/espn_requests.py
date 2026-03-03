@@ -38,12 +38,13 @@ class EspnFantasyRequests(object):
     def checkRequestStatus(self, status: int, extend: str = "", params: dict = None, headers: dict = None) -> dict:
         '''Handles ESPN API response status codes and endpoint format switching'''
         if status == 401:
-            # If the current LEAGUE_ENDPOINT was using the /leagueHistory/ endpoint, switch to "/seasons/" endpoint
+            # Try the alternate endpoint format, but save the original in case it fails
+            original_endpoint = self.LEAGUE_ENDPOINT
+
             if "/leagueHistory/" in self.LEAGUE_ENDPOINT:
                 base_endpoint = self.LEAGUE_ENDPOINT.split("/leagueHistory/")[0]
                 self.LEAGUE_ENDPOINT = f"{base_endpoint}/seasons/{self.year}/segments/0/leagues/{self.league_id}"
             else:
-                # If the current LEAGUE_ENDPOINT was using /seasons, switch to the "/leagueHistory/" endpoint
                 base_endpoint = self.LEAGUE_ENDPOINT.split(f"/seasons/")[0]
                 self.LEAGUE_ENDPOINT = f"{base_endpoint}/leagueHistory/{self.league_id}?seasonId={self.year}"
 
@@ -54,11 +55,14 @@ class EspnFantasyRequests(object):
                 # Return the updated response if alternate works
                 return r.json()
 
+            # Alternate also failed — restore original endpoint so future calls aren't broken
+            self.LEAGUE_ENDPOINT = original_endpoint
+
             # If all endpoints failed, raise the corresponding error
             if not self.cookies or 'espn_s2' not in self.cookies or 'SWID' not in self.cookies:
                 raise ESPNAccessDenied("espn_s2 and swid are required")
 
-            raise ESPNAccessDenied(f"League {self.league_id} cannot be accessed with espn_s2={self.cookies.get('espn_s2')} and swid={self.cookies.get('SWID')}")
+            raise ESPNAccessDenied(f"League {self.league_id} cannot be accessed with the provided credentials")
 
         elif status == 404:
             raise ESPNInvalidLeague(f"League {self.league_id} does not exist")

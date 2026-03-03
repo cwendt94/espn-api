@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 
 class BoxPlayer(Player):
     '''player with extra data from a matchup'''
-    def __init__(self, data, pro_schedule, positional_rankings, week, year):
+    def __init__(self, data, pro_schedule, positional_rankings, week, year, player_team_cache=None):
         super(BoxPlayer, self).__init__(data, year)
         self.slot_position = 'FA'
         self.pro_opponent = "None" # professional team playing against
@@ -17,8 +17,37 @@ class BoxPlayer(Player):
             self.slot_position = POSITION_MAP[data['lineupSlotId']]
 
         player = data['playerPoolEntry']['player'] if 'playerPoolEntry' in data else data['player']
-        if player['proTeamId'] in pro_schedule:
-            (opp_id, date) = pro_schedule[player['proTeamId']]
+
+        # ESPN's top-level proTeamId is the player's CURRENT team, not their
+        # team at time of the game. Always prefer the per-week proTeamId from
+        # the actual stats entry, which has the correct team per scoring period.
+        pro_team_id = player['proTeamId']
+        player_stats = player.get('stats', [])
+
+        # Check for an actual (statSourceId=0) entry for this week
+        found_actual = False
+        for stat in player_stats:
+            if (stat.get('scoringPeriodId') == week
+                    and stat.get('statSourceId') == 0
+                    and stat.get('proTeamId', 0) != 0):
+                pro_team_id = stat['proTeamId']
+                self.proTeam = PRO_TEAM_MAP.get(pro_team_id, self.proTeam)
+                found_actual = True
+                break
+
+        # Bye week / no actual stats — use cached team from a prior week
+        if not found_actual and player_team_cache is not None:
+            cached = player_team_cache.get(self.playerId)
+            if cached:
+                pro_team_id = cached
+                self.proTeam = PRO_TEAM_MAP.get(pro_team_id, self.proTeam)
+
+        # Update cache with this week's resolved team
+        if player_team_cache is not None and found_actual:
+            player_team_cache[self.playerId] = pro_team_id
+
+        if pro_team_id in pro_schedule:
+            (opp_id, date) = pro_schedule[pro_team_id]
             self.game_date = datetime.fromtimestamp(date/1000.0)
             self.game_played = 100 if datetime.now() > self.game_date + timedelta(hours=3) else 0
             posId = str(player['defaultPositionId'])

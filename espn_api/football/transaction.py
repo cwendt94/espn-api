@@ -19,7 +19,8 @@ class Transaction(object):
 class TransactionItem(object):
     def __init__(self, data, player_map):
         self.type = data['type']
-        self.player = player_map[data['playerId']]
+        self.playerId = data['playerId']
+        self.player = player_map.get(data['playerId'], 'Unknown')
 
     def __repr__(self):
         return f'{self.type} {self.player}'

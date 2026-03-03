@@ -2,14 +2,14 @@ from .box_player import BoxPlayer
 
 class BoxScore(object):
     ''' '''
-    def __init__(self, data, pro_schedule, positional_rankings, week, year):
-        self.matchup_type = data.get('playoffTierType', 'NONE') 
+    def __init__(self, data, pro_schedule, positional_rankings, week, year, player_team_cache=None):
+        self.matchup_type = data.get('playoffTierType', 'NONE')
         self.is_playoff = self.matchup_type != 'NONE'
-        
-        (self.home_team, self.home_score, self.home_projected, self.home_lineup) = self._get_team_data('home', data, pro_schedule, positional_rankings, week, year)
+
+        (self.home_team, self.home_score, self.home_projected, self.home_lineup) = self._get_team_data('home', data, pro_schedule, positional_rankings, week, year, player_team_cache)
         self.home_projected = self._get_projected_score(self.home_projected, self.home_lineup)
 
-        (self.away_team, self.away_score, self.away_projected, self.away_lineup) = self._get_team_data('away', data, pro_schedule, positional_rankings, week, year)
+        (self.away_team, self.away_score, self.away_projected, self.away_lineup) = self._get_team_data('away', data, pro_schedule, positional_rankings, week, year, player_team_cache)
         self.away_projected = self._get_projected_score(self.away_projected, self.away_lineup)
 
     def __repr__(self):
@@ -26,9 +26,9 @@ class BoxScore(object):
           projected_score += player.projected_points
       return projected_score
     
-    def _get_team_data(self, team, data, pro_schedule, positional_rankings, week, year):
+    def _get_team_data(self, team, data, pro_schedule, positional_rankings, week, year, player_team_cache=None):
       if team not in data:
-        return (0, 0, -1, [])
+        return (None, 0, -1, [])
 
       team_id = data[team]['teamId']
       team_projected = -1
@@ -38,6 +38,6 @@ class BoxScore(object):
       else:
         team_score = round(data[team]['totalPoints'], 2)
       team_roster = data[team]['rosterForCurrentScoringPeriod']['entries']
-      team_lineup = [BoxPlayer(player, pro_schedule, positional_rankings, week, year) for player in team_roster]
+      team_lineup = [BoxPlayer(player, pro_schedule, positional_rankings, week, year, player_team_cache) for player in team_roster]
 
       return (team_id, team_score, team_projected, team_lineup)

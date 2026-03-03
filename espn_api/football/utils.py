@@ -59,6 +59,8 @@ def two_step_dominance(X):
 
 def power_points(dominance, teams, week):
     '''Returns list of power points'''
+    if week <= 0:
+        week = 1
     power_points = []
     for i, team in zip(dominance, teams):
         avg_score = sum(team.scores[:week]) / week

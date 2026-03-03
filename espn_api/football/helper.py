@@ -14,6 +14,9 @@ def build_division_record_dict(team_data_list: List[Dict]) -> Dict:
     for team_data in team_data_list:
         team = team_data["team"]
         for opp, outcome in zip(team_data["schedule"], team_data["outcomes"]):
+            # Skip bye weeks (opponent set to self)
+            if opp.team_id == team.team_id:
+                continue
             if team_data["division_id"] == opp.division_id:
                 if outcome == "W":
                     div_outcomes[team_data["team_id"]]["wins"] += 1
