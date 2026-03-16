@@ -120,6 +120,22 @@ class BaseLeague(ABC):
             pro_team_schedule[team['id']] = pro_game
         return pro_team_schedule
 
+    def _get_offers(self, week: int = None):
+        '''Returns a list of free agent auction bids'''
+        if week is None:
+            bids = []
+            for week in range(0, self.finalScoringPeriod+1):
+                data = self.espn_request.get_league_offers(week=week)
+                transactions = data.get('transactions', [])
+                if transactions:  # Only append non-empty transaction lists
+                    for t in transactions:
+                        bids.append(t)
+        else:
+            data = self.espn_request.get_league_offers(week=week)
+            bids = data.get('transactions', [])
+
+        return bids
+
     def standings(self) -> List:
         standings = sorted(self.teams, key=lambda x: x.final_standing if x.final_standing != 0 else x.standing, reverse=False)
         return standings
