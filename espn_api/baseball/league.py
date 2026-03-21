@@ -3,14 +3,13 @@ import time
 import json
 import math
 from typing import List, Tuple, Union
-import pdb
 
 from ..base_league import BaseLeague
 from .team import Team
 from .player import Player
 from .matchup import Matchup
 from .box_score import BoxScore, H2HCategoryBoxScore, H2HPointsBoxScore
-from.activity import Activity
+from .activity import Activity
 from .constant import POSITION_MAP, ACTIVITY_MAP
 
 class League(BaseLeague):

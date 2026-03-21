@@ -1,3 +1,20 @@
+# Maps defaultPositionId (a player's natural position) to a position string.
+# This is a DIFFERENT numbering system from lineupSlotId (see POSITION_MAP).
+DEFAULT_POSITION_MAP = {
+    1: 'SP',
+    2: 'C',
+    3: '1B',
+    4: '2B',
+    5: '3B',
+    6: 'SS',
+    7: 'LF',
+    8: 'CF',
+    9: 'RF',
+    10: 'DH',
+    11: 'RP',
+}
+
+# Maps lineupSlotId (where a player sits in the lineup) to a slot string.
 POSITION_MAP = {
     0: 'C',
     1: '1B',
@@ -18,8 +35,27 @@ POSITION_MAP = {
     16: 'BE',
     17: 'IL',
     19: 'IF', # 1B/2B/SS/3B
-    # reverse TODO
     # 18, 21, 22 have appeared but unknown what position they correspond to
+    # reverse mapping — used by free_agents() to translate position name → slot ID filter
+    'C': 0,
+    '1B': 1,
+    '2B': 2,
+    '3B': 3,
+    'SS': 4,
+    'OF': 5,
+    '2B/SS': 6,
+    '1B/3B': 7,
+    'LF': 8,
+    'CF': 9,
+    'RF': 10,
+    'DH': 11,
+    'UTIL': 12,
+    'P': 13,
+    'SP': 14,
+    'RP': 15,
+    'BE': 16,
+    'IL': 17,
+    'IF': 19,
 }
 
 PRO_TEAM_MAP = {
@@ -163,3 +199,4 @@ ACTIVITY_MAP = {
     'WAIVER': 180,
     'TRADED': 244
 }
+
