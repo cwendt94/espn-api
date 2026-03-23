@@ -1,13 +1,12 @@
-from .constant import POSITION_MAP, PRO_TEAM_MAP, STATS_MAP
+from .constant import DEFAULT_POSITION_MAP, POSITION_MAP, PRO_TEAM_MAP, STATS_MAP
 from .utils import json_parsing
-import pdb
 
 class Player(object):
     '''Player are part of team'''
     def __init__(self, data, year):
         self.name = json_parsing(data, 'fullName')
         self.playerId = json_parsing(data, 'id')
-        self.position = POSITION_MAP.get(json_parsing(data, 'defaultPositionId') - 1, json_parsing(data, 'defaultPositionId') - 1)
+        self.position = DEFAULT_POSITION_MAP.get(json_parsing(data, 'defaultPositionId'), str(json_parsing(data, 'defaultPositionId')))
         self.lineupSlot = POSITION_MAP.get(data.get('lineupSlotId'), '')
         self.eligibleSlots = [POSITION_MAP.get(pos, pos) for pos in json_parsing(data, 'eligibleSlots')]  # if position isn't in position map, just use the position id number
         self.acquisitionType = json_parsing(data, 'acquisitionType')
