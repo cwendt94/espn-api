@@ -1,3 +1,4 @@
+from datetime import datetime
 from unittest import TestCase, mock
 
 from espn_api.baseball import League, Transaction
@@ -14,11 +15,21 @@ def _make_transaction_data(type_='FREEAGENT', status='EXECUTED', team_id=1,
         'scoringPeriodId': scoring_period,
         'processDate': 1234567890000,
         'bidAmount': None,
+        'rating': 3,
+        'executionType': 'PROCESS',
         'relatedTransactionId': None,
         'comment': '',
         'memberId': '{abc-123}',
-        'items': [{'type': item_type, 'playerId': player_id,
-                   'fromTeamId': 0, 'toTeamId': team_id}],
+        'items': [{
+            'type': item_type,
+            'playerId': player_id,
+            'fromTeamId': 0,
+            'toTeamId': team_id,
+            'fromLineupSlotId': -1,
+            'toLineupSlotId': 16,
+            'isKeeper': False,
+            'overallPickNumber': None,
+        }],
     }
 
 
@@ -58,12 +69,58 @@ class TransactionClassTest(TestCase):
         t = Transaction(data, self.player_map, self.get_team_data)
         self.assertIn('FREEAGENT', repr(t))
 
+    def test_date_is_datetime(self):
+        data = _make_transaction_data()
+        t = Transaction(data, self.player_map, self.get_team_data)
+        self.assertIsInstance(t.date, datetime)
+
     def test_date_falls_back_to_proposed(self):
         data = _make_transaction_data()
         del data['processDate']
-        data['proposedDate'] = 9999999999
+        data['proposedDate'] = 1234567890000
         t = Transaction(data, self.player_map, self.get_team_data)
-        self.assertEqual(t.date, 9999999999)
+        self.assertIsInstance(t.date, datetime)
+
+    def test_date_none_when_missing(self):
+        data = _make_transaction_data()
+        del data['processDate']
+        t = Transaction(data, self.player_map, self.get_team_data)
+        self.assertIsNone(t.date)
+
+    def test_rating_and_execution_type(self):
+        data = _make_transaction_data()
+        t = Transaction(data, self.player_map, self.get_team_data)
+        self.assertEqual(t.rating, 3)
+        self.assertEqual(t.execution_type, 'PROCESS')
+
+    def test_rating_defaults_to_none(self):
+        data = _make_transaction_data()
+        del data['rating']
+        t = Transaction(data, self.player_map, self.get_team_data)
+        self.assertIsNone(t.rating)
+
+    def test_item_lineup_slot_ids(self):
+        data = _make_transaction_data()
+        t = Transaction(data, self.player_map, self.get_team_data)
+        self.assertEqual(t.items[0].fromLineupSlotId, -1)
+        self.assertEqual(t.items[0].toLineupSlotId, 16)
+
+    def test_item_is_keeper(self):
+        data = _make_transaction_data()
+        t = Transaction(data, self.player_map, self.get_team_data)
+        self.assertFalse(t.items[0].isKeeper)
+
+    def test_item_is_keeper_true(self):
+        data = _make_transaction_data()
+        data['items'][0]['isKeeper'] = True
+        t = Transaction(data, self.player_map, self.get_team_data)
+        self.assertTrue(t.items[0].isKeeper)
+
+    def test_item_overall_pick_number(self):
+        data = _make_transaction_data()
+        data['items'][0]['overallPickNumber'] = 42
+        t = Transaction(data, self.player_map, self.get_team_data)
+        self.assertEqual(t.items[0].overallPickNumber, 42)
 
 
 class LeagueTransactionsTest(TestCase):

@@ -1,4 +1,3 @@
-import pdb
 from .player import Player
 from .matchup import Matchup
 from .constant import STATS_MAP
@@ -16,6 +15,22 @@ class Team(object):
         self.wins = data['record']['overall']['wins']
         self.losses = data['record']['overall']['losses']
         self.ties = data['record']['overall']['ties']
+        self.points_for = data['record']['overall']['pointsFor']
+        self.points_against = data['record']['overall']['pointsAgainst']
+        self.streak_length = data['record']['overall']['streakLength']
+        self.streak_type = data['record']['overall']['streakType']
+        self.home_wins = data['record']['home']['wins']
+        self.home_losses = data['record']['home']['losses']
+        self.home_ties = data['record']['home']['ties']
+        self.away_wins = data['record']['away']['wins']
+        self.away_losses = data['record']['away']['losses']
+        self.away_ties = data['record']['away']['ties']
+        self.division_wins = data['record']['division']['wins']
+        self.division_losses = data['record']['division']['losses']
+        self.division_ties = data['record']['division']['ties']
+        self.current_projected_rank = data.get('currentProjectedRank')
+        self.waiver_rank = data.get('waiverRank')
+        self.points = data.get('points', 0)
         self.logo_url = ''
         self.standing = data['playoffSeed']
         self.final_standing = data.get('rankFinal') or data.get('rankCalculatedFinal')

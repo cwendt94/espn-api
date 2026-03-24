@@ -10,9 +10,9 @@ from .player import Player
 from .matchup import Matchup
 from .box_score import BoxScore, H2HCategoryBoxScore, H2HPointsBoxScore
 from .activity import Activity
+from .constant import POSITION_MAP, ACTIVITY_MAP, TRANSACTION_TYPES
 from .settings import Settings
 from .transaction import Transaction
-from .constant import POSITION_MAP, ACTIVITY_MAP, TRANSACTION_TYPES
 
 class League(BaseLeague):
     '''Creates a League instance for Public/Private ESPN league'''
@@ -82,6 +82,30 @@ class League(BaseLeague):
                     matchup.away_team = team
 
         return matchups
+
+    def transactions(self, types: set = None, scoring_period: int = None) -> List[Transaction]:
+        '''Returns a list of transactions for a given scoring period'''
+        if types is None:
+            types = TRANSACTION_TYPES
+        for t in types:
+            if t not in TRANSACTION_TYPES:
+                raise Exception(f'Invalid transaction type: {t}. Valid types: {TRANSACTION_TYPES}')
+
+        if scoring_period is None:
+            scoring_period = self.scoringPeriodId
+
+        params = {
+            'view': 'kona_league_transactions',
+            'scoringPeriodId': scoring_period,
+        }
+        filters = {'transactions': {'filterType': {'value': list(types)}}}
+        headers = {'x-fantasy-filter': json.dumps(filters)}
+        data = self.espn_request.league_get(params=params, headers=headers)
+
+        return [
+            Transaction(t, self.player_map, self.get_team_data)
+            for t in data.get('transactions', [])
+        ]
 
     def recent_activity(self, size: int = 25, msg_type: str = None, offset: int = 0) -> List[Activity]:
         '''Returns a list of recent league activities (Add, Drop, Trade)'''
@@ -164,29 +188,6 @@ class League(BaseLeague):
                 elif matchup.away_team == team.team_id:
                     matchup.away_team = team
         return box_data
-
-    def transactions(self, scoring_period: int = None, types: Set[str] = {"FREEAGENT", "WAIVER", "WAIVER_ERROR"}) -> List[Transaction]:
-        '''Returns a list of transactions for a given scoring period'''
-        if not scoring_period:
-            scoring_period = self.scoringPeriodId
-
-        if not types.issubset(TRANSACTION_TYPES):
-            raise Exception(f'Invalid transaction type(s): {types - TRANSACTION_TYPES}')
-
-        params = {
-            'view': 'mTransactions2',
-            'scoringPeriodId': scoring_period,
-        }
-
-        filters = {"transactions": {"filterType": {"value": list(types)}}}
-        headers = {'x-fantasy-filter': json.dumps(filters)}
-
-        data = self.espn_request.league_get(params=params, headers=headers)
-        if 'transactions' not in data:
-            return []
-        transactions = data['transactions']
-
-        return [Transaction(transaction, self.player_map, self.get_team_data) for transaction in transactions]
 
     def player_info(self, name: str = None, playerId: Union[int, list] = None) -> Union[Player, List[Player]]:
         '''Returns Player class if name or playerId found'''
