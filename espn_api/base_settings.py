@@ -22,6 +22,13 @@ class BaseSettings(object):
         self._raw_schedule_settings = data.get('scheduleSettings', {})
         self.faab = data['acquisitionSettings']['isUsingAcquisitionBudget']
         self.acquisition_budget = data.get('acquisitionSettings', {}).get('acquisitionBudget', 0)
+        self.acquisition_limit = data.get('acquisitionSettings', {}).get('acquisitionLimit')
+        self.matchup_acquisition_limit = data.get('acquisitionSettings', {}).get('matchupAcquisitionLimit')
+        self.matchup_limit_per_scoring_period = data.get('acquisitionSettings', {}).get('matchupLimitPerScoringPeriod')
+        self.minimum_bid = data.get('acquisitionSettings', {}).get('minimumBid', 0)
+        self.waiver_process_days = data.get('acquisitionSettings', {}).get('waiverProcessDays', [])
+        self.waiver_process_hour = data.get('acquisitionSettings', {}).get('waiverProcessHour')
+        self.trade_revision_hours = data.get('tradeSettings', {}).get('revisionHours')
         divisions = data.get('scheduleSettings', {}).get('divisions', [])
         for division in divisions: self.division_map[division.get('id', 0)] = division.get('name')
 
