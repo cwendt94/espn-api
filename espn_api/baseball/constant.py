@@ -188,6 +188,14 @@ STATS_MAP = {
     99: 'STARTER',
 }
 
+STAT_SPLIT_MAP = {
+    0: 'season',
+    1: 'last_7',
+    2: 'last_15',
+    3: 'last_30',
+    5: 'box_score',
+}
+
 ACTIVITY_MAP = {
     178: 'FA ADDED',
     180: 'WAIVER ADDED',

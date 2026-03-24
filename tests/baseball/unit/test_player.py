@@ -1,7 +1,7 @@
 from datetime import datetime
 from unittest import TestCase
 
-from espn_api.baseball.constant import DEFAULT_POSITION_MAP, POSITION_MAP
+from espn_api.baseball.constant import DEFAULT_POSITION_MAP, POSITION_MAP, STAT_SPLIT_MAP
 from espn_api.baseball.player import Player
 
 
@@ -286,3 +286,73 @@ class PlayerCardStructureTest(TestCase):
         self.assertIn('STANDARD', self.player.draft_ranks)
         self.assertEqual(self.player.draft_ranks['STANDARD']['rank'], 20)
 
+
+def _make_stat(split_type_id, scoring_period=0, season_id=2021,
+               stat_source_id=0, applied_total=10.0, stats=None):
+    return {
+        'statSplitTypeId': split_type_id,
+        'scoringPeriodId': scoring_period,
+        'seasonId': season_id,
+        'statSourceId': stat_source_id,
+        'appliedTotal': applied_total,
+        'stats': stats or {'5': 1.0},  # stat key '5' = HR
+    }
+
+
+class PlayerStatSplitsTest(TestCase):
+    def _player_with_stats(self, stat_list):
+        data = _make_player_data(player_extras={'stats': stat_list})
+        return Player(data, year=2021)
+
+    def test_stats_splits_keys_present(self):
+        player = self._player_with_stats([])
+        for label in STAT_SPLIT_MAP.values():
+            self.assertIn(label, player.stats_splits)
+
+    def test_season_split_populates_stats(self):
+        player = self._player_with_stats([_make_stat(0, applied_total=50.0)])
+        self.assertIn(0, player.stats['season'] if 'season' in player.stats else player.stats)
+        self.assertIn(0, player.stats_splits['season'])
+        self.assertEqual(player.stats_splits['season'][0]['points'], 50.0)
+
+    def test_season_split_also_in_stats_dict(self):
+        """split_type=0 (season) must still appear in player.stats for backwards compat."""
+        player = self._player_with_stats([_make_stat(0, applied_total=30.0)])
+        self.assertIn(0, player.stats)
+        self.assertEqual(player.stats[0]['points'], 30.0)
+
+    def test_box_score_split_in_stats_dict(self):
+        """split_type=5 (box_score) must still appear in player.stats."""
+        player = self._player_with_stats([_make_stat(5, scoring_period=3, applied_total=7.0)])
+        self.assertIn(3, player.stats)
+        self.assertEqual(player.stats[3]['points'], 7.0)
+
+    def test_last7_split_not_in_stats_dict(self):
+        """split_type=1 (last_7) should NOT appear in player.stats."""
+        player = self._player_with_stats([_make_stat(1, applied_total=20.0)])
+        self.assertNotIn(0, player.stats)
+        self.assertIn(0, player.stats_splits['last_7'])
+
+    def test_last15_and_last30_splits(self):
+        player = self._player_with_stats([
+            _make_stat(2, applied_total=15.0),
+            _make_stat(3, applied_total=30.0),
+        ])
+        self.assertEqual(player.stats_splits['last_15'][0]['points'], 15.0)
+        self.assertEqual(player.stats_splits['last_30'][0]['points'], 30.0)
+
+    def test_wrong_season_ignored(self):
+        player = self._player_with_stats([_make_stat(0, season_id=2020, applied_total=99.0)])
+        self.assertEqual(player.stats, {})
+        for split in player.stats_splits.values():
+            self.assertEqual(split, {})
+
+    def test_projected_split(self):
+        player = self._player_with_stats([_make_stat(0, stat_source_id=1, applied_total=25.0)])
+        self.assertIn(0, player.stats_splits['season'])
+        self.assertEqual(player.stats_splits['season'][0]['projected_points'], 25.0)
+        self.assertNotIn('points', player.stats_splits['season'][0])
+
+    def test_breakdown_keys_mapped(self):
+        player = self._player_with_stats([_make_stat(0, stats={'5': 2.0})])
+        self.assertEqual(player.stats_splits['season'][0]['breakdown']['HR'], 2.0)
