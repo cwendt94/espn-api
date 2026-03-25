@@ -198,7 +198,8 @@ class League(BaseLeague):
         if not isinstance(playerId, list):
             playerId = [playerId]
 
-        data = self.espn_request.get_player_card(playerId, self.finalScoringPeriod)
+        split_filters = ["0{}{}".format(i, self.year) for i in range(1, 4)]
+        data = self.espn_request.get_player_card(playerId, self.finalScoringPeriod, additional_filters=split_filters)
         if len(data['players']) == 1:
             return Player(data['players'][0], self.year)
         if len(data['players']) > 1:
