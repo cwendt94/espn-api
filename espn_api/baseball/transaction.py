@@ -10,7 +10,7 @@ class Transaction(object):
         raw_date = data.get('processDate') or data.get('proposedDate')
         self.date = datetime.fromtimestamp(raw_date / 1000) if raw_date else None
         self.bid_amount = data.get('bidAmount')
-        self.isPending = self.status == 'PENDING'
+        self.isPending = data.get('isPending', self.status == 'PENDING')
         self.rating = data.get('rating')
         self.execution_type = data.get('executionType')
         self.relatedTransactionId = data.get('relatedTransactionId')
@@ -28,7 +28,7 @@ class Transaction(object):
 class TransactionItem(object):
     def __init__(self, data, player_map):
         self.type = data['type']
-        self.player = player_map.get(data['playerId'], 'Unknown')
+        self.player_name = player_map.get(data['playerId'], 'Unknown')
         self.fromTeamId = data.get('fromTeamId')
         self.toTeamId = data.get('toTeamId')
         self.fromLineupSlotId = data.get('fromLineupSlotId')
@@ -37,4 +37,4 @@ class TransactionItem(object):
         self.overallPickNumber = data.get('overallPickNumber')
 
     def __repr__(self):
-        return f'{self.type} {self.player}'
+        return f'{self.type} {self.player_name}'

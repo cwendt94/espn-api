@@ -197,7 +197,7 @@ class League(BaseLeague):
         '''Returns Player class if name or playerId found'''
         if name:
             playerId = self.player_map.get(name)
-        if playerId is None or isinstance(playerId, str):
+        if playerId is None:
             return None
         if not isinstance(playerId, list):
             playerId = [playerId]
@@ -211,7 +211,7 @@ class League(BaseLeague):
 
     def refresh(self):
         '''Gets latest league data without re-fetching all players'''
-        data = super()._fetch_league()
+        data = super()._fetch_league(SettingsClass=Settings)
         self.scoring_type = data['settings']['scoringSettings']['scoringType']
         self._fetch_teams(data)
         self._box_score_class = self._set_scoring_class(self.scoring_type)

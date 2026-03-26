@@ -7,11 +7,13 @@ from espn_api.requests.espn_requests import EspnFantasyRequests
 
 
 def _make_transaction_data(type_='FREEAGENT', status='EXECUTED', team_id=1,
-                            scoring_period=1, player_id=1001, item_type='ADD'):
+                            scoring_period=1, player_id=1001, item_type='ADD',
+                            is_pending=False):
     return {
         'teamId': team_id,
         'type': type_,
         'status': status,
+        'isPending': is_pending,
         'scoringPeriodId': scoring_period,
         'processDate': 1234567890000,
         'bidAmount': None,
@@ -49,20 +51,31 @@ class TransactionClassTest(TestCase):
         self.assertFalse(t.isPending)
         self.assertEqual(len(t.items), 1)
 
-    def test_pending_status(self):
-        data = _make_transaction_data(status='PENDING')
+    def test_pending_true_from_api_field(self):
+        data = _make_transaction_data(is_pending=True)
         t = Transaction(data, self.player_map, self.get_team_data)
         self.assertTrue(t.isPending)
 
-    def test_item_player_resolved(self):
+    def test_pending_false_from_api_field(self):
+        data = _make_transaction_data(is_pending=False, status='PENDING')
+        t = Transaction(data, self.player_map, self.get_team_data)
+        self.assertFalse(t.isPending)
+
+    def test_pending_falls_back_to_status(self):
+        data = _make_transaction_data(status='PENDING')
+        del data['isPending']
+        t = Transaction(data, self.player_map, self.get_team_data)
+        self.assertTrue(t.isPending)
+
+    def test_item_player_name_resolved(self):
         data = _make_transaction_data(player_id=1001)
         t = Transaction(data, self.player_map, self.get_team_data)
-        self.assertEqual(t.items[0].player, 'Mike Trout')
+        self.assertEqual(t.items[0].player_name, 'Mike Trout')
 
-    def test_item_unknown_player(self):
+    def test_item_unknown_player_name(self):
         data = _make_transaction_data(player_id=9999)
         t = Transaction(data, self.player_map, self.get_team_data)
-        self.assertEqual(t.items[0].player, 'Unknown')
+        self.assertEqual(t.items[0].player_name, 'Unknown')
 
     def test_repr(self):
         data = _make_transaction_data()
