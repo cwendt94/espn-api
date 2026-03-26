@@ -8,7 +8,7 @@ from ..base_league import BaseLeague
 from .team import Team
 from .player import Player
 from .matchup import Matchup
-from .box_score import BoxScore, H2HCategoryBoxScore, H2HPointsBoxScore
+from .box_score import BoxScore, H2HCategoryBoxScore, H2HPointsBoxScore, RotoBoxScore
 from .activity import Activity
 from .constant import POSITION_MAP, ACTIVITY_MAP, TRANSACTION_TYPES
 from .settings import Settings
@@ -17,7 +17,7 @@ from .transaction import Transaction
 class League(BaseLeague):
     '''Creates a League instance for Public/Private ESPN league'''
 
-    ScoreTypes = {'H2H_CATEGORY': H2HCategoryBoxScore, 'H2H_POINTS': H2HPointsBoxScore}
+    ScoreTypes = {'H2H_CATEGORY': H2HCategoryBoxScore, 'H2H_POINTS': H2HPointsBoxScore, 'ROTO': RotoBoxScore}
 
     def __init__(self, league_id: int, year: int, espn_s2=None, swid=None, fetch_league=True, debug=False):
         super().__init__(league_id=league_id, year=year, sport='mlb', espn_s2=espn_s2, swid=swid, debug=debug)
@@ -181,12 +181,16 @@ class League(BaseLeague):
         schedule = data['schedule']
         box_data = [self._box_score_class(matchup, pro_schedule, self.year, scoring_id) for matchup in schedule]
 
-        for team in self.teams:
-            for matchup in box_data:
-                if matchup.home_team == team.team_id:
-                    matchup.home_team = team
-                elif matchup.away_team == team.team_id:
-                    matchup.away_team = team
+        team_map = {t.team_id: t for t in self.teams}
+        for matchup in box_data:
+            if self.scoring_type == 'ROTO':
+                for entry in matchup.teams:
+                    entry['team'] = team_map.get(entry['team'], entry['team'])
+            else:
+                if matchup.home_team in team_map:
+                    matchup.home_team = team_map[matchup.home_team]
+                if matchup.away_team in team_map:
+                    matchup.away_team = team_map[matchup.away_team]
         return box_data
 
     def player_info(self, name: str = None, playerId: Union[int, list] = None) -> Union[Player, List[Player]]:
