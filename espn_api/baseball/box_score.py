@@ -95,3 +95,51 @@ class H2HPointsBoxScore(BoxScore):
       team_lineup = [BoxPlayer(player, pro_schedule, week, year) for player in team_roster]
 
       return (team_id, team_score, team_projected, team_lineup)
+
+
+class RotoBoxScore:
+    '''Boxscore for rotisserie (ROTO) leagues.
+
+    In roto there is no home/away matchup — all teams accumulate stats and are
+    ranked against each other in each category.  One RotoBoxScore is returned
+    per matchup period, containing every team's cumulative category stats and
+    their league-wide rank in each category.
+
+    Attributes:
+        matchup_period (int): the matchup period this snapshot covers
+        teams (list[dict]): one entry per team, each containing:
+            - team       : team_id (int) initially; replaced with Team object
+                           by League.box_scores()
+            - total_points (float): cumulative roto points (sum of category ranks)
+            - stats      : dict mapping stat name → {'score': float, 'rank': float}
+            - lineup     : list[BoxPlayer] for the current scoring period
+    '''
+    def __init__(self, data, pro_schedule, year, scoring_period=0):
+        self.matchup_period = data.get('matchupPeriodId')
+        self.teams = []
+
+        for team_data in data.get('teams', []):
+            team_id = team_data['teamId']
+            live = team_data.get('totalPointsLive')
+            total = round(live if live is not None else team_data.get('totalPoints', 0), 2)
+
+            stats = {}
+            for stat_id_str, stat_dict in team_data.get('cumulativeScore', {}).get('scoreByStat', {}).items():
+                stat_name = STATS_MAP.get(int(stat_id_str), f'stat_{stat_id_str}')
+                score = stat_dict['score']
+                if score == 'Infinity':
+                    score = float('inf')
+                stats[stat_name] = {'score': score, 'rank': stat_dict['rank']}
+
+            entries = team_data.get('rosterForCurrentScoringPeriod', {}).get('entries', [])
+            lineup = [BoxPlayer(p, pro_schedule, scoring_period, year) for p in entries]
+
+            self.teams.append({
+                'team': team_id,
+                'total_points': total,
+                'stats': stats,
+                'lineup': lineup,
+            })
+
+    def __repr__(self):
+        return f'Roto Box Score(period:{self.matchup_period})'
