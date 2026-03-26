@@ -95,7 +95,7 @@ class League(BaseLeague):
             scoring_period = self.scoringPeriodId
 
         params = {
-            'view': 'kona_league_transactions',
+            'view': 'mTransactions2',
             'scoringPeriodId': scoring_period,
         }
         filters = {'transactions': {'filterType': {'value': list(types)}}}
