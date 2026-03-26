@@ -2,7 +2,8 @@ from datetime import datetime
 
 class Transaction(object):
     def __init__(self, data, player_map, get_team_data):
-        self.team = get_team_data(data['teamId'])
+        self.team_id = data['teamId']
+        self.team = get_team_data(self.team_id)
         self.type = data['type']
         self.status = data.get('status')
         self.scoring_period = data['scoringPeriodId']
@@ -21,7 +22,8 @@ class Transaction(object):
 
     def __repr__(self):
         items = ', '.join([str(item) for item in self.items])
-        return f'Transaction({self.team.team_name} {self.type} {items})'
+        team_name = self.team.team_name if self.team else f'Team({self.team_id})'
+        return f'Transaction({team_name} {self.type} {items})'
 
 class TransactionItem(object):
     def __init__(self, data, player_map):

@@ -83,7 +83,7 @@ class League(BaseLeague):
 
         return matchups
 
-    def transactions(self, types: set = None, scoring_period: int = None) -> List[Transaction]:
+    def transactions(self, types: Set[str] = None, scoring_period: int = None) -> List[Transaction]:
         '''Returns a list of transactions for a given scoring period'''
         if types is None:
             types = TRANSACTION_TYPES

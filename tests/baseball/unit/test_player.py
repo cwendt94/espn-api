@@ -161,7 +161,8 @@ class PlayerMetadataTest(TestCase):
         self.assertEqual(self.player.season_outlook, 'Looking good.')
 
     def test_acquisition_date(self):
-        self.assertEqual(self.player.acquisitionDate, 1700000000000)
+        from datetime import datetime
+        self.assertIsInstance(self.player.acquisitionDate, datetime)
 
 
 class PlayerPoolEntryTest(TestCase):

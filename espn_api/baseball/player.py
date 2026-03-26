@@ -1,6 +1,9 @@
+import logging
 from datetime import datetime
 from .constant import DEFAULT_POSITION_MAP, POSITION_MAP, PRO_TEAM_MAP, STATS_MAP, STAT_SPLIT_MAP
 from .utils import json_parsing
+
+logger = logging.getLogger(__name__)
 
 class Player(object):
     '''Player are part of team'''
@@ -11,7 +14,8 @@ class Player(object):
         self.lineupSlot = POSITION_MAP.get(data.get('lineupSlotId'), '')
         self.eligibleSlots = [POSITION_MAP.get(pos, pos) for pos in json_parsing(data, 'eligibleSlots')]  # if position isn't in position map, just use the position id number
         self.acquisitionType = json_parsing(data, 'acquisitionType')
-        self.acquisitionDate = json_parsing(data, 'acquisitionDate')
+        raw_acq_date = json_parsing(data, 'acquisitionDate')
+        self.acquisitionDate = datetime.fromtimestamp(raw_acq_date / 1000) if raw_acq_date else None
         self.proTeam = PRO_TEAM_MAP.get(json_parsing(data, 'proTeamId'), json_parsing(data, 'proTeamId'))
         self.injuryStatus = json_parsing(data, 'injuryStatus')
         self.status = json_parsing(data, 'status')
@@ -19,7 +23,7 @@ class Player(object):
 
         # pool entry fields exist either nested under 'playerPoolEntry' (roster/free agent)
         # or at the top level (player_info card response)
-        pool_entry = data.get('playerPoolEntry') or data
+        pool_entry = data['playerPoolEntry'] if 'playerPoolEntry' in data else data
         self.on_team_id = pool_entry.get('onTeamId')
         self.keeper_value = pool_entry.get('keeperValue')
         self.keeper_value_future = pool_entry.get('keeperValueFuture')
@@ -60,7 +64,10 @@ class Player(object):
         player_stats = player.get('stats', [])
         for stats in player_stats:
             stats_split_type = stats.get('statSplitTypeId')
-            if stats.get('seasonId') != year or stats_split_type not in STAT_SPLIT_MAP:
+            if stats.get('seasonId') != year:
+                continue
+            if stats_split_type not in STAT_SPLIT_MAP:
+                logger.warning('Unknown statSplitTypeId %s for player %s', stats_split_type, self.name)
                 continue
             stats_breakdown = stats.get('stats') or stats.get('appliedStats', {})
             breakdown = {STATS_MAP.get(int(k), k):v for (k,v) in stats_breakdown.items()}
