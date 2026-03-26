@@ -1,9 +1,6 @@
-import logging
 from datetime import datetime
 from .constant import DEFAULT_POSITION_MAP, POSITION_MAP, PRO_TEAM_MAP, STATS_MAP, STAT_SPLIT_MAP
 from .utils import json_parsing
-
-logger = logging.getLogger(__name__)
 
 class Player(object):
     '''Player are part of team'''
@@ -67,7 +64,6 @@ class Player(object):
             if stats.get('seasonId') != year:
                 continue
             if stats_split_type not in STAT_SPLIT_MAP:
-                logger.warning('Unknown statSplitTypeId %s for player %s', stats_split_type, self.name)
                 continue
             stats_breakdown = stats.get('stats') or stats.get('appliedStats', {})
             breakdown = {STATS_MAP.get(int(k), k):v for (k,v) in stats_breakdown.items()}
