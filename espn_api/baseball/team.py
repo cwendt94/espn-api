@@ -18,7 +18,7 @@ class Team(object):
         self.ties = data['record']['overall']['ties']
         self.logo_url = ''
         self.standing = data['playoffSeed']
-        self.final_standing = data['rankCalculatedFinal']
+        self.final_standing = data['rankFinal']
         self.roster = []
         self.schedule = []
         if 'logo' in data:    
