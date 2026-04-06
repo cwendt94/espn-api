@@ -26,7 +26,7 @@ class BaseSettings(object):
         self.matchup_acquisition_limit = data.get('acquisitionSettings', {}).get('matchupAcquisitionLimit')
         self.matchup_limit_per_scoring_period = data.get('acquisitionSettings', {}).get('matchupLimitPerScoringPeriod')
         self.minimum_bid = data.get('acquisitionSettings', {}).get('minimumBid', 0)
-        self.waiver_process_days = data.get('acquisitionSettings', {}).get('waiverProcessDays', [])
+        self.waiver_process_days = list(data.get('acquisitionSettings', {}).get('waiverProcessDays', []))
         self.waiver_process_hour = data.get('acquisitionSettings', {}).get('waiverProcessHour')
         self.trade_revision_hours = data.get('tradeSettings', {}).get('revisionHours')
         divisions = data.get('scheduleSettings', {}).get('divisions', [])

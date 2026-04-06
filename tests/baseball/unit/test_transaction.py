@@ -177,7 +177,7 @@ class LeagueTransactionsTest(TestCase):
         self.assertEqual(params['scoringPeriodId'], 3)
 
     def test_invalid_type_raises(self):
-        with self.assertRaises(Exception) as ctx:
+        with self.assertRaises(ValueError) as ctx:
             self.league.transactions(types={'BOGUS_TYPE'})
         self.assertIn('BOGUS_TYPE', str(ctx.exception))
 

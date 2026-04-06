@@ -89,7 +89,7 @@ class League(BaseLeague):
             types = TRANSACTION_TYPES
         for t in types:
             if t not in TRANSACTION_TYPES:
-                raise Exception(f'Invalid transaction type: {t}. Valid types: {TRANSACTION_TYPES}')
+                raise ValueError(f'Invalid transaction type: {t}. Valid types: {TRANSACTION_TYPES}')
 
         if scoring_period is None:
             scoring_period = self.scoringPeriodId

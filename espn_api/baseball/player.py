@@ -12,7 +12,7 @@ class Player(object):
         self.eligibleSlots = [POSITION_MAP.get(pos, pos) for pos in json_parsing(data, 'eligibleSlots')]  # if position isn't in position map, just use the position id number
         self.acquisitionType = json_parsing(data, 'acquisitionType')
         raw_acq_date = json_parsing(data, 'acquisitionDate')
-        self.acquisitionDate = datetime.fromtimestamp(raw_acq_date / 1000) if raw_acq_date else None
+        self.acquisitionDate = datetime.fromtimestamp(raw_acq_date / 1000) if raw_acq_date else None  # ESPN timestamps are milliseconds
         self.proTeam = PRO_TEAM_MAP.get(json_parsing(data, 'proTeamId'), json_parsing(data, 'proTeamId'))
         self.injuryStatus = json_parsing(data, 'injuryStatus')
         self.status = json_parsing(data, 'status')
@@ -39,7 +39,7 @@ class Player(object):
         self.laterality = player.get('laterality')
         self.stance = player.get('stance')
         raw_news_date = player.get('lastNewsDate')
-        self.last_news_date = datetime.fromtimestamp(raw_news_date / 1000) if raw_news_date else None
+        self.last_news_date = datetime.fromtimestamp(raw_news_date / 1000) if raw_news_date else None  # ESPN timestamps are milliseconds
         self.season_outlook = player.get('seasonOutlook', '')
 
         ownership = player.get('ownership', {})
@@ -64,7 +64,7 @@ class Player(object):
             if stats.get('seasonId') != year:
                 continue
             if stats_split_type not in STAT_SPLIT_MAP:
-                continue
+                continue  # intentionally skip split types not in STAT_SPLIT_MAP (e.g. projected season)
             stats_breakdown = stats.get('stats') or stats.get('appliedStats', {})
             breakdown = {STATS_MAP.get(int(k), k):v for (k,v) in stats_breakdown.items()}
             points = round(stats.get('appliedTotal', 0), 2)

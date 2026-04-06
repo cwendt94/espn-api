@@ -82,7 +82,7 @@ class H2HPointsBoxScore(BoxScore):
 
     def _get_team_data(self, team, data, pro_schedule, week, year):
       if team not in data:
-        return (0, 0, -1, [])
+        return (0, 0, -1, [])  # -1 projected score indicates no projection available (bye week / missing)
 
       team_id = data[team]['teamId']
       team_projected = -1
