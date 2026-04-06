@@ -187,3 +187,53 @@ class LeagueTransactionsTest(TestCase):
             for t in TRANSACTION_TYPES:
                 with self.subTest(type=t):
                     self.league.transactions(types={t})
+
+    @mock.patch.object(EspnFantasyRequests, 'league_get')
+    def test_types_filter_sent_in_header(self, mock_get):
+        mock_get.return_value = {'transactions': []}
+        self.league.transactions(types={'FREEAGENT'})
+        headers = mock_get.call_args.kwargs.get('headers') or mock_get.call_args[1].get('headers')
+        import json
+        sent_filter = json.loads(headers['x-fantasy-filter'])
+        self.assertEqual(sent_filter['transactions']['filterType']['value'], ['FREEAGENT'])
+
+
+class TransactionOptionalFieldsTest(TestCase):
+    def setUp(self):
+        self.player_map = {1001: 'Mike Trout'}
+        self.get_team_data = mock.Mock(return_value=mock.Mock(team_name='Test Team'))
+
+    def test_bid_amount(self):
+        data = _make_transaction_data()
+        data['bidAmount'] = 15
+        t = Transaction(data, self.player_map, self.get_team_data)
+        self.assertEqual(t.bid_amount, 15)
+
+    def test_bid_amount_none(self):
+        t = Transaction(_make_transaction_data(), self.player_map, self.get_team_data)
+        self.assertIsNone(t.bid_amount)
+
+    def test_comment(self):
+        data = _make_transaction_data()
+        data['comment'] = 'Picking up the best player'
+        t = Transaction(data, self.player_map, self.get_team_data)
+        self.assertEqual(t.comment, 'Picking up the best player')
+
+    def test_member_id(self):
+        t = Transaction(_make_transaction_data(), self.player_map, self.get_team_data)
+        self.assertEqual(t.memberId, '{abc-123}')
+
+    def test_related_transaction_id_none(self):
+        t = Transaction(_make_transaction_data(), self.player_map, self.get_team_data)
+        self.assertIsNone(t.relatedTransactionId)
+
+    def test_team_resolved_via_callback(self):
+        mock_team = mock.Mock(team_name='Resolved Team')
+        get_team = mock.Mock(return_value=mock_team)
+        t = Transaction(_make_transaction_data(team_id=5), self.player_map, get_team)
+        get_team.assert_called_once_with(5)
+        self.assertEqual(t.team.team_name, 'Resolved Team')
+
+    def test_item_repr(self):
+        t = Transaction(_make_transaction_data(item_type='ADD', player_id=1001), self.player_map, self.get_team_data)
+        self.assertEqual(repr(t.items[0]), 'ADD Mike Trout')

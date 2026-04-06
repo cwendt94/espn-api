@@ -440,3 +440,35 @@ class LoadRosterWeekTest(TestCase):
         self.league.load_roster_week(week=7)
         params = mock_get.call_args.kwargs.get('params') or mock_get.call_args[1].get('params')
         self.assertEqual(params['scoringPeriodId'], 7)
+
+
+class StandingsTest(TestCase):
+    def _make_team(self, team_id, final_standing, standing):
+        t = mock.Mock()
+        t.team_id = team_id
+        t.final_standing = final_standing
+        t.standing = standing
+        return t
+
+    def setUp(self):
+        with mock.patch.object(League, 'fetch_league'):
+            self.league = League(league_id=1, year=2021)
+
+    def test_sorted_by_final_standing(self):
+        t1 = self._make_team(1, final_standing=3, standing=3)
+        t2 = self._make_team(2, final_standing=1, standing=1)
+        t3 = self._make_team(3, final_standing=2, standing=2)
+        self.league.teams = [t1, t2, t3]
+        result = self.league.standings()
+        self.assertEqual([t.team_id for t in result], [2, 3, 1])
+
+    def test_zero_final_standing_falls_back_to_standing(self):
+        t1 = self._make_team(1, final_standing=0, standing=2)
+        t2 = self._make_team(2, final_standing=0, standing=1)
+        self.league.teams = [t1, t2]
+        result = self.league.standings()
+        self.assertEqual(result[0].team_id, 2)
+
+    def test_returns_all_teams(self):
+        self.league.teams = [self._make_team(i, final_standing=i, standing=i) for i in range(1, 6)]
+        self.assertEqual(len(self.league.standings()), 5)

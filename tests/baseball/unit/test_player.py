@@ -357,3 +357,42 @@ class PlayerStatSplitsTest(TestCase):
     def test_breakdown_keys_mapped(self):
         player = self._player_with_stats([_make_stat(0, stats={'5': 2.0})])
         self.assertEqual(player.stats_splits['season'][0]['breakdown']['HR'], 2.0)
+
+    def test_total_points_from_season_stats(self):
+        player = self._player_with_stats([_make_stat(0, applied_total=42.0)])
+        self.assertAlmostEqual(player.total_points, 42.0)
+
+    def test_projected_total_points_from_projected_split(self):
+        player = self._player_with_stats([_make_stat(0, stat_source_id=1, applied_total=38.5)])
+        self.assertAlmostEqual(player.projected_total_points, 38.5)
+
+    def test_total_points_zero_when_no_stats(self):
+        player = self._player_with_stats([])
+        self.assertEqual(player.total_points, 0)
+
+
+class PlayerMiscTest(TestCase):
+    def test_repr(self):
+        player = Player(_make_player_data(), year=2021)
+        self.assertEqual(repr(player), 'Player(Test Player)')
+
+    def test_eligible_slots_mapped(self):
+        data = _make_player_data(eligible_slots=[0, 14])
+        player = Player(data, year=2021)
+        self.assertIn('C', player.eligibleSlots)
+        self.assertIn('SP', player.eligibleSlots)
+
+    def test_status_field(self):
+        player = Player(_make_player_data(), year=2021)
+        self.assertEqual(player.status, 'ONTEAM')
+
+    def test_pro_team_mapped(self):
+        from espn_api.baseball.constant import PRO_TEAM_MAP
+        for pro_id, pro_name in PRO_TEAM_MAP.items():
+            with self.subTest(pro_id=pro_id):
+                data = _make_player_data(player_extras={'proTeamId': pro_id})
+                # proTeamId in player_extras goes into player dict, but proTeam reads from
+                # the outer roster entry's proTeamId — patch that instead
+                data['proTeamId'] = pro_id
+                player = Player(data, year=2021)
+                self.assertEqual(player.proTeam, pro_name)

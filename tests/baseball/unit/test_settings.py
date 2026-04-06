@@ -1,5 +1,6 @@
 from unittest import TestCase
 
+from espn_api.base_settings import BaseSettings
 from espn_api.baseball.settings import Settings
 
 
@@ -111,3 +112,73 @@ class SettingsAcquisitionTest(TestCase):
         self.assertIsNone(settings.waiver_process_hour)
         self.assertIsNone(settings.trade_revision_hours)
         self.assertEqual(settings.waiver_process_days, [])
+
+
+class BaseSettingsCoreFieldsTest(TestCase):
+    def setUp(self):
+        self.settings = Settings(_make_settings_data())
+
+    def test_name(self):
+        self.assertEqual(self.settings.name, 'Test League')
+
+    def test_team_count(self):
+        self.assertEqual(self.settings.team_count, 10)
+
+    def test_reg_season_count(self):
+        self.assertEqual(self.settings.reg_season_count, 20)
+
+    def test_playoff_team_count(self):
+        self.assertEqual(self.settings.playoff_team_count, 4)
+
+    def test_playoff_matchup_period_length(self):
+        self.assertEqual(self.settings.playoff_matchup_period_length, 1)
+
+    def test_keeper_count(self):
+        self.assertEqual(self.settings.keeper_count, 0)
+
+    def test_veto_votes_required(self):
+        self.assertEqual(self.settings.veto_votes_required, 4)
+
+    def test_scoring_type(self):
+        self.assertEqual(self.settings.scoring_type, 'H2H_CATEGORY')
+
+    def test_median_scoring_false(self):
+        self.assertFalse(self.settings.median_scoring)
+
+    def test_median_scoring_true(self):
+        data = _make_settings_data(scoring_enhancement_type='WIN_BONUS_TOP_HALF')
+        settings = Settings(data)
+        self.assertTrue(settings.median_scoring)
+
+    def test_tie_rule(self):
+        self.assertEqual(self.settings.tie_rule, 'NONE')
+
+    def test_playoff_tie_rule(self):
+        self.assertEqual(self.settings.playoff_tie_rule, 'NONE')
+
+    def test_playoff_seed_tie_rule(self):
+        self.assertEqual(self.settings.playoff_seed_tie_rule, 'WINS')
+
+    def test_repr(self):
+        self.assertEqual(repr(self.settings), 'Settings(Test League)')
+
+    def test_trade_deadline_zero_when_missing(self):
+        self.assertEqual(self.settings.trade_deadline, 0)
+
+    def test_trade_deadline_set_when_present(self):
+        data = _make_settings_data()
+        data['tradeSettings']['deadlineDate'] = 1234567890
+        settings = Settings(data)
+        self.assertEqual(settings.trade_deadline, 1234567890)
+
+    def test_division_map_empty_by_default(self):
+        self.assertEqual(self.settings.division_map, {})
+
+    def test_division_map_populated(self):
+        data = _make_settings_data()
+        data['scheduleSettings']['divisions'] = [
+            {'id': 0, 'name': 'East'},
+            {'id': 1, 'name': 'West'},
+        ]
+        settings = Settings(data)
+        self.assertEqual(settings.division_map, {0: 'East', 1: 'West'})
