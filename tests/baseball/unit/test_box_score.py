@@ -1,6 +1,6 @@
 from unittest import TestCase, mock
 
-from espn_api.baseball.box_score import RotoBoxScore
+from espn_api.baseball.box_score import BoxScore, RotoBoxScore
 from espn_api.baseball.constant import STATS_MAP
 
 
@@ -70,6 +70,16 @@ class RotoBoxScoreInitTest(TestCase):
 
     def test_repr(self):
         self.assertEqual(repr(self.roto), 'Roto Box Score(period:1)')
+
+    def test_inherits_from_box_score(self):
+        self.assertIsInstance(self.roto, BoxScore)
+
+    def test_home_away_winner_are_none(self):
+        # Roto has no head-to-head concept; these stub fields exist only so
+        # that isinstance() checks and attribute access don't crash.
+        self.assertIsNone(self.roto.home_team)
+        self.assertIsNone(self.roto.away_team)
+        self.assertIsNone(self.roto.winner)
 
 
 class RotoBoxScoreTotalPointsLiveTest(TestCase):

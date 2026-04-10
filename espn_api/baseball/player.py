@@ -74,14 +74,15 @@ class Player(object):
             # populate stats_splits for all split types
             split_label = STAT_SPLIT_MAP[stats_split_type]
             split_bucket = self.stats_splits[split_label]
-            if split_bucket.get(scoring_period):
+            if scoring_period in split_bucket:
                 split_bucket[scoring_period][points_type] = points
                 split_bucket[scoring_period][breakdown_type] = breakdown
             else:
                 split_bucket[scoring_period] = {points_type: points, breakdown_type: breakdown}
-            # keep stats (season totals + box scores) backwards-compatible
-            if stats_split_type == 0 or stats_split_type == 5:
-                if self.stats.get(scoring_period):
+            # keep self.stats backwards-compatible: mirror season (0) and box_score (5)
+            # splits into the legacy flat dict that existed before stats_splits
+            if stats_split_type in (0, 5):
+                if scoring_period in self.stats:
                     self.stats[scoring_period][points_type] = points
                     self.stats[scoring_period][breakdown_type] = breakdown
                 else:

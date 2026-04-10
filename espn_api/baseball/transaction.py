@@ -11,12 +11,12 @@ class Transaction(object):
         raw_date = data.get('processDate') or data.get('proposedDate')
         self.date = datetime.fromtimestamp(raw_date / 1000) if raw_date else None
         self.bid_amount = data.get('bidAmount')
-        self.isPending = data.get('isPending', self.status == 'PENDING')
+        self.is_pending = data.get('isPending', self.status == 'PENDING')
         self.rating = data.get('rating')
         self.execution_type = data.get('executionType')
-        self.relatedTransactionId = data.get('relatedTransactionId')
-        self.comment = data.get('comment', '')
-        self.memberId = data.get('memberId', '')
+        self.related_transaction_id = data.get('relatedTransactionId')
+        self.comment = data.get('comment')
+        self.member_id = data.get('memberId')
         self.items = []
         for item in data.get('items', []):
             self.items.append(TransactionItem(item, player_map))
@@ -30,12 +30,12 @@ class TransactionItem(object):
     def __init__(self, data, player_map):
         self.type = data['type']
         self.player_name = player_map.get(data['playerId'], 'Unknown')
-        self.fromTeamId = data.get('fromTeamId')
-        self.toTeamId = data.get('toTeamId')
-        self.fromLineupSlotId = data.get('fromLineupSlotId')
-        self.toLineupSlotId = data.get('toLineupSlotId')
-        self.isKeeper = data.get('isKeeper', False)
-        self.overallPickNumber = data.get('overallPickNumber')
+        self.from_team_id = data.get('fromTeamId')
+        self.to_team_id = data.get('toTeamId')
+        self.from_lineup_slot_id = data.get('fromLineupSlotId')
+        self.to_lineup_slot_id = data.get('toLineupSlotId')
+        self.is_keeper = data.get('isKeeper', False)
+        self.overall_pick_number = data.get('overallPickNumber')
 
     def __repr__(self):
         return f'{self.type} {self.player_name}'

@@ -48,24 +48,24 @@ class TransactionClassTest(TestCase):
         self.assertEqual(t.type, 'FREEAGENT')
         self.assertEqual(t.status, 'EXECUTED')
         self.assertEqual(t.scoring_period, 1)
-        self.assertFalse(t.isPending)
+        self.assertFalse(t.is_pending)
         self.assertEqual(len(t.items), 1)
 
     def test_pending_true_from_api_field(self):
         data = _make_transaction_data(is_pending=True)
         t = Transaction(data, self.player_map, self.get_team_data)
-        self.assertTrue(t.isPending)
+        self.assertTrue(t.is_pending)
 
     def test_pending_false_from_api_field(self):
         data = _make_transaction_data(is_pending=False, status='PENDING')
         t = Transaction(data, self.player_map, self.get_team_data)
-        self.assertFalse(t.isPending)
+        self.assertFalse(t.is_pending)
 
     def test_pending_falls_back_to_status(self):
         data = _make_transaction_data(status='PENDING')
         del data['isPending']
         t = Transaction(data, self.player_map, self.get_team_data)
-        self.assertTrue(t.isPending)
+        self.assertTrue(t.is_pending)
 
     def test_item_player_name_resolved(self):
         data = _make_transaction_data(player_id=1001)
@@ -115,25 +115,25 @@ class TransactionClassTest(TestCase):
     def test_item_lineup_slot_ids(self):
         data = _make_transaction_data()
         t = Transaction(data, self.player_map, self.get_team_data)
-        self.assertEqual(t.items[0].fromLineupSlotId, -1)
-        self.assertEqual(t.items[0].toLineupSlotId, 16)
+        self.assertEqual(t.items[0].from_lineup_slot_id, -1)
+        self.assertEqual(t.items[0].to_lineup_slot_id, 16)
 
     def test_item_is_keeper(self):
         data = _make_transaction_data()
         t = Transaction(data, self.player_map, self.get_team_data)
-        self.assertFalse(t.items[0].isKeeper)
+        self.assertFalse(t.items[0].is_keeper)
 
     def test_item_is_keeper_true(self):
         data = _make_transaction_data()
         data['items'][0]['isKeeper'] = True
         t = Transaction(data, self.player_map, self.get_team_data)
-        self.assertTrue(t.items[0].isKeeper)
+        self.assertTrue(t.items[0].is_keeper)
 
     def test_item_overall_pick_number(self):
         data = _make_transaction_data()
         data['items'][0]['overallPickNumber'] = 42
         t = Transaction(data, self.player_map, self.get_team_data)
-        self.assertEqual(t.items[0].overallPickNumber, 42)
+        self.assertEqual(t.items[0].overall_pick_number, 42)
 
 
 class LeagueTransactionsTest(TestCase):
@@ -219,13 +219,25 @@ class TransactionOptionalFieldsTest(TestCase):
         t = Transaction(data, self.player_map, self.get_team_data)
         self.assertEqual(t.comment, 'Picking up the best player')
 
+    def test_comment_defaults_to_none_when_missing(self):
+        data = _make_transaction_data()
+        del data['comment']
+        t = Transaction(data, self.player_map, self.get_team_data)
+        self.assertIsNone(t.comment)
+
+    def test_member_id_defaults_to_none_when_missing(self):
+        data = _make_transaction_data()
+        del data['memberId']
+        t = Transaction(data, self.player_map, self.get_team_data)
+        self.assertIsNone(t.member_id)
+
     def test_member_id(self):
         t = Transaction(_make_transaction_data(), self.player_map, self.get_team_data)
-        self.assertEqual(t.memberId, '{abc-123}')
+        self.assertEqual(t.member_id, '{abc-123}')
 
     def test_related_transaction_id_none(self):
         t = Transaction(_make_transaction_data(), self.player_map, self.get_team_data)
-        self.assertIsNone(t.relatedTransactionId)
+        self.assertIsNone(t.related_transaction_id)
 
     def test_team_resolved_via_callback(self):
         mock_team = mock.Mock(team_name='Resolved Team')

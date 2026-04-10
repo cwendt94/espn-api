@@ -97,13 +97,17 @@ class H2HPointsBoxScore(BoxScore):
       return (team_id, team_score, team_projected, team_lineup)
 
 
-class RotoBoxScore:
+class RotoBoxScore(BoxScore):
     '''Boxscore for rotisserie (ROTO) leagues.
 
     In roto there is no home/away matchup — all teams accumulate stats and are
     ranked against each other in each category.  One RotoBoxScore is returned
     per matchup period, containing every team's cumulative category stats and
     their league-wide rank in each category.
+
+    Inherits from BoxScore so that isinstance(x, BoxScore) holds for all four
+    baseball box-score shapes, but winner/home_team/away_team are always None
+    since roto has no head-to-head matchup.
 
     Attributes:
         matchup_period (int): the matchup period this snapshot covers
@@ -115,6 +119,12 @@ class RotoBoxScore:
             - lineup     : list[BoxPlayer] for the current scoring period
     '''
     def __init__(self, data, pro_schedule, year, scoring_period=0):
+        # Skip BoxScore.__init__ — roto data has no winner/home/away keys.
+        # Set the inherited attributes to None so callers can still access them.
+        self.winner = None
+        self.home_team = None
+        self.away_team = None
+
         self.matchup_period = data.get('matchupPeriodId')
         self.teams = []
 
@@ -127,6 +137,9 @@ class RotoBoxScore:
             for stat_id_str, stat_dict in team_data.get('cumulativeScore', {}).get('scoreByStat', {}).items():
                 stat_name = STATS_MAP.get(int(stat_id_str), f'stat_{stat_id_str}')
                 score = stat_dict['score']
+                # ESPN sends the literal string 'Infinity' for rate stats (e.g. WHIP,
+                # ERA) when the denominator is zero — coerce to float('inf') so
+                # callers can do arithmetic/comparisons without type-switching.
                 if score == 'Infinity':
                     score = float('inf')
                 stats[stat_name] = {'score': score, 'rank': stat_dict['rank']}
@@ -140,6 +153,12 @@ class RotoBoxScore:
                 'stats': stats,
                 'lineup': lineup,
             })
+
+    def _process_team(self, team_data, is_home_team):
+        # Roto has no home/away concept — this abstract method is required by
+        # the BoxScore base class but is never called (RotoBoxScore overrides
+        # __init__ entirely).
+        pass
 
     def __repr__(self):
         return f'Roto Box Score(period:{self.matchup_period})'

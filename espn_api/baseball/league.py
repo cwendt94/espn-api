@@ -155,8 +155,16 @@ class League(BaseLeague):
 
         return [Player(player, self.year) for player in players]
 
-    def box_scores(self, matchup_period: int = None, scoring_period: int = None) -> List[Union[BoxScore, H2HCategoryBoxScore]]:
-        '''Returns list of box score for a given matchup or scoring period'''
+    def box_scores(self, matchup_period: int = None, scoring_period: int = None) -> List[BoxScore]:
+        '''Returns list of box score for a given matchup or scoring period.
+
+        The concrete type depends on the league's scoring_type:
+        - H2H_CATEGORY → H2HCategoryBoxScore (home/away with category results)
+        - H2H_POINTS   → H2HPointsBoxScore   (home/away with point totals)
+        - ROTO         → RotoBoxScore        (no home/away — callers iterate
+                                              the .teams list instead)
+        All three inherit from BoxScore.
+        '''
         if self.year < 2019:
             raise Exception('Cant use box score before 2019')
 
