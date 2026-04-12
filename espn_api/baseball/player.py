@@ -1,5 +1,5 @@
 from datetime import datetime
-from .constant import DEFAULT_POSITION_MAP, POSITION_MAP, PRO_TEAM_MAP, STATS_MAP, STAT_SPLIT_MAP
+from .constant import DEFAULT_POSITION_MAP, POSITION_MAP, PRO_TEAM_MAP, STATS_MAP, STAT_SPLIT_MAP, PITCHER_ONLY_STATS, BATTER_ONLY_STATS, PITCHER_POSITIONS
 from .utils import json_parsing
 
 class Player(object):
@@ -66,7 +66,22 @@ class Player(object):
             if stats_split_type not in STAT_SPLIT_MAP:
                 continue  # intentionally skip split types not in STAT_SPLIT_MAP (e.g. projected season)
             stats_breakdown = stats.get('stats') or stats.get('appliedStats', {})
-            breakdown = {STATS_MAP.get(int(k), k):v for (k,v) in stats_breakdown.items()}
+            # filter stats based on player eligibility: exclude pitcher-only stats if not eligible for pitcher slots,
+            # and exclude batter-only stats if not eligible for batter slots (handles multi-position players like Ohtani)
+            eligible_set = set(self.eligibleSlots)
+            pitcher_slots = {'SP', 'RP', 'P'}
+            batter_slots = {'C', '1B', '2B', '3B', 'SS', 'OF', 'LF', 'CF', 'RF', 'DH', 'UTIL', '2B/SS', '1B/3B'}
+            is_eligible_pitcher = bool(pitcher_slots & eligible_set)
+            is_eligible_batter = bool(batter_slots & eligible_set)
+            filtered_breakdown = {}
+            for k, v in stats_breakdown.items():
+                stat_id = int(k)
+                if not is_eligible_pitcher and stat_id in PITCHER_ONLY_STATS:
+                    continue  # skip pitcher-only stats if not eligible for pitcher positions
+                if not is_eligible_batter and stat_id in BATTER_ONLY_STATS:
+                    continue  # skip batter-only stats if not eligible for batter positions
+                filtered_breakdown[k] = v
+            breakdown = {STATS_MAP.get(int(k), k): v for (k, v) in filtered_breakdown.items()}
             points = round(stats.get('appliedTotal', 0), 2)
             scoring_period = stats.get('scoringPeriodId')
             stat_source = stats.get('statSourceId')

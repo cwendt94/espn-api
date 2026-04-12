@@ -5,9 +5,9 @@ from espn_api.baseball.constant import DEFAULT_POSITION_MAP, POSITION_MAP, STAT_
 from espn_api.baseball.player import Player
 
 
-def _make_player_data(default_position_id=1, lineup_slot_id=0, eligible_slots=None,
+def _make_player_data(default_position_id=2, lineup_slot_id=0, eligible_slots=None,
                       ownership=None, pool_entry_extras=None, player_extras=None):
-    """Roster-style data: pool entry nested under 'playerPoolEntry'."""
+    """Roster-style data: pool entry nested under 'playerPoolEntry'. Default position is C (catcher, ID=2)."""
     return {
         'defaultPositionId': default_position_id,
         'lineupSlotId': lineup_slot_id,
@@ -369,6 +369,30 @@ class PlayerStatSplitsTest(TestCase):
     def test_total_points_zero_when_no_stats(self):
         player = self._player_with_stats([])
         self.assertEqual(player.total_points, 0)
+
+    def test_batter_stats_filtered_for_pitchers(self):
+        """Pitcher (SP, ID=1) should not include batter-only stats like HR (ID=5)."""
+        pitcher_data = _make_player_data(default_position_id=1, eligible_slots=[14], player_extras={'stats': [_make_stat(0, stats={'5': 2.0, '48': 10.0})]})
+        pitcher = Player(pitcher_data, year=2021)
+        breakdown = pitcher.stats_splits['season'][0]['breakdown']
+        self.assertNotIn('HR', breakdown)  # HR is a batter-only stat
+        self.assertIn('K', breakdown)  # K (strikeout) is a pitcher stat
+
+    def test_pitcher_stats_filtered_for_batters(self):
+        """Batter (C, ID=2) should not include pitcher-only stats like ERA (ID=47)."""
+        batter_data = _make_player_data(default_position_id=2, eligible_slots=[0], player_extras={'stats': [_make_stat(0, stats={'5': 2.0, '47': 3.45})]})
+        batter = Player(batter_data, year=2021)
+        breakdown = batter.stats_splits['season'][0]['breakdown']
+        self.assertIn('HR', breakdown)  # HR is a batter stat
+        self.assertNotIn('ERA', breakdown)  # ERA is a pitcher-only stat
+
+    def test_multi_position_player_keeps_all_stats(self):
+        """Ohtani-like player (eligible for both SP and DH) should keep both pitcher and batter stats."""
+        multi_data = _make_player_data(eligible_slots=[0, 14], player_extras={'stats': [_make_stat(0, stats={'5': 2.0, '48': 10.0})]})
+        multi = Player(multi_data, year=2021)
+        breakdown = multi.stats_splits['season'][0]['breakdown']
+        self.assertIn('HR', breakdown)  # HR is a batter stat
+        self.assertIn('K', breakdown)  # K is a pitcher stat
 
 
 class PlayerMiscTest(TestCase):
