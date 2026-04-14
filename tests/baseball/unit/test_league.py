@@ -362,6 +362,12 @@ class PlayerInfoTest(TestCase):
         result = self.league.player_info(name='Unknown Player')
         self.assertIsNone(result)
 
+    @mock.patch.object(EspnFantasyRequests, 'league_get')
+    def test_unknown_name_does_not_clobber_explicit_player_id(self, mock_get):
+        mock_get.return_value = {'players': [_make_player_card_data(1001)]}
+        result = self.league.player_info(name='Unknown Player', playerId=1001)
+        self.assertIsInstance(result, Player)
+
     def test_no_args_returns_none(self):
         result = self.league.player_info()
         self.assertIsNone(result)

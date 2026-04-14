@@ -208,8 +208,10 @@ BATTER_ONLY_STATS = {
     23, 24, 25, 26, 27, 28, 29, 31, 74, 75
 }
 
-# Pitcher positions
+# Eligibility-slot names used to classify a player as a pitcher or batter
+# when filtering stats by role (e.g. dropping batter-only stats from a pitcher).
 PITCHER_POSITIONS = {'SP', 'RP', 'P'}
+BATTER_POSITIONS = {'C', '1B', '2B', '3B', 'SS', 'OF', 'LF', 'CF', 'RF', 'DH', 'UTIL', '2B/SS', '1B/3B'}
 
 ACTIVITY_MAP = {
     178: 'FA ADDED',

@@ -203,8 +203,8 @@ class League(BaseLeague):
 
     def player_info(self, name: str = None, playerId: Union[int, list] = None) -> Union[Player, List[Player]]:
         '''Returns Player class if name or playerId found'''
-        if name:
-            playerId = self.player_map.get(name)
+        if name and name in self.player_map:
+            playerId = self.player_map[name]
         if playerId is None:
             return None
         if not isinstance(playerId, list):

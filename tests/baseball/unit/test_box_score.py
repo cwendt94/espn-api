@@ -1,6 +1,6 @@
 from unittest import TestCase, mock
 
-from espn_api.baseball.box_score import BoxScore, RotoBoxScore
+from espn_api.baseball.box_score import BoxScore, H2HPointsBoxScore, RotoBoxScore
 from espn_api.baseball.constant import STATS_MAP
 
 
@@ -131,3 +131,30 @@ class RotoBoxScoreEmptyTeamsTest(TestCase):
         del data['matchupPeriodId']
         roto = RotoBoxScore(data, pro_schedule={}, year=2026)
         self.assertIsNone(roto.matchup_period)
+
+
+class RotoBoxScoreProcessTeamTest(TestCase):
+    def test_process_team_noop(self):
+        # _process_team is required by the abstract base but unused — calling it
+        # directly should be a no-op and leave instance state untouched.
+        roto = RotoBoxScore(_make_roto_data(teams=[]), pro_schedule={}, year=2026)
+        self.assertIsNone(roto._process_team({'teamId': 99}, True))
+        self.assertIsNone(roto.home_team)
+        self.assertIsNone(roto.away_team)
+
+
+class H2HPointsBoxScoreByeWeekTest(TestCase):
+    def test_missing_away_returns_bye_defaults(self):
+        data = {
+            'winner': 'HOME',
+            'home': {
+                'teamId': 1,
+                'totalPoints': 42.5,
+                'rosterForCurrentScoringPeriod': {'entries': []},
+            },
+        }
+        box = H2HPointsBoxScore(data, pro_schedule={}, year=2026)
+        self.assertEqual(box.away_team, 0)
+        self.assertEqual(box.away_score, 0)
+        self.assertEqual(box.away_projected, -1)
+        self.assertEqual(box.away_lineup, [])
