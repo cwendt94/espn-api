@@ -2,20 +2,22 @@ import datetime
 import time
 import json
 import math
-from typing import List, Tuple, Union
+from typing import List, Set, Tuple, Union
 
 from ..base_league import BaseLeague
 from .team import Team
 from .player import Player
 from .matchup import Matchup
-from .box_score import BoxScore, H2HCategoryBoxScore, H2HPointsBoxScore
+from .box_score import BoxScore, H2HCategoryBoxScore, H2HPointsBoxScore, RotoBoxScore
 from .activity import Activity
-from .constant import POSITION_MAP, ACTIVITY_MAP
+from .constant import POSITION_MAP, ACTIVITY_MAP, TRANSACTION_TYPES
+from .settings import Settings
+from .transaction import Transaction
 
 class League(BaseLeague):
     '''Creates a League instance for Public/Private ESPN league'''
 
-    ScoreTypes = {'H2H_CATEGORY': H2HCategoryBoxScore, 'H2H_POINTS': H2HPointsBoxScore}
+    ScoreTypes = {'H2H_CATEGORY': H2HCategoryBoxScore, 'H2H_POINTS': H2HPointsBoxScore, 'ROTO': RotoBoxScore}
 
     def __init__(self, league_id: int, year: int, espn_s2=None, swid=None, fetch_league=True, debug=False):
         super().__init__(league_id=league_id, year=year, sport='mlb', espn_s2=espn_s2, swid=swid, debug=debug)
@@ -38,7 +40,7 @@ class League(BaseLeague):
         super()._fetch_draft()
 
     def _fetch_league(self):
-        data = super()._fetch_league()
+        data = super()._fetch_league(SettingsClass=Settings)
         self._fetch_players()
         return data
 
@@ -80,6 +82,30 @@ class League(BaseLeague):
                     matchup.away_team = team
 
         return matchups
+
+    def transactions(self, types: Set[str] = None, scoring_period: int = None) -> List[Transaction]:
+        '''Returns a list of transactions for a given scoring period'''
+        if types is None:
+            types = TRANSACTION_TYPES
+        for t in types:
+            if t not in TRANSACTION_TYPES:
+                raise ValueError(f'Invalid transaction type: {t}. Valid types: {TRANSACTION_TYPES}')
+
+        if scoring_period is None:
+            scoring_period = self.scoringPeriodId
+
+        params = {
+            'view': 'mTransactions2',
+            'scoringPeriodId': scoring_period,
+        }
+        filters = {'transactions': {'filterType': {'value': list(types)}}}
+        headers = {'x-fantasy-filter': json.dumps(filters)}
+        data = self.espn_request.league_get(params=params, headers=headers)
+
+        return [
+            Transaction(t, self.player_map, self.get_team_data)
+            for t in data.get('transactions', [])
+        ]
 
     def recent_activity(self, size: int = 25, msg_type: str = None, offset: int = 0) -> List[Activity]:
         '''Returns a list of recent league activities (Add, Drop, Trade)'''
@@ -129,8 +155,16 @@ class League(BaseLeague):
 
         return [Player(player, self.year) for player in players]
 
-    def box_scores(self, matchup_period: int = None, scoring_period: int = None) -> List[Union[BoxScore, H2HCategoryBoxScore]]:
-        '''Returns list of box score for a given matchup or scoring period'''
+    def box_scores(self, matchup_period: int = None, scoring_period: int = None) -> List[BoxScore]:
+        '''Returns list of box score for a given matchup or scoring period.
+
+        The concrete type depends on the league's scoring_type:
+        - H2H_CATEGORY → H2HCategoryBoxScore (home/away with category results)
+        - H2H_POINTS   → H2HPointsBoxScore   (home/away with point totals)
+        - ROTO         → RotoBoxScore        (no home/away — callers iterate
+                                              the .teams list instead)
+        All three inherit from BoxScore.
+        '''
         if self.year < 2019:
             raise Exception('Cant use box score before 2019')
 
@@ -155,10 +189,53 @@ class League(BaseLeague):
         schedule = data['schedule']
         box_data = [self._box_score_class(matchup, pro_schedule, self.year, scoring_id) for matchup in schedule]
 
-        for team in self.teams:
-            for matchup in box_data:
-                if matchup.home_team == team.team_id:
-                    matchup.home_team = team
-                elif matchup.away_team == team.team_id:
-                    matchup.away_team = team
+        team_map = {t.team_id: t for t in self.teams}
+        for matchup in box_data:
+            if self.scoring_type == 'ROTO':
+                for entry in matchup.teams:
+                    entry['team'] = team_map.get(entry['team'], entry['team'])
+            else:
+                if matchup.home_team in team_map:
+                    matchup.home_team = team_map[matchup.home_team]
+                if matchup.away_team in team_map:
+                    matchup.away_team = team_map[matchup.away_team]
         return box_data
+
+    def player_info(self, name: str = None, playerId: Union[int, list] = None) -> Union[Player, List[Player]]:
+        '''Returns Player class if name or playerId found'''
+        if name and name in self.player_map:
+            playerId = self.player_map[name]
+        if playerId is None:
+            return None
+        if not isinstance(playerId, list):
+            playerId = [playerId]
+
+        split_filters = ["0{}{}".format(i, self.year) for i in range(1, 4)]
+        data = self.espn_request.get_player_card(playerId, self.finalScoringPeriod, additional_filters=split_filters)
+        if len(data['players']) == 1:
+            return Player(data['players'][0], self.year)
+        if len(data['players']) > 1:
+            return [Player(player, self.year) for player in data['players']]
+
+    def refresh(self):
+        '''Gets latest league data without re-fetching all players'''
+        data = super()._fetch_league(SettingsClass=Settings)
+        self.scoring_type = data['settings']['scoringSettings']['scoringType']
+        self._fetch_teams(data)
+        self._box_score_class = self._set_scoring_class(self.scoring_type)
+
+    def load_roster_week(self, week: int) -> None:
+        '''Sets Teams Roster for a Certain Week'''
+        params = {
+            'view': 'mRoster',
+            'scoringPeriodId': week
+        }
+        data = self.espn_request.league_get(params=params)
+
+        team_roster = {}
+        for team in data['teams']:
+            team_roster[team['id']] = team['roster']
+
+        for team in self.teams:
+            roster = team_roster[team.team_id]
+            team._fetch_roster(roster, self.year)

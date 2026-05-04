@@ -188,6 +188,31 @@ STATS_MAP = {
     99: 'STARTER',
 }
 
+STAT_SPLIT_MAP = {
+    0: 'season',
+    1: 'last_7',
+    2: 'last_15',
+    3: 'last_30',
+    5: 'box_score',
+}
+
+# Stat IDs that apply only to pitchers
+PITCHER_ONLY_STATS = {
+    32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
+    51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 62, 63, 65, 66, 76, 77, 82, 83
+}
+
+# Stat IDs that apply only to batters (excludes shared fielding stats and games played)
+BATTER_ONLY_STATS = {
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+    23, 24, 25, 26, 27, 28, 29, 31, 74, 75
+}
+
+# Eligibility-slot names used to classify a player as a pitcher or batter
+# when filtering stats by role (e.g. dropping batter-only stats from a pitcher).
+PITCHER_POSITIONS = {'SP', 'RP', 'P'}
+BATTER_POSITIONS = {'C', '1B', '2B', '3B', 'SS', 'OF', 'LF', 'CF', 'RF', 'DH', 'UTIL', '2B/SS', '1B/3B'}
+
 ACTIVITY_MAP = {
     178: 'FA ADDED',
     180: 'WAIVER ADDED',
@@ -200,3 +225,8 @@ ACTIVITY_MAP = {
     'TRADED': 244
 }
 
+TRANSACTION_TYPES = {
+    'DRAFT', 'TRADE_ACCEPT', 'WAIVER', 'TRADE_VETO', 'FUTURE_ROSTER',
+    'ROSTER', 'RETRO_ROSTER', 'TRADE_PROPOSAL', 'TRADE_UPHOLD',
+    'FREEAGENT', 'TRADE_DECLINE', 'WAIVER_ERROR', 'TRADE_ERROR'
+}
