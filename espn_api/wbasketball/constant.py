@@ -34,6 +34,8 @@ PRO_TEAM_MAP = {
     19: 'Chi',
     20: 'Atl',
     129689: 'GSV',
+    131935: 'Tor',
+    132052: 'Por',
 }
 
 STATS_MAP = {
