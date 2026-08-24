@@ -5,7 +5,7 @@ from .constant import POSITION_MAP
 class Settings(BaseSettings):
     def __init__(self, data):
         super().__init__(data)
-        lineup_slot_counts = data.get('rosterSettings', {}).get('lineupSlotCounts', {})
+        lineup_slot_counts = data.get("rosterSettings", {}).get("lineupSlotCounts", {})
         # slot IDs not in POSITION_MAP (e.g. bench, IR) are intentionally excluded
         self.position_slot_counts = {
             POSITION_MAP[int(slot_id)]: count

@@ -1,36 +1,55 @@
 class BaseSettings(object):
-    '''Creates Settings object'''
+    """Creates Settings object"""
+
     def __init__(self, data):
-        self.reg_season_count = data['scheduleSettings']['matchupPeriodCount']
-        self.matchup_periods = data['scheduleSettings']['matchupPeriods']
-        self.veto_votes_required = data['tradeSettings']['vetoVotesRequired']
-        self.team_count = data['size']
-        self.playoff_team_count = data['scheduleSettings']['playoffTeamCount']
-        self.keeper_count = data['draftSettings']['keeperCount']
+        self.reg_season_count = data["scheduleSettings"]["matchupPeriodCount"]
+        self.matchup_periods = data["scheduleSettings"]["matchupPeriods"]
+        self.veto_votes_required = data["tradeSettings"]["vetoVotesRequired"]
+        self.team_count = data["size"]
+        self.playoff_team_count = data["scheduleSettings"]["playoffTeamCount"]
+        self.keeper_count = data["draftSettings"]["keeperCount"]
         self.trade_deadline = 0
         self.division_map = {}
-        if 'deadlineDate' in data['tradeSettings']:
-            self.trade_deadline = data['tradeSettings']['deadlineDate']
-        self.name = data['name']
-        self.tie_rule = data['scoringSettings']['matchupTieRule']
-        self.playoff_tie_rule = data['scoringSettings']['playoffMatchupTieRule']
-        self.playoff_matchup_period_length = data.get('scheduleSettings', {}).get('playoffMatchupPeriodLength', 0)
-        self.playoff_seed_tie_rule = data['scheduleSettings']['playoffSeedingRule']
-        self.scoring_type = data.get('scoringSettings', {}).get('scoringType')
-        self.median_scoring = data.get('scoringSettings', {}).get('scoringEnhancementType') == 'WIN_BONUS_TOP_HALF'
-        self._raw_scoring_settings = data.get('scoringSettings', {})
-        self._raw_schedule_settings = data.get('scheduleSettings', {})
-        self.faab = data['acquisitionSettings']['isUsingAcquisitionBudget']
-        self.acquisition_budget = data.get('acquisitionSettings', {}).get('acquisitionBudget', 0)
-        self.acquisition_limit = data.get('acquisitionSettings', {}).get('acquisitionLimit')
-        self.matchup_acquisition_limit = data.get('acquisitionSettings', {}).get('matchupAcquisitionLimit')
-        self.matchup_limit_per_scoring_period = data.get('acquisitionSettings', {}).get('matchupLimitPerScoringPeriod')
-        self.minimum_bid = data.get('acquisitionSettings', {}).get('minimumBid', 0)
-        self.waiver_process_days = list(data.get('acquisitionSettings', {}).get('waiverProcessDays', []))
-        self.waiver_process_hour = data.get('acquisitionSettings', {}).get('waiverProcessHour')
-        self.trade_revision_hours = data.get('tradeSettings', {}).get('revisionHours')
-        divisions = data.get('scheduleSettings', {}).get('divisions', [])
-        for division in divisions: self.division_map[division.get('id', 0)] = division.get('name')
+        if "deadlineDate" in data["tradeSettings"]:
+            self.trade_deadline = data["tradeSettings"]["deadlineDate"]
+        self.name = data["name"]
+        self.tie_rule = data["scoringSettings"]["matchupTieRule"]
+        self.playoff_tie_rule = data["scoringSettings"]["playoffMatchupTieRule"]
+        self.playoff_matchup_period_length = data.get("scheduleSettings", {}).get(
+            "playoffMatchupPeriodLength", 0
+        )
+        self.playoff_seed_tie_rule = data["scheduleSettings"]["playoffSeedingRule"]
+        self.scoring_type = data.get("scoringSettings", {}).get("scoringType")
+        self.median_scoring = (
+            data.get("scoringSettings", {}).get("scoringEnhancementType")
+            == "WIN_BONUS_TOP_HALF"
+        )
+        self._raw_scoring_settings = data.get("scoringSettings", {})
+        self._raw_schedule_settings = data.get("scheduleSettings", {})
+        self.faab = data["acquisitionSettings"]["isUsingAcquisitionBudget"]
+        self.acquisition_budget = data.get("acquisitionSettings", {}).get(
+            "acquisitionBudget", 0
+        )
+        self.acquisition_limit = data.get("acquisitionSettings", {}).get(
+            "acquisitionLimit"
+        )
+        self.matchup_acquisition_limit = data.get("acquisitionSettings", {}).get(
+            "matchupAcquisitionLimit"
+        )
+        self.matchup_limit_per_scoring_period = data.get("acquisitionSettings", {}).get(
+            "matchupLimitPerScoringPeriod"
+        )
+        self.minimum_bid = data.get("acquisitionSettings", {}).get("minimumBid", 0)
+        self.waiver_process_days = list(
+            data.get("acquisitionSettings", {}).get("waiverProcessDays", [])
+        )
+        self.waiver_process_hour = data.get("acquisitionSettings", {}).get(
+            "waiverProcessHour"
+        )
+        self.trade_revision_hours = data.get("tradeSettings", {}).get("revisionHours")
+        divisions = data.get("scheduleSettings", {}).get("divisions", [])
+        for division in divisions:
+            self.division_map[division.get("id", 0)] = division.get("name")
 
     def __repr__(self):
-        return f'Settings({self.name})'
+        return f"Settings({self.name})"
