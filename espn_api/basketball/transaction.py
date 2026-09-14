@@ -7,7 +7,7 @@ class Transaction(object):
         self.date = data.get('processDate')
         self.bid_amount = data.get('bidAmount')
         self.items = []
-        for item in data['items']:
+        for item in data.get('items', []):
             self.items.append(TransactionItem(item, player_map))
 
     def __repr__(self):
