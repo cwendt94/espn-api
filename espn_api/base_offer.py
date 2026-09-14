@@ -43,6 +43,7 @@ class Offer(object):
                           'Budget Exceeded': 4,
                           'Position Limit Exceeded': 3,
                           'Failed Due to Roster Lock': 2,
+                          'Canceled': 1,
                           'CANCELLED': 1,
                           'PENDING': 0}
         if result_ranking[self.result] != result_ranking[other.result]:
