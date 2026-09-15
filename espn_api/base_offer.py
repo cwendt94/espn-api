@@ -28,8 +28,9 @@ class Offer(object):
                 self.dateTime = datetime.fromtimestamp(int(data['processDate'] / 1000))  # convert from milliseconds to seconds
             self.amount = data['bidAmount']
             self.teamId = data['teamId']
+            self.player = None
             self.droppedPlayer = None
-            for item in data['items']:
+            for item in data.get('items') or []:
                 if item['type'] == 'ADD':
                     self.player = item['playerId']
                 elif item['type'] == 'DROP' and self.result == 'Processed':
