@@ -1,5 +1,6 @@
 class Transaction(object):
     def __init__(self, data, player_map, get_team_data):
+        self.id = data.get('id')
         self.team_id = data['teamId']
         self.team = get_team_data(self.team_id)
         self.type = data['type']

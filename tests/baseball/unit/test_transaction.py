@@ -144,6 +144,7 @@ class LeagueTransactionsTest(TestCase):
         mock_team = mock.Mock()
         mock_team.team_name = 'Test Team'
         mock_team.team_id = 1
+        mock_team.roster = []
         self.league.teams = [mock_team]
         self.league.player_map = {1001: 'Mike Trout'}
 
@@ -196,6 +197,16 @@ class LeagueTransactionsTest(TestCase):
         import json
         sent_filter = json.loads(headers['x-fantasy-filter'])
         self.assertEqual(sent_filter['transactions']['filterType']['value'], ['FREEAGENT'])
+
+    @mock.patch.object(EspnFantasyRequests, 'league_get')
+    def test_fill_trade_items_false_skips_player_cards(self, mock_get):
+        mock_get.return_value = {
+            'transactions': [_make_transaction_data(type_='TRADE_ACCEPT', item_type='TRADE')]
+        }
+        mock_get.return_value['transactions'][0]['items'] = []
+        result = self.league.transactions(types={'TRADE_ACCEPT'}, fill_trade_items=False)
+        self.assertEqual(result[0].items, [])
+        mock_get.assert_called_once()
 
 
 class TransactionOptionalFieldsTest(TestCase):

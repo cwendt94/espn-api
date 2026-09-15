@@ -1,10 +1,12 @@
 from .constant import POSITION_MAP, PRO_TEAM_MAP, PLAYER_STATS_MAP
+from .transaction import Transaction
 from .utils import json_parsing
+from ..utils.trade_fill import player_transactions
 from datetime import datetime
 
 class Player(object):
     '''Player are part of team'''
-    def __init__(self, data, year, pro_team_schedule = None):
+    def __init__(self, data, year, pro_team_schedule = None, player_map=None, get_team_data=None):
         self.name = json_parsing(data, 'fullName')
         self.playerId = json_parsing(data, 'id')
         self.posRank = json_parsing(data, 'positionalRanking')
@@ -74,6 +76,7 @@ class Player(object):
         self.projected_total_points = self.stats.get(0, {}).get('projected_points', 0)
         self.avg_points = self.stats.get(0, {}).get('avg_points', 0)
         self.projected_avg_points = self.stats.get(0, {}).get('projected_avg_points', 0)
+        self.transactions = player_transactions(data, Transaction, player_map, get_team_data)
 
     def __repr__(self):
         return f'Player({self.name})'

@@ -105,8 +105,14 @@ class League(BaseLeague):
 
         return activity
 
-    def transactions(self, scoring_period: int = None, types: Set[str] = {"FREEAGENT","WAIVER","WAIVER_ERROR"}) -> List[Transaction]:
-        '''Returns a list of recent transactions'''
+    def transactions(self, scoring_period: int = None, types: Set[str] = {"FREEAGENT","WAIVER","WAIVER_ERROR"}, fill_trade_items: bool = False, player_ids: List[int] = None, fill_from: str = 'week') -> List[Transaction]:
+        '''Returns a list of recent transactions.
+
+        TRADE_ACCEPT rows from mTransactions2 often have empty items except for
+        the authenticated owner's deals. Pass fill_trade_items=True to copy
+        those legs from player cards. fill_from selects which ids to card:
+        'week' (default), 'roster', or 'pool'. player_ids overrides fill_from.
+        '''
         if not scoring_period:
             scoring_period = self.scoringPeriodId
 
@@ -122,9 +128,11 @@ class League(BaseLeague):
         headers = {'x-fantasy-filter': json.dumps(filters)}
 
         data = self.espn_request.league_get(params=params, headers=headers)
-        transactions = data['transactions']
-
-        return [Transaction(transaction, self.player_map, self.get_team_data) for transaction in transactions]
+        transactions = [Transaction(transaction, self.player_map, self.get_team_data) for transaction in data['transactions']]
+        self._fill_trade_accept_from_player_cards(
+            transactions, scoring_period, types, fill_trade_items, player_ids, fill_from, Player
+        )
+        return transactions
 
     def free_agents(self, week: int=None, size: int=50, position: str=None, position_id: int=None) -> List[Player]:
         '''Returns a List of Free Agents for a Given Week\n
@@ -212,6 +220,23 @@ class League(BaseLeague):
                 news[id] = self.espn_request.get_player_news(id)
 
         if len(data['players']) == 1:
-            return Player(data['players'][0], self.year, self.pro_schedule, news=news.get(playerId[0], []) if include_news else None)
+            return Player(
+                data['players'][0],
+                self.year,
+                self.pro_schedule,
+                news=news.get(playerId[0], []) if include_news else None,
+                player_map=self.player_map,
+                get_team_data=self.get_team_data,
+            )
         if len(data['players']) > 1:
-            return [Player(player, self.year, self.pro_schedule, news=news.get(player['id'], []) if include_news else None) for player in data['players']]
+            return [
+                Player(
+                    player,
+                    self.year,
+                    self.pro_schedule,
+                    news=news.get(player['id'], []) if include_news else None,
+                    player_map=self.player_map,
+                    get_team_data=self.get_team_data,
+                )
+                for player in data['players']
+            ]

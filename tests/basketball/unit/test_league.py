@@ -2,6 +2,7 @@ from unittest import TestCase, mock
 from espn_api.basketball.league import League
 from espn_api.basketball.team import Team
 from espn_api.basketball.matchup import Matchup
+from tests.basketball.unit.test_player import _make_player_data
 
 
 class LeagueTest(TestCase):
@@ -200,6 +201,57 @@ class LeagueTest(TestCase):
             
             # Should call espn_request
             league.espn_request.league_get.assert_called_once()
+            league.espn_request.get_player_card.assert_not_called()
+
+    def test_league_transactions_fill_empty_trade_accept(self):
+        """Empty TRADE_ACCEPT rows are filled from player cards."""
+        with mock.patch('espn_api.basketball.league.BaseLeague.__init__', return_value=None):
+            league = League(411647, 2023, fetch_league=False)
+            league.year = 2023
+            league.scoringPeriodId = 4
+            league.finalScoringPeriod = 20
+            league.teams = []
+            league.player_map = {3003: 'Stephen Curry'}
+            league.get_team_data = lambda _: None
+            league.espn_request = mock.MagicMock()
+            league.espn_request.league_get.return_value = {
+                'transactions': [{
+                    'id': 'weekly-1',
+                    'teamId': 3,
+                    'type': 'TRADE_ACCEPT',
+                    'status': 'EXECUTED',
+                    'scoringPeriodId': 4,
+                    'relatedTransactionId': 'rel-1',
+                    'items': [],
+                }]
+            }
+            wrap = _make_player_data(full_name='Stephen Curry', player_id=3003)
+            wrap['transactions'] = [{
+                'id': 'card-1',
+                'teamId': 8,
+                'type': 'TRADE_ACCEPT',
+                'status': 'EXECUTED',
+                'scoringPeriodId': 4,
+                'relatedTransactionId': 'rel-1',
+                'items': [{
+                    'type': 'TRADE',
+                    'playerId': 3003,
+                    'fromTeamId': 3,
+                    'toTeamId': 8,
+                }],
+            }]
+            league.espn_request.get_player_card.return_value = {'players': [wrap]}
+
+            result = league.transactions(
+                types={"TRADE_ACCEPT"},
+                fill_trade_items=True,
+                player_ids=[3003],
+            )
+
+            self.assertEqual(len(result), 1)
+            self.assertEqual(result[0].items[0].playerId, 3003)
+            self.assertEqual(result[0].items[0].from_team_id, 3)
+            league.espn_request.get_player_card.assert_called()
 
     def test_league_free_agents_year_check(self):
         """Test free_agents raises exception for years before 2019"""

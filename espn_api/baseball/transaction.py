@@ -3,6 +3,7 @@ from typing import Any, Callable, Dict
 
 class Transaction(object):
     def __init__(self, data: dict, player_map: Dict[int, str], get_team_data: Callable[[int], Any]):
+        self.id = data.get('id')
         self.team_id = data['teamId']
         self.team = get_team_data(self.team_id)
         self.type = data['type']
