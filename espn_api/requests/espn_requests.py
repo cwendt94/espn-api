@@ -60,6 +60,11 @@ class EspnFantasyRequests(object):
             raise ESPNAccessDenied(f"League {self.league_id} cannot be accessed with the provided credentials")
 
         elif status == 404:
+            # Historical leagues often 404 on /communication/ with
+            # COMMUNICATION_GROUP_NOT_FOUND. The league itself is valid;
+            # recent_activity() should return no topics.
+            if extend and 'communication' in extend:
+                return {"topics": []}
             raise ESPNInvalidLeague(f"League {self.league_id} does not exist")
 
         elif status != 200:
