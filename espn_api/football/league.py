@@ -400,9 +400,24 @@ class League(BaseLeague):
         data = self.espn_request.get_player_card(playerId, self.finalScoringPeriod)
         pro_schedule = self._get_all_pro_schedule()
         if len(data['players']) == 1:
-            return Player(data['players'][0], self.year, pro_schedule)
+            return Player(
+                data['players'][0],
+                self.year,
+                pro_schedule,
+                player_map=self.player_map,
+                get_team_data=self.get_team_data,
+            )
         if len(data['players']) > 1:
-            return [Player(player, self.year, pro_schedule) for player in data['players']]
+            return [
+                Player(
+                    player,
+                    self.year,
+                    pro_schedule,
+                    player_map=self.player_map,
+                    get_team_data=self.get_team_data,
+                )
+                for player in data['players']
+            ]
 
     def message_board(self, msg_types: List[str] = None):
         ''' Returns a list of league messages'''
@@ -416,8 +431,16 @@ class League(BaseLeague):
                 messages.append(msg)
         return messages
 
-    def transactions(self, scoring_period: int = None, types: Set[str] = {"FREEAGENT","WAIVER","WAIVER_ERROR"}) -> List[Transaction]:
-        '''Returns a list of recent transactions'''
+    def transactions(self, scoring_period: int = None, types: Set[str] = {"FREEAGENT","WAIVER","WAIVER_ERROR"}, fill_trade_items: bool = False, player_ids: List[int] = None, fill_from: str = 'week') -> List[Transaction]:
+        '''Returns a list of recent transactions.
+
+        TRADE_ACCEPT rows from mTransactions2 often have empty items except for
+        the authenticated owner's deals. Pass fill_trade_items=True to copy
+        those legs from player cards. fill_from selects which ids to card:
+        'week' (default, that scoring period's team rosters), 'roster'
+        (current League.teams rosters), or 'pool' (FA/waivers/on-team).
+        player_ids overrides fill_from. Does not call load_roster_week.
+        '''
         if not scoring_period:
             scoring_period = self.scoringPeriodId
 
@@ -435,9 +458,11 @@ class League(BaseLeague):
         data = self.espn_request.league_get(params=params, headers=headers)
         if 'transactions' not in data:
             raise Exception('No transactions found')
-        transactions = data['transactions']
-
-        return [Transaction(transaction, self.player_map, self.get_team_data) for transaction in transactions]
+        transactions = [Transaction(transaction, self.player_map, self.get_team_data) for transaction in data['transactions']]
+        self._fill_trade_accept_from_player_cards(
+            transactions, scoring_period, types, fill_trade_items, player_ids, fill_from, Player
+        )
+        return transactions
 
     def offers_report(self, week: int = None) -> List[Offer]:
         '''Returns a list of all waiver/free agent auction offers sorted by timestamp and bid amount'''

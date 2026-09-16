@@ -176,6 +176,53 @@ class EspnFantasyRequests(object):
         data = self.league_get(params=params, headers=headers)
         return data
 
+    def get_player_pool_ids(self, week: int, page_size: int = 500) -> List[int]:
+        '''Player ids in the league pool (rostered, FA, waivers) for card fetches.'''
+        found = []
+        seen = set()
+        offset = 0
+        while True:
+            filters = {
+                'players': {
+                    'filterStatus': {'value': ['FREEAGENT', 'WAIVERS', 'ONTEAM']},
+                    'limit': page_size,
+                    'offset': offset,
+                    'sortPercOwned': {'sortPriority': 1, 'sortAsc': False},
+                }
+            }
+            headers = {'x-fantasy-filter': json.dumps(filters)}
+            data = self.league_get(
+                params={'view': 'kona_player_info', 'scoringPeriodId': week},
+                headers=headers,
+            )
+            batch = data.get('players') if isinstance(data, dict) else None
+            if not isinstance(batch, list) or not batch:
+                break
+            for wrap in batch:
+                player_id = self._player_wrap_id(wrap)
+                if player_id is None or player_id in seen:
+                    continue
+                seen.add(player_id)
+                found.append(player_id)
+            if len(batch) < page_size:
+                break
+            offset += page_size
+        return found
+
+    @staticmethod
+    def _player_wrap_id(wrap):
+        if not isinstance(wrap, dict):
+            return None
+        player_id = wrap.get('id')
+        if isinstance(player_id, int) and player_id != 0:
+            return player_id
+        inner = wrap.get('player')
+        if isinstance(inner, dict):
+            inner_id = inner.get('id')
+            if isinstance(inner_id, int) and inner_id != 0:
+                return inner_id
+        return None
+
     def get_player_news(self, playerId):
         '''Gets the player news'''
         params = {'playerId': playerId}
