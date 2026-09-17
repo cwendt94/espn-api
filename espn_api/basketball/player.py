@@ -1,5 +1,7 @@
 from .constant import NINE_CAT_STATS, POSITION_MAP, PRO_TEAM_MAP, STATS_MAP, STAT_ID_MAP
+from .transaction import Transaction
 from espn_api.utils.utils import json_parsing
+from espn_api.utils.trade_fill import player_transactions
 from datetime import datetime
 from functools import cached_property
 
@@ -7,7 +9,15 @@ from functools import cached_property
 class Player(object):
     """Player are part of team"""
 
-    def __init__(self, data, year, pro_team_schedule=None, news=None):
+    def __init__(
+        self,
+        data,
+        year,
+        pro_team_schedule=None,
+        news=None,
+        player_map=None,
+        get_team_data=None,
+    ):
         self.name = json_parsing(data, "fullName")
         self.playerId = json_parsing(data, "id")
         self.year = year
@@ -102,6 +112,9 @@ class Player(object):
         )
         self.projected_avg_points = self.stats.get(f"{year}_projected", {}).get(
             "applied_avg", 0
+        )
+        self.transactions = player_transactions(
+            data, Transaction, player_map, get_team_data
         )
 
     def __repr__(self):

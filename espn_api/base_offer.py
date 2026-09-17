@@ -34,8 +34,9 @@ class Offer(object):
                 )  # convert from milliseconds to seconds
             self.amount = data["bidAmount"]
             self.teamId = data["teamId"]
+            self.player = None
             self.droppedPlayer = None
-            for item in data["items"]:
+            for item in data.get("items") or []:
                 if item["type"] == "ADD":
                     self.player = item["playerId"]
                 elif item["type"] == "DROP" and self.result == "Processed":
@@ -43,7 +44,6 @@ class Offer(object):
 
     def __lt__(self, other):
         # sort by status, then bid amount
-
         result_ranking = {
             "Processed": 7,
             "Outbid": 6,
@@ -55,7 +55,6 @@ class Offer(object):
             "CANCELLED": 1,
             "PENDING": 0,
         }
-
         if result_ranking[self.result] != result_ranking[other.result]:
             return result_ranking[self.result] < result_ranking[other.result]
         else:

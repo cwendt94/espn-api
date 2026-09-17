@@ -114,9 +114,20 @@ class League(BaseLeague):
         return matchups
 
     def transactions(
-        self, types: Set[str] = None, scoring_period: int = None
+        self,
+        types: Set[str] = None,
+        scoring_period: int = None,
+        fill_trade_items: bool = False,
+        player_ids: List[int] = None,
+        fill_from: str = "week",
     ) -> List[Transaction]:
-        """Returns a list of transactions for a given scoring period"""
+        """Returns a list of transactions for a given scoring period.
+
+        TRADE_ACCEPT rows from mTransactions2 often have empty items except for
+        the authenticated owner's deals. Pass fill_trade_items=True to copy
+        those legs from player cards. fill_from selects which ids to card:
+        'week' (default), 'roster', or 'pool'. player_ids overrides fill_from.
+        """
         if types is None:
             types = TRANSACTION_TYPES
         for t in types:
@@ -135,11 +146,20 @@ class League(BaseLeague):
         filters = {"transactions": {"filterType": {"value": list(types)}}}
         headers = {"x-fantasy-filter": json.dumps(filters)}
         data = self.espn_request.league_get(params=params, headers=headers)
-
-        return [
+        transactions = [
             Transaction(t, self.player_map, self.get_team_data)
             for t in data.get("transactions", [])
         ]
+        self._fill_trade_accept_from_player_cards(
+            transactions,
+            scoring_period,
+            types,
+            fill_trade_items,
+            player_ids,
+            fill_from,
+            Player,
+        )
+        return transactions
 
     def recent_activity(
         self, size: int = 25, msg_type: str = None, offset: int = 0
@@ -287,9 +307,22 @@ class League(BaseLeague):
             playerId, self.finalScoringPeriod, additional_filters=split_filters
         )
         if len(data["players"]) == 1:
-            return Player(data["players"][0], self.year)
+            return Player(
+                data["players"][0],
+                self.year,
+                player_map=self.player_map,
+                get_team_data=self.get_team_data,
+            )
         if len(data["players"]) > 1:
-            return [Player(player, self.year) for player in data["players"]]
+            return [
+                Player(
+                    player,
+                    self.year,
+                    player_map=self.player_map,
+                    get_team_data=self.get_team_data,
+                )
+                for player in data["players"]
+            ]
 
     def refresh(self):
         """Gets latest league data without re-fetching all players"""

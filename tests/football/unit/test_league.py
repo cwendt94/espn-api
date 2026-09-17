@@ -537,6 +537,29 @@ class LeagueTest(TestCase):
         self.assertEqual(repr(activity[0].actions[0][0]), "Team(Perscription Mixon)")
         self.assertEqual(len(repr(activity)), 2829)
 
+    @requests_mock.Mocker()
+    def test_recent_activity_communication_404(self, m):
+        self.mock_setUp(m)
+
+        league = League(self.league_id, 2018)
+        league.year = 2019
+        self.espn_endpoint = (
+            FANTASY_BASE_ENDPOINT
+            + "ffl/seasons/"
+            + str(2019)
+            + "/segments/0/leagues/"
+            + str(self.league_id)
+        )
+        league.espn_request.LEAGUE_ENDPOINT = self.espn_endpoint
+
+        m.get(
+            self.espn_endpoint + "/communication/?view=kona_league_communication",
+            status_code=404,
+            json={"messages": [{"message": "COMMUNICATION_GROUP_NOT_FOUND"}]},
+        )
+
+        self.assertEqual(league.recent_activity(), [])
+
     @mock.patch.object(League, "_fetch_league")
     def test_cookie_set(self, mock_fetch_league):
         league = League(league_id=1234, year=2019, espn_s2="cookie1", swid="cookie2")

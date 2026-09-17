@@ -173,6 +173,31 @@ class PlayerTest(TestCase):
         data = _make_player_data(full_name="Michael Jordan")
         player = Player(data, 2023)
         self.assertEqual(repr(player), "Player(Michael Jordan)")
+        self.assertEqual(player.transactions, [])
+
+    def test_card_player_parses_transactions(self):
+        data = _make_player_data(full_name="Stephen Curry", player_id=3003)
+        data["transactions"] = [
+            {
+                "teamId": 8,
+                "type": "TRADE_ACCEPT",
+                "status": "EXECUTED",
+                "scoringPeriodId": 4,
+                "relatedTransactionId": "rel-1",
+                "items": [
+                    {
+                        "type": "TRADE",
+                        "playerId": 3003,
+                        "fromTeamId": 3,
+                        "toTeamId": 8,
+                    }
+                ],
+            }
+        ]
+        player = Player(data, 2023, player_map={3003: "Stephen Curry"})
+        self.assertEqual(len(player.transactions), 1)
+        self.assertEqual(player.transactions[0].related_transaction_id, "rel-1")
+        self.assertEqual(player.transactions[0].items[0].from_team_id, 3)
 
     def test_player_with_pro_schedule(self):
         """Test player schedule with pro schedule data"""

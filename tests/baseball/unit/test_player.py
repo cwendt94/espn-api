@@ -309,6 +309,32 @@ class PlayerCardStructureTest(TestCase):
 
     def test_on_team_id_from_top_level(self):
         self.assertEqual(self.player.on_team_id, 5)
+        self.assertEqual(self.player.transactions, [])
+
+    def test_card_transactions_parsed(self):
+        data = _make_player_card_data(1001)
+        data["transactions"] = [
+            {
+                "teamId": 5,
+                "type": "TRADE_ACCEPT",
+                "status": "EXECUTED",
+                "scoringPeriodId": 12,
+                "relatedTransactionId": "rel-mlb",
+                "processDate": 1234567890000,
+                "items": [
+                    {
+                        "type": "TRADE",
+                        "playerId": 1001,
+                        "fromTeamId": 2,
+                        "toTeamId": 5,
+                    }
+                ],
+            }
+        ]
+        player = Player(data, year=2021, player_map={1001: "Mike Trout"})
+        self.assertEqual(len(player.transactions), 1)
+        self.assertEqual(player.transactions[0].related_transaction_id, "rel-mlb")
+        self.assertEqual(player.transactions[0].items[0].from_team_id, 2)
 
     def test_jersey_laterality_stance(self):
         self.assertEqual(self.player.jersey, "99")

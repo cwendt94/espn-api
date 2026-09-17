@@ -4,6 +4,12 @@ from typing import List, Tuple
 from .base_settings import BaseSettings
 from .base_pick import BasePick
 from .utils.logger import Logger
+from .utils.trade_fill import (
+    PLAYER_CARD_BATCH,
+    chunked,
+    fill_trade_accept_from_players,
+    transaction_trade_legs,
+)
 from .requests.espn_requests import EspnFantasyRequests
 
 
@@ -200,3 +206,112 @@ class BaseLeague(ABC):
             if team_id == team.team_id:
                 return team
         return None
+
+    def _roster_player_ids(self):
+        ids = set()
+        for team in self.teams:
+            for player in getattr(team, "roster", []) or []:
+                player_id = getattr(player, "playerId", None)
+                if isinstance(player_id, int) and player_id != 0:
+                    ids.add(player_id)
+        return ids
+
+    @staticmethod
+    def _roster_entry_player_id(entry):
+        if not isinstance(entry, dict):
+            return None
+        player_id = entry.get("playerId")
+        if isinstance(player_id, int) and player_id != 0:
+            return player_id
+        pool = entry.get("playerPoolEntry")
+        if isinstance(pool, dict):
+            player_id = pool.get("id")
+            if isinstance(player_id, int) and player_id != 0:
+                return player_id
+            inner = pool.get("player")
+            if isinstance(inner, dict):
+                player_id = inner.get("id")
+                if isinstance(player_id, int) and player_id != 0:
+                    return player_id
+        return None
+
+    def _scoring_period_roster_ids(self, scoring_period):
+        """Player ids on every team roster for a week, without mutating self.teams."""
+        data = self.espn_request.league_get(
+            params={
+                "view": "mRoster",
+                "scoringPeriodId": scoring_period,
+            }
+        )
+        ids = set()
+        teams = data.get("teams") if isinstance(data, dict) else None
+        for team in teams or []:
+            roster = team.get("roster") if isinstance(team, dict) else None
+            entries = roster.get("entries") if isinstance(roster, dict) else None
+            for entry in entries or []:
+                player_id = self._roster_entry_player_id(entry)
+                if player_id is not None:
+                    ids.add(player_id)
+        return ids
+
+    def _trade_fill_player_ids(self, scoring_period, player_ids=None, fill_from="week"):
+        if player_ids is not None:
+            return {
+                player_id
+                for player_id in player_ids
+                if isinstance(player_id, int) and player_id != 0
+            }
+        if fill_from in (None, "week"):
+            return self._scoring_period_roster_ids(scoring_period)
+        if fill_from == "roster":
+            return self._roster_player_ids()
+        if fill_from == "pool":
+            pool_week = getattr(self, "finalScoringPeriod", None) or scoring_period
+            return set(self.espn_request.get_player_pool_ids(pool_week))
+        raise ValueError("fill_from must be 'week', 'roster', or 'pool'")
+
+    def _fill_trade_accept_from_player_cards(
+        self,
+        transactions,
+        scoring_period,
+        types,
+        fill_trade_items=False,
+        player_ids=None,
+        fill_from="week",
+        player_class=None,
+    ):
+        """mTransactions2 omits player lists on other teams' executed trades.
+
+        When fill_trade_items is True, cards ids from fill_from ('week',
+        'roster', or 'pool') unless player_ids is passed, builds Player
+        objects, and copies legs from Player.transactions.
+        """
+        if not fill_trade_items or "TRADE_ACCEPT" not in types or player_class is None:
+            return transactions
+        empty_trades = [
+            txn
+            for txn in transactions
+            if getattr(txn, "type", None) == "TRADE_ACCEPT"
+            and not transaction_trade_legs(txn)
+        ]
+        if not empty_trades:
+            return transactions
+        ids = self._trade_fill_player_ids(scoring_period, player_ids, fill_from)
+        players = []
+        for batch in chunked(sorted(ids), PLAYER_CARD_BATCH):
+            data = self.espn_request.get_player_card(
+                batch, getattr(self, "finalScoringPeriod", scoring_period)
+            )
+            wraps = data.get("players") if isinstance(data, dict) else None
+            for wrap in wraps or []:
+                if not isinstance(wrap, dict):
+                    continue
+                players.append(
+                    player_class(
+                        wrap,
+                        self.year,
+                        player_map=self.player_map,
+                        get_team_data=self.get_team_data,
+                    )
+                )
+        return fill_trade_accept_from_players(transactions, players, scoring_period)

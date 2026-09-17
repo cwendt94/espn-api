@@ -74,3 +74,16 @@ class OfferTest(TestCase):
     def test_repr_for_canceled_offer(self):
         offer = self._make_offer(status="CANCELED", bid_amount=12, drop_player_id=None)
         self.assertEqual(repr(offer), "Canceled bid")
+
+    def test_missing_items_does_not_raise(self):
+        data = {
+            "status": "EXECUTED",
+            "id": 7,
+            "bidAmount": 5,
+            "teamId": 2,
+            "processDate": 1700000000000,
+        }
+        offer = Offer(data, {}, lambda *_: None)
+        self.assertEqual(offer.result, "Processed")
+        self.assertIsNone(offer.player)
+        self.assertIsNone(offer.droppedPlayer)

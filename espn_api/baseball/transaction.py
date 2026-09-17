@@ -9,6 +9,7 @@ class Transaction(object):
         player_map: Dict[int, str],
         get_team_data: Callable[[int], Any],
     ):
+        self.id = data.get("id")
         self.team_id = data["teamId"]
         self.team = get_team_data(self.team_id)
         self.type = data["type"]
@@ -24,7 +25,7 @@ class Transaction(object):
         self.comment = data.get("comment")
         self.member_id = data.get("memberId")
         self.items = []
-        for item in data.get("items", []):
+        for item in data.get("items") or []:
             self.items.append(TransactionItem(item, player_map))
 
     def __repr__(self):
