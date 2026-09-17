@@ -1,17 +1,20 @@
+from typing import Any, Optional
+
+
 class BasePick(object):
     """Pick represents a pick in draft"""
 
     def __init__(
         self,
-        team,
-        playerId,
-        playerName,
-        round_num,
-        round_pick,
-        bid_amount,
-        keeper_status,
-        nominatingTeam,
-    ):
+        team: Optional[Any],
+        playerId: Optional[int],
+        playerName: str,
+        round_num: Optional[int],
+        round_pick: Optional[int],
+        bid_amount: Optional[int],
+        keeper_status: Optional[bool],
+        nominatingTeam: Optional[Any],
+    ) -> None:
         self.team = team
         self.playerId = playerId
         self.playerName = playerName
@@ -21,7 +24,7 @@ class BasePick(object):
         self.keeper_status = keeper_status
         self.nominatingTeam = nominatingTeam
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "Pick(R:%s P:%s, %s, %s)" % (
             self.round_num,
             self.round_pick,
@@ -29,7 +32,7 @@ class BasePick(object):
             self.team,
         )
 
-    def auction_repr(self):
+    def auction_repr(self) -> str:
         return ", ".join(
             map(
                 str,
