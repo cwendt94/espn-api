@@ -1,13 +1,20 @@
 from datetime import datetime
+from typing import Any, Callable, Dict, Optional
 
 
 class Offer(object):
-    def __init__(self, data, player_map, get_team_data):
+    def __init__(
+        self, data: Dict[str, Any], player_map: Any, get_team_data: Callable[..., Any]
+    ) -> None:
         status = data["status"]
-        self.id = data["id"]
-        self.dateTime = None
+        self.id: Any = data["id"]
+        self.dateTime: Optional[datetime] = None
+        self.amount: Optional[int] = None
+        self.teamId: Optional[int] = None
+        self.player: Optional[int] = None
+        self.droppedPlayer: Optional[int] = None
         if status == "CANCELED":
-            self.result = "Canceled"
+            self.result: str = "Canceled"
         else:
             if status == "EXECUTED":
                 self.result = "Processed"
@@ -34,15 +41,13 @@ class Offer(object):
                 )  # convert from milliseconds to seconds
             self.amount = data["bidAmount"]
             self.teamId = data["teamId"]
-            self.player = None
-            self.droppedPlayer = None
             for item in data.get("items") or []:
                 if item["type"] == "ADD":
                     self.player = item["playerId"]
                 elif item["type"] == "DROP" and self.result == "Processed":
                     self.droppedPlayer = item["playerId"]
 
-    def __lt__(self, other):
+    def __lt__(self, other: "Offer") -> bool:
         # sort by status, then bid amount
         result_ranking = {
             "Processed": 7,
@@ -59,9 +64,11 @@ class Offer(object):
             return result_ranking[self.result] < result_ranking[other.result]
         else:
             # sort by bid amount
-            return self.amount < other.amount
+            left = self.amount if self.amount is not None else 0
+            right = other.amount if other.amount is not None else 0
+            return left < right
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         if self.result == "Canceled":
             return "Canceled bid"
         else:
