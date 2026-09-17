@@ -1,3 +1,31 @@
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "espn_api"
+dynamic = ["version"]
+description = "ESPN API"
+readme = "README.md"
+authors = [{ name = "Christian Wendt" }]
+requires-python = ">=3.8"
+license = { text = "MIT" }
+dependencies = [
+    "requests>=2.32.4,<2.33.0",
+    "urllib3>=2.2.3,<2.3.0",
+    "idna>=3.12,<3.13",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/cwendt94/espn-api"
+
+[tool.setuptools.dynamic]
+version = { attr = "espn_api._version.__version__" }
+
+[tool.setuptools.packages.find]
+include = ["espn_api*"]
