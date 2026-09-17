@@ -11,6 +11,7 @@ venv/
 .venv/
 .coverage
 .pytest_cache/
+.mypy_cache/
 build
 dist
 env

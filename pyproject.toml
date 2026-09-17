@@ -30,6 +30,8 @@ dev = [
     "pytest-cov>=5",
     "requests-mock>=1.12",
     "black==26.5.1; python_version >= '3.10'",
+    "mypy>=1.8",
+    "types-requests>=2.32",
 ]
 
 [tool.setuptools.dynamic]
@@ -45,3 +47,7 @@ pythonpath = ["."]
 [tool.black]
 line-length = 88
 target-version = ["py38"]
+
+[tool.mypy]
+python_version = "3.8"
+ignore_missing_imports = true
