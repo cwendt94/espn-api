@@ -24,8 +24,19 @@ classifiers = [
 [project.urls]
 Homepage = "https://github.com/cwendt94/espn-api"
 
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0,<9",
+    "pytest-cov>=5",
+    "requests-mock>=1.12",
+]
+
 [tool.setuptools.dynamic]
 version = { attr = "espn_api._version.__version__" }
 
 [tool.setuptools.packages.find]
 include = ["espn_api*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
