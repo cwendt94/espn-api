@@ -6,47 +6,55 @@ from espn_api.baseball.constant import TRANSACTION_TYPES
 from espn_api.requests.espn_requests import EspnFantasyRequests
 
 
-def _make_transaction_data(type_='FREEAGENT', status='EXECUTED', team_id=1,
-                            scoring_period=1, player_id=1001, item_type='ADD',
-                            is_pending=False):
+def _make_transaction_data(
+    type_="FREEAGENT",
+    status="EXECUTED",
+    team_id=1,
+    scoring_period=1,
+    player_id=1001,
+    item_type="ADD",
+    is_pending=False,
+):
     return {
-        'teamId': team_id,
-        'type': type_,
-        'status': status,
-        'isPending': is_pending,
-        'scoringPeriodId': scoring_period,
-        'processDate': 1234567890000,
-        'bidAmount': None,
-        'rating': 3,
-        'executionType': 'PROCESS',
-        'relatedTransactionId': None,
-        'comment': '',
-        'memberId': '{abc-123}',
-        'items': [{
-            'type': item_type,
-            'playerId': player_id,
-            'fromTeamId': 0,
-            'toTeamId': team_id,
-            'fromLineupSlotId': -1,
-            'toLineupSlotId': 16,
-            'isKeeper': False,
-            'overallPickNumber': None,
-        }],
+        "teamId": team_id,
+        "type": type_,
+        "status": status,
+        "isPending": is_pending,
+        "scoringPeriodId": scoring_period,
+        "processDate": 1234567890000,
+        "bidAmount": None,
+        "rating": 3,
+        "executionType": "PROCESS",
+        "relatedTransactionId": None,
+        "comment": "",
+        "memberId": "{abc-123}",
+        "items": [
+            {
+                "type": item_type,
+                "playerId": player_id,
+                "fromTeamId": 0,
+                "toTeamId": team_id,
+                "fromLineupSlotId": -1,
+                "toLineupSlotId": 16,
+                "isKeeper": False,
+                "overallPickNumber": None,
+            }
+        ],
     }
 
 
 class TransactionClassTest(TestCase):
     def setUp(self):
         self.mock_team = mock.Mock()
-        self.mock_team.team_name = 'Test Team'
-        self.player_map = {1001: 'Mike Trout'}
+        self.mock_team.team_name = "Test Team"
+        self.player_map = {1001: "Mike Trout"}
         self.get_team_data = mock.Mock(return_value=self.mock_team)
 
     def test_basic_attributes(self):
         data = _make_transaction_data()
         t = Transaction(data, self.player_map, self.get_team_data)
-        self.assertEqual(t.type, 'FREEAGENT')
-        self.assertEqual(t.status, 'EXECUTED')
+        self.assertEqual(t.type, "FREEAGENT")
+        self.assertEqual(t.status, "EXECUTED")
         self.assertEqual(t.scoring_period, 1)
         self.assertFalse(t.is_pending)
         self.assertEqual(len(t.items), 1)
@@ -57,30 +65,30 @@ class TransactionClassTest(TestCase):
         self.assertTrue(t.is_pending)
 
     def test_pending_false_from_api_field(self):
-        data = _make_transaction_data(is_pending=False, status='PENDING')
+        data = _make_transaction_data(is_pending=False, status="PENDING")
         t = Transaction(data, self.player_map, self.get_team_data)
         self.assertFalse(t.is_pending)
 
     def test_pending_falls_back_to_status(self):
-        data = _make_transaction_data(status='PENDING')
-        del data['isPending']
+        data = _make_transaction_data(status="PENDING")
+        del data["isPending"]
         t = Transaction(data, self.player_map, self.get_team_data)
         self.assertTrue(t.is_pending)
 
     def test_item_player_name_resolved(self):
         data = _make_transaction_data(player_id=1001)
         t = Transaction(data, self.player_map, self.get_team_data)
-        self.assertEqual(t.items[0].player_name, 'Mike Trout')
+        self.assertEqual(t.items[0].player_name, "Mike Trout")
 
     def test_item_unknown_player_name(self):
         data = _make_transaction_data(player_id=9999)
         t = Transaction(data, self.player_map, self.get_team_data)
-        self.assertEqual(t.items[0].player_name, 'Unknown')
+        self.assertEqual(t.items[0].player_name, "Unknown")
 
     def test_repr(self):
         data = _make_transaction_data()
         t = Transaction(data, self.player_map, self.get_team_data)
-        self.assertIn('FREEAGENT', repr(t))
+        self.assertIn("FREEAGENT", repr(t))
 
     def test_date_is_datetime(self):
         data = _make_transaction_data()
@@ -89,14 +97,14 @@ class TransactionClassTest(TestCase):
 
     def test_date_falls_back_to_proposed(self):
         data = _make_transaction_data()
-        del data['processDate']
-        data['proposedDate'] = 1234567890000
+        del data["processDate"]
+        data["proposedDate"] = 1234567890000
         t = Transaction(data, self.player_map, self.get_team_data)
         self.assertIsInstance(t.date, datetime)
 
     def test_date_none_when_missing(self):
         data = _make_transaction_data()
-        del data['processDate']
+        del data["processDate"]
         t = Transaction(data, self.player_map, self.get_team_data)
         self.assertIsNone(t.date)
 
@@ -104,11 +112,11 @@ class TransactionClassTest(TestCase):
         data = _make_transaction_data()
         t = Transaction(data, self.player_map, self.get_team_data)
         self.assertEqual(t.rating, 3)
-        self.assertEqual(t.execution_type, 'PROCESS')
+        self.assertEqual(t.execution_type, "PROCESS")
 
     def test_rating_defaults_to_none(self):
         data = _make_transaction_data()
-        del data['rating']
+        del data["rating"]
         t = Transaction(data, self.player_map, self.get_team_data)
         self.assertIsNone(t.rating)
 
@@ -125,98 +133,111 @@ class TransactionClassTest(TestCase):
 
     def test_item_is_keeper_true(self):
         data = _make_transaction_data()
-        data['items'][0]['isKeeper'] = True
+        data["items"][0]["isKeeper"] = True
         t = Transaction(data, self.player_map, self.get_team_data)
         self.assertTrue(t.items[0].is_keeper)
 
     def test_item_overall_pick_number(self):
         data = _make_transaction_data()
-        data['items'][0]['overallPickNumber'] = 42
+        data["items"][0]["overallPickNumber"] = 42
         t = Transaction(data, self.player_map, self.get_team_data)
         self.assertEqual(t.items[0].overall_pick_number, 42)
 
 
 class LeagueTransactionsTest(TestCase):
     def setUp(self):
-        with mock.patch.object(League, 'fetch_league'):
+        with mock.patch.object(League, "fetch_league"):
             self.league = League(league_id=1, year=2021)
         self.league.scoringPeriodId = 5
         mock_team = mock.Mock()
-        mock_team.team_name = 'Test Team'
+        mock_team.team_name = "Test Team"
         mock_team.team_id = 1
         mock_team.roster = []
         self.league.teams = [mock_team]
-        self.league.player_map = {1001: 'Mike Trout'}
+        self.league.player_map = {1001: "Mike Trout"}
 
-    @mock.patch.object(EspnFantasyRequests, 'league_get')
+    @mock.patch.object(EspnFantasyRequests, "league_get")
     def test_returns_transaction_list(self, mock_get):
-        mock_get.return_value = {
-            'transactions': [_make_transaction_data()]
-        }
+        mock_get.return_value = {"transactions": [_make_transaction_data()]}
         result = self.league.transactions()
         self.assertEqual(len(result), 1)
         self.assertIsInstance(result[0], Transaction)
 
-    @mock.patch.object(EspnFantasyRequests, 'league_get')
+    @mock.patch.object(EspnFantasyRequests, "league_get")
     def test_empty_response(self, mock_get):
         mock_get.return_value = {}
         result = self.league.transactions()
         self.assertEqual(result, [])
 
-    @mock.patch.object(EspnFantasyRequests, 'league_get')
+    @mock.patch.object(EspnFantasyRequests, "league_get")
     def test_uses_current_scoring_period_by_default(self, mock_get):
-        mock_get.return_value = {'transactions': []}
+        mock_get.return_value = {"transactions": []}
         self.league.transactions()
-        params = mock_get.call_args.kwargs.get('params') or mock_get.call_args[1].get('params')
-        self.assertEqual(params['scoringPeriodId'], 5)
+        params = mock_get.call_args.kwargs.get("params") or mock_get.call_args[1].get(
+            "params"
+        )
+        self.assertEqual(params["scoringPeriodId"], 5)
 
-    @mock.patch.object(EspnFantasyRequests, 'league_get')
+    @mock.patch.object(EspnFantasyRequests, "league_get")
     def test_explicit_scoring_period(self, mock_get):
-        mock_get.return_value = {'transactions': []}
+        mock_get.return_value = {"transactions": []}
         self.league.transactions(scoring_period=3)
-        params = mock_get.call_args.kwargs.get('params') or mock_get.call_args[1].get('params')
-        self.assertEqual(params['scoringPeriodId'], 3)
+        params = mock_get.call_args.kwargs.get("params") or mock_get.call_args[1].get(
+            "params"
+        )
+        self.assertEqual(params["scoringPeriodId"], 3)
 
     def test_invalid_type_raises(self):
         with self.assertRaises(ValueError) as ctx:
-            self.league.transactions(types={'BOGUS_TYPE'})
-        self.assertIn('BOGUS_TYPE', str(ctx.exception))
+            self.league.transactions(types={"BOGUS_TYPE"})
+        self.assertIn("BOGUS_TYPE", str(ctx.exception))
 
     def test_valid_types_accepted(self):
         """All entries in TRANSACTION_TYPES should be accepted without error when mocked."""
-        with mock.patch.object(EspnFantasyRequests, 'league_get', return_value={'transactions': []}):
+        with mock.patch.object(
+            EspnFantasyRequests, "league_get", return_value={"transactions": []}
+        ):
             for t in TRANSACTION_TYPES:
                 with self.subTest(type=t):
                     self.league.transactions(types={t})
 
-    @mock.patch.object(EspnFantasyRequests, 'league_get')
+    @mock.patch.object(EspnFantasyRequests, "league_get")
     def test_types_filter_sent_in_header(self, mock_get):
-        mock_get.return_value = {'transactions': []}
-        self.league.transactions(types={'FREEAGENT'})
-        headers = mock_get.call_args.kwargs.get('headers') or mock_get.call_args[1].get('headers')
+        mock_get.return_value = {"transactions": []}
+        self.league.transactions(types={"FREEAGENT"})
+        headers = mock_get.call_args.kwargs.get("headers") or mock_get.call_args[1].get(
+            "headers"
+        )
         import json
-        sent_filter = json.loads(headers['x-fantasy-filter'])
-        self.assertEqual(sent_filter['transactions']['filterType']['value'], ['FREEAGENT'])
 
-    @mock.patch.object(EspnFantasyRequests, 'league_get')
+        sent_filter = json.loads(headers["x-fantasy-filter"])
+        self.assertEqual(
+            sent_filter["transactions"]["filterType"]["value"], ["FREEAGENT"]
+        )
+
+    @mock.patch.object(EspnFantasyRequests, "league_get")
     def test_fill_trade_items_false_skips_player_cards(self, mock_get):
         mock_get.return_value = {
-            'transactions': [_make_transaction_data(type_='TRADE_ACCEPT', item_type='TRADE')]
+            "transactions": [
+                _make_transaction_data(type_="TRADE_ACCEPT", item_type="TRADE")
+            ]
         }
-        mock_get.return_value['transactions'][0]['items'] = []
-        result = self.league.transactions(types={'TRADE_ACCEPT'}, fill_trade_items=False)
+        mock_get.return_value["transactions"][0]["items"] = []
+        result = self.league.transactions(
+            types={"TRADE_ACCEPT"}, fill_trade_items=False
+        )
         self.assertEqual(result[0].items, [])
         mock_get.assert_called_once()
 
 
 class TransactionOptionalFieldsTest(TestCase):
     def setUp(self):
-        self.player_map = {1001: 'Mike Trout'}
-        self.get_team_data = mock.Mock(return_value=mock.Mock(team_name='Test Team'))
+        self.player_map = {1001: "Mike Trout"}
+        self.get_team_data = mock.Mock(return_value=mock.Mock(team_name="Test Team"))
 
     def test_bid_amount(self):
         data = _make_transaction_data()
-        data['bidAmount'] = 15
+        data["bidAmount"] = 15
         t = Transaction(data, self.player_map, self.get_team_data)
         self.assertEqual(t.bid_amount, 15)
 
@@ -226,37 +247,41 @@ class TransactionOptionalFieldsTest(TestCase):
 
     def test_comment(self):
         data = _make_transaction_data()
-        data['comment'] = 'Picking up the best player'
+        data["comment"] = "Picking up the best player"
         t = Transaction(data, self.player_map, self.get_team_data)
-        self.assertEqual(t.comment, 'Picking up the best player')
+        self.assertEqual(t.comment, "Picking up the best player")
 
     def test_comment_defaults_to_none_when_missing(self):
         data = _make_transaction_data()
-        del data['comment']
+        del data["comment"]
         t = Transaction(data, self.player_map, self.get_team_data)
         self.assertIsNone(t.comment)
 
     def test_member_id_defaults_to_none_when_missing(self):
         data = _make_transaction_data()
-        del data['memberId']
+        del data["memberId"]
         t = Transaction(data, self.player_map, self.get_team_data)
         self.assertIsNone(t.member_id)
 
     def test_member_id(self):
         t = Transaction(_make_transaction_data(), self.player_map, self.get_team_data)
-        self.assertEqual(t.member_id, '{abc-123}')
+        self.assertEqual(t.member_id, "{abc-123}")
 
     def test_related_transaction_id_none(self):
         t = Transaction(_make_transaction_data(), self.player_map, self.get_team_data)
         self.assertIsNone(t.related_transaction_id)
 
     def test_team_resolved_via_callback(self):
-        mock_team = mock.Mock(team_name='Resolved Team')
+        mock_team = mock.Mock(team_name="Resolved Team")
         get_team = mock.Mock(return_value=mock_team)
         t = Transaction(_make_transaction_data(team_id=5), self.player_map, get_team)
         get_team.assert_called_once_with(5)
-        self.assertEqual(t.team.team_name, 'Resolved Team')
+        self.assertEqual(t.team.team_name, "Resolved Team")
 
     def test_item_repr(self):
-        t = Transaction(_make_transaction_data(item_type='ADD', player_id=1001), self.player_map, self.get_team_data)
-        self.assertEqual(repr(t.items[0]), 'ADD Mike Trout')
+        t = Transaction(
+            _make_transaction_data(item_type="ADD", player_id=1001),
+            self.player_map,
+            self.get_team_data,
+        )
+        self.assertEqual(repr(t.items[0]), "ADD Mike Trout")

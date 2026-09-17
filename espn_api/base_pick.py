@@ -1,7 +1,17 @@
-
 class BasePick(object):
-    ''' Pick represents a pick in draft '''
-    def __init__(self, team, playerId, playerName, round_num, round_pick, bid_amount, keeper_status, nominatingTeam):
+    """Pick represents a pick in draft"""
+
+    def __init__(
+        self,
+        team,
+        playerId,
+        playerName,
+        round_num,
+        round_pick,
+        bid_amount,
+        keeper_status,
+        nominatingTeam,
+    ):
         self.team = team
         self.playerId = playerId
         self.playerName = playerName
@@ -12,7 +22,23 @@ class BasePick(object):
         self.nominatingTeam = nominatingTeam
 
     def __repr__(self):
-        return 'Pick(R:%s P:%s, %s, %s)' % (self.round_num, self.round_pick, self.playerName, self.team)
+        return "Pick(R:%s P:%s, %s, %s)" % (
+            self.round_num,
+            self.round_pick,
+            self.playerName,
+            self.team,
+        )
 
     def auction_repr(self):
-        return ', '.join(map(str, [self.team, self.playerId, self.playerName, self.bid_amount, self.keeper_status]))
+        return ", ".join(
+            map(
+                str,
+                [
+                    self.team,
+                    self.playerId,
+                    self.playerName,
+                    self.bid_amount,
+                    self.keeper_status,
+                ],
+            )
+        )
