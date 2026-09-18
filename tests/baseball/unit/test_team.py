@@ -3,42 +3,55 @@ from unittest import TestCase, mock
 from espn_api.baseball.team import Team
 
 
-def _make_record(wins=5, losses=3, ties=0, points_for=100.0, points_against=80.0,
-                 streak_length=2, streak_type='WIN'):
+def _make_record(
+    wins=5,
+    losses=3,
+    ties=0,
+    points_for=100.0,
+    points_against=80.0,
+    streak_length=2,
+    streak_type="WIN",
+):
     return {
-        'wins': wins, 'losses': losses, 'ties': ties,
-        'pointsFor': points_for, 'pointsAgainst': points_against,
-        'streakLength': streak_length, 'streakType': streak_type,
-        'gamesBack': 0.0, 'percentage': 0.625,
+        "wins": wins,
+        "losses": losses,
+        "ties": ties,
+        "pointsFor": points_for,
+        "pointsAgainst": points_against,
+        "streakLength": streak_length,
+        "streakType": streak_type,
+        "gamesBack": 0.0,
+        "percentage": 0.625,
     }
 
 
 def _make_team_data(team_id=1, wins=5, losses=3):
     return {
-        'id': team_id,
-        'abbrev': 'TST',
-        'name': 'Test Team',
-        'divisionId': 0,
-        'playoffSeed': 1,
-        'rankCalculatedFinal': 1,
-        'currentProjectedRank': 2,
-        'waiverRank': 4,
-        'points': 55.5,
-        'record': {
-            'overall': _make_record(wins=wins, losses=losses),
-            'home': _make_record(wins=3, losses=1),
-            'away': _make_record(wins=2, losses=2),
-            'division': _make_record(wins=1, losses=1),
+        "id": team_id,
+        "abbrev": "TST",
+        "name": "Test Team",
+        "divisionId": 0,
+        "playoffSeed": 1,
+        "rankCalculatedFinal": 1,
+        "currentProjectedRank": 2,
+        "waiverRank": 4,
+        "points": 55.5,
+        "record": {
+            "overall": _make_record(wins=wins, losses=losses),
+            "home": _make_record(wins=3, losses=1),
+            "away": _make_record(wins=2, losses=2),
+            "division": _make_record(wins=1, losses=1),
         },
     }
 
 
 def _make_team(data=None):
     data = data or _make_team_data()
-    roster = {'entries': []}
+    roster = {"entries": []}
     schedule = []
-    with mock.patch('espn_api.baseball.team.Player'), \
-         mock.patch('espn_api.baseball.team.Matchup'):
+    with mock.patch("espn_api.baseball.team.Player"), mock.patch(
+        "espn_api.baseball.team.Matchup"
+    ):
         return Team(data, roster, schedule, year=2026)
 
 
@@ -57,7 +70,7 @@ class TeamRecordTest(TestCase):
 
     def test_streak(self):
         self.assertEqual(self.team.streak_length, 2)
-        self.assertEqual(self.team.streak_type, 'WIN')
+        self.assertEqual(self.team.streak_type, "WIN")
 
     def test_home_record(self):
         self.assertEqual(self.team.home_wins, 3)
@@ -90,14 +103,14 @@ class TeamMetadataTest(TestCase):
 
     def test_optional_fields_default_to_none(self):
         data = _make_team_data()
-        del data['currentProjectedRank']
-        del data['waiverRank']
+        del data["currentProjectedRank"]
+        del data["waiverRank"]
         team = _make_team(data)
         self.assertIsNone(team.current_projected_rank)
         self.assertIsNone(team.waiver_rank)
 
     def test_points_defaults_to_zero(self):
         data = _make_team_data()
-        del data['points']
+        del data["points"]
         team = _make_team(data)
         self.assertEqual(team.points, 0)

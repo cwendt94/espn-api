@@ -1,3 +1,3 @@
-__all__ = ['EspnFantasyRequests']
+__all__ = ["EspnFantasyRequests"]
 
 from .espn_requests import EspnFantasyRequests
