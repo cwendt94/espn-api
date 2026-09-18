@@ -8,16 +8,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up Python
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v5
       with:
-        python-version: '3.8'
+        python-version: '3.12'
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v4
     - name: Install dependencies
-      run: python setup.py install
+      run: uv sync --extra dev
     - name: Test integration
       run: |
-        python3 setup.py nosetests --tests tests/football/integration/
-        python3 setup.py nosetests --tests tests/basketball/integration/
-        python3 setup.py nosetests --tests tests/hockey/integration/
-        python3 setup.py nosetests --tests tests/baseball/integration/
+        uv run pytest \
+          tests/football/integration \
+          tests/basketball/integration \
+          tests/hockey/integration \
+          tests/baseball/integration \
+          tests/wbasketball/integration

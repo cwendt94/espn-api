@@ -8,44 +8,50 @@ Please feel free to make suggestions, bug reports, and pull request for features
 
 This package was inspired and based off of [rbarton65/espnff](https://github.com/rbarton65/espnff).
 
+
 ## Installing
 ### Note
-The difference in setup.py and requirements is in the test packages. If you are in python version >=3.9 then please use the requirements and pytest as nosetests is deprecated.
+For contributors, please refer to the development section.
 
-With Git & Setup.py (Not recommended for Python >=3.9):
+Latest release with pip:
+```
+pip install espn_api
+```
+
+Clone from source with Git and [uv](https://docs.astral.sh/uv/):
 ```
 git clone https://github.com/cwendt94/espn-api
 cd espn-api
-python3 setup.py install
+uv sync
 ```
 
-with Git and Requirements.txt (Recommended for python >=3.9)
+Clone from source with Git and pip:
 ```
 git clone https://github.com/cwendt94/espn-api
 cd espn-api
 python -m venv myenv
 myenv\Scripts\activate.bat
-pip install -r requirementsV2.txt
+pip install .
 ```
-
-With pip:
-```
-pip install espn_api
-```
+use `myenv\Scripts\Activate.ps1` for PowerShell and `source myenv/bin/activate` for macOS/Linux.
 
 
-### Run Tests
-with nosetests (Not recommended for Python >=3.9):
+## Development
+This project's development tooling uses [uv](https://docs.astral.sh/uv/) as the dependency/environment manager, in order to create an easy, reproducible development workflow. With uv installed, run `uv sync --extra dev` at the root of your clone to setup the dev environment. The formatter needs Python 3.10+.
+### Tests
 ```
-python3 setup.py nosetests
+uv run pytest tests --ignore-glob='**/integration/**'
+```
+Omit the `--ignore-glob` option to run all tests(including those that hit live ESPN).
+### Format
+```
+uv run black espn_api tests
 ```
 
-with pytest (Recommended for Python >=3.9)
+### Type check
 ```
-pytest
+uv run mypy espn_api
 ```
-
-
 
 
 ## Usage
