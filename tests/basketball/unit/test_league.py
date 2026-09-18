@@ -319,3 +319,151 @@ class LeagueTest(TestCase):
 
             call_kwargs = mock_init.call_args[1]
             self.assertEqual(call_kwargs["sport"], "nba")
+
+    def test_league_scoreboard_filters_period_and_replaces_teams(self):
+        """Test scoreboard filtering and team object replacement"""
+        with mock.patch(
+            "espn_api.basketball.league.BaseLeague.__init__", return_value=None
+        ):
+            league = League(411647, 2023, fetch_league=False)
+            home_team = mock.Mock(team_id=1)
+            away_team = mock.Mock(team_id=2)
+            league.teams = [home_team, away_team]
+            league.currentMatchupPeriod = 3
+            league.espn_request = mock.MagicMock()
+            league.espn_request.league_get.return_value = {
+                "schedule": [
+                    {
+                        "matchupPeriodId": 3,
+                        "winner": "HOME",
+                        "home": {"teamId": 1, "totalPoints": 100},
+                        "away": {"teamId": 2, "totalPoints": 90},
+                    },
+                    {
+                        "matchupPeriodId": 4,
+                        "winner": "AWAY",
+                        "home": {"teamId": 1, "totalPoints": 80},
+                        "away": {"teamId": 2, "totalPoints": 85},
+                    },
+                ]
+            }
+
+            result = league.scoreboard()
+
+            self.assertEqual(len(result), 1)
+            self.assertIs(result[0].home_team, home_team)
+            self.assertIs(result[0].away_team, away_team)
+            league.espn_request.league_get.assert_called_once_with(
+                params={"view": "mMatchup"}
+            )
+
+    def test_league_recent_activity_builds_filtered_request(self):
+        """Test recent activity request filters and activity conversion"""
+        with mock.patch(
+            "espn_api.basketball.league.BaseLeague.__init__", return_value=None
+        ), mock.patch("espn_api.basketball.league.Activity") as activity_class:
+            league = League(411647, 2023, fetch_league=False)
+            league.year = 2023
+            league.espn_request = mock.MagicMock()
+            league.espn_request.league_get.return_value = {"topics": [{"date": "today"}]}
+            league.player_map = {}
+            league.get_team_data = mock.Mock()
+
+            result = league.recent_activity(
+                size=4, msg_type="FA", offset=2, include_moved=True
+            )
+
+            self.assertEqual(result, [activity_class.return_value])
+            call = league.espn_request.league_get.call_args
+            self.assertEqual(call.kwargs["params"], {"view": "kona_league_communication"})
+            self.assertEqual(call.kwargs["extend"], "/communication/")
+            self.assertIn('"limit": 4', call.kwargs["headers"]["x-fantasy-filter"])
+            self.assertIn('"offset": 2', call.kwargs["headers"]["x-fantasy-filter"])
+            self.assertIn('178', call.kwargs["headers"]["x-fantasy-filter"])
+            activity_class.assert_called_once_with(
+                {"date": "today"}, {}, league.get_team_data, include_moved=True
+            )
+
+    def test_league_free_agents_applies_position_filters(self):
+        """Test free-agent request parameters and player conversion"""
+        with mock.patch(
+            "espn_api.basketball.league.BaseLeague.__init__", return_value=None
+        ):
+            league = League(411647, 2023, fetch_league=False)
+            league.year = 2023
+            league.current_week = 7
+            league.espn_request = mock.MagicMock()
+            player_data = _make_player_data(full_name="Player One", player_id=1001)
+            league.espn_request.league_get.return_value = {"players": [player_data]}
+
+            result = league.free_agents(position="PG", size=12)
+
+            self.assertEqual(len(result), 1)
+            self.assertEqual(result[0].name, "Player One")
+            call = league.espn_request.league_get.call_args
+            self.assertEqual(call.kwargs["params"]["scoringPeriodId"], 7)
+            self.assertIn('"limit": 12', call.kwargs["headers"]["x-fantasy-filter"])
+            self.assertIn('"filterSlotIds": {"value": [0]}', call.kwargs["headers"]["x-fantasy-filter"])
+
+    def test_league_box_scores_selects_previous_matchup_period(self):
+        """Test previous matchup period selection and team replacement"""
+        with mock.patch(
+            "espn_api.basketball.league.BaseLeague.__init__", return_value=None
+        ), mock.patch("espn_api.basketball.league.get_box_scoring_type_class"):
+            league = League(411647, 2023, fetch_league=False)
+            league.year = 2023
+            league.currentMatchupPeriod = 5
+            league.current_week = 8
+            league.matchup_ids = {3: ["5", "6"]}
+            league.pro_schedule = {}
+            home_team = mock.Mock(team_id=1)
+            away_team = mock.Mock(team_id=2)
+            league.teams = [home_team, away_team]
+            box_score = mock.Mock(home_team=1, away_team=2)
+            league.BoxScoreClass = mock.Mock(return_value=box_score)
+            league.espn_request = mock.MagicMock()
+            league.espn_request.league_get.return_value = {
+                "schedule": [{"home": {"teamId": 1}, "away": {"teamId": 2}}]
+            }
+
+            result = league.box_scores(matchup_period=3)
+
+            self.assertEqual(result, [box_score])
+            self.assertIs(box_score.home_team, home_team)
+            self.assertIs(box_score.away_team, away_team)
+            call = league.espn_request.league_get.call_args
+            self.assertEqual(call.kwargs["params"]["scoringPeriodId"], "6")
+            self.assertIn('"value": [3]', call.kwargs["headers"]["x-fantasy-filter"])
+
+    def test_league_player_info_returns_none_without_player_id(self):
+        """Test player_info rejects missing and unresolved identifiers"""
+        with mock.patch(
+            "espn_api.basketball.league.BaseLeague.__init__", return_value=None
+        ):
+            league = League(411647, 2023, fetch_league=False)
+            league.player_map = {"Known Player": 1001}
+
+            self.assertIsNone(league.player_info())
+            self.assertIsNone(league.player_info(name="Unknown Player"))
+            self.assertIsNone(league.player_info(playerId="1001"))
+
+    def test_league_player_info_returns_multiple_players(self):
+        """Test player_info converts multiple player cards"""
+        with mock.patch(
+            "espn_api.basketball.league.BaseLeague.__init__", return_value=None
+        ), mock.patch("espn_api.basketball.league.Player") as player_class:
+            league = League(411647, 2023, fetch_league=False)
+            league.year = 2023
+            league.finalScoringPeriod = 20
+            league.pro_schedule = {}
+            league.player_map = {}
+            league.get_team_data = mock.Mock()
+            league.espn_request = mock.MagicMock()
+            cards = [{"id": 1001}, {"id": 1002}]
+            league.espn_request.get_player_card.return_value = {"players": cards}
+
+            result = league.player_info(playerId=[1001, 1002])
+
+            self.assertEqual(result, [player_class.return_value, player_class.return_value])
+            self.assertEqual(player_class.call_count, 2)
+            league.espn_request.get_player_card.assert_called_once_with([1001, 1002], 20)
