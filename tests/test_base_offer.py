@@ -87,3 +87,20 @@ class OfferTest(TestCase):
         self.assertEqual(offer.result, "Processed")
         self.assertIsNone(offer.player)
         self.assertIsNone(offer.droppedPlayer)
+
+    def test_canceled_offer_leaves_bid_fields_unset(self):
+        offer = self._make_offer(status="CANCELED", drop_player_id=None)
+
+        self.assertEqual(offer.result, "Canceled")
+        self.assertIsNone(offer.dateTime)
+        self.assertIsNone(offer.amount)
+        self.assertIsNone(offer.teamId)
+        self.assertIsNone(offer.player)
+        self.assertIsNone(offer.droppedPlayer)
+
+    def test_canceled_offers_can_be_sorted(self):
+        first = self._make_offer(status="CANCELED", drop_player_id=None)
+        second = self._make_offer(status="CANCELED", drop_player_id=None)
+
+        ordered = sorted([first, second])
+        self.assertEqual([offer.result for offer in ordered], ["Canceled", "Canceled"])
