@@ -48,9 +48,9 @@ class BaseSettings(object):
         self.waiver_process_days: List[str] = list(
             data.get("acquisitionSettings", {}).get("waiverProcessDays", [])
         )
-        self.waiver_process_hour: Optional[int] = data.get("acquisitionSettings", {}).get(
-            "waiverProcessHour"
-        )
+        self.waiver_process_hour: Optional[int] = data.get(
+            "acquisitionSettings", {}
+        ).get("waiverProcessHour")
         self.trade_revision_hours: Optional[int] = data.get("tradeSettings", {}).get(
             "revisionHours"
         )
