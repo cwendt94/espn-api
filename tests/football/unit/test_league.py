@@ -14,6 +14,7 @@ from espn_api.football.helper import (
 import requests_mock
 import json
 import io
+from datetime import datetime
 
 
 class LeagueTest(TestCase):
@@ -484,6 +485,151 @@ class LeagueTest(TestCase):
         valid_week = league.power_rankings(13)
         self.assertEqual(valid_week[0][0], "71.15")
         self.assertEqual(repr(valid_week[0][1]), "Team(Perscription Mixon)")
+
+    def test_get_positional_ratings(self):
+        league = League(league_id=123, year=2019, fetch_league=False)
+        league.espn_request = mock.MagicMock()
+        league.espn_request.league_get.return_value = {
+            "positionAgainstOpponent": {
+                "positionalRatings": {
+                    "QB": {"ratingsByOpponent": {"1": {"rank": 8}, "2": {"rank": 3}}},
+                    "RB": {"ratingsByOpponent": {"1": {"rank": 5}}},
+                }
+            }
+        }
+
+        ratings = league._get_positional_ratings(5)
+
+        self.assertEqual(ratings["QB"]["1"], 8)
+        self.assertEqual(ratings["QB"]["2"], 3)
+        self.assertEqual(ratings["RB"]["1"], 5)
+        league.espn_request.league_get.assert_called_once_with(
+            params={
+                "view": "mPositionalRatings",
+                "scoringPeriodId": 5,
+            }
+        )
+
+    def test_top_and_least_scored_week(self):
+        league = League(league_id=123, year=2019, fetch_league=False)
+        league.current_week = 3
+
+        team_one = mock.MagicMock()
+        team_one.team_id = 1
+        team_one.scores = [10, 15, 20]
+
+        team_two = mock.MagicMock()
+        team_two.team_id = 2
+        team_two.scores = [12, 18, 30]
+
+        team_three = mock.MagicMock()
+        team_three.team_id = 3
+        team_three.scores = [9, 11, 14]
+
+        league.teams = [team_one, team_two, team_three]
+
+        top_team, top_points = league.top_scored_week()
+        least_team, least_points = league.least_scored_week()
+
+        self.assertEqual(top_team.team_id, 2)
+        self.assertEqual(top_points, 30)
+        self.assertEqual(least_team.team_id, 3)
+        self.assertEqual(least_points, 9)
+
+    def test_message_board(self):
+        league = League(league_id=123, year=2019, fetch_league=False)
+        league.espn_request = mock.MagicMock()
+        league.espn_request.get_league_message_board.return_value = {
+            "topicsByType": {
+                "trades": [{"message": "trade"}],
+                "announcements": [{"message": "hello"}, {"message": "world"}],
+            }
+        }
+
+        messages = league.message_board(msg_types=["trades", "announcements"])
+
+        self.assertEqual(len(messages), 3)
+        self.assertEqual(messages[0]["message"], "trade")
+        self.assertEqual(messages[1]["message"], "hello")
+        self.assertEqual(messages[2]["message"], "world")
+
+    def test_transactions_raises_for_invalid_and_missing_payloads(self):
+        league = League(league_id=123, year=2019, fetch_league=False)
+        league.scoringPeriodId = 3
+        league.espn_request = mock.MagicMock()
+
+        with self.assertRaises(Exception):
+            league.transactions(types={"NOT_REAL"})
+
+        league.espn_request.league_get.return_value = {}
+        with self.assertRaisesRegex(Exception, "No transactions found"):
+            league.transactions(types={"FREEAGENT"})
+
+    @mock.patch.object(League, "_get_pro_schedule")
+    @mock.patch.object(League, "_get_positional_ratings")
+    @mock.patch("espn_api.football.league.BoxScore")
+    def test_box_scores_uses_week_and_player_cache(
+        self, mock_box_score, mock_pos_ratings, mock_pro_schedule
+    ):
+        league = League(league_id=123, year=2019, fetch_league=False)
+        league.current_week = 5
+        league.currentMatchupPeriod = 2
+        league.settings = mock.Mock(matchup_periods={1: [1, 2], 2: [3, 4]})
+        league.teams = [mock.Mock(team_id=1), mock.Mock(team_id=2)]
+        league.espn_request = mock.MagicMock()
+        league.espn_request.league_get.return_value = {
+            "schedule": [{"home": {"teamId": 1}, "away": {"teamId": 2}}]
+        }
+        box_score = mock.Mock(home_team=1, away_team=2)
+        mock_box_score.return_value = box_score
+        mock_pos_ratings.return_value = {}
+        mock_pro_schedule.return_value = {}
+
+        result = league.box_scores(week=3, player_team_cache={123: 9})
+
+        self.assertEqual(result, [box_score])
+        self.assertIs(box_score.home_team, league.teams[0])
+        self.assertIs(box_score.away_team, league.teams[1])
+        self.assertEqual(
+            league.espn_request.league_get.call_args.kwargs["params"][
+                "scoringPeriodId"
+            ],
+            3,
+        )
+        self.assertIn(
+            '"value": [2]',
+            league.espn_request.league_get.call_args.kwargs["headers"][
+                "x-fantasy-filter"
+            ],
+        )
+
+    def test_offers_report_reuses_timestamp_from_matching_bid(self):
+        league = League(league_id=123, year=2019, fetch_league=False)
+        league._get_offers = mock.Mock(
+            return_value=[
+                {
+                    "status": "EXECUTED",
+                    "id": "missing-ts",
+                    "teamId": 1,
+                    "bidAmount": 10,
+                    "items": [{"type": "ADD", "playerId": 101}],
+                },
+                {
+                    "status": "EXECUTED",
+                    "id": "has-ts",
+                    "teamId": 1,
+                    "bidAmount": 12,
+                    "processDate": 1700000000000,
+                    "items": [{"type": "ADD", "playerId": 101}],
+                },
+            ]
+        )
+
+        offers = league.offers_report()
+
+        self.assertEqual(len(offers), 2)
+        self.assertEqual(offers[0].dateTime, datetime.fromtimestamp(1700000000))
+        self.assertEqual(offers[1].dateTime, datetime.fromtimestamp(1700000000))
 
     @requests_mock.Mocker()
     @mock.patch.object(League, "_get_pro_schedule")

@@ -1,5 +1,6 @@
-from unittest import TestCase
+from unittest import TestCase, mock
 
+from espn_api.base_league import BaseLeague
 from espn_api.football.player import Player
 from espn_api.football.transaction import Transaction
 from espn_api.utils.trade_fill import (
@@ -119,3 +120,179 @@ class TradeFillHelperTest(TestCase):
         nested = {"player": {"transactions": [{"type": "WAIVER"}]}}
         self.assertEqual(player_card_transactions(nested)[0]["type"], "WAIVER")
         self.assertEqual(player_card_transactions({}), [])
+
+    def test_best_player_transactions_ignores_incomplete_or_unexecuted_cards(self):
+        valid = Player(
+            _card_player([_card_trade(related="rel-2", player_id=50)]),
+            2022,
+            player_map={50: "A"},
+        )
+        valid.transactions[0].status = "EXECUTED"
+        invalid = Player(
+            _card_player([_card_trade(related="rel-2", player_id=51)]), 2022
+        )
+        invalid.transactions[0].status = "PENDING"
+
+        best = best_player_transactions([valid, invalid])
+        self.assertIn("rel-2", best)
+        self.assertEqual(best["rel-2"].items[0].playerId, 50)
+
+    def test_fill_trade_accept_from_players_appends_card_only_trade_when_week_matches(
+        self,
+    ):
+        weekly = []
+        player = Player(
+            _card_player([_card_trade(related="rel-card", week=7, player_id=900)]),
+            2022,
+            player_map={900: "Card Player"},
+        )
+        player.transactions[0].scoring_period = 7
+
+        fill_trade_accept_from_players(weekly, [player], scoring_period=7)
+
+        self.assertEqual(len(weekly), 1)
+        self.assertEqual(weekly[0].related_transaction_id, "rel-card")
+
+    def test_fill_trade_accept_from_players_skips_mismatched_card_week(self):
+        weekly = []
+        player = Player(
+            _card_player([_card_trade(related="rel-card", week=7, player_id=901)]),
+            2022,
+            player_map={901: "Card Player"},
+        )
+        player.transactions[0].scoring_period = 8
+
+        fill_trade_accept_from_players(weekly, [player], scoring_period=7)
+
+        self.assertEqual(weekly, [])
+
+
+class BaseLeagueCoverageTest(TestCase):
+    def _league(self):
+        league = object.__new__(BaseLeague)
+        league.teams = []
+        league.year = 2023
+        league.player_map = {}
+        league.finalScoringPeriod = 17
+        league.espn_request = mock.MagicMock()
+        return league
+
+    def test_base_league_roster_entry_player_id_variants(self):
+        self.assertEqual(BaseLeague._roster_entry_player_id({"playerId": 12}), 12)
+        self.assertEqual(
+            BaseLeague._roster_entry_player_id({"playerPoolEntry": {"id": 22}}), 22
+        )
+        self.assertEqual(
+            BaseLeague._roster_entry_player_id(
+                {"playerPoolEntry": {"player": {"id": 33}}}
+            ),
+            33,
+        )
+        self.assertIsNone(BaseLeague._roster_entry_player_id({"playerId": "12"}))
+        self.assertIsNone(
+            BaseLeague._roster_entry_player_id({"playerPoolEntry": {"id": 0}})
+        )
+
+    def test_base_league_scoring_period_roster_ids_uses_team_rosters(self):
+        league = self._league()
+        league.espn_request.league_get.return_value = {
+            "teams": [
+                {
+                    "roster": {
+                        "entries": [
+                            {"playerId": 1},
+                            {"playerPoolEntry": {"id": 2}},
+                            {"playerId": 0},
+                        ]
+                    }
+                },
+                {
+                    "roster": {
+                        "entries": [
+                            {"playerPoolEntry": {"player": {"id": 3}}},
+                            {"playerPoolEntry": {"id": "bad"}},
+                        ]
+                    }
+                },
+            ]
+        }
+
+        self.assertEqual(league._scoring_period_roster_ids(5), {1, 2, 3})
+        league.espn_request.league_get.assert_called_once_with(
+            params={"view": "mRoster", "scoringPeriodId": 5}
+        )
+
+    def test_base_league_trade_fill_player_ids_routes_by_source(self):
+        league = self._league()
+        league._scoring_period_roster_ids = mock.Mock(return_value={1, 2})
+        league._roster_player_ids = mock.Mock(return_value={3, 4})
+        league.espn_request.get_player_pool_ids.return_value = [5, 6]
+
+        self.assertEqual(
+            league._trade_fill_player_ids(7, player_ids=[1, 0, "x", 8]), {1, 8}
+        )
+        self.assertEqual(league._trade_fill_player_ids(7), {1, 2})
+        self.assertEqual(league._trade_fill_player_ids(7, fill_from="roster"), {3, 4})
+        self.assertEqual(league._trade_fill_player_ids(7, fill_from="pool"), {5, 6})
+        with self.assertRaises(ValueError):
+            league._trade_fill_player_ids(7, fill_from="bad")
+
+    def test_base_league_fill_trade_accept_from_player_cards_uses_card_data(self):
+        league = self._league()
+        league.player_map = {44: "Player 44"}
+        league.get_team_data = lambda _: None
+        league.espn_request.get_player_card.return_value = {
+            "players": [
+                {
+                    "id": 44,
+                    "fullName": "Player 44",
+                    "positionalRanking": 5,
+                    "eligibleSlots": [0],
+                    "acquisitionType": "DRAFT",
+                    "proTeamId": 1,
+                    "lineupSlotId": 0,
+                    "injuryStatus": "ACTIVE",
+                    "playerPoolEntry": {
+                        "player": {
+                            "fullName": "Player 44",
+                            "id": 44,
+                            "injuryStatus": "ACTIVE",
+                            "injured": False,
+                            "stats": [],
+                        }
+                    },
+                    "transactions": [
+                        {
+                            "id": "card-1",
+                            "teamId": 7,
+                            "type": "TRADE_ACCEPT",
+                            "status": "EXECUTED",
+                            "scoringPeriodId": 3,
+                            "relatedTransactionId": "rel-1",
+                            "items": [
+                                {
+                                    "type": "TRADE",
+                                    "playerId": 44,
+                                    "fromTeamId": 1,
+                                    "toTeamId": 7,
+                                }
+                            ],
+                        }
+                    ],
+                }
+            ]
+        }
+
+        txn = _empty_trade(txn_id="weekly-1", related="rel-1", team_id=1, week=3)
+        result = league._fill_trade_accept_from_player_cards(
+            [txn],
+            3,
+            {"TRADE_ACCEPT"},
+            fill_trade_items=True,
+            player_ids=[44],
+            player_class=Player,
+        )
+
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0].items[0].playerId, 44)
+        self.assertEqual(result[0].related_transaction_id, "rel-1")
