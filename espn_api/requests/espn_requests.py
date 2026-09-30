@@ -125,6 +125,10 @@ class EspnFantasyRequests(object):
     def get(self, params: dict = None, headers: dict = None, extend: str = ""):
         endpoint = self.ENDPOINT + extend
         r = requests.get(endpoint, params=params, headers=headers, cookies=self.cookies)
+        if r.status_code == 404:
+            # A league with no message board 404s on /communication with
+            # COMMUNICATION_GROUP_NOT_FOUND; treat it like league_get does.
+            return self.checkRequestStatus(r.status_code, extend=extend)
         self.checkRequestStatus(r.status_code)
 
         if self.logger:

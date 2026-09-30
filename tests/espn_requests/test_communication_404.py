@@ -32,3 +32,21 @@ class Communication404Test(TestCase):
             },
         )
         self.assertEqual(self.req.league_get(extend="/communication/"), {"topics": []})
+
+    @requests_mock.Mocker()
+    def test_message_board_communication_404(self, mock_request):
+        mock_request.get(
+            self.req.ENDPOINT + "/segments/0/leagues/123456/communication",
+            status_code=404,
+            json={
+                "messages": ["This Communication Group does not exist."],
+                "details": [{"type": "COMMUNICATION_GROUP_NOT_FOUND"}],
+            },
+        )
+        self.assertEqual(self.req.get_league_message_board(), {"topics": []})
+
+    @requests_mock.Mocker()
+    def test_get_404_outside_communication_still_invalid(self, mock_request):
+        mock_request.get(self.req.ENDPOINT + "/players", status_code=404)
+        with self.assertRaises(ESPNInvalidLeague):
+            self.req.get(extend="/players")
