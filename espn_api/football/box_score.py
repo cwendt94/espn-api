@@ -16,7 +16,7 @@ class BoxScore(object):
         self.matchup_type = data.get("playoffTierType", "NONE")
         self.is_playoff = self.matchup_type != "NONE"
 
-        self.home_team, self.home_score, self.home_projected, self.home_lineup = (
+        self.home_team, self.home_score, self.home_projected, self.home_lineup, self.home_probability = (
             self._get_team_data(
                 "home",
                 data,
@@ -31,7 +31,7 @@ class BoxScore(object):
             self.home_projected, self.home_lineup
         )
 
-        self.away_team, self.away_score, self.away_projected, self.away_lineup = (
+        self.away_team, self.away_score, self.away_projected, self.away_lineup, self.away_probability = (
             self._get_team_data(
                 "away",
                 data,
@@ -87,5 +87,6 @@ class BoxScore(object):
             )
             for player in team_roster
         ]
+        team_probability = round(data[team]["winProbability"]*100)
 
-        return (team_id, team_score, team_projected, team_lineup)
+        return (team_id, team_score, team_projected, team_lineup, team_probability)
