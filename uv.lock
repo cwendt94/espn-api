@@ -466,7 +466,7 @@ requires-dist = [
     { name = "requests", specifier = ">=2.34.0,<2.35.0" },
     { name = "requests-mock", marker = "extra == 'dev'", specifier = ">=1.12" },
     { name = "types-requests", marker = "extra == 'dev'", specifier = ">=2.32" },
-    { name = "urllib3", specifier = ">=2.7.0,<2.9.0" },
+    { name = "urllib3", specifier = ">=2.8.0,<3" },
 ]
 provides-extras = ["dev"]
 
