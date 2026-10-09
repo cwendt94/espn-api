@@ -87,6 +87,6 @@ class BoxScore(object):
             )
             for player in team_roster
         ]
-        team_probability = round(data[team]["winProbability"]*100)
+        team_probability = round(data[team].get("winProbability", 0)*100)
 
         return (team_id, team_score, team_projected, team_lineup, team_probability)
