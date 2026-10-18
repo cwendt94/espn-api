@@ -12,7 +12,10 @@ class Settings(BaseSettings):
         self.position_slot_counts = dict(
             zip(position_labels, list(lineup_slot_counts.values()))
         )
-
+        roster_position_limits = data["rosterSettings"].get("positionLimits", {})
+        self.roster_position_limits = dict(
+            zip(position_labels, list(roster_position_limits.values()))
+        )
         for scoring_item in scoring_items:
             stat_id = scoring_item["statId"]
             points_override = scoring_item.get("pointsOverrides", {}).get("16")
