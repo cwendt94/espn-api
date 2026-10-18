@@ -43,6 +43,28 @@ POSITION_MAP = {
     "HC": 19,
 }
 
+ROSTER_POSITION_MAP = {
+    #TODO figure out what 0, 6, 8, and 17 represent
+    0: "",
+    1: "QB",
+    2: "RB",
+    3: "WR",
+    4: "TE",
+    5: "K",
+    6: "",
+    7: "P",
+    8: "",
+    9: "DT",
+    10: "DE",
+    11: "LB",
+    12: "CB",
+    13: "S",
+    14: "HC",
+    15: "TQB",
+    16: "D/ST",
+    17: ""
+}
+
 PRO_TEAM_MAP = {
     0: "None",
     1: "ATL",
