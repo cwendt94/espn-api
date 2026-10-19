@@ -71,7 +71,7 @@ class BoxScore(object):
         player_team_cache=None,
     ):
         if team not in data:
-            return (None, 0, -1, [])
+            return (None, 0, -1, [], -1)
 
         team_id = data[team]["teamId"]
         team_projected = -1
