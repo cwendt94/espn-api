@@ -1,5 +1,5 @@
 from ..base_settings import BaseSettings
-from .constant import SETTINGS_SCORING_FORMAT_MAP, POSITION_MAP
+from .constant import SETTINGS_SCORING_FORMAT_MAP, POSITION_MAP, ROSTER_POSITION_MAP
 
 
 class Settings(BaseSettings):
@@ -11,6 +11,11 @@ class Settings(BaseSettings):
         position_labels = list(POSITION_MAP.values())[: len(lineup_slot_counts)]
         self.position_slot_counts = dict(
             zip(position_labels, list(lineup_slot_counts.values()))
+        )
+        roster_position_limits = data["rosterSettings"].get("positionLimits", {})
+        position_limit_labels = list(ROSTER_POSITION_MAP.values())
+        self.roster_position_limits = dict(
+            zip(position_limit_labels, list(roster_position_limits.values()))
         )
 
         for scoring_item in scoring_items:
