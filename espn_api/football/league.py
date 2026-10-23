@@ -459,6 +459,56 @@ class League(BaseLeague):
             for player in players
         ]
 
+    def league_players(
+        self,
+        week: int = None,
+        size: int = 50,
+        position: str = None,
+        position_id: int = None,
+    ) -> List[Player]:
+        """Returns a List of players for a Given Week\n
+        Should only be used with most recent season"""
+
+        if self.year < 2019:
+            raise Exception("Cant use free agents before 2019")
+        if not week:
+            week = self.current_week
+
+        slot_filter = []
+        if position and position in POSITION_MAP:
+            slot_filter = [POSITION_MAP[position]]
+        if position_id:
+            slot_filter.append(position_id)
+
+        params = {
+            "view": "kona_player_info",
+            "scoringPeriodId": week,
+        }
+        filters = {
+            "players": {
+                "filterSlotIds": {"value": slot_filter},
+                "limit": size,
+                "sortPercOwned": {"sortPriority": 1, "sortAsc": False},
+                "sortDraftRanks": {
+                    "sortPriority": 100,
+                    "sortAsc": True,
+                    "value": "STANDARD",
+                },
+            }
+        }
+        headers = {"x-fantasy-filter": json.dumps(filters)}
+
+        data = self.espn_request.league_get(params=params, headers=headers)
+
+        players = data["players"]
+        pro_schedule = self._get_pro_schedule(week)
+        positional_rankings = self._get_positional_ratings(week)
+
+        return [
+            BoxPlayer(player, pro_schedule, positional_rankings, week, self.year)
+            for player in players
+        ]
+
     def player_info(
         self, name: str = None, playerId: Union[int, list] = None
     ) -> Union[Player, List[Player]]:
