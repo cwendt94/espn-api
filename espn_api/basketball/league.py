@@ -80,6 +80,27 @@ class League(BaseLeague):
                     if matchup.home_team == opponent.team_id:
                         matchup.home_team = opponent
 
+    def _player_info_context(self):
+        return self.pro_schedule
+
+    def _player_info_news(self, player_ids, include_news=False):
+        if not include_news:
+            return {}
+        return {
+            player_id: self.espn_request.get_player_news(player_id)
+            for player_id in player_ids
+        }
+
+    def _build_player_info_player(self, player_data, context=None, news=None):
+        return Player(
+            player_data,
+            self.year,
+            context,
+            news=news,
+            player_map=self.player_map,
+            get_team_data=self.get_team_data,
+        )
+
     def standings(self) -> List[Team]:
         standings = sorted(
             self.teams,
@@ -293,44 +314,3 @@ class League(BaseLeague):
                 elif matchup.away_team == team.team_id:
                     matchup.away_team = team
         return box_data
-
-    def player_info(
-        self, name: str = None, playerId: Union[int, list] = None, include_news=False
-    ) -> Union[Player, List[Player]]:
-        """Returns Player class if name found"""
-
-        if name:
-            playerId = self.player_map.get(name)
-        if playerId is None or isinstance(playerId, str):
-            return None
-        if not isinstance(playerId, list):
-            playerId = [playerId]
-
-        data = self.espn_request.get_player_card(playerId, self.finalScoringPeriod)
-
-        if include_news:
-            news = {}
-            for id in playerId:
-                news[id] = self.espn_request.get_player_news(id)
-
-        if len(data["players"]) == 1:
-            return Player(
-                data["players"][0],
-                self.year,
-                self.pro_schedule,
-                news=news.get(playerId[0], []) if include_news else None,
-                player_map=self.player_map,
-                get_team_data=self.get_team_data,
-            )
-        if len(data["players"]) > 1:
-            return [
-                Player(
-                    player,
-                    self.year,
-                    self.pro_schedule,
-                    news=news.get(player["id"], []) if include_news else None,
-                    player_map=self.player_map,
-                    get_team_data=self.get_team_data,
-                )
-                for player in data["players"]
-            ]

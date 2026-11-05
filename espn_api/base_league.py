@@ -1,4 +1,5 @@
 from abc import ABC
+from copy import deepcopy
 from typing import List, Tuple
 
 from .base_settings import BaseSettings
@@ -113,10 +114,12 @@ class BaseLeague(ABC):
 
         team_roster = {}
         for team in data["teams"]:
-            team_roster[team["id"]] = team.get("roster", {})
+            team_roster[team["id"]] = team.get("roster") or {"entries": []}
+
+        team_roster = self._expand_rosters(team_roster, teams, data)
 
         for team in teams:
-            roster = team_roster[team["id"]]
+            roster = team_roster.get(team["id"], {"entries": []})
             owners = [
                 member
                 for member in members
@@ -135,6 +138,168 @@ class BaseLeague(ABC):
 
         # sort by team ID
         self.teams = sorted(self.teams, key=lambda x: x.team_id, reverse=False)
+
+    def _expand_rosters(self, team_roster, teams, league_data):
+        player_ids = []
+        seen_ids = set()
+        for team in teams:
+            roster = team_roster.get(team["id"])
+            entries = roster.get("entries", []) if isinstance(roster, dict) else []
+            if not isinstance(entries, list):
+                entries = []
+            for entry in entries:
+                player_id = self._roster_entry_player_id(entry)
+                if player_id is not None and player_id not in seen_ids:
+                    seen_ids.add(player_id)
+                    player_ids.append(player_id)
+
+        if not player_ids:
+            return team_roster
+
+        max_scoring_period = getattr(
+            self,
+            "finalScoringPeriod",
+            league_data.get("status", {}).get("finalScoringPeriod", 0),
+        )
+        additional_filters = self._player_card_additional_filters()
+        request_kwargs = (
+            {"additional_filters": additional_filters} if additional_filters else {}
+        )
+        response = self.espn_request.get_player_card(
+            player_ids, max_scoring_period, **request_kwargs
+        )
+        cards = response.get("players") if isinstance(response, dict) else None
+        if not isinstance(cards, list):
+            cards = []
+        cards_by_id = {}
+        for card in cards:
+            player_id = self._roster_entry_player_id(card)
+            if player_id is not None:
+                cards_by_id[player_id] = card
+
+        expanded_rosters = {}
+        for team in teams:
+            team_id = team["id"]
+            roster = team_roster.get(team_id)
+            if not isinstance(roster, dict):
+                expanded_rosters[team_id] = {"entries": []}
+                continue
+
+            roster_entries = roster.get("entries", [])
+            if not isinstance(roster_entries, list):
+                roster_entries = []
+            expanded_entries = []
+            for entry in roster_entries:
+                player_id = self._roster_entry_player_id(entry)
+                card = cards_by_id.get(player_id)
+                player_data = self._player_card_player_data(card)
+                if not isinstance(entry, dict) or not isinstance(player_data, dict):
+                    expanded_entries.append(entry)
+                    continue
+
+                expanded_entry = dict(entry)
+                pool_entry = entry.get("playerPoolEntry")
+                merged_player_data = self._merge_player_card_data(
+                    pool_entry.get("player", {})
+                    if isinstance(pool_entry, dict)
+                    else entry.get("player", {}),
+                    player_data,
+                )
+                if isinstance(pool_entry, dict):
+                    expanded_entry["playerPoolEntry"] = {
+                        **pool_entry,
+                        "player": merged_player_data,
+                    }
+                else:
+                    expanded_entry["player"] = merged_player_data
+                expanded_entries.append(expanded_entry)
+
+            expanded_rosters[team_id] = {**roster, "entries": expanded_entries}
+
+        return expanded_rosters
+
+    @staticmethod
+    def _player_card_player_data(card):
+        if not isinstance(card, dict):
+            return None
+        pool_entry = card.get("playerPoolEntry")
+        if isinstance(pool_entry, dict) and isinstance(pool_entry.get("player"), dict):
+            return pool_entry["player"]
+        player = card.get("player")
+        return player if isinstance(player, dict) else card
+
+    @classmethod
+    def _merge_player_card_data(cls, roster_player, card_player):
+        if not isinstance(roster_player, dict):
+            roster_player = {}
+        merged_player = deepcopy(roster_player)
+        for key, card_value in card_player.items():
+            roster_value = merged_player.get(key)
+            if (
+                key == "stats"
+                and isinstance(roster_value, list)
+                and isinstance(card_value, list)
+            ):
+                merged_player[key] = cls._merge_player_stats(
+                    roster_value, card_value
+                )
+            elif isinstance(roster_value, dict) and isinstance(card_value, dict):
+                merged_player[key] = cls._merge_player_card_data(
+                    roster_value, card_value
+                )
+            else:
+                merged_player[key] = deepcopy(card_value)
+        return merged_player
+
+    @classmethod
+    def _merge_player_stats(cls, roster_stats, card_stats):
+        merged_stats = []
+        stat_indexes = {}
+        for stat in roster_stats:
+            identity = cls._player_stat_identity(stat)
+            if identity is not None and identity in stat_indexes:
+                index = stat_indexes[identity]
+                merged_stats[index] = cls._merge_player_card_data(
+                    merged_stats[index], stat
+                )
+            else:
+                if identity is not None:
+                    stat_indexes[identity] = len(merged_stats)
+                merged_stats.append(deepcopy(stat))
+
+        for stat in card_stats:
+            identity = cls._player_stat_identity(stat)
+            if identity is not None and identity in stat_indexes:
+                index = stat_indexes[identity]
+                merged_stats[index] = cls._merge_player_card_data(
+                    merged_stats[index], stat
+                )
+            else:
+                if identity is not None:
+                    stat_indexes[identity] = len(merged_stats)
+                merged_stats.append(deepcopy(stat))
+        return merged_stats
+
+    @staticmethod
+    def _player_stat_identity(stat):
+        identity_fields = (
+            "seasonId",
+            "scoringPeriodId",
+            "statSourceId",
+            "statSplitTypeId",
+        )
+        if (
+            not isinstance(stat, dict)
+            or any(
+                field not in stat or stat[field] is None
+                for field in identity_fields
+            )
+        ):
+            return None
+        return tuple(stat[field] for field in identity_fields)
+
+    def _player_card_additional_filters(self):
+        return None
 
     def _fetch_players(self):
         data = self.espn_request.get_pro_players()
@@ -233,7 +398,70 @@ class BaseLeague(ABC):
                 player_id = inner.get("id")
                 if isinstance(player_id, int) and player_id != 0:
                     return player_id
+        player = entry.get("player")
+        if isinstance(player, dict):
+            player_id = player.get("id")
+            if isinstance(player_id, int) and player_id != 0:
+                return player_id
+        player_id = entry.get("id")
+        if isinstance(player_id, int) and player_id != 0:
+            return player_id
         return None
+
+    def _resolve_player_info_id(self, name, player_id):
+        return self.player_map.get(name) if name else player_id
+
+    def _is_valid_player_info_id(self, player_id):
+        return player_id is not None and not isinstance(player_id, str)
+
+    def _player_info_context(self):
+        return None
+
+    def _player_info_news(self, player_ids, include_news=False):
+        return {}
+
+    def _build_player_info_player(self, player_data, context=None, news=None):
+        raise NotImplementedError(
+            "Sports must provide their Player constructor for player_info"
+        )
+
+    def player_info(self, name=None, playerId=None, include_news=False):
+        """Return one or more sport-specific Player objects for the given ID/name."""
+        playerId = self._resolve_player_info_id(name, playerId)
+        if not self._is_valid_player_info_id(playerId):
+            return None
+        if not isinstance(playerId, list):
+            playerId = [playerId]
+
+        additional_filters = self._player_card_additional_filters()
+        request_kwargs = (
+            {"additional_filters": additional_filters} if additional_filters else {}
+        )
+        response = self.espn_request.get_player_card(
+            playerId, self.finalScoringPeriod, **request_kwargs
+        )
+        player_data = response.get("players") if isinstance(response, dict) else None
+        if not isinstance(player_data, list):
+            player_data = []
+        player_data = [player for player in player_data if isinstance(player, dict)]
+        if not player_data:
+            return None
+
+        news_by_id = self._player_info_news(playerId, include_news)
+        context = self._player_info_context()
+        players = [
+            self._build_player_info_player(
+                player,
+                context,
+                (
+                    news_by_id.get(self._roster_entry_player_id(player), [])
+                    if include_news
+                    else None
+                ),
+            )
+            for player in player_data
+        ]
+        return players[0] if len(players) == 1 else players
 
     def _scoring_period_roster_ids(self, scoring_period):
         """Player ids on every team roster for a week, without mutating self.teams."""

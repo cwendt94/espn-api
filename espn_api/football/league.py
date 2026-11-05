@@ -459,39 +459,17 @@ class League(BaseLeague):
             for player in players
         ]
 
-    def player_info(
-        self, name: str = None, playerId: Union[int, list] = None
-    ) -> Union[Player, List[Player]]:
-        """Returns Player class if name found"""
+    def _player_info_context(self):
+        return self._get_all_pro_schedule()
 
-        if name:
-            playerId = self.player_map.get(name)
-        if playerId is None or isinstance(playerId, str):
-            return None
-        if not isinstance(playerId, list):
-            playerId = [playerId]
-
-        data = self.espn_request.get_player_card(playerId, self.finalScoringPeriod)
-        pro_schedule = self._get_all_pro_schedule()
-        if len(data["players"]) == 1:
-            return Player(
-                data["players"][0],
-                self.year,
-                pro_schedule,
-                player_map=self.player_map,
-                get_team_data=self.get_team_data,
-            )
-        if len(data["players"]) > 1:
-            return [
-                Player(
-                    player,
-                    self.year,
-                    pro_schedule,
-                    player_map=self.player_map,
-                    get_team_data=self.get_team_data,
-                )
-                for player in data["players"]
-            ]
+    def _build_player_info_player(self, player_data, context=None, news=None):
+        return Player(
+            player_data,
+            self.year,
+            context,
+            player_map=self.player_map,
+            get_team_data=self.get_team_data,
+        )
 
     def message_board(self, msg_types: List[str] = None):
         """Returns a list of league messages"""

@@ -78,6 +78,9 @@ class League(BaseLeague):
                     if matchup.home_team == opponent.team_id:
                         matchup.home_team = opponent
 
+    def _build_player_info_player(self, player_data, context=None, news=None):
+        return Player(player_data, self.year)
+
     def standings(self) -> List[Team]:
         standings = sorted(
             self.teams,

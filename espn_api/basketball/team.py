@@ -54,9 +54,9 @@ class Team(object):
     def _fetch_roster(self, data, year, pro_schedule=None):
         """Fetch teams roster"""
         self.roster.clear()
-        roster = data["entries"]
+        roster = data.get("entries", [])
 
-        for player in roster:
+        for player in roster or []:
             self.roster.append(Player(player, year, pro_schedule))
 
     def _fetch_schedule(self, data):

@@ -60,6 +60,11 @@ class LeagueTest(TestCase):
         )
         m.get(self.players_endpoint, status_code=200, json=self.players_data)
         m.get(
+            self.espn_endpoint + "?view=kona_playercard",
+            status_code=200,
+            json={"players": []},
+        )
+        m.get(
             self.base_endpoint + "?view=proTeamSchedules_wl",
             status_code=200,
             json=self.pro_schedule_data,

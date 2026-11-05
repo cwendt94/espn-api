@@ -291,38 +291,24 @@ class League(BaseLeague):
                     matchup.away_team = team_map[matchup.away_team]
         return box_data
 
-    def player_info(
-        self, name: str = None, playerId: Union[int, list] = None
-    ) -> Union[Player, List[Player]]:
-        """Returns Player class if name or playerId found"""
+    def _resolve_player_info_id(self, name, player_id):
         if name and name in self.player_map:
-            playerId = self.player_map[name]
-        if playerId is None:
-            return None
-        if not isinstance(playerId, list):
-            playerId = [playerId]
+            return self.player_map[name]
+        return player_id
 
-        split_filters = ["0{}{}".format(i, self.year) for i in range(1, 4)]
-        data = self.espn_request.get_player_card(
-            playerId, self.finalScoringPeriod, additional_filters=split_filters
+    def _player_card_additional_filters(self):
+        return ["0{}{}".format(i, self.year) for i in range(1, 4)]
+
+    def _is_valid_player_info_id(self, player_id):
+        return player_id is not None
+
+    def _build_player_info_player(self, player_data, context=None, news=None):
+        return Player(
+            player_data,
+            self.year,
+            player_map=self.player_map,
+            get_team_data=self.get_team_data,
         )
-        if len(data["players"]) == 1:
-            return Player(
-                data["players"][0],
-                self.year,
-                player_map=self.player_map,
-                get_team_data=self.get_team_data,
-            )
-        if len(data["players"]) > 1:
-            return [
-                Player(
-                    player,
-                    self.year,
-                    player_map=self.player_map,
-                    get_team_data=self.get_team_data,
-                )
-                for player in data["players"]
-            ]
 
     def refresh(self):
         """Gets latest league data without re-fetching all players"""

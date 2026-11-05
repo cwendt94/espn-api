@@ -11,6 +11,11 @@ class BaseLeagueTest(TestCase):
         self.league_id = 1
         self.season = 2020
         self.league = BaseLeague(self.league_id, self.season, sport="nhl")
+        player_card_patcher = mock.patch.object(
+            EspnFantasyRequests, "get_player_card", return_value={"players": []}
+        )
+        player_card_patcher.start()
+        self.addCleanup(player_card_patcher.stop)
 
         with open("tests/hockey/unit/data/league_data.json") as data:
             self.league_data = json.loads(data.read())
