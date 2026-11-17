@@ -14,6 +14,7 @@ class BoxPlayer(Player):
         week,
         year,
         player_team_cache=None,
+        all_pro_schedule=None,
     ):
         super(BoxPlayer, self).__init__(data, year)
         self.slot_position = "FA"
@@ -77,6 +78,22 @@ class BoxPlayer(Player):
                 )
         else:  # bye week
             self.on_bye_week = True
+
+        # Populate full schedule from all_pro_schedule (same shape as Player.schedule)
+        if all_pro_schedule is not None and pro_team_id in all_pro_schedule:
+            for key, games in all_pro_schedule[pro_team_id].items():
+                if not games:
+                    continue
+                game = games[0]
+                opp = (
+                    game["awayProTeamId"]
+                    if game["awayProTeamId"] != pro_team_id
+                    else game["homeProTeamId"]
+                )
+                self.schedule[key] = {
+                    "team": PRO_TEAM_MAP[opp],
+                    "date": datetime.fromtimestamp(game["date"] / 1000.0),
+                }
 
         stats = self.stats.get(week, {})
         self.points = stats.get("points", 0)

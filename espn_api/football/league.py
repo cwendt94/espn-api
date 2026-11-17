@@ -452,10 +452,13 @@ class League(BaseLeague):
 
         players = data["players"]
         pro_schedule = self._get_pro_schedule(week)
+        all_pro_schedule = self._get_all_pro_schedule()
         positional_rankings = self._get_positional_ratings(week)
 
         return [
-            BoxPlayer(player, pro_schedule, positional_rankings, week, self.year)
+            BoxPlayer(
+                player, pro_schedule, positional_rankings, week, self.year, all_pro_schedule=all_pro_schedule
+            )
             for player in players
         ]
 
